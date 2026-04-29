@@ -1,43 +1,107 @@
-export type WordQuestion = {
-  word: string
-  correctAnswer: string
-  options: string[]
+export type WordEntry = {
+  id: string
+  chinese: string
+  english: string
+  wrongOptions: string[]
+  category: 'food' | 'action' | 'shop' | 'feeling'
+  difficulty: 1 | 2 | 3
 }
 
-export const wordQuestions: WordQuestion[] = [
+export const words: WordEntry[] = [
   {
-    word: 'bottom bun',
-    correctAnswer: '面包底',
-    options: ['面包底', '奶酪片', '番茄片', '收银台'],
+    id: 'bun',
+    chinese: '面包',
+    english: 'bun',
+    wrongOptions: ['pan', 'bowl', 'rice'],
+    category: 'food',
+    difficulty: 1,
   },
   {
-    word: 'patty',
-    correctAnswer: '肉饼',
-    options: ['肉饼', '生菜', '饮料', '菜单'],
+    id: 'patty',
+    chinese: '肉饼',
+    english: 'patty',
+    wrongOptions: ['party', 'plate', 'potato'],
+    category: 'food',
+    difficulty: 1,
   },
   {
-    word: 'flip',
-    correctAnswer: '翻面',
-    options: ['结账', '翻面', '切碎', '等待'],
+    id: 'flip',
+    chinese: '翻面',
+    english: 'flip',
+    wrongOptions: ['fill', 'fall', 'fold'],
+    category: 'action',
+    difficulty: 2,
   },
   {
-    word: 'lettuce',
-    correctAnswer: '生菜',
-    options: ['洋葱', '生菜', '薯条', '盘子'],
+    id: 'lettuce',
+    chinese: '生菜',
+    english: 'lettuce',
+    wrongOptions: ['tomato', 'cheese', 'onion'],
+    category: 'food',
+    difficulty: 1,
   },
   {
-    word: 'sauce',
-    correctAnswer: '酱汁',
-    options: ['煎锅', '吸管', '酱汁', '柜台'],
+    id: 'tomato',
+    chinese: '番茄',
+    english: 'tomato',
+    wrongOptions: ['potato', 'carrot', 'pepper'],
+    category: 'food',
+    difficulty: 1,
   },
   {
-    word: 'customer',
-    correctAnswer: '顾客',
-    options: ['顾客', '厨房', '订单', '零钱'],
+    id: 'sauce',
+    chinese: '酱汁',
+    english: 'sauce',
+    wrongOptions: ['soup', 'salt', 'salad'],
+    category: 'food',
+    difficulty: 1,
   },
   {
-    word: 'order',
-    correctAnswer: '订单',
-    options: ['围裙', '订单', '餐巾', '番茄酱'],
+    id: 'order',
+    chinese: '订单',
+    english: 'order',
+    wrongOptions: ['offer', 'owner', 'oven'],
+    category: 'shop',
+    difficulty: 2,
+  },
+  {
+    id: 'customer',
+    chinese: '顾客',
+    english: 'customer',
+    wrongOptions: ['cashier', 'cook', 'teacher'],
+    category: 'shop',
+    difficulty: 2,
+  },
+  {
+    id: 'angry',
+    chinese: '生气的',
+    english: 'angry',
+    wrongOptions: ['hungry', 'happy', 'early'],
+    category: 'feeling',
+    difficulty: 1,
+  },
+  {
+    id: 'perfect',
+    chinese: '完美的',
+    english: 'perfect',
+    wrongOptions: ['patient', 'popular', 'purple'],
+    category: 'feeling',
+    difficulty: 2,
+  },
+  {
+    id: 'hurry',
+    chinese: '赶快',
+    english: 'hurry',
+    wrongOptions: ['hungry', 'heavy', 'history'],
+    category: 'action',
+    difficulty: 2,
+  },
+  {
+    id: 'serve',
+    chinese: '服务，上菜',
+    english: 'serve',
+    wrongOptions: ['save', 'share', 'slice'],
+    category: 'action',
+    difficulty: 3,
   },
 ]

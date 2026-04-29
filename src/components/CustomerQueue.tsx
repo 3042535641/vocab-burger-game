@@ -64,12 +64,15 @@ function CustomerQueue({
               type="button"
               className={`customer-ticket ${mood} ${
                 customer.id === activeCustomerId ? 'active' : ''
-              }`}
+              } ${customer.isBoss ? 'boss-ticket' : ''}`}
               key={customer.id}
               onClick={() => onSelectCustomer(customer.id)}
             >
-              <span className="customer-avatar" aria-hidden="true">
-                {customer.isBoss ? 'BOSS' : ':)'}
+              <span
+                className={`customer-avatar avatar-${customer.avatar}`}
+                aria-hidden="true"
+              >
+                {customer.isBoss ? 'BOSS' : ''}
               </span>
               <span className="customer-info">
                 <strong>{customer.name}</strong>

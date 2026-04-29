@@ -8,12 +8,14 @@ export type BurgerStep = {
   id: string
   label: string
   stationText: string
+  ingredient: string
   word: WordEntry
 }
 
 export type Customer = {
   id: number
   name: string
+  avatar: string
   patience: number
   maxPatience: number
   stepIndex: number

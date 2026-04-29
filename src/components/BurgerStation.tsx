@@ -19,6 +19,12 @@ function BurgerStation({ customer }: BurgerStationProps) {
         <span>焦度 {burn}%</span>
       </div>
 
+      <div className="grill-lights" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </div>
+
       <div className="burger-stack">
         {!customer && <span className="empty-plate">等待订单</span>}
         {customer && completedStepIds?.includes('top') && (

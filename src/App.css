@@ -1,8 +1,8 @@
 .game-shell {
-  width: min(1180px, 100%);
+  width: min(1220px, 100%);
   min-height: 100svh;
   margin: 0 auto;
-  padding: 28px 18px 40px;
+  padding: 24px 18px 40px;
   color: #2b211b;
   transition: transform 120ms ease;
 }
@@ -12,11 +12,11 @@
 }
 
 .game-shell.impact-wrong {
-  animation: shake-wrong 260ms ease;
+  animation: shake-wrong 280ms ease;
 }
 
 .game-shell.impact-serve {
-  animation: serve-bounce 260ms ease;
+  animation: serve-bounce 240ms ease;
 }
 
 .start-screen {
@@ -28,23 +28,27 @@
   border: 2px solid #2b211b;
   border-radius: 8px;
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.62), transparent 48%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.66), transparent 48%),
     #fff5dd;
   box-shadow:
-    0 10px 0 #c38445,
-    0 18px 32px rgba(83, 49, 24, 0.18);
+    0 10px 0 #b9753a,
+    0 18px 34px rgba(83, 49, 24, 0.2);
 }
 
 .intro-panel {
-  width: min(680px, 100%);
+  width: min(720px, 100%);
   padding: 42px;
   text-align: center;
 }
 
 .intro-panel p {
-  max-width: 560px;
+  max-width: 580px;
   margin: 18px auto 26px;
   color: #624c3f;
+}
+
+.result-panel p + p {
+  margin-top: 8px;
 }
 
 .eyebrow,
@@ -89,6 +93,14 @@
   transform: translateY(-1px);
 }
 
+.answer-button:active,
+.customer-ticket:active,
+.small-action:active,
+.primary-action:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #8e5a20;
+}
+
 .game-header {
   display: flex;
   align-items: flex-end;
@@ -119,6 +131,66 @@
   text-align: center;
 }
 
+.shop-scene {
+  position: relative;
+  min-height: 150px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  border: 2px solid #2b211b;
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(92, 40, 20, 0.18) 0 2px, transparent 2px 100%),
+    linear-gradient(#f7b55d 0 54%, #c56b34 54% 58%, #7a4830 58%);
+  background-size:
+    54px 100%,
+    auto;
+  box-shadow: 0 9px 0 #7a4830;
+}
+
+.shop-sign {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  padding: 10px 24px;
+  border: 2px solid #2b211b;
+  border-radius: 8px;
+  color: #ffe9a9;
+  background: #33201c;
+  box-shadow: 0 4px 0 #000;
+  font-weight: 900;
+  letter-spacing: 2px;
+  transform: translateX(-50%) rotate(-1deg);
+}
+
+.awning {
+  position: absolute;
+  top: 72px;
+  left: 0;
+  width: 100%;
+  height: 38px;
+  border-block: 2px solid #2b211b;
+  background: repeating-linear-gradient(
+    90deg,
+    #d94731 0 56px,
+    #fff2d0 56px 112px
+  );
+}
+
+.counter-rail {
+  position: absolute;
+  right: 5%;
+  bottom: 12px;
+  left: 5%;
+  height: 34px;
+  border: 2px solid #2b211b;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 20% 50%, #ffd24d 0 9px, transparent 10px),
+    radial-gradient(circle at 50% 50%, #ffd24d 0 9px, transparent 10px),
+    radial-gradient(circle at 80% 50%, #ffd24d 0 9px, transparent 10px),
+    #4d3026;
+}
+
 .banner {
   margin-bottom: 18px;
   padding: 12px 16px;
@@ -143,6 +215,7 @@
 
 .customer-line,
 .burger-station,
+.order-ticket,
 .quiz-panel {
   padding: 20px;
 }
@@ -203,8 +276,15 @@
   background: #ffd0c7;
 }
 
+.customer-ticket.boss-ticket {
+  background:
+    linear-gradient(90deg, rgba(255, 221, 82, 0.7), transparent),
+    #ffd0c7;
+}
+
 .customer-avatar {
   display: grid;
+  position: relative;
   place-items: center;
   min-height: 64px;
   border: 2px solid #2b211b;
@@ -213,7 +293,63 @@
     radial-gradient(circle at 34% 40%, #2b211b 0 3px, transparent 4px),
     radial-gradient(circle at 64% 40%, #2b211b 0 3px, transparent 4px),
     linear-gradient(#ffd3a3 0 58%, #60b8d6 58%);
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.avatar-star::before,
+.avatar-bow::before,
+.avatar-cap::before,
+.avatar-shade::before,
+.avatar-bun::before,
+.avatar-boss::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 14px;
+  right: 14px;
+  height: 14px;
+  border: 2px solid #2b211b;
+  border-radius: 999px;
+  background: #5a3525;
+}
+
+.avatar-star {
+  background:
+    radial-gradient(circle at 34% 42%, #2b211b 0 3px, transparent 4px),
+    radial-gradient(circle at 64% 42%, #2b211b 0 3px, transparent 4px),
+    linear-gradient(#ffe0b9 0 58%, #e96b8c 58%);
+}
+
+.avatar-cap::before {
+  top: 4px;
+  background: #337bd9;
+}
+
+.avatar-bow::before {
+  background: #e96b8c;
+}
+
+.avatar-shade {
+  background:
+    linear-gradient(90deg, transparent 24%, #17120f 24% 43%, transparent 43% 57%, #17120f 57% 76%, transparent 76%),
+    linear-gradient(#ffd3a3 0 58%, #4d9367 58%);
+}
+
+.avatar-bun::before {
+  background: #9b5b28;
+}
+
+.avatar-boss {
+  color: #ffe9a9;
+  background:
+    radial-gradient(circle at 34% 42%, #2b211b 0 4px, transparent 5px),
+    radial-gradient(circle at 64% 42%, #2b211b 0 4px, transparent 5px),
+    linear-gradient(#ffd3a3 0 58%, #2b211b 58%);
+}
+
+.avatar-boss::before {
+  background: #d94731;
 }
 
 .customer-info {
@@ -253,6 +389,29 @@
 .burger-station {
   display: flex;
   flex-direction: column;
+}
+
+.grill-lights {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.grill-lights span {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #2b211b;
+  border-radius: 50%;
+  background: #ef4f34;
+  box-shadow: 0 0 10px rgba(239, 79, 52, 0.65);
+}
+
+.grill-lights span:nth-child(2) {
+  background: #ffd24d;
+}
+
+.grill-lights span:nth-child(3) {
+  background: #65bd61;
 }
 
 .burger-stack {
@@ -352,6 +511,56 @@
   text-align: center;
 }
 
+.order-ticket {
+  grid-column: 1 / -1;
+  background:
+    linear-gradient(90deg, transparent 0 12px, rgba(0, 0, 0, 0.06) 12px 14px, transparent 14px),
+    #fffdf6;
+}
+
+.ticket-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed #9b6b4b;
+}
+
+.recipe-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recipe-list li {
+  display: grid;
+  gap: 2px;
+  min-height: 62px;
+  padding: 8px;
+  border: 2px solid #2b211b;
+  border-radius: 8px;
+  background: #f7ead3;
+  font-weight: 900;
+}
+
+.recipe-list li.done {
+  background: #dff4bf;
+}
+
+.recipe-list li.current {
+  background: #ffe08a;
+  box-shadow: 0 0 0 3px rgba(255, 210, 77, 0.4);
+}
+
+.recipe-list small {
+  color: #725c4e;
+  font-weight: 800;
+}
+
 .quiz-panel {
   display: grid;
   gap: 16px;
@@ -381,14 +590,6 @@
   padding: 10px 12px;
   background: linear-gradient(#fff8ea, #f1d4a8);
   box-shadow: 0 4px 0 #9b6b4b;
-}
-
-.answer-button:active,
-.customer-ticket:active,
-.small-action:active,
-.primary-action:active {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 #8e5a20;
 }
 
 .quiz-footer {
@@ -423,7 +624,7 @@
   background: #d9eff8;
 }
 
-@media (max-width: 820px) {
+@media (max-width: 900px) {
   .game-shell {
     padding: 18px 12px 32px;
   }
@@ -446,12 +647,26 @@
     justify-content: flex-start;
   }
 
+  .recipe-list,
   .answer-grid {
     grid-template-columns: 1fr 1fr;
   }
 
   .question-card h2 {
     font-size: 34px;
+  }
+}
+
+@media (max-width: 560px) {
+  .recipe-list,
+  .answer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .shop-sign {
+    width: max-content;
+    max-width: calc(100% - 24px);
+    font-size: 14px;
   }
 }
 

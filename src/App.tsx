@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import BurgerStation from './components/BurgerStation'
 import CustomerQueue from './components/CustomerQueue'
+import OrderTicket from './components/OrderTicket'
 import QuizPanel from './components/QuizPanel'
 import { words } from './data/words'
-import { gameAudio } from './utils/audio'
 import type {
   AnswerQuestion,
   BurgerStep,
@@ -11,20 +11,38 @@ import type {
   Feedback,
   GameStatus,
 } from './types/game'
+import { gameAudio } from './utils/audio'
 import './App.css'
 
 const maxCustomers = 3
-const basePatience = 58
-const bossPatience = 44
+const targetRegularServed = 6
+const basePatience = 62
+const bossPatience = 46
 const correctScore = 12
 const comboBonus = 3
 const wrongPenalty = 5
-const customerNames = ['小明', '安娜', 'Leo', '糖糖', '阿杰', 'Mia']
+
+const customerProfiles = [
+  { name: '小明', avatar: 'round' },
+  { name: '安娜', avatar: 'star' },
+  { name: 'Leo', avatar: 'cap' },
+  { name: '糖糖', avatar: 'bow' },
+  { name: '阿杰', avatar: 'shade' },
+  { name: 'Mia', avatar: 'bun' },
+]
 
 const stepWordIds = ['bun', 'patty', 'flip', 'lettuce', 'tomato', 'sauce']
-const bossStepWordIds = ['bun', 'patty', 'flip', 'lettuce', 'tomato', 'sauce', 'perfect']
+const bossStepWordIds = [
+  'bun',
+  'patty',
+  'flip',
+  'lettuce',
+  'tomato',
+  'sauce',
+  'perfect',
+]
 
-const getRandomDelay = () => 7000 + Math.floor(Math.random() * 6000)
+const getRandomDelay = () => 8000 + Math.floor(Math.random() * 6000)
 
 const buildSteps = (isBoss: boolean): BurgerStep[] => {
   const ids = isBoss ? bossStepWordIds : stepWordIds
@@ -32,34 +50,38 @@ const buildSteps = (isBoss: boolean): BurgerStep[] => {
   return ids.map((wordId) => {
     const word = words.find((entry) => entry.id === wordId) ?? words[0]
 
-    const stepText: Record<string, string> = {
-      bun: '放面包底',
-      patty: '放肉饼开始煎',
-      flip: '答对才能翻面',
-      lettuce: '放生菜',
-      tomato: '放番茄',
-      sauce: '挤酱并盖上面包',
-      perfect: '喊出完美汉堡',
+    const stepText: Record<string, { label: string; ingredient: string }> = {
+      bun: { label: '放面包底', ingredient: '面包底' },
+      patty: { label: '放肉饼开始煎', ingredient: '肉饼' },
+      flip: { label: '答对才能翻面', ingredient: '完美翻面' },
+      lettuce: { label: '放生菜', ingredient: '生菜' },
+      tomato: { label: '放番茄', ingredient: '番茄' },
+      sauce: { label: '挤酱并盖上面包', ingredient: '酱汁 + 面包盖' },
+      perfect: { label: '喊出完美汉堡', ingredient: 'Perfect Burger' },
     }
 
     return {
       id: wordId === 'perfect' ? 'top' : wordId,
-      label: stepText[wordId],
+      label: stepText[wordId].label,
+      ingredient: stepText[wordId].ingredient,
       stationText: `订单提示：${word.chinese}`,
       word,
     }
   })
 }
 
-const createCustomer = (id: number, servedCount: number): Customer => {
-  const isBoss = servedCount >= 4 && id % 3 === 0
+const createCustomer = (
+  id: number,
+  forceBoss = false,
+): Customer => {
+  const isBoss = forceBoss
   const maxPatience = isBoss ? bossPatience : basePatience
+  const profile = customerProfiles[id % customerProfiles.length]
 
   return {
     id,
-    name: isBoss
-      ? 'Boss 老板同学'
-      : customerNames[Math.floor(Math.random() * customerNames.length)],
+    name: isBoss ? 'Boss 老板同学' : profile.name,
+    avatar: isBoss ? 'boss' : profile.avatar,
     patience: maxPatience,
     maxPatience,
     stepIndex: 0,
@@ -97,6 +119,8 @@ function App() {
   const [bestCombo, setBestCombo] = useState(0)
   const [servedCount, setServedCount] = useState(0)
   const [lostCustomers, setLostCustomers] = useState(0)
+  const [bossSpawned, setBossSpawned] = useState(false)
+  const [bossDefeated, setBossDefeated] = useState(false)
   const [feedback, setFeedback] = useState<Feedback>(null)
   const [banner, setBanner] = useState('准备营业')
   const [musicEnabled, setMusicEnabled] = useState(true)
@@ -111,6 +135,11 @@ function App() {
     () => buildQuestion(activeCustomer),
     [activeCustomer],
   )
+  const goalText = bossSpawned
+    ? bossDefeated
+      ? 'Boss 已完成'
+      : 'Boss 战进行中'
+    : `目标：服务 ${targetRegularServed} 位顾客后迎战 Boss`
 
   useEffect(() => {
     return () => gameAudio.stopMusic()
@@ -125,6 +154,7 @@ function App() {
       setCustomers((currentCustomers) => {
         const remainingCustomers: Customer[] = []
         let escapedCount = 0
+        let bossEscaped = false
 
         for (const customer of currentCustomers) {
           const isPattyWaiting =
@@ -136,6 +166,7 @@ function App() {
 
           if (nextPatience <= 0) {
             escapedCount += 1
+            bossEscaped = bossEscaped || customer.isBoss
             continue
           }
 
@@ -151,8 +182,16 @@ function App() {
           setCombo(0)
           setFeedback({
             kind: 'wrong',
-            message: '有顾客等太久离开了！',
+            message: bossEscaped
+              ? 'Boss 等到爆炸离开了，营业失败！'
+              : '有顾客等太久离开了！',
           })
+          setBanner(bossEscaped ? 'Boss 战失败' : '队伍流失，节奏要稳住')
+
+          if (bossEscaped) {
+            setGameStatus('ended')
+            gameAudio.stopMusic()
+          }
         }
 
         return remainingCustomers
@@ -163,7 +202,11 @@ function App() {
   }, [gameStatus])
 
   useEffect(() => {
-    if (gameStatus !== 'playing') {
+    if (
+      gameStatus !== 'playing' ||
+      bossSpawned ||
+      servedCount >= targetRegularServed
+    ) {
       return
     }
 
@@ -173,9 +216,9 @@ function App() {
           return currentCustomers
         }
 
-        const newCustomer = createCustomer(nextCustomerId, servedCount)
+        const newCustomer = createCustomer(nextCustomerId)
         setNextCustomerId((id) => id + 1)
-        setBanner(newCustomer.isBoss ? '超级顾客登场！' : '新顾客进店了')
+        setBanner('新顾客进店了')
         gameAudio.playArrival()
 
         if (!activeCustomerId) {
@@ -187,10 +230,22 @@ function App() {
     }, getRandomDelay())
 
     return () => window.clearTimeout(spawnTimer)
-  }, [activeCustomerId, gameStatus, nextCustomerId, servedCount, customers.length])
+  }, [
+    activeCustomerId,
+    bossSpawned,
+    gameStatus,
+    nextCustomerId,
+    servedCount,
+    customers.length,
+  ])
+
+  const triggerImpact = (kind: 'correct' | 'wrong' | 'serve') => {
+    setImpact(kind)
+    window.setTimeout(() => setImpact(null), kind === 'wrong' ? 280 : 240)
+  }
 
   const startGame = () => {
-    const firstCustomer = createCustomer(1, 0)
+    const firstCustomer = createCustomer(1)
 
     if (musicEnabled) {
       gameAudio.startMusic()
@@ -205,8 +260,10 @@ function App() {
     setBestCombo(0)
     setServedCount(0)
     setLostCustomers(0)
+    setBossSpawned(false)
+    setBossDefeated(false)
     setFeedback(null)
-    setBanner('第一位顾客来了，开工！')
+    setBanner('第一位顾客来了，完成 6 份普通订单后 Boss 登场')
   }
 
   const endGame = () => {
@@ -217,19 +274,34 @@ function App() {
     setBanner('今日营业结束')
   }
 
+  const spawnBoss = (id: number) => {
+    const boss = createCustomer(id, true)
+
+    setBossSpawned(true)
+    setNextCustomerId(id + 1)
+    setCustomers([boss])
+    setActiveCustomerId(boss.id)
+    setBanner('超级顾客 Boss 登场：完成这单就结算！')
+    setFeedback({
+      kind: 'info',
+      message: 'Boss 订单更多，耐心更短，答错会被嘲讽。',
+    })
+    gameAudio.playBoss()
+  }
+
   const finishBurger = (customer: Customer, nextCombo: number) => {
     const burnPenalty = customer.burn >= 80 ? 25 : customer.burn >= 45 ? 10 : 0
     const patienceBonus = Math.max(0, Math.round(customer.patience / 2))
     const perfectBonus =
       customer.mistakes === 0 && customer.burn < 45 ? 30 : 0
-    const bossBonus = customer.isBoss ? 40 : 0
+    const bossBonus = customer.isBoss ? 80 : 0
     const gainedScore = Math.max(
       8,
       35 + patienceBonus + perfectBonus + bossBonus - burnPenalty,
     )
+    const nextServedCount = customer.isBoss ? servedCount : servedCount + 1
 
     setScore((currentScore) => currentScore + gainedScore)
-    setServedCount((count) => count + 1)
     setCustomers((currentCustomers) =>
       currentCustomers.filter((item) => item.id !== customer.id),
     )
@@ -239,16 +311,31 @@ function App() {
         ? `Perfect Burger！额外加 ${perfectBonus} 分`
         : `汉堡完成，获得 ${gainedScore} 分`,
     })
+    gameAudio.playServe()
+    triggerImpact('serve')
+
+    if (customer.isBoss) {
+      setBossDefeated(true)
+      setBanner('Boss 被征服，课堂汇报胜利！')
+      window.setTimeout(() => {
+        gameAudio.stopMusic()
+        setGameStatus('ended')
+      }, 900)
+      return
+    }
+
+    setServedCount(nextServedCount)
+
+    if (nextServedCount >= targetRegularServed) {
+      spawnBoss(nextCustomerId)
+      return
+    }
+
     setBanner(
       nextCombo >= 5
         ? '连续答对 5 题，获得课堂锦旗！'
-        : customer.isBoss
-          ? 'Boss 也被你的汉堡征服了！'
-          : '顾客拿到汉堡离开了',
+        : `已完成 ${nextServedCount}/${targetRegularServed}，继续营业`,
     )
-    gameAudio.playServe()
-    setImpact('serve')
-    window.setTimeout(() => setImpact(null), 260)
   }
 
   const handleAnswer = (answer: string) => {
@@ -291,8 +378,7 @@ function App() {
       })
       setBanner(nextCombo >= 5 ? '锦旗进度达成：5 连对！' : '继续制作下一步')
       gameAudio.playCorrect()
-      setImpact('correct')
-      window.setTimeout(() => setImpact(null), 220)
+      triggerImpact('correct')
       return
     }
 
@@ -322,8 +408,7 @@ function App() {
       activeCustomer.isBoss ? 'Boss：这都能错？再快点！' : '顾客更着急了',
     )
     gameAudio.playWrong()
-    setImpact('wrong')
-    window.setTimeout(() => setImpact(null), 260)
+    triggerImpact('wrong')
   }
 
   const toggleMusic = () => {
@@ -362,13 +447,14 @@ function App() {
   if (gameStatus === 'ended') {
     return (
       <main className="game-shell start-screen">
-        <section className="panel intro-panel" aria-labelledby="result-title">
+        <section className="panel intro-panel result-panel" aria-labelledby="result-title">
           <p className="eyebrow">营业结算</p>
           <h1 id="result-title">今日得分：{score}</h1>
           <p>
-            完成 {servedCount} 份汉堡，流失 {lostCustomers} 位顾客，最高连对{' '}
+            完成 {servedCount} 份普通汉堡，流失 {lostCustomers} 位顾客，最高连对{' '}
             {bestCombo} 题。
           </p>
+          <p>{bossDefeated ? 'Boss 已完成，适合课堂展示收尾。' : 'Boss 未完成，可以再开一局。'}</p>
           <button type="button" className="primary-action" onClick={startGame}>
             再开一局
           </button>
@@ -387,7 +473,7 @@ function App() {
         <div className="stats" aria-label="游戏状态">
           <span>得分 {score}</span>
           <span>Combo {combo}</span>
-          <span>完成 {servedCount}</span>
+          <span>{goalText}</span>
           <button type="button" className="small-action" onClick={toggleMusic}>
             {musicEnabled ? '音乐开' : '音乐关'}
           </button>
@@ -396,6 +482,12 @@ function App() {
           </button>
         </div>
       </header>
+
+      <section className="shop-scene" aria-label="汉堡店场景">
+        <div className="shop-sign">VOCAB BURGER</div>
+        <div className="awning" aria-hidden="true" />
+        <div className="counter-rail" aria-hidden="true" />
+      </section>
 
       <div className="banner">{banner}</div>
 
@@ -406,6 +498,12 @@ function App() {
           onSelectCustomer={setActiveCustomerId}
         />
         <BurgerStation customer={activeCustomer} />
+        <OrderTicket
+          customer={activeCustomer}
+          servedCount={servedCount}
+          targetServed={targetRegularServed}
+          bossSpawned={bossSpawned}
+        />
         <QuizPanel
           customer={activeCustomer}
           question={activeQuestion}

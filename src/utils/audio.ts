@@ -15,6 +15,7 @@ class GameAudio {
   private arcadeGain?: GainNode
   private arcadeTimer?: number
   private arcadeStep = 0
+  private intensity = 0
 
   private getAudioContext() {
     if (!this.audioContext) {
@@ -89,11 +90,12 @@ class GameAudio {
       const kickGain = context.createGain()
       const note = melody[this.arcadeStep % melody.length]
       const lowNote = bass[this.arcadeStep % bass.length]
+      const accent = 1 + this.intensity * 0.65
 
       lead.type = this.arcadeStep % 2 === 0 ? 'square' : 'triangle'
       lead.frequency.setValueAtTime(note, now)
       leadGain.gain.setValueAtTime(0.0001, now)
-      leadGain.gain.exponentialRampToValueAtTime(0.07, now + 0.01)
+      leadGain.gain.exponentialRampToValueAtTime(0.07 * accent, now + 0.01)
       leadGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12)
       lead.connect(leadGain)
       leadGain.connect(gain)
@@ -105,7 +107,7 @@ class GameAudio {
         kick.frequency.setValueAtTime(lowNote, now)
         kick.frequency.exponentialRampToValueAtTime(52, now + 0.09)
         kickGain.gain.setValueAtTime(0.0001, now)
-        kickGain.gain.exponentialRampToValueAtTime(0.1, now + 0.01)
+        kickGain.gain.exponentialRampToValueAtTime(0.1 * accent, now + 0.01)
         kickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1)
         kick.connect(kickGain)
         kickGain.connect(gain)
@@ -115,6 +117,19 @@ class GameAudio {
 
       this.arcadeStep += 1
     }, 280)
+  }
+
+  setIntensity(level: number) {
+    this.intensity = Math.max(0, Math.min(1, level))
+
+    if (this.music) {
+      this.music.volume = 0.26 + this.intensity * 0.08
+      this.music.playbackRate = 1 + this.intensity * 0.035
+    }
+
+    if (this.arcadeGain) {
+      this.arcadeGain.gain.value = 0.045 + this.intensity * 0.045
+    }
   }
 
   playCorrect(combo = 1) {
@@ -155,6 +170,16 @@ class GameAudio {
     this.playTone(82, 0.22, 'sawtooth', 0.055)
   }
 
+  playVictory() {
+    this.playOneShot(audioFiles.serve, 0.86, 1.04)
+    this.playOneShot(audioFiles.correct, 0.58, 1.24, 120)
+    this.playOneShot(audioFiles.boss, 0.38, 1.18, 260)
+    this.playTone(523, 0.1, 'square', 0.05)
+    this.playTone(659, 0.1, 'square', 0.05, 90)
+    this.playTone(784, 0.12, 'triangle', 0.05, 180)
+    this.playTone(1046, 0.16, 'triangle', 0.055, 320)
+  }
+
   startMusic() {
     if (!this.music) {
       this.music = new Audio(audioFiles.music)
@@ -173,6 +198,8 @@ class GameAudio {
 
     this.music.pause()
     this.music.currentTime = 0
+    this.music.playbackRate = 1
+    this.setIntensity(0)
 
     if (this.arcadeTimer) {
       window.clearInterval(this.arcadeTimer)

@@ -324,6 +324,17 @@ function App() {
   }, [])
 
   useEffect(() => {
+    if (gameStatus !== 'playing') {
+      gameAudio.setIntensity(0)
+      return
+    }
+
+    const comboHeat = Math.min(combo / 8, 1)
+    const bossHeat = bossSpawned && !bossDefeated ? 0.45 : 0
+    gameAudio.setIntensity(Math.max(comboHeat, bossHeat))
+  }, [bossDefeated, bossSpawned, combo, gameStatus])
+
+  useEffect(() => {
     if (gameStatus !== 'ended' || finalizedRound) {
       return
     }
@@ -596,6 +607,7 @@ function App() {
       setBossDefeated(true)
       setVictoryLine(line)
       setBanner(line)
+      gameAudio.playVictory()
       triggerImpact('victory', 'Boss 破防！')
       window.setTimeout(() => {
         gameAudio.stopMusic()
@@ -874,8 +886,40 @@ function App() {
   }
 
   return (
-    <main className={`game-shell play-shell ${impact ? `impact-${impact}` : ''}`}>
-      {impact === 'victory' && <div className="victory-flash">Boss 破防！</div>}
+    <main
+      className={`game-shell play-shell ${impact ? `impact-${impact}` : ''} ${
+        combo >= 3 ? 'combo-hot' : ''
+      } ${bossSpawned && !bossDefeated ? 'boss-mode' : ''}`}
+    >
+      {impact === 'victory' && (
+        <div className="victory-show" aria-live="assertive">
+          <div className="victory-spotlight" />
+          <div className="victory-confetti" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
+          <div className="victory-speedlines" aria-hidden="true" />
+          <div className="victory-boss-cutin" aria-hidden="true">
+            <span>Boss</span>
+          </div>
+          <div className="victory-card">
+            <small>FINAL VERDICT</small>
+            <p>破防判定！</p>
+            <strong>证据：Perfect Burger</strong>
+            <span>全班欢呼 + 知识点暴击 + Boss 当场沉默</span>
+          </div>
+          <div className="victory-evidence" aria-hidden="true">
+            <strong>EXHIBIT A</strong>
+            <span>100% 熟词汉堡</span>
+          </div>
+        </div>
+      )}
       {impactText && impact !== 'victory' && (
         <div className={`hit-text hit-${impact}`}>{impactText}</div>
       )}

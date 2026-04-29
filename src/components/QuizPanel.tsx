@@ -46,7 +46,12 @@ function QuizPanel({
       </div>
 
       <div className="quiz-footer">
-        <span className="combo">Combo x{combo}</span>
+        <span className={`combo ${combo >= 3 ? 'combo-hot-label' : ''}`}>
+          Combo x{combo}
+          <span className="combo-meter" aria-hidden="true">
+            <span style={{ width: `${Math.min(combo * 12.5, 100)}%` }} />
+          </span>
+        </span>
         {feedback && (
           <span className={`feedback ${feedback.kind}`} role="status">
             {feedback.message}

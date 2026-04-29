@@ -14,6 +14,9 @@ class GameAudio {
   private audioContext?: AudioContext
   private arcadeGain?: GainNode
   private arcadeTimer?: number
+  private bossGain?: GainNode
+  private bossTimer?: number
+  private bossStep = 0
   private arcadeStep = 0
   private intensity = 0
 
@@ -21,8 +24,11 @@ class GameAudio {
     if (!this.audioContext) {
       this.audioContext = new AudioContext()
       this.arcadeGain = this.audioContext.createGain()
-      this.arcadeGain.gain.value = 0.055
+      this.arcadeGain.gain.value = 0.032
       this.arcadeGain.connect(this.audioContext.destination)
+      this.bossGain = this.audioContext.createGain()
+      this.bossGain.gain.value = 0
+      this.bossGain.connect(this.audioContext.destination)
     }
 
     if (this.audioContext.state === 'suspended') {
@@ -71,8 +77,8 @@ class GameAudio {
       return
     }
 
-    const melody = [392, 494, 523, 659, 523, 494, 392, 330]
-    const bass = [98, 98, 123, 98, 147, 123, 98, 82]
+    const melody = [330, 392, 440, 392, 494, 440, 392, 330]
+    const bass = [82, 82, 98, 82, 110, 98, 82, 73]
 
     this.getAudioContext()
     this.arcadeTimer = window.setInterval(() => {
@@ -90,46 +96,128 @@ class GameAudio {
       const kickGain = context.createGain()
       const note = melody[this.arcadeStep % melody.length]
       const lowNote = bass[this.arcadeStep % bass.length]
-      const accent = 1 + this.intensity * 0.65
+      const accent = 1 + this.intensity * 0.38
 
       lead.type = this.arcadeStep % 2 === 0 ? 'square' : 'triangle'
       lead.frequency.setValueAtTime(note, now)
       leadGain.gain.setValueAtTime(0.0001, now)
-      leadGain.gain.exponentialRampToValueAtTime(0.07 * accent, now + 0.01)
-      leadGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12)
+      leadGain.gain.exponentialRampToValueAtTime(0.038 * accent, now + 0.012)
+      leadGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18)
       lead.connect(leadGain)
       leadGain.connect(gain)
       lead.start(now)
-      lead.stop(now + 0.14)
+      lead.stop(now + 0.2)
 
-      if (this.arcadeStep % 2 === 0) {
+      if (this.arcadeStep % 4 === 0) {
         kick.type = 'sawtooth'
         kick.frequency.setValueAtTime(lowNote, now)
         kick.frequency.exponentialRampToValueAtTime(52, now + 0.09)
         kickGain.gain.setValueAtTime(0.0001, now)
-        kickGain.gain.exponentialRampToValueAtTime(0.1 * accent, now + 0.01)
-        kickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1)
+        kickGain.gain.exponentialRampToValueAtTime(0.062 * accent, now + 0.015)
+        kickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.14)
         kick.connect(kickGain)
         kickGain.connect(gain)
         kick.start(now)
-        kick.stop(now + 0.12)
+        kick.stop(now + 0.16)
       }
 
       this.arcadeStep += 1
-    }, 280)
+    }, 460)
+  }
+
+  private startBossLayer() {
+    if (this.bossTimer) {
+      return
+    }
+
+    const pattern = [73, 73, 82, 73, 98, 92, 82, 73]
+
+    this.getAudioContext()
+    this.bossTimer = window.setInterval(() => {
+      const context = this.getAudioContext()
+      const gain = this.bossGain
+
+      if (!gain) {
+        return
+      }
+
+      const now = context.currentTime
+      const drone = context.createOscillator()
+      const pulse = context.createOscillator()
+      const droneGain = context.createGain()
+      const pulseGain = context.createGain()
+      const note = pattern[this.bossStep % pattern.length]
+
+      drone.type = 'sawtooth'
+      drone.frequency.setValueAtTime(note, now)
+      drone.frequency.exponentialRampToValueAtTime(note * 0.92, now + 0.34)
+      droneGain.gain.setValueAtTime(0.0001, now)
+      droneGain.gain.exponentialRampToValueAtTime(0.08, now + 0.03)
+      droneGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.42)
+      drone.connect(droneGain)
+      droneGain.connect(gain)
+      drone.start(now)
+      drone.stop(now + 0.46)
+
+      if (this.bossStep % 2 === 0) {
+        pulse.type = 'square'
+        pulse.frequency.setValueAtTime(note * 2, now)
+        pulseGain.gain.setValueAtTime(0.0001, now)
+        pulseGain.gain.exponentialRampToValueAtTime(0.034, now + 0.02)
+        pulseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12)
+        pulse.connect(pulseGain)
+        pulseGain.connect(gain)
+        pulse.start(now)
+        pulse.stop(now + 0.14)
+      }
+
+      this.bossStep += 1
+    }, 520)
   }
 
   setIntensity(level: number) {
     this.intensity = Math.max(0, Math.min(1, level))
 
     if (this.music) {
-      this.music.volume = 0.26 + this.intensity * 0.08
-      this.music.playbackRate = 1 + this.intensity * 0.035
+      this.music.volume = 0.2 + this.intensity * 0.05
+      this.music.playbackRate = 0.96 + this.intensity * 0.02
     }
 
     if (this.arcadeGain) {
-      this.arcadeGain.gain.value = 0.045 + this.intensity * 0.045
+      this.arcadeGain.gain.value = 0.026 + this.intensity * 0.028
     }
+  }
+
+  startBossMusic() {
+    this.startMusic()
+    this.startBossLayer()
+
+    if (this.music) {
+      this.music.volume = 0.16
+      this.music.playbackRate = 0.92
+    }
+
+    if (this.arcadeGain) {
+      this.arcadeGain.gain.value = 0.018
+    }
+
+    if (this.bossGain) {
+      this.bossGain.gain.value = 0.058
+    }
+  }
+
+  stopBossMusic() {
+    if (this.bossTimer) {
+      window.clearInterval(this.bossTimer)
+      this.bossTimer = undefined
+      this.bossStep = 0
+    }
+
+    if (this.bossGain) {
+      this.bossGain.gain.value = 0
+    }
+
+    this.setIntensity(this.intensity)
   }
 
   playCorrect(combo = 1) {
@@ -171,6 +259,7 @@ class GameAudio {
   }
 
   playVictory() {
+    this.stopBossMusic()
     this.playOneShot(audioFiles.serve, 0.86, 1.04)
     this.playOneShot(audioFiles.correct, 0.58, 1.24, 120)
     this.playOneShot(audioFiles.boss, 0.38, 1.18, 260)
@@ -178,13 +267,21 @@ class GameAudio {
     this.playTone(659, 0.1, 'square', 0.05, 90)
     this.playTone(784, 0.12, 'triangle', 0.05, 180)
     this.playTone(1046, 0.16, 'triangle', 0.055, 320)
+
+    for (let delay = 3600; delay <= 16000; delay += 4200) {
+      this.playOneShot(audioFiles.correct, 0.34, 1.12, delay)
+      this.playTone(392, 0.12, 'square', 0.035, delay + 80)
+      this.playTone(523, 0.12, 'square', 0.035, delay + 220)
+      this.playTone(659, 0.16, 'triangle', 0.04, delay + 380)
+    }
   }
 
   startMusic() {
     if (!this.music) {
       this.music = new Audio(audioFiles.music)
       this.music.loop = true
-      this.music.volume = 0.28
+      this.music.volume = 0.2
+      this.music.playbackRate = 0.96
     }
 
     void this.music.play().catch(() => undefined)
@@ -206,6 +303,8 @@ class GameAudio {
       this.arcadeTimer = undefined
       this.arcadeStep = 0
     }
+
+    this.stopBossMusic()
   }
 }
 

@@ -364,7 +364,7 @@
     radial-gradient(circle at 12% 15%, rgba(117, 199, 96, 0.42), transparent 18%),
     radial-gradient(circle at 88% 18%, rgba(69, 166, 214, 0.4), transparent 18%),
     rgba(217, 71, 49, 0.72);
-  animation: victory-flash 1.45s ease both;
+  animation: victory-flash 20s ease both;
   pointer-events: none;
 }
 
@@ -378,7 +378,7 @@
       transparent 2deg 8deg
     );
   opacity: 0.58;
-  animation: speedline-burst 1.1s ease both;
+  animation: speedline-burst 2.4s ease 2 both;
 }
 
 .victory-spotlight {
@@ -393,7 +393,7 @@
       rgba(255, 255, 255, 0.26) 116deg 132deg,
       transparent 132deg 360deg
     );
-  animation: victory-spotlight 1.2s linear infinite;
+  animation: victory-spotlight 3.2s linear infinite;
 }
 
 .victory-boss-cutin {
@@ -419,7 +419,9 @@
   font-weight: 1000;
   text-transform: uppercase;
   transform: translateX(120%) rotate(9deg);
-  animation: boss-cutin 1.18s cubic-bezier(0.2, 1.1, 0.2, 1) both;
+  animation:
+    boss-cutin 1.18s cubic-bezier(0.2, 1.1, 0.2, 1) both,
+    boss-breakdown 1.4s steps(2, jump-none) 1.3s infinite;
 }
 
 .victory-boss-cutin::after {
@@ -457,7 +459,9 @@
     0 0 42px rgba(255, 226, 122, 0.9);
   text-align: center;
   transform: rotate(-2deg) skew(-3deg);
-  animation: verdict-slam 1.25s cubic-bezier(0.12, 1.26, 0.18, 1) both;
+  animation:
+    verdict-slam 1.25s cubic-bezier(0.12, 1.26, 0.18, 1) both,
+    verdict-idle 2.4s ease-in-out 1.3s infinite;
 }
 
 .victory-card::before,
@@ -532,7 +536,9 @@
     #fffdf6;
   box-shadow: 8px 8px 0 rgba(43, 33, 27, 0.28);
   transform: translateX(-140%) rotate(-8deg);
-  animation: evidence-slap 1.22s cubic-bezier(0.18, 1.2, 0.2, 1) 180ms both;
+  animation:
+    evidence-slap 1.22s cubic-bezier(0.18, 1.2, 0.2, 1) 180ms both,
+    evidence-shake 1.8s ease-in-out 1.6s infinite;
 }
 
 .victory-evidence strong {
@@ -573,7 +579,7 @@
   border: 2px solid #2b211b;
   border-radius: 4px;
   background: #ffe27a;
-  animation: confetti-drop 1.35s ease-in both;
+  animation: confetti-drop 5.4s linear infinite;
 }
 
 .victory-confetti span:nth-child(2n) {
@@ -587,41 +593,49 @@
 .victory-confetti span:nth-child(1) {
   left: 8%;
   animation-delay: 40ms;
+  animation-duration: 4.8s;
 }
 
 .victory-confetti span:nth-child(2) {
   left: 21%;
   animation-delay: 160ms;
+  animation-duration: 5.6s;
 }
 
 .victory-confetti span:nth-child(3) {
   left: 35%;
   animation-delay: 20ms;
+  animation-duration: 5.1s;
 }
 
 .victory-confetti span:nth-child(4) {
   left: 48%;
   animation-delay: 220ms;
+  animation-duration: 6s;
 }
 
 .victory-confetti span:nth-child(5) {
   left: 62%;
   animation-delay: 90ms;
+  animation-duration: 5.7s;
 }
 
 .victory-confetti span:nth-child(6) {
   left: 74%;
   animation-delay: 190ms;
+  animation-duration: 4.9s;
 }
 
 .victory-confetti span:nth-child(7) {
   left: 86%;
   animation-delay: 120ms;
+  animation-duration: 5.4s;
 }
 
 .victory-confetti span:nth-child(8) {
   left: 94%;
   animation-delay: 260ms;
+  animation-duration: 6.2s;
 }
 
 .hit-text {
@@ -642,7 +656,7 @@
   letter-spacing: 0;
   text-shadow: 3px 3px 0 #2b211b;
   transform: translate(-50%, -50%) rotate(-4deg);
-  animation: hit-text-pop 520ms ease both;
+  animation: hit-text-pop 1.05s ease both;
   pointer-events: none;
 }
 
@@ -1946,16 +1960,16 @@
 @keyframes victory-flash {
   0% {
     opacity: 0;
-    transform: scale(0.86) rotate(-3deg);
+    transform: scale(0.92) rotate(-1deg);
   }
-  18%,
-  72% {
+  5%,
+  92% {
     opacity: 1;
     transform: scale(1) rotate(0deg);
   }
   100% {
     opacity: 0;
-    transform: scale(1.08) rotate(2deg);
+    transform: scale(1.03) rotate(1deg);
   }
 }
 
@@ -1986,6 +2000,18 @@
   }
 }
 
+@keyframes boss-breakdown {
+  0%,
+  100% {
+    filter: saturate(1);
+    transform: translateX(0) rotate(7deg) scale(1);
+  }
+  50% {
+    filter: saturate(1.5) contrast(1.08);
+    transform: translateX(-4px) rotate(4deg) scale(1.02);
+  }
+}
+
 @keyframes verdict-slam {
   0% {
     opacity: 0;
@@ -2004,6 +2030,18 @@
   }
 }
 
+@keyframes verdict-idle {
+  0%,
+  100% {
+    filter: saturate(1);
+    transform: translateY(0) scale(1) rotate(-2deg) skew(-3deg);
+  }
+  50% {
+    filter: saturate(1.24);
+    transform: translateY(-6px) scale(1.01) rotate(-1deg) skew(-3deg);
+  }
+}
+
 @keyframes evidence-slap {
   0% {
     opacity: 0;
@@ -2019,16 +2057,43 @@
   }
 }
 
+@keyframes evidence-shake {
+  0%,
+  100% {
+    transform: translateX(0) rotate(-7deg) scale(1);
+  }
+  50% {
+    transform: translateX(4px) rotate(-5deg) scale(1.01);
+  }
+}
+
+@keyframes confetti-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-60px) rotate(0deg);
+  }
+  10% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(108vh) rotate(620deg);
+  }
+}
+
 @keyframes hit-text-pop {
   0% {
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.55) rotate(-10deg);
   }
-  22% {
+  18% {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1.12) rotate(3deg);
   }
-  70% {
+  76% {
     opacity: 1;
     transform: translate(-50%, -58%) scale(1) rotate(-4deg);
   }

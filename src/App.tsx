@@ -486,6 +486,13 @@ function App() {
     kind: 'correct' | 'wrong' | 'serve' | 'victory',
     text = '',
   ) => {
+    const impactDurations = {
+      correct: 1100,
+      wrong: 1300,
+      serve: 1400,
+      victory: 20000,
+    }
+
     setImpact(kind)
     setImpactText(text)
     window.setTimeout(
@@ -493,7 +500,7 @@ function App() {
         setImpact(null)
         setImpactText('')
       },
-      kind === 'victory' ? 1400 : kind === 'wrong' ? 360 : 260,
+      impactDurations[kind],
     )
   }
 
@@ -570,6 +577,7 @@ function App() {
       message: 'Boss 订单更多，耐心更短，答错会被嘲讽。',
     })
     gameAudio.playBoss()
+    gameAudio.startBossMusic()
   }
 
   const finishBurger = (customer: Customer, nextCombo: number) => {
@@ -612,7 +620,7 @@ function App() {
       window.setTimeout(() => {
         gameAudio.stopMusic()
         setGameStatus('ended')
-      }, 1500)
+      }, 20000)
       return
     }
 

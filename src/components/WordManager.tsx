@@ -148,7 +148,7 @@ function WordManager({
         <div className="word-list">
           {customWords.length === 0 ? (
             <p className="muted">
-              还没有自定义词。添加后会自动保存到浏览器，并混入游戏题目。
+              还没有自定义词。添加后会自动保存到浏览器，并混入游戏题目和开局预习词表。
             </p>
           ) : (
             customWords.map((word) => (

@@ -18,8 +18,8 @@ import './App.css'
 
 const maxCustomers = 3
 const targetRegularServed = 6
-const basePatience = 62
-const bossPatience = 46
+const basePatience = 75
+const bossPatience = 58
 const correctScore = 12
 const comboBonus = 3
 const wrongPenalty = 5
@@ -46,6 +46,13 @@ const defaultRecords: GameRecords = {
   wins: 0,
   rounds: 0,
   history: [],
+}
+
+const categoryLabels: Record<WordEntry['category'], string> = {
+  food: '食材',
+  action: '动作',
+  shop: '店铺',
+  feeling: '情绪',
 }
 
 const customerProfiles = [
@@ -96,7 +103,9 @@ const getWaitingLine = (customer: Customer, seed: number) => {
   const waitedSeconds = customer.maxPatience - customer.patience
 
   if (customer.isBoss) {
-    return waitedSeconds >= 20 ? 'Boss：20 秒了，还没好？我开始加压了。' : pickLine(bossLines, seed)
+    return waitedSeconds >= 20
+      ? 'Boss：20 秒了，还没好？我开始加压了。'
+      : pickLine(bossLines, seed)
   }
 
   if (customer.patience <= 12) {
@@ -167,9 +176,9 @@ const bossStepWordIds = [
 ]
 
 const getRandomDelay = (served: number) => {
-  const pressure = Math.min(served, targetRegularServed - 1) * 650
-  const baseDelay = Math.max(5200, 9000 - pressure)
-  return baseDelay + Math.floor(Math.random() * 4200)
+  const pressure = Math.min(served, targetRegularServed - 1) * 400
+  const baseDelay = Math.max(8000, 10000 - pressure)
+  return baseDelay + Math.floor(Math.random() * 5000)
 }
 
 const pickWordForStep = (
@@ -280,10 +289,21 @@ function App() {
   const [showTutorial, setShowTutorial] = useState(false)
   const [finalizedRound, setFinalizedRound] = useState(false)
   const [victoryLine, setVictoryLine] = useState('')
-  const [impact, setImpact] = useState<'correct' | 'wrong' | 'serve' | 'victory' | null>(
-    null,
-  )
+  const [impact, setImpact] = useState<
+    'correct' | 'wrong' | 'serve' | 'victory' | null
+  >(null)
   const wordPool = useMemo(() => [...words, ...customWords], [customWords])
+  const previewWords = useMemo(() => {
+    const previewIds = new Set([...stepWordIds, ...bossStepWordIds])
+    const pickedWords = wordPool.filter(
+      (word) => previewIds.has(word.id) || word.id.startsWith('custom-'),
+    )
+
+    return pickedWords.filter(
+      (word, index, list) =>
+        list.findIndex((item) => item.english === word.english) === index,
+    )
+  }, [wordPool])
 
   const activeCustomer =
     customers.find((customer) => customer.id === activeCustomerId) ??
@@ -358,13 +378,10 @@ function App() {
           const nextPatience = customer.patience - 1
           const nextDoneness =
             customer.steps[customer.stepIndex]?.id === 'patty' || isPattyWaiting
-              ? Math.min(100, customer.doneness + 9)
+              ? Math.min(100, customer.doneness + 7)
               : customer.doneness
           const nextBurn = isPattyWaiting
-            ? Math.min(
-                100,
-                customer.burn + (nextDoneness >= 70 ? 4 : 1),
-              )
+            ? Math.min(100, customer.burn + (nextDoneness >= 70 ? 3 : 1))
             : customer.burn
 
           if (nextPatience <= 0) {
@@ -455,7 +472,10 @@ function App() {
 
   const triggerImpact = (kind: 'correct' | 'wrong' | 'serve' | 'victory') => {
     setImpact(kind)
-    window.setTimeout(() => setImpact(null), kind === 'victory' ? 1400 : kind === 'wrong' ? 280 : 240)
+    window.setTimeout(
+      () => setImpact(null),
+      kind === 'victory' ? 1400 : kind === 'wrong' ? 360 : 260,
+    )
   }
 
   const handleAddWord = (word: WordEntry) => {
@@ -663,9 +683,9 @@ function App() {
           patience: Math.max(1, customer.patience - 4),
           doneness:
             customer.steps[customer.stepIndex]?.id === 'patty' || isPattyWaiting
-              ? Math.min(100, customer.doneness + 8)
+              ? Math.min(100, customer.doneness + 6)
               : customer.doneness,
-          burn: isPattyWaiting ? Math.min(100, customer.burn + 10) : customer.burn,
+          burn: isPattyWaiting ? Math.min(100, customer.burn + 8) : customer.burn,
         }
       }),
     )
@@ -709,7 +729,12 @@ function App() {
   }
 
   const tutorial = (
-    <div className="tutorial-backdrop" role="dialog" aria-modal="true" aria-labelledby="tutorial-title">
+    <div
+      className="tutorial-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="tutorial-title"
+    >
       <section className="panel tutorial-panel">
         <p className="eyebrow">课堂规则速通</p>
         <h2 id="tutorial-title">开店前先看三条</h2>
@@ -718,7 +743,11 @@ function App() {
           <li>肉饼熟度到 55%-85%、焦度低于 45 时翻面最香，能拿 Perfect Burger 加分。</li>
           <li>普通顾客约 20 秒开始着急，完成 6 位后 Boss 登场；打败 Boss 进入结算。</li>
         </ol>
-        <button type="button" className="primary-action" onClick={() => setShowTutorial(false)}>
+        <button
+          type="button"
+          className="primary-action"
+          onClick={() => setShowTutorial(false)}
+        >
           懂了，开煎
         </button>
       </section>
@@ -739,35 +768,60 @@ function App() {
   if (gameStatus === 'idle') {
     return (
       <main className="game-shell start-screen">
-        <section className="panel intro-panel" aria-labelledby="game-title">
-          <p className="eyebrow">Vocab Burger Shop</p>
-          <h1 id="game-title">单词汉堡店</h1>
-          <p>
-            顾客会随机排队点餐。看中文选英文，答对才能完成汉堡动作；
-            答错会扣分、掉耐心，还可能把肉饼煎焦。
-          </p>
+        <section className="panel intro-panel start-dashboard" aria-labelledby="game-title">
+          <div className="intro-hero">
+            <div>
+              <p className="eyebrow">Vocab Burger Shop</p>
+              <h1 id="game-title">单词汉堡店</h1>
+              <p>
+                顾客会随机排队点餐。先看本局单词，再看中文选英文，
+                答对才能完成汉堡动作；答错会扣分、掉耐心，还可能把肉饼煎焦。
+              </p>
+            </div>
+            <div className="start-mascot" aria-hidden="true">
+              <span>背词</span>
+            </div>
+          </div>
+
           <div className="record-strip" aria-label="历史记录">
             <span>最高分 {records.highScore}</span>
             <span>最佳 Combo {records.bestCombo}</span>
             <span>通关 {records.wins}/{records.rounds}</span>
           </div>
-          <button type="button" className="primary-action" onClick={startGame}>
-            开始营业
-          </button>
-          <button
-            type="button"
-            className="small-action manager-shortcut"
-            onClick={() => setShowTutorial(true)}
-          >
-            规则说明
-          </button>
-          <button
-            type="button"
-            className="small-action manager-shortcut"
-            onClick={openWordManager}
-          >
-            管理词库
-          </button>
+
+          <section className="word-preview" aria-labelledby="preview-title">
+            <div className="section-heading">
+              <h2 id="preview-title">本局单词预习</h2>
+              <span>{previewWords.length} 个词</span>
+            </div>
+            <div className="preview-grid">
+              {previewWords.map((word) => (
+                <article className="preview-card" key={word.id}>
+                  <strong>{word.chinese}</strong>
+                  <span>{word.english}</span>
+                  <small>
+                    {categoryLabels[word.category]} / 难度 {word.difficulty}
+                  </small>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <div className="start-actions">
+            <button type="button" className="primary-action" onClick={startGame}>
+              开始营业
+            </button>
+            <button
+              type="button"
+              className="small-action"
+              onClick={() => setShowTutorial(true)}
+            >
+              规则说明
+            </button>
+            <button type="button" className="small-action" onClick={openWordManager}>
+              管理词库
+            </button>
+          </div>
         </section>
         {showTutorial && tutorial}
       </main>
@@ -792,7 +846,9 @@ function App() {
           <div className="record-strip" aria-label="历史记录">
             <span>历史最高 {Math.max(records.highScore, score)}</span>
             <span>历史 Combo {Math.max(records.bestCombo, bestCombo)}</span>
-            <span>通关次数 {records.wins + (finalizedRound ? 0 : bossDefeated ? 1 : 0)}</span>
+            <span>
+              通关次数 {records.wins + (finalizedRound ? 0 : bossDefeated ? 1 : 0)}
+            </span>
           </div>
           <button type="button" className="primary-action" onClick={startGame}>
             再开一局
@@ -831,11 +887,7 @@ function App() {
           >
             规则
           </button>
-          <button
-            type="button"
-            className="small-action"
-            onClick={openWordManager}
-          >
+          <button type="button" className="small-action" onClick={openWordManager}>
             词库
           </button>
           <button type="button" className="small-action" onClick={endGame}>

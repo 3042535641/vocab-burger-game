@@ -24,6 +24,29 @@ const correctScore = 12
 const comboBonus = 3
 const wrongPenalty = 5
 const customWordsStorageKey = 'vocab-burger-custom-words'
+const recordsStorageKey = 'vocab-burger-records'
+
+type GameRecords = {
+  highScore: number
+  bestCombo: number
+  wins: number
+  rounds: number
+  history: Array<{
+    score: number
+    bestCombo: number
+    servedCount: number
+    bossDefeated: boolean
+    playedAt: string
+  }>
+}
+
+const defaultRecords: GameRecords = {
+  highScore: 0,
+  bestCombo: 0,
+  wins: 0,
+  rounds: 0,
+  history: [],
+}
 
 const customerProfiles = [
   { name: '小明', avatar: 'round' },
@@ -61,21 +84,27 @@ const bossLines = [
   '让我看看谁是背词区传奇。',
 ]
 
+const bossVictoryLines = [
+  'Boss 破防：这汉堡怎么还带知识点暴击？',
+  '全班认证：你把 Boss 和生词一起煎熟了。',
+  '今日名场面：Vocab Burger 店长封神。',
+]
+
 const pickLine = (lines: string[], seed: number) => lines[seed % lines.length]
 
 const getWaitingLine = (customer: Customer, seed: number) => {
-  const ratio = customer.patience / customer.maxPatience
+  const waitedSeconds = customer.maxPatience - customer.patience
 
   if (customer.isBoss) {
-    return pickLine(bossLines, seed)
+    return waitedSeconds >= 20 ? 'Boss：20 秒了，还没好？我开始加压了。' : pickLine(bossLines, seed)
   }
 
-  if (ratio <= 0.22) {
+  if (customer.patience <= 12) {
     return '再不上菜，我就把菜单背下来投诉。'
   }
 
-  if (ratio <= 0.45) {
-    return '我已经饿到能把 lettuce 拼成 le-t-tu-ce。'
+  if (waitedSeconds >= 20) {
+    return '我已经等 20 秒了，lettuce 都快拼成 le-t-tu-ce 了。'
   }
 
   return customer.speech
@@ -104,8 +133,26 @@ const loadCustomWords = (): WordEntry[] => {
   }
 }
 
+const loadRecords = (): GameRecords => {
+  try {
+    const rawRecords = window.localStorage.getItem(recordsStorageKey)
+
+    if (!rawRecords) {
+      return defaultRecords
+    }
+
+    return { ...defaultRecords, ...(JSON.parse(rawRecords) as GameRecords) }
+  } catch {
+    return defaultRecords
+  }
+}
+
 const saveCustomWords = (nextWords: WordEntry[]) => {
   window.localStorage.setItem(customWordsStorageKey, JSON.stringify(nextWords))
+}
+
+const saveRecords = (nextRecords: GameRecords) => {
+  window.localStorage.setItem(recordsStorageKey, JSON.stringify(nextRecords))
 }
 
 const stepWordIds = ['bun', 'patty', 'flip', 'lettuce', 'tomato', 'sauce']
@@ -119,7 +166,11 @@ const bossStepWordIds = [
   'perfect',
 ]
 
-const getRandomDelay = () => 8000 + Math.floor(Math.random() * 6000)
+const getRandomDelay = (served: number) => {
+  const pressure = Math.min(served, targetRegularServed - 1) * 650
+  const baseDelay = Math.max(5200, 9000 - pressure)
+  return baseDelay + Math.floor(Math.random() * 4200)
+}
 
 const pickWordForStep = (
   wordId: string,
@@ -225,7 +276,11 @@ function App() {
   const [musicEnabled, setMusicEnabled] = useState(true)
   const [view, setView] = useState<'game' | 'words'>('game')
   const [customWords, setCustomWords] = useState<WordEntry[]>(loadCustomWords)
-  const [impact, setImpact] = useState<'correct' | 'wrong' | 'serve' | null>(
+  const [records, setRecords] = useState<GameRecords>(loadRecords)
+  const [showTutorial, setShowTutorial] = useState(false)
+  const [finalizedRound, setFinalizedRound] = useState(false)
+  const [victoryLine, setVictoryLine] = useState('')
+  const [impact, setImpact] = useState<'correct' | 'wrong' | 'serve' | 'victory' | null>(
     null,
   )
   const wordPool = useMemo(() => [...words, ...customWords], [customWords])
@@ -246,6 +301,45 @@ function App() {
   useEffect(() => {
     return () => gameAudio.stopMusic()
   }, [])
+
+  useEffect(() => {
+    if (gameStatus !== 'ended' || finalizedRound) {
+      return
+    }
+
+    const timer = window.setTimeout(() => {
+      const nextRecords: GameRecords = {
+        highScore: Math.max(records.highScore, score),
+        bestCombo: Math.max(records.bestCombo, bestCombo),
+        wins: records.wins + (bossDefeated ? 1 : 0),
+        rounds: records.rounds + 1,
+        history: [
+          {
+            score,
+            bestCombo,
+            servedCount,
+            bossDefeated,
+            playedAt: new Date().toISOString(),
+          },
+          ...records.history,
+        ].slice(0, 5),
+      }
+
+      setRecords(nextRecords)
+      saveRecords(nextRecords)
+      setFinalizedRound(true)
+    }, 0)
+
+    return () => window.clearTimeout(timer)
+  }, [
+    bestCombo,
+    bossDefeated,
+    finalizedRound,
+    gameStatus,
+    records,
+    score,
+    servedCount,
+  ])
 
   useEffect(() => {
     if (gameStatus !== 'playing' || view !== 'game') {
@@ -298,7 +392,7 @@ function App() {
           setFeedback({
             kind: 'wrong',
             message: bossEscaped
-              ? 'Boss 等到爆炸离开了，营业失败！'
+              ? 'Boss 等到爆炸离开了，营业失败。'
               : '有顾客等太久离开了！',
           })
           setBanner(bossEscaped ? 'Boss 战失败' : '队伍流失，节奏要稳住')
@@ -334,7 +428,9 @@ function App() {
 
         const newCustomer = createCustomer(nextCustomerId, false, wordPool)
         setNextCustomerId((id) => id + 1)
-        setBanner('新顾客进店了')
+        setBanner(
+          servedCount >= 4 ? '高峰期来了，新顾客加速进店！' : '新顾客进店了',
+        )
         gameAudio.playArrival()
 
         if (!activeCustomerId) {
@@ -343,7 +439,7 @@ function App() {
 
         return [...currentCustomers, newCustomer]
       })
-    }, getRandomDelay())
+    }, getRandomDelay(servedCount))
 
     return () => window.clearTimeout(spawnTimer)
   }, [
@@ -357,17 +453,27 @@ function App() {
     view,
   ])
 
-  const triggerImpact = (kind: 'correct' | 'wrong' | 'serve') => {
+  const triggerImpact = (kind: 'correct' | 'wrong' | 'serve' | 'victory') => {
     setImpact(kind)
-    window.setTimeout(() => setImpact(null), kind === 'wrong' ? 280 : 240)
+    window.setTimeout(() => setImpact(null), kind === 'victory' ? 1400 : kind === 'wrong' ? 280 : 240)
   }
 
   const handleAddWord = (word: WordEntry) => {
+    const exists = wordPool.some(
+      (item) => item.english.toLowerCase() === word.english.toLowerCase(),
+    )
+
+    if (exists) {
+      return false
+    }
+
     setCustomWords((currentWords) => {
       const nextWords = [...currentWords, word]
       saveCustomWords(nextWords)
       return nextWords
     })
+
+    return true
   }
 
   const handleDeleteWord = (id: string) => {
@@ -398,6 +504,8 @@ function App() {
     setLostCustomers(0)
     setBossSpawned(false)
     setBossDefeated(false)
+    setFinalizedRound(false)
+    setVictoryLine('')
     setFeedback(null)
     setBanner('第一位顾客来了，完成 6 份普通订单后 Boss 登场')
   }
@@ -456,12 +564,15 @@ function App() {
     triggerImpact('serve')
 
     if (customer.isBoss) {
+      const line = pickLine(bossVictoryLines, score + nextCombo)
       setBossDefeated(true)
-      setBanner('Boss 被征服，课堂汇报胜利！')
+      setVictoryLine(line)
+      setBanner(line)
+      triggerImpact('victory')
       window.setTimeout(() => {
         gameAudio.stopMusic()
         setGameStatus('ended')
-      }, 900)
+      }, 1500)
       return
     }
 
@@ -527,7 +638,7 @@ function App() {
               : '翻面成功，但熟度不是最佳窗口。'
             : '答对了，动作完成！',
       })
-      setBanner(nextCombo >= 5 ? '锦旗进度达成：5 连对！' : '继续制作下一步')
+      setBanner(nextCombo >= 5 ? '锦旗进度达成！继续连对！' : '继续制作下一步')
       gameAudio.playCorrect()
       triggerImpact('correct')
       return
@@ -597,6 +708,23 @@ function App() {
     }
   }
 
+  const tutorial = (
+    <div className="tutorial-backdrop" role="dialog" aria-modal="true" aria-labelledby="tutorial-title">
+      <section className="panel tutorial-panel">
+        <p className="eyebrow">课堂规则速通</p>
+        <h2 id="tutorial-title">开店前先看三条</h2>
+        <ol>
+          <li>看中文选英文，答对才会推进汉堡步骤；答错扣分、扣耐心，还可能把肉饼煎焦。</li>
+          <li>肉饼熟度到 55%-85%、焦度低于 45 时翻面最香，能拿 Perfect Burger 加分。</li>
+          <li>普通顾客约 20 秒开始着急，完成 6 位后 Boss 登场；打败 Boss 进入结算。</li>
+        </ol>
+        <button type="button" className="primary-action" onClick={() => setShowTutorial(false)}>
+          懂了，开煎
+        </button>
+      </section>
+    </div>
+  )
+
   if (view === 'words') {
     return (
       <WordManager
@@ -618,8 +746,20 @@ function App() {
             顾客会随机排队点餐。看中文选英文，答对才能完成汉堡动作；
             答错会扣分、掉耐心，还可能把肉饼煎焦。
           </p>
+          <div className="record-strip" aria-label="历史记录">
+            <span>最高分 {records.highScore}</span>
+            <span>最佳 Combo {records.bestCombo}</span>
+            <span>通关 {records.wins}/{records.rounds}</span>
+          </div>
           <button type="button" className="primary-action" onClick={startGame}>
             开始营业
+          </button>
+          <button
+            type="button"
+            className="small-action manager-shortcut"
+            onClick={() => setShowTutorial(true)}
+          >
+            规则说明
           </button>
           <button
             type="button"
@@ -629,15 +769,16 @@ function App() {
             管理词库
           </button>
         </section>
+        {showTutorial && tutorial}
       </main>
     )
   }
 
   if (gameStatus === 'ended') {
     return (
-      <main className="game-shell start-screen">
+      <main className={`game-shell start-screen ${bossDefeated ? 'victory-result' : ''}`}>
         <section className="panel intro-panel result-panel" aria-labelledby="result-title">
-          <p className="eyebrow">营业结算</p>
+          <p className="eyebrow">{bossDefeated ? 'Boss 破防结算' : '营业结算'}</p>
           <h1 id="result-title">今日得分：{score}</h1>
           <p>
             完成 {servedCount} 份普通汉堡，流失 {lostCustomers} 位顾客，最高连对{' '}
@@ -645,9 +786,14 @@ function App() {
           </p>
           <p>
             {bossDefeated
-              ? 'Boss 已完成，适合课堂展示收尾。'
+              ? victoryLine || 'Boss 已完成，适合课堂展示收尾。'
               : 'Boss 未完成，可以再开一局。'}
           </p>
+          <div className="record-strip" aria-label="历史记录">
+            <span>历史最高 {Math.max(records.highScore, score)}</span>
+            <span>历史 Combo {Math.max(records.bestCombo, bestCombo)}</span>
+            <span>通关次数 {records.wins + (finalizedRound ? 0 : bossDefeated ? 1 : 0)}</span>
+          </div>
           <button type="button" className="primary-action" onClick={startGame}>
             再开一局
           </button>
@@ -665,6 +811,7 @@ function App() {
 
   return (
     <main className={`game-shell play-shell ${impact ? `impact-${impact}` : ''}`}>
+      {impact === 'victory' && <div className="victory-flash">Boss 破防！</div>}
       <header className="game-header">
         <div className="title-lockup">
           <p className="eyebrow">课堂汇报版</p>
@@ -676,6 +823,13 @@ function App() {
           <span>{goalText}</span>
           <button type="button" className="small-action" onClick={toggleMusic}>
             {musicEnabled ? '音乐开' : '音乐关'}
+          </button>
+          <button
+            type="button"
+            className="small-action"
+            onClick={() => setShowTutorial(true)}
+          >
+            规则
           </button>
           <button
             type="button"
@@ -720,6 +874,7 @@ function App() {
         combo={combo}
         onAnswer={handleAnswer}
       />
+      {showTutorial && tutorial}
     </main>
   )
 }

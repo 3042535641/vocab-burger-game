@@ -1,17 +1,17 @@
 import type { Customer, Mood } from '../types/game'
 
 const getMood = (customer: Customer): Mood => {
-  const ratio = customer.patience / customer.maxPatience
+  const waitedSeconds = customer.maxPatience - customer.patience
 
-  if (ratio <= 0.22) {
+  if (customer.patience <= 12) {
     return 'angry'
   }
 
-  if (ratio <= 0.45) {
+  if (waitedSeconds >= 20) {
     return 'worried'
   }
 
-  if (ratio <= 0.7) {
+  if (waitedSeconds >= 10) {
     return 'waiting'
   }
 

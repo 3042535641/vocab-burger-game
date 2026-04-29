@@ -29,6 +29,10 @@
   animation: serve-bounce 240ms ease;
 }
 
+.game-shell.impact-victory {
+  animation: victory-pop 1.25s ease;
+}
+
 .start-screen {
   display: grid;
   place-items: center;
@@ -65,6 +69,80 @@
 
 .result-panel p + p {
   margin-top: 8px;
+}
+
+.record-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto 22px;
+}
+
+.record-strip span {
+  min-height: 36px;
+  padding: 7px 10px;
+  border: 2px solid #2b211b;
+  border-radius: 8px;
+  background: #d9eff8;
+  font-weight: 900;
+}
+
+.tutorial-backdrop {
+  display: grid;
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  place-items: center;
+  padding: 18px;
+  background: rgba(43, 33, 27, 0.5);
+}
+
+.tutorial-panel {
+  width: min(620px, 100%);
+  padding: 28px;
+}
+
+.tutorial-panel h2 {
+  margin: 8px 0 12px;
+}
+
+.tutorial-panel ol {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 20px;
+  padding-left: 24px;
+  color: #4f3a2e;
+  font-weight: 800;
+  text-align: left;
+}
+
+.victory-result {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 210, 77, 0.18) 0 14px,
+      rgba(217, 71, 49, 0.16) 14px 28px
+    );
+}
+
+.victory-flash {
+  display: grid;
+  position: fixed;
+  z-index: 15;
+  inset: 0;
+  place-items: center;
+  color: #fff7e8;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(255, 226, 122, 0.94), transparent 22%),
+    rgba(217, 71, 49, 0.72);
+  font-size: clamp(42px, 9vw, 104px);
+  font-weight: 1000;
+  text-shadow:
+    4px 4px 0 #2b211b,
+    0 0 26px rgba(255, 255, 255, 0.9);
+  animation: victory-flash 1.35s ease both;
+  pointer-events: none;
 }
 
 .eyebrow,
@@ -1032,6 +1110,37 @@
   }
   45% {
     transform: translateY(-7px);
+  }
+}
+
+@keyframes victory-pop {
+  0%,
+  100% {
+    filter: saturate(1);
+    transform: scale(1);
+  }
+  35% {
+    filter: saturate(1.45);
+    transform: scale(1.018) rotate(-0.4deg);
+  }
+  65% {
+    transform: scale(1.01) rotate(0.35deg);
+  }
+}
+
+@keyframes victory-flash {
+  0% {
+    opacity: 0;
+    transform: scale(0.86) rotate(-3deg);
+  }
+  18%,
+  72% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.08) rotate(2deg);
   }
 }
 

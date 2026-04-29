@@ -4,7 +4,7 @@ import type { WordEntry } from '../data/words'
 
 type WordManagerProps = {
   customWords: WordEntry[]
-  onAddWord: (word: WordEntry) => void
+  onAddWord: (word: WordEntry) => boolean
   onDeleteWord: (id: string) => void
   onClose: () => void
 }
@@ -52,7 +52,7 @@ function WordManager({
       return
     }
 
-    onAddWord({
+    const added = onAddWord({
       id: createId(),
       chinese: cleanedChinese,
       english: cleanedEnglish,
@@ -60,6 +60,12 @@ function WordManager({
       category,
       difficulty,
     })
+
+    if (!added) {
+      setError('这个英文单词已经在题库里了，请换一个。')
+      return
+    }
+
     setChinese('')
     setEnglish('')
     setWrongOptions('')
@@ -152,7 +158,7 @@ function WordManager({
                   <span>{word.english}</span>
                 </div>
                 <small>
-                  {word.category} / 难度 {word.difficulty} / 干扰：
+                  {word.category} / 难度 {word.difficulty} / 干扰项：
                   {word.wrongOptions.join(', ')}
                 </small>
                 <button

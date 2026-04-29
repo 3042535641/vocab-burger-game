@@ -98,7 +98,7 @@ export const words: WordEntry[] = [
   },
   {
     id: 'serve',
-    chinese: '服务，上菜',
+    chinese: '服务；上菜',
     english: 'serve',
     wrongOptions: ['save', 'share', 'slice'],
     category: 'action',

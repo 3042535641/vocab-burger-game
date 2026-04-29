@@ -70,7 +70,7 @@ function BurgerStation({ customer }: BurgerStationProps) {
             </div>
           </div>
           <p className={`flip-window ${flipWindowClass}`}>
-            {flipWindowClass ? '最佳翻面窗口' : '等待熟度进入 55%-85%'}
+            {flipWindowClass ? '最佳翻面窗口！' : '等待熟度进入 55%-85%'}
           </p>
         </div>
       )}

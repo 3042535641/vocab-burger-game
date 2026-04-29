@@ -10,13 +10,16 @@ function BurgerStation({ customer }: BurgerStationProps) {
     .map((step) => step.id)
 
   const burn = customer?.burn ?? 0
+  const doneness = customer?.doneness ?? 0
   const pattyClass = burn >= 80 ? 'burned' : burn >= 45 ? 'toasty' : ''
+  const flipWindowClass =
+    doneness >= 55 && doneness <= 85 && burn < 45 ? 'ready' : ''
 
   return (
     <section className="panel burger-station" aria-label="汉堡制作台">
       <div className="section-heading">
         <h2>制作台</h2>
-        <span>焦度 {burn}%</span>
+        <span>熟度 {doneness}% / 焦度 {burn}%</span>
       </div>
 
       <div className="grill-lights" aria-hidden="true">
@@ -51,6 +54,26 @@ function BurgerStation({ customer }: BurgerStationProps) {
           <span className="empty-plate">空盘子</span>
         )}
       </div>
+
+      {customer && (
+        <div className="cook-meters" aria-label="肉饼状态">
+          <div>
+            <span>熟度</span>
+            <div className="meter">
+              <span style={{ width: `${doneness}%` }} />
+            </div>
+          </div>
+          <div>
+            <span>焦度</span>
+            <div className="meter burn-meter">
+              <span style={{ width: `${burn}%` }} />
+            </div>
+          </div>
+          <p className={`flip-window ${flipWindowClass}`}>
+            {flipWindowClass ? '最佳翻面窗口' : '等待熟度进入 55%-85%'}
+          </p>
+        </div>
+      )}
 
       <p className="current-step">
         {customer

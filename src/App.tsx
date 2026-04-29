@@ -82,6 +82,7 @@ const createCustomer = (id: number, forceBoss = false): Customer => {
     patience: maxPatience,
     maxPatience,
     stepIndex: 0,
+    doneness: 0,
     burn: 0,
     mistakes: 0,
     isBoss,
@@ -157,8 +158,15 @@ function App() {
           const isPattyWaiting =
             customer.steps[customer.stepIndex]?.id === 'flip'
           const nextPatience = customer.patience - 1
+          const nextDoneness =
+            customer.steps[customer.stepIndex]?.id === 'patty' || isPattyWaiting
+              ? Math.min(100, customer.doneness + 9)
+              : customer.doneness
           const nextBurn = isPattyWaiting
-            ? Math.min(100, customer.burn + 2)
+            ? Math.min(
+                100,
+                customer.burn + (nextDoneness >= 70 ? 4 : 1),
+              )
             : customer.burn
 
           if (nextPatience <= 0) {
@@ -170,6 +178,7 @@ function App() {
           remainingCustomers.push({
             ...customer,
             patience: nextPatience,
+            doneness: nextDoneness,
             burn: nextBurn,
           })
         }
@@ -290,7 +299,12 @@ function App() {
     const burnPenalty = customer.burn >= 80 ? 25 : customer.burn >= 45 ? 10 : 0
     const patienceBonus = Math.max(0, Math.round(customer.patience / 2))
     const perfectBonus =
-      customer.mistakes === 0 && customer.burn < 45 ? 30 : 0
+      customer.mistakes === 0 &&
+      customer.burn < 45 &&
+      customer.doneness >= 55 &&
+      customer.doneness <= 85
+        ? 30
+        : 0
     const bossBonus = customer.isBoss ? 80 : 0
     const gainedScore = Math.max(
       8,
@@ -345,7 +359,11 @@ function App() {
     if (isCorrect) {
       const nextCombo = combo + 1
       const step = activeCustomer.steps[activeCustomer.stepIndex]
-      const isPerfectFlip = step.id === 'flip' && activeCustomer.burn < 45
+      const isPerfectFlip =
+        step.id === 'flip' &&
+        activeCustomer.doneness >= 55 &&
+        activeCustomer.doneness <= 85 &&
+        activeCustomer.burn < 45
 
       setCombo(nextCombo)
       setBestCombo((currentBest) => Math.max(currentBest, nextCombo))
@@ -371,7 +389,12 @@ function App() {
       )
       setFeedback({
         kind: 'correct',
-        message: isPerfectFlip ? '完美翻面！' : '答对了，动作完成！',
+        message:
+          step.id === 'flip'
+            ? isPerfectFlip
+              ? '完美翻面！熟度刚刚好。'
+              : '翻面成功，但熟度不是最佳窗口。'
+            : '答对了，动作完成！',
       })
       setBanner(nextCombo >= 5 ? '锦旗进度达成：5 连对！' : '继续制作下一步')
       gameAudio.playCorrect()
@@ -393,6 +416,10 @@ function App() {
           ...customer,
           mistakes: customer.mistakes + 1,
           patience: Math.max(1, customer.patience - 4),
+          doneness:
+            customer.steps[customer.stepIndex]?.id === 'patty' || isPattyWaiting
+              ? Math.min(100, customer.doneness + 8)
+              : customer.doneness,
           burn: isPattyWaiting ? Math.min(100, customer.burn + 10) : customer.burn,
         }
       }),

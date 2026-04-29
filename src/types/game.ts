@@ -19,6 +19,7 @@ export type Customer = {
   patience: number
   maxPatience: number
   stepIndex: number
+  doneness: number
   burn: number
   mistakes: number
   isBoss: boolean

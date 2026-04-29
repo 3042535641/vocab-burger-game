@@ -490,7 +490,7 @@ function App() {
       correct: 1100,
       wrong: 1300,
       serve: 1400,
-      victory: 20000,
+      victory: 21000,
     }
 
     setImpact(kind)
@@ -577,7 +577,10 @@ function App() {
       message: 'Boss 订单更多，耐心更短，答错会被嘲讽。',
     })
     gameAudio.playBoss()
-    gameAudio.startBossMusic()
+
+    if (musicEnabled) {
+      gameAudio.startBossMusic()
+    }
   }
 
   const finishBurger = (customer: Customer, nextCombo: number) => {
@@ -620,7 +623,7 @@ function App() {
       window.setTimeout(() => {
         gameAudio.stopMusic()
         setGameStatus('ended')
-      }, 20000)
+      }, 21000)
       return
     }
 
@@ -736,7 +739,11 @@ function App() {
       }
 
       if (gameStatus === 'playing') {
-        gameAudio.startMusic()
+        if (bossSpawned && !bossDefeated) {
+          gameAudio.startBossMusic()
+        } else {
+          gameAudio.startMusic()
+        }
       }
 
       return true
@@ -752,7 +759,11 @@ function App() {
     setView('game')
 
     if (gameStatus === 'playing' && musicEnabled) {
-      gameAudio.startMusic()
+      if (bossSpawned && !bossDefeated) {
+        gameAudio.startBossMusic()
+      } else {
+        gameAudio.startMusic()
+      }
     }
   }
 

@@ -11,6 +11,7 @@ const audioFiles = {
 
 class GameAudio {
   private music?: HTMLAudioElement
+  private bossMusic?: HTMLAudioElement
   private audioContext?: AudioContext
   private arcadeGain?: GainNode
   private arcadeTimer?: number
@@ -19,6 +20,8 @@ class GameAudio {
   private bossStep = 0
   private arcadeStep = 0
   private intensity = 0
+  private bossActive = false
+  private finaleActive = false
 
   private getAudioContext() {
     if (!this.audioContext) {
@@ -152,7 +155,7 @@ class GameAudio {
       drone.frequency.setValueAtTime(note, now)
       drone.frequency.exponentialRampToValueAtTime(note * 0.92, now + 0.34)
       droneGain.gain.setValueAtTime(0.0001, now)
-      droneGain.gain.exponentialRampToValueAtTime(0.16, now + 0.03)
+      droneGain.gain.exponentialRampToValueAtTime(0.08, now + 0.03)
       droneGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.42)
       drone.connect(droneGain)
       droneGain.connect(gain)
@@ -163,7 +166,7 @@ class GameAudio {
         pulse.type = 'square'
         pulse.frequency.setValueAtTime(note * 2, now)
         pulseGain.gain.setValueAtTime(0.0001, now)
-        pulseGain.gain.exponentialRampToValueAtTime(0.09, now + 0.02)
+        pulseGain.gain.exponentialRampToValueAtTime(0.055, now + 0.02)
         pulseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12)
         pulse.connect(pulseGain)
         pulseGain.connect(gain)
@@ -172,29 +175,52 @@ class GameAudio {
       }
 
       this.bossStep += 1
-    }, 520)
+    }, 920)
   }
 
   setIntensity(level: number) {
     this.intensity = Math.max(0, Math.min(1, level))
 
     if (this.music) {
-      this.music.volume = 0.2 + this.intensity * 0.05
-      this.music.playbackRate = 0.96 + this.intensity * 0.02
+      this.music.volume = this.finaleActive
+        ? 0.08
+        : this.bossActive
+          ? 0.06
+          : 0.2 + this.intensity * 0.05
+      this.music.playbackRate = this.finaleActive
+        ? 0.92
+        : this.bossActive
+          ? 0.9
+          : 0.96 + this.intensity * 0.02
     }
 
     if (this.arcadeGain) {
-      this.arcadeGain.gain.value = 0.026 + this.intensity * 0.028
+      this.arcadeGain.gain.value = this.finaleActive
+        ? 0.004
+        : this.bossActive
+          ? 0.008
+          : 0.026 + this.intensity * 0.028
     }
   }
 
   startBossMusic() {
+    this.finaleActive = false
+    this.bossActive = true
     this.startMusic()
     this.startBossLayer()
 
+    if (!this.bossMusic) {
+      this.bossMusic = new Audio(audioFiles.boss)
+      this.bossMusic.loop = true
+    }
+
+    this.bossMusic.volume = 0.48
+    this.bossMusic.playbackRate = 0.78
+    void this.bossMusic.play().catch(() => undefined)
+
     if (this.music) {
-      this.music.volume = 0.1
-      this.music.playbackRate = 0.88
+      this.music.volume = 0.06
+      this.music.playbackRate = 0.9
     }
 
     if (this.arcadeGain) {
@@ -202,11 +228,19 @@ class GameAudio {
     }
 
     if (this.bossGain) {
-      this.bossGain.gain.value = 0.16
+      this.bossGain.gain.value = 0.1
     }
   }
 
   stopBossMusic() {
+    this.bossActive = false
+
+    if (this.bossMusic) {
+      this.bossMusic.pause()
+      this.bossMusic.currentTime = 0
+      this.bossMusic.playbackRate = 1
+    }
+
     if (this.bossTimer) {
       window.clearInterval(this.bossTimer)
       this.bossTimer = undefined
@@ -259,7 +293,9 @@ class GameAudio {
   }
 
   playVictory() {
+    this.finaleActive = true
     this.stopBossMusic()
+    this.setIntensity(0)
     this.playOneShot(audioFiles.serve, 0.86, 1.04)
     this.playOneShot(audioFiles.correct, 0.58, 1.24, 120)
     this.playOneShot(audioFiles.boss, 0.38, 1.18, 260)
@@ -289,10 +325,14 @@ class GameAudio {
   }
 
   stopMusic() {
+    this.finaleActive = false
+
     if (!this.music) {
+      this.stopBossMusic()
       return
     }
 
+    this.stopBossMusic()
     this.music.pause()
     this.music.currentTime = 0
     this.music.playbackRate = 1
@@ -303,8 +343,6 @@ class GameAudio {
       this.arcadeTimer = undefined
       this.arcadeStep = 0
     }
-
-    this.stopBossMusic()
   }
 }
 

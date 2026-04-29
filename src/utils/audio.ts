@@ -12,22 +12,34 @@ const audioFiles = {
 class GameAudio {
   private music?: HTMLAudioElement
 
-  private playOneShot(src: string, volume = 0.7) {
-    const audio = new Audio(src)
-    audio.volume = volume
-    void audio.play().catch(() => undefined)
+  private playOneShot(src: string, volume = 0.7, playbackRate = 1, delay = 0) {
+    window.setTimeout(() => {
+      const audio = new Audio(src)
+      audio.volume = volume
+      audio.playbackRate = playbackRate
+      void audio.play().catch(() => undefined)
+    }, delay)
   }
 
-  playCorrect() {
-    this.playOneShot(audioFiles.correct, 0.7)
+  playCorrect(combo = 1) {
+    this.playOneShot(audioFiles.correct, 0.72, 1 + Math.min(combo, 8) * 0.025)
+
+    if (combo >= 3) {
+      this.playOneShot(audioFiles.correct, 0.42, 1.18, 70)
+    }
   }
 
-  playWrong() {
-    this.playOneShot(audioFiles.wrong, 0.75)
+  playWrong(isBoss = false) {
+    this.playOneShot(audioFiles.wrong, 0.78, isBoss ? 0.86 : 0.92)
+    this.playOneShot(audioFiles.wrong, 0.34, 0.72, 90)
   }
 
-  playServe() {
-    this.playOneShot(audioFiles.serve, 0.8)
+  playServe(isPerfect = false) {
+    this.playOneShot(audioFiles.serve, 0.82, 1)
+
+    if (isPerfect) {
+      this.playOneShot(audioFiles.correct, 0.5, 1.22, 120)
+    }
   }
 
   playArrival() {
@@ -36,6 +48,7 @@ class GameAudio {
 
   playBoss() {
     this.playOneShot(audioFiles.boss, 0.8)
+    this.playOneShot(audioFiles.wrong, 0.36, 0.76, 160)
   }
 
   startMusic() {

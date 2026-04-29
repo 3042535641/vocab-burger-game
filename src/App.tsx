@@ -289,6 +289,7 @@ function App() {
   const [showTutorial, setShowTutorial] = useState(false)
   const [finalizedRound, setFinalizedRound] = useState(false)
   const [victoryLine, setVictoryLine] = useState('')
+  const [impactText, setImpactText] = useState('')
   const [impact, setImpact] = useState<
     'correct' | 'wrong' | 'serve' | 'victory' | null
   >(null)
@@ -470,10 +471,17 @@ function App() {
     view,
   ])
 
-  const triggerImpact = (kind: 'correct' | 'wrong' | 'serve' | 'victory') => {
+  const triggerImpact = (
+    kind: 'correct' | 'wrong' | 'serve' | 'victory',
+    text = '',
+  ) => {
     setImpact(kind)
+    setImpactText(text)
     window.setTimeout(
-      () => setImpact(null),
+      () => {
+        setImpact(null)
+        setImpactText('')
+      },
       kind === 'victory' ? 1400 : kind === 'wrong' ? 360 : 260,
     )
   }
@@ -580,15 +588,15 @@ function App() {
         ? `Perfect Burger！额外加 ${perfectBonus} 分`
         : `汉堡完成，获得 ${gainedScore} 分`,
     })
-    gameAudio.playServe()
-    triggerImpact('serve')
+    gameAudio.playServe(perfectBonus > 0)
+    triggerImpact('serve', perfectBonus ? 'PERFECT!' : '出餐！')
 
     if (customer.isBoss) {
       const line = pickLine(bossVictoryLines, score + nextCombo)
       setBossDefeated(true)
       setVictoryLine(line)
       setBanner(line)
-      triggerImpact('victory')
+      triggerImpact('victory', 'Boss 破防！')
       window.setTimeout(() => {
         gameAudio.stopMusic()
         setGameStatus('ended')
@@ -659,8 +667,8 @@ function App() {
             : '答对了，动作完成！',
       })
       setBanner(nextCombo >= 5 ? '锦旗进度达成！继续连对！' : '继续制作下一步')
-      gameAudio.playCorrect()
-      triggerImpact('correct')
+      gameAudio.playCorrect(nextCombo)
+      triggerImpact('correct', nextCombo >= 3 ? `Combo x${nextCombo}` : 'HIT!')
       return
     }
 
@@ -696,8 +704,8 @@ function App() {
     setBanner(
       activeCustomer.isBoss ? 'Boss：这都能错？再快点！' : '顾客更着急了',
     )
-    gameAudio.playWrong()
-    triggerImpact('wrong')
+    gameAudio.playWrong(activeCustomer.isBoss)
+    triggerImpact('wrong', activeCustomer.isBoss ? 'Boss 暴击！' : 'MISS!')
   }
 
   const toggleMusic = () => {
@@ -868,6 +876,9 @@ function App() {
   return (
     <main className={`game-shell play-shell ${impact ? `impact-${impact}` : ''}`}>
       {impact === 'victory' && <div className="victory-flash">Boss 破防！</div>}
+      {impactText && impact !== 'victory' && (
+        <div className={`hit-text hit-${impact}`}>{impactText}</div>
+      )}
       <header className="game-header">
         <div className="title-lockup">
           <p className="eyebrow">课堂汇报版</p>

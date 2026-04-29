@@ -70,10 +70,7 @@ const buildSteps = (isBoss: boolean): BurgerStep[] => {
   })
 }
 
-const createCustomer = (
-  id: number,
-  forceBoss = false,
-): Customer => {
+const createCustomer = (id: number, forceBoss = false): Customer => {
   const isBoss = forceBoss
   const maxPatience = isBoss ? bossPatience : basePatience
   const profile = customerProfiles[id % customerProfiles.length]
@@ -139,7 +136,7 @@ function App() {
     ? bossDefeated
       ? 'Boss 已完成'
       : 'Boss 战进行中'
-    : `目标：服务 ${targetRegularServed} 位顾客后迎战 Boss`
+    : `目标：${servedCount}/${targetRegularServed}`
 
   useEffect(() => {
     return () => gameAudio.stopMusic()
@@ -454,7 +451,11 @@ function App() {
             完成 {servedCount} 份普通汉堡，流失 {lostCustomers} 位顾客，最高连对{' '}
             {bestCombo} 题。
           </p>
-          <p>{bossDefeated ? 'Boss 已完成，适合课堂展示收尾。' : 'Boss 未完成，可以再开一局。'}</p>
+          <p>
+            {bossDefeated
+              ? 'Boss 已完成，适合课堂展示收尾。'
+              : 'Boss 未完成，可以再开一局。'}
+          </p>
           <button type="button" className="primary-action" onClick={startGame}>
             再开一局
           </button>
@@ -464,9 +465,9 @@ function App() {
   }
 
   return (
-    <main className={`game-shell ${impact ? `impact-${impact}` : ''}`}>
+    <main className={`game-shell play-shell ${impact ? `impact-${impact}` : ''}`}>
       <header className="game-header">
-        <div>
+        <div className="title-lockup">
           <p className="eyebrow">课堂汇报版</p>
           <h1>单词汉堡店</h1>
         </div>
@@ -483,7 +484,7 @@ function App() {
         </div>
       </header>
 
-      <section className="shop-scene" aria-label="汉堡店场景">
+      <section className="shop-scene compact-scene" aria-label="汉堡店场景">
         <div className="shop-sign">VOCAB BURGER</div>
         <div className="awning" aria-hidden="true" />
         <div className="counter-rail" aria-hidden="true" />
@@ -504,14 +505,15 @@ function App() {
           targetServed={targetRegularServed}
           bossSpawned={bossSpawned}
         />
-        <QuizPanel
-          customer={activeCustomer}
-          question={activeQuestion}
-          feedback={feedback}
-          combo={combo}
-          onAnswer={handleAnswer}
-        />
       </div>
+
+      <QuizPanel
+        customer={activeCustomer}
+        question={activeQuestion}
+        feedback={feedback}
+        combo={combo}
+        onAnswer={handleAnswer}
+      />
     </main>
   )
 }

@@ -17,9 +17,11 @@ body {
   min-height: 100svh;
   margin: 0;
   background:
-    linear-gradient(rgba(255, 255, 255, 0.18) 2px, transparent 2px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.18) 2px, transparent 2px),
-    #f7d894;
+    radial-gradient(circle at 14% 12%, rgba(255, 255, 255, 0.45), transparent 22%),
+    radial-gradient(circle at 86% 18%, rgba(255, 196, 58, 0.35), transparent 24%),
+    linear-gradient(rgba(255, 255, 255, 0.14) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.14) 2px, transparent 2px),
+    linear-gradient(180deg, #f5c56f 0%, #e7984b 100%);
   background-size: 48px 48px;
 }
 

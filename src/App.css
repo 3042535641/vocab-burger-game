@@ -7,6 +7,16 @@
   transition: transform 120ms ease;
 }
 
+.play-shell {
+  display: grid;
+  grid-template-rows: auto 76px auto minmax(0, 1fr) auto;
+  gap: 10px;
+  height: 100svh;
+  min-height: 620px;
+  padding: 10px 14px 12px;
+  overflow: hidden;
+}
+
 .game-shell.impact-correct {
   animation: pop-correct 220ms ease;
 }
@@ -28,11 +38,13 @@
   border: 2px solid #2b211b;
   border-radius: 8px;
   background:
+    radial-gradient(circle at 92% 8%, rgba(255, 226, 122, 0.32), transparent 24%),
     linear-gradient(145deg, rgba(255, 255, 255, 0.66), transparent 48%),
     #fff5dd;
   box-shadow:
-    0 10px 0 #b9753a,
-    0 18px 34px rgba(83, 49, 24, 0.2);
+    inset 0 0 0 3px rgba(255, 255, 255, 0.34),
+    0 8px 0 #9e5f32,
+    0 16px 28px rgba(83, 49, 24, 0.2);
 }
 
 .intro-panel {
@@ -106,12 +118,20 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 18px;
-  margin-bottom: 14px;
+  margin-bottom: 0;
 }
 
 .game-header h1,
 .intro-panel h1 {
   margin: 8px 0 0;
+}
+
+.play-shell .game-header h1 {
+  font-size: 34px;
+}
+
+.title-lockup {
+  min-width: 190px;
 }
 
 .stats {
@@ -123,7 +143,7 @@
 
 .stats span {
   min-width: 88px;
-  padding: 8px 12px;
+  padding: 7px 10px;
   border: 2px solid #2b211b;
   border-radius: 8px;
   background: #ffe7a3;
@@ -131,10 +151,14 @@
   text-align: center;
 }
 
+.play-shell .stats span:nth-child(3) {
+  min-width: 120px;
+}
+
 .shop-scene {
   position: relative;
   min-height: 150px;
-  margin-bottom: 16px;
+  margin-bottom: 0;
   overflow: hidden;
   border: 2px solid #2b211b;
   border-radius: 8px;
@@ -147,11 +171,25 @@
   box-shadow: 0 9px 0 #7a4830;
 }
 
+.compact-scene {
+  min-height: 76px;
+  background:
+    linear-gradient(90deg, rgba(92, 40, 20, 0.18) 0 2px, transparent 2px 100%),
+    radial-gradient(circle at 14% 72%, rgba(255, 229, 155, 0.9) 0 10px, transparent 11px),
+    radial-gradient(circle at 86% 72%, rgba(255, 229, 155, 0.9) 0 10px, transparent 11px),
+    linear-gradient(#f7b55d 0 54%, #c56b34 54% 58%, #7a4830 58%);
+  background-size:
+    54px 100%,
+    auto,
+    auto,
+    auto;
+}
+
 .shop-sign {
   position: absolute;
-  top: 18px;
+  top: 10px;
   left: 50%;
-  padding: 10px 24px;
+  padding: 7px 22px;
   border: 2px solid #2b211b;
   border-radius: 8px;
   color: #ffe9a9;
@@ -164,10 +202,10 @@
 
 .awning {
   position: absolute;
-  top: 72px;
+  top: 46px;
   left: 0;
   width: 100%;
-  height: 38px;
+  height: 24px;
   border-block: 2px solid #2b211b;
   background: repeating-linear-gradient(
     90deg,
@@ -179,9 +217,9 @@
 .counter-rail {
   position: absolute;
   right: 5%;
-  bottom: 12px;
+  bottom: 6px;
   left: 5%;
-  height: 34px;
+  height: 22px;
   border: 2px solid #2b211b;
   border-radius: 8px;
   background:
@@ -192,8 +230,8 @@
 }
 
 .banner {
-  margin-bottom: 18px;
-  padding: 12px 16px;
+  margin-bottom: 0;
+  padding: 8px 12px;
   border: 2px solid #2b211b;
   border-radius: 8px;
   background:
@@ -209,19 +247,40 @@
 
 .shop-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
+  grid-template-columns: minmax(250px, 0.92fr) minmax(330px, 1.18fr) minmax(
+      280px,
+      0.98fr
+    );
+  gap: 12px;
+  min-height: 0;
 }
 
 .customer-line,
 .burger-station,
 .order-ticket,
 .quiz-panel {
-  padding: 20px;
+  padding: 14px;
 }
 
-.quiz-panel {
-  grid-column: 1 / -1;
+.customer-line,
+.burger-station,
+.order-ticket {
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.customer-line::after,
+.burger-station::after,
+.order-ticket::after {
+  content: '';
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  left: 10px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(43, 33, 27, 0.12);
 }
 
 .section-heading {
@@ -229,7 +288,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .section-heading h2 {
@@ -248,24 +307,32 @@
 
 .customer-list {
   display: grid;
-  gap: 10px;
+  gap: 8px;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .customer-ticket {
   display: grid;
-  grid-template-columns: 64px 1fr;
-  gap: 12px;
+  grid-template-columns: 52px 1fr;
+  gap: 9px;
   width: 100%;
-  padding: 10px;
+  padding: 8px;
   background:
     linear-gradient(90deg, rgba(255, 255, 255, 0.65), transparent),
     #fffaf0;
   text-align: left;
   box-shadow: 0 4px 0 #9b6b4b;
+  transition:
+    transform 120ms ease,
+    filter 120ms ease;
 }
 
 .customer-ticket.active {
-  background: #ffe08a;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.5), transparent),
+    #ffe08a;
+  filter: saturate(1.12);
 }
 
 .customer-ticket.worried {
@@ -286,7 +353,7 @@
   display: grid;
   position: relative;
   place-items: center;
-  min-height: 64px;
+  min-height: 52px;
   border: 2px solid #2b211b;
   border-radius: 999px 999px 10px 10px;
   background:
@@ -359,12 +426,12 @@
 
 .customer-info span {
   color: #725c4e;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .patience-bar {
   grid-column: 1 / -1;
-  height: 12px;
+  height: 10px;
   overflow: hidden;
   border: 2px solid #2b211b;
   border-radius: 999px;
@@ -394,7 +461,7 @@
 .grill-lights {
   display: flex;
   gap: 6px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .grill-lights span {
@@ -420,13 +487,18 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  min-height: 265px;
-  padding: 18px;
+  min-height: 238px;
+  padding: 14px;
   border: 2px dashed #9b6b4b;
   border-radius: 8px;
   background:
+    linear-gradient(90deg, rgba(43, 33, 27, 0.12) 0 2px, transparent 2px 18px),
     radial-gradient(circle at 50% 100%, rgba(96, 75, 56, 0.16), transparent 58%),
-    #fffdf6;
+    linear-gradient(#fffdf6, #f2e0c2);
+  background-size:
+    18px 100%,
+    auto,
+    auto;
 }
 
 .burger-layer,
@@ -434,12 +506,13 @@
   display: grid;
   place-items: center;
   width: min(320px, 86%);
-  min-height: 30px;
-  margin-top: 5px;
+  min-height: 27px;
+  margin-top: 4px;
   border: 2px solid #2b211b;
   border-radius: 999px;
   font-size: 13px;
   font-weight: 900;
+  box-shadow: 0 3px 0 rgba(43, 33, 27, 0.28);
 }
 
 .empty-plate {
@@ -450,7 +523,7 @@
 
 .bottom-bun,
 .top-bun {
-  min-height: 40px;
+  min-height: 34px;
   background:
     radial-gradient(circle at 22% 34%, #fff3b1 0 3px, transparent 4px),
     radial-gradient(circle at 54% 28%, #fff3b1 0 3px, transparent 4px),
@@ -506,15 +579,15 @@
 }
 
 .current-step {
-  margin: 12px 0 0;
+  margin: 8px 0 0;
   font-weight: 900;
   text-align: center;
 }
 
 .order-ticket {
-  grid-column: 1 / -1;
   background:
     linear-gradient(90deg, transparent 0 12px, rgba(0, 0, 0, 0.06) 12px 14px, transparent 14px),
+    repeating-linear-gradient(0deg, rgba(43, 33, 27, 0.045) 0 1px, transparent 1px 24px),
     #fffdf6;
 }
 
@@ -522,25 +595,27 @@
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 12px;
-  padding-bottom: 10px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
   border-bottom: 2px dashed #9b6b4b;
 }
 
 .recipe-list {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  grid-template-columns: 1fr;
+  gap: 6px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .recipe-list li {
-  display: grid;
-  gap: 2px;
-  min-height: 62px;
-  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 38px;
+  padding: 6px 8px;
   border: 2px solid #2b211b;
   border-radius: 8px;
   background: #f7ead3;
@@ -553,7 +628,9 @@
 
 .recipe-list li.current {
   background: #ffe08a;
-  box-shadow: 0 0 0 3px rgba(255, 210, 77, 0.4);
+  box-shadow:
+    0 0 0 3px rgba(255, 210, 77, 0.4),
+    0 3px 0 #9b6b4b;
 }
 
 .recipe-list small {
@@ -563,46 +640,61 @@
 
 .quiz-panel {
   display: grid;
-  gap: 16px;
+  grid-template-columns: minmax(220px, 0.75fr) minmax(0, 1.4fr) minmax(
+      180px,
+      0.55fr
+    );
+  align-items: stretch;
+  gap: 10px;
+  min-height: 128px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.58), transparent 35%),
+    #fff0c8;
 }
 
 .question-card {
-  padding: 18px;
+  display: grid;
+  align-content: center;
+  padding: 10px 12px;
   border: 2px solid #2b211b;
   border-radius: 8px;
-  background: #fffdf6;
+  background:
+    radial-gradient(circle at 92% 14%, rgba(255, 210, 77, 0.28), transparent 22%),
+    #fffdf6;
   text-align: center;
 }
 
 .question-card h2 {
-  margin: 8px 0;
-  font-size: 44px;
+  margin: 5px 0;
+  font-size: 34px;
 }
 
 .answer-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
+  gap: 8px;
 }
 
 .answer-button {
-  min-height: 54px;
-  padding: 10px 12px;
+  min-height: 78px;
+  padding: 10px;
   background: linear-gradient(#fff8ea, #f1d4a8);
   box-shadow: 0 4px 0 #9b6b4b;
+  font-size: 18px;
+  letter-spacing: 0;
 }
 
 .quiz-footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  display: grid;
+  align-content: stretch;
+  gap: 8px;
 }
 
 .combo,
 .feedback {
-  padding: 10px 12px;
+  display: grid;
+  place-items: center;
+  padding: 8px 10px;
   border: 2px solid #2b211b;
   border-radius: 8px;
   font-weight: 900;
@@ -625,6 +717,12 @@
 }
 
 @media (max-width: 900px) {
+  .play-shell {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+  }
+
   .game-shell {
     padding: 18px 12px 32px;
   }
@@ -650,6 +748,14 @@
   .recipe-list,
   .answer-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .quiz-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .answer-button {
+    min-height: 54px;
   }
 
   .question-card h2 {

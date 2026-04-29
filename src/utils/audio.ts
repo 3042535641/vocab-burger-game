@@ -152,7 +152,7 @@ class GameAudio {
       drone.frequency.setValueAtTime(note, now)
       drone.frequency.exponentialRampToValueAtTime(note * 0.92, now + 0.34)
       droneGain.gain.setValueAtTime(0.0001, now)
-      droneGain.gain.exponentialRampToValueAtTime(0.08, now + 0.03)
+      droneGain.gain.exponentialRampToValueAtTime(0.16, now + 0.03)
       droneGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.42)
       drone.connect(droneGain)
       droneGain.connect(gain)
@@ -163,7 +163,7 @@ class GameAudio {
         pulse.type = 'square'
         pulse.frequency.setValueAtTime(note * 2, now)
         pulseGain.gain.setValueAtTime(0.0001, now)
-        pulseGain.gain.exponentialRampToValueAtTime(0.034, now + 0.02)
+        pulseGain.gain.exponentialRampToValueAtTime(0.09, now + 0.02)
         pulseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12)
         pulse.connect(pulseGain)
         pulseGain.connect(gain)
@@ -193,16 +193,16 @@ class GameAudio {
     this.startBossLayer()
 
     if (this.music) {
-      this.music.volume = 0.16
-      this.music.playbackRate = 0.92
+      this.music.volume = 0.1
+      this.music.playbackRate = 0.88
     }
 
     if (this.arcadeGain) {
-      this.arcadeGain.gain.value = 0.018
+      this.arcadeGain.gain.value = 0.01
     }
 
     if (this.bossGain) {
-      this.bossGain.gain.value = 0.058
+      this.bossGain.gain.value = 0.16
     }
   }
 

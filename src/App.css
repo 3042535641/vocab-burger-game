@@ -351,7 +351,7 @@
 .victory-show {
   display: grid;
   position: fixed;
-  z-index: 15;
+  z-index: 999;
   inset: 0;
   place-items: center;
   background:
@@ -368,8 +368,42 @@
   pointer-events: none;
 }
 
+.victory-show::before,
+.victory-show::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  left: -8%;
+  width: 116%;
+  height: 18%;
+  border-block: 5px solid #2b211b;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #ffe27a 0 34px,
+      #d94731 34px 68px,
+      #2b211b 68px 102px
+    );
+  box-shadow: 0 8px 0 rgba(43, 33, 27, 0.34);
+  animation: court-sash 2.2s ease-in-out infinite;
+}
+
+.victory-show::before {
+  --sash-rotate: -4deg;
+  top: 4%;
+  transform: rotate(-4deg);
+}
+
+.victory-show::after {
+  --sash-rotate: 4deg;
+  bottom: 4%;
+  transform: rotate(4deg);
+  animation-delay: 420ms;
+}
+
 .victory-speedlines {
   position: absolute;
+  z-index: 1;
   inset: -18%;
   background:
     repeating-conic-gradient(
@@ -383,6 +417,7 @@
 
 .victory-spotlight {
   position: absolute;
+  z-index: 0;
   inset: 0;
   background:
     conic-gradient(
@@ -399,7 +434,7 @@
 .victory-boss-cutin {
   display: grid;
   position: absolute;
-  z-index: 2;
+  z-index: 4;
   top: 12%;
   right: -4%;
   place-items: center;
@@ -439,7 +474,7 @@
 .victory-card {
   display: grid;
   position: relative;
-  z-index: 2;
+  z-index: 5;
   gap: 8px;
   width: min(760px, calc(100% - 32px));
   padding: 34px 24px 30px;
@@ -522,7 +557,7 @@
 .victory-evidence {
   display: grid;
   position: absolute;
-  z-index: 3;
+  z-index: 6;
   bottom: 10%;
   left: 7%;
   gap: 4px;
@@ -567,6 +602,7 @@
 
 .victory-confetti {
   position: absolute;
+  z-index: 7;
   inset: 0;
   overflow: hidden;
 }
@@ -640,7 +676,7 @@
 
 .hit-text {
   position: fixed;
-  z-index: 16;
+  z-index: 40;
   top: 45%;
   left: 50%;
   padding: 8px 18px;
@@ -1984,6 +2020,18 @@
   100% {
     opacity: 0;
     transform: scale(1.28) rotate(18deg);
+  }
+}
+
+@keyframes court-sash {
+  0%,
+  100% {
+    filter: saturate(1);
+    transform: translateX(0) rotate(var(--sash-rotate, -4deg));
+  }
+  50% {
+    filter: saturate(1.55);
+    transform: translateX(-18px) rotate(var(--sash-rotate, -4deg));
   }
 }
 

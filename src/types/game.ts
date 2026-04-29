@@ -16,6 +16,7 @@ export type Customer = {
   id: number
   name: string
   avatar: string
+  speech: string
   patience: number
   maxPatience: number
   stepIndex: number

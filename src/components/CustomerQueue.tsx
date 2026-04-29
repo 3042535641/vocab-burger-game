@@ -25,6 +25,13 @@ const moodLabels: Record<Mood, string> = {
   angry: '生气',
 }
 
+const moodFaces: Record<Mood, string> = {
+  happy: '^_^',
+  waiting: '-_-',
+  worried: 'o_o',
+  angry: '>_<',
+}
+
 type CustomerQueueProps = {
   customers: Customer[]
   activeCustomerId?: number
@@ -69,16 +76,19 @@ function CustomerQueue({
               onClick={() => onSelectCustomer(customer.id)}
             >
               <span
-                className={`customer-avatar avatar-${customer.avatar}`}
+                className={`customer-avatar avatar-${customer.avatar} face-${mood}`}
                 aria-hidden="true"
               >
-                {customer.isBoss ? 'BOSS' : ''}
+                <span className="face-text">
+                  {customer.isBoss ? 'BOSS' : moodFaces[mood]}
+                </span>
               </span>
               <span className="customer-info">
                 <strong>{customer.name}</strong>
                 <span>{customer.isBoss ? '超级顾客' : '经典汉堡'}</span>
                 <span>情绪：{moodLabels[mood]}</span>
               </span>
+              <span className={`speech-bubble ${mood}`}>{customer.speech}</span>
               <span className="patience-bar" aria-label={`耐心 ${patienceRatio}%`}>
                 <span style={{ width: `${patienceRatio}%` }} />
               </span>

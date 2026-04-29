@@ -3,7 +3,9 @@ import BurgerStation from './components/BurgerStation'
 import CustomerQueue from './components/CustomerQueue'
 import OrderTicket from './components/OrderTicket'
 import QuizPanel from './components/QuizPanel'
+import WordManager from './components/WordManager'
 import { words } from './data/words'
+import type { WordEntry } from './data/words'
 import type {
   AnswerQuestion,
   BurgerStep,
@@ -21,6 +23,7 @@ const bossPatience = 46
 const correctScore = 12
 const comboBonus = 3
 const wrongPenalty = 5
+const customWordsStorageKey = 'vocab-burger-custom-words'
 
 const customerProfiles = [
   { name: '小明', avatar: 'round' },
@@ -30,6 +33,80 @@ const customerProfiles = [
   { name: '阿杰', avatar: 'shade' },
   { name: 'Mia', avatar: 'bun' },
 ]
+
+const idleLines = [
+  '老板，来个能背会单词的汉堡。',
+  '我饿了，但我更怕考试。',
+  '快点快点，我的胃在背单词。',
+  '这家店怎么还考英语？离谱但上头。',
+]
+
+const correctLines = [
+  '可以，这口知识有嚼劲。',
+  '答对了，给你打个精神小费。',
+  '这波像开了单词挂。',
+  '汉堡和脑子都熟了。',
+]
+
+const wrongLines = [
+  '啊？这个答案把我耐心煎焦了。',
+  '别乱点，我不是实验汉堡。',
+  '我的沉默震耳欲聋。',
+  '这题错得很有节目效果。',
+]
+
+const bossLines = [
+  '我来了，题目加辣，耐心减半。',
+  '答错一次，我就用眼神煎肉饼。',
+  '让我看看谁是背词区传奇。',
+]
+
+const pickLine = (lines: string[], seed: number) => lines[seed % lines.length]
+
+const getWaitingLine = (customer: Customer, seed: number) => {
+  const ratio = customer.patience / customer.maxPatience
+
+  if (customer.isBoss) {
+    return pickLine(bossLines, seed)
+  }
+
+  if (ratio <= 0.22) {
+    return '再不上菜，我就把菜单背下来投诉。'
+  }
+
+  if (ratio <= 0.45) {
+    return '我已经饿到能把 lettuce 拼成 le-t-tu-ce。'
+  }
+
+  return customer.speech
+}
+
+const loadCustomWords = (): WordEntry[] => {
+  try {
+    const rawWords = window.localStorage.getItem(customWordsStorageKey)
+
+    if (!rawWords) {
+      return []
+    }
+
+    const parsedWords = JSON.parse(rawWords) as WordEntry[]
+
+    return parsedWords.filter(
+      (word) =>
+        word.id &&
+        word.chinese &&
+        word.english &&
+        Array.isArray(word.wrongOptions) &&
+        word.wrongOptions.length >= 3,
+    )
+  } catch {
+    return []
+  }
+}
+
+const saveCustomWords = (nextWords: WordEntry[]) => {
+  window.localStorage.setItem(customWordsStorageKey, JSON.stringify(nextWords))
+}
 
 const stepWordIds = ['bun', 'patty', 'flip', 'lettuce', 'tomato', 'sauce']
 const bossStepWordIds = [
@@ -44,11 +121,30 @@ const bossStepWordIds = [
 
 const getRandomDelay = () => 8000 + Math.floor(Math.random() * 6000)
 
-const buildSteps = (isBoss: boolean): BurgerStep[] => {
+const pickWordForStep = (
+  wordId: string,
+  index: number,
+  isBoss: boolean,
+  wordPool: WordEntry[],
+) => {
+  const customWords = wordPool.filter((word) => word.id.startsWith('custom-'))
+  const shouldUseCustom =
+    customWords.length > 0 &&
+    !['bun', 'patty', 'flip'].includes(wordId) &&
+    (index + (isBoss ? 1 : 0)) % 2 === 1
+
+  if (shouldUseCustom) {
+    return customWords[index % customWords.length]
+  }
+
+  return wordPool.find((entry) => entry.id === wordId) ?? words[0]
+}
+
+const buildSteps = (isBoss: boolean, wordPool: WordEntry[]): BurgerStep[] => {
   const ids = isBoss ? bossStepWordIds : stepWordIds
 
-  return ids.map((wordId) => {
-    const word = words.find((entry) => entry.id === wordId) ?? words[0]
+  return ids.map((wordId, index) => {
+    const word = pickWordForStep(wordId, index, isBoss, wordPool)
 
     const stepText: Record<string, { label: string; ingredient: string }> = {
       bun: { label: '放面包底', ingredient: '面包底' },
@@ -70,7 +166,11 @@ const buildSteps = (isBoss: boolean): BurgerStep[] => {
   })
 }
 
-const createCustomer = (id: number, forceBoss = false): Customer => {
+const createCustomer = (
+  id: number,
+  forceBoss = false,
+  wordPool: WordEntry[] = words,
+): Customer => {
   const isBoss = forceBoss
   const maxPatience = isBoss ? bossPatience : basePatience
   const profile = customerProfiles[id % customerProfiles.length]
@@ -79,6 +179,7 @@ const createCustomer = (id: number, forceBoss = false): Customer => {
     id,
     name: isBoss ? 'Boss 老板同学' : profile.name,
     avatar: isBoss ? 'boss' : profile.avatar,
+    speech: isBoss ? pickLine(bossLines, id) : pickLine(idleLines, id),
     patience: maxPatience,
     maxPatience,
     stepIndex: 0,
@@ -86,7 +187,7 @@ const createCustomer = (id: number, forceBoss = false): Customer => {
     burn: 0,
     mistakes: 0,
     isBoss,
-    steps: buildSteps(isBoss),
+    steps: buildSteps(isBoss, wordPool),
   }
 }
 
@@ -122,9 +223,12 @@ function App() {
   const [feedback, setFeedback] = useState<Feedback>(null)
   const [banner, setBanner] = useState('准备营业')
   const [musicEnabled, setMusicEnabled] = useState(true)
+  const [view, setView] = useState<'game' | 'words'>('game')
+  const [customWords, setCustomWords] = useState<WordEntry[]>(loadCustomWords)
   const [impact, setImpact] = useState<'correct' | 'wrong' | 'serve' | null>(
     null,
   )
+  const wordPool = useMemo(() => [...words, ...customWords], [customWords])
 
   const activeCustomer =
     customers.find((customer) => customer.id === activeCustomerId) ??
@@ -144,7 +248,7 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (gameStatus !== 'playing') {
+    if (gameStatus !== 'playing' || view !== 'game') {
       return
     }
 
@@ -175,11 +279,16 @@ function App() {
             continue
           }
 
-          remainingCustomers.push({
+          const nextCustomer = {
             ...customer,
             patience: nextPatience,
             doneness: nextDoneness,
             burn: nextBurn,
+          }
+
+          remainingCustomers.push({
+            ...nextCustomer,
+            speech: getWaitingLine(nextCustomer, customer.id + nextPatience),
           })
         }
 
@@ -205,11 +314,12 @@ function App() {
     }, 1000)
 
     return () => window.clearInterval(timer)
-  }, [gameStatus])
+  }, [gameStatus, view])
 
   useEffect(() => {
     if (
       gameStatus !== 'playing' ||
+      view !== 'game' ||
       bossSpawned ||
       servedCount >= targetRegularServed
     ) {
@@ -222,7 +332,7 @@ function App() {
           return currentCustomers
         }
 
-        const newCustomer = createCustomer(nextCustomerId)
+        const newCustomer = createCustomer(nextCustomerId, false, wordPool)
         setNextCustomerId((id) => id + 1)
         setBanner('新顾客进店了')
         gameAudio.playArrival()
@@ -243,6 +353,8 @@ function App() {
     nextCustomerId,
     servedCount,
     customers.length,
+    wordPool,
+    view,
   ])
 
   const triggerImpact = (kind: 'correct' | 'wrong' | 'serve') => {
@@ -250,8 +362,26 @@ function App() {
     window.setTimeout(() => setImpact(null), kind === 'wrong' ? 280 : 240)
   }
 
+  const handleAddWord = (word: WordEntry) => {
+    setCustomWords((currentWords) => {
+      const nextWords = [...currentWords, word]
+      saveCustomWords(nextWords)
+      return nextWords
+    })
+  }
+
+  const handleDeleteWord = (id: string) => {
+    setCustomWords((currentWords) => {
+      const nextWords = currentWords.filter((word) => word.id !== id)
+      saveCustomWords(nextWords)
+      return nextWords
+    })
+  }
+
   const startGame = () => {
-    const firstCustomer = createCustomer(1)
+    const firstCustomer = createCustomer(1, false, wordPool)
+
+    setView('game')
 
     if (musicEnabled) {
       gameAudio.startMusic()
@@ -281,7 +411,7 @@ function App() {
   }
 
   const spawnBoss = (id: number) => {
-    const boss = createCustomer(id, true)
+    const boss = createCustomer(id, true, wordPool)
 
     setBossSpawned(true)
     setNextCustomerId(id + 1)
@@ -375,6 +505,7 @@ function App() {
       const nextCustomer = {
         ...activeCustomer,
         stepIndex: activeCustomer.stepIndex + 1,
+        speech: pickLine(correctLines, activeCustomer.id + nextCombo),
       }
 
       if (nextCustomer.stepIndex >= nextCustomer.steps.length) {
@@ -415,6 +546,9 @@ function App() {
         return {
           ...customer,
           mistakes: customer.mistakes + 1,
+          speech: customer.isBoss
+            ? pickLine(bossLines, customer.mistakes + customer.id + 1)
+            : pickLine(wrongLines, customer.mistakes + customer.id + 1),
           patience: Math.max(1, customer.patience - 4),
           doneness:
             customer.steps[customer.stepIndex]?.id === 'patty' || isPattyWaiting
@@ -450,6 +584,30 @@ function App() {
     })
   }
 
+  const openWordManager = () => {
+    gameAudio.stopMusic()
+    setView('words')
+  }
+
+  const closeWordManager = () => {
+    setView('game')
+
+    if (gameStatus === 'playing' && musicEnabled) {
+      gameAudio.startMusic()
+    }
+  }
+
+  if (view === 'words') {
+    return (
+      <WordManager
+        customWords={customWords}
+        onAddWord={handleAddWord}
+        onDeleteWord={handleDeleteWord}
+        onClose={closeWordManager}
+      />
+    )
+  }
+
   if (gameStatus === 'idle') {
     return (
       <main className="game-shell start-screen">
@@ -462,6 +620,13 @@ function App() {
           </p>
           <button type="button" className="primary-action" onClick={startGame}>
             开始营业
+          </button>
+          <button
+            type="button"
+            className="small-action manager-shortcut"
+            onClick={openWordManager}
+          >
+            管理词库
           </button>
         </section>
       </main>
@@ -486,6 +651,13 @@ function App() {
           <button type="button" className="primary-action" onClick={startGame}>
             再开一局
           </button>
+          <button
+            type="button"
+            className="small-action manager-shortcut"
+            onClick={openWordManager}
+          >
+            管理词库
+          </button>
         </section>
       </main>
     )
@@ -504,6 +676,13 @@ function App() {
           <span>{goalText}</span>
           <button type="button" className="small-action" onClick={toggleMusic}>
             {musicEnabled ? '音乐开' : '音乐关'}
+          </button>
+          <button
+            type="button"
+            className="small-action"
+            onClick={openWordManager}
+          >
+            词库
           </button>
           <button type="button" className="small-action" onClick={endGame}>
             结束营业

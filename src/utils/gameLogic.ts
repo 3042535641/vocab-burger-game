@@ -73,10 +73,13 @@ export const getWaitingLine = (customer: Customer) => {
   return customer.speech
 }
 
-export const getRandomDelay = (served: number) => {
-  const pressure = Math.min(served, targetRegularServed - 1) * 500
-  const baseDelay = Math.max(7500, 10000 - pressure)
-  return baseDelay + Math.floor(Math.random() * 5000)
+export const getRandomDelay = (served: number, queueSize = 0) => {
+  const servedPressure = Math.min(served, targetRegularServed - 1) * 520
+  const queueRelief = Math.max(0, queueSize - 1) * 850
+  const baseDelay = Math.max(6200, 11000 - servedPressure + queueRelief)
+  const randomWindow = Math.max(2800, 5200 - served * 280)
+
+  return baseDelay + Math.floor(Math.random() * randomWindow)
 }
 
 const getAverageDoneness = (firstSide: number, secondSide: number) => {

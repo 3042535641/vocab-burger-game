@@ -1527,12 +1527,13 @@
 
 .word-form {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr)) auto;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) auto auto;
   gap: 10px;
   align-items: end;
 }
 
-.word-form label {
+.word-form label,
+.manager-tools label {
   display: grid;
   gap: 5px;
   color: #7b4a2d;
@@ -1541,7 +1542,8 @@
 }
 
 .word-form input,
-.word-form select {
+.word-form select,
+.manager-tools select {
   min-height: 42px;
   padding: 8px 10px;
   border: 2px solid #2b211b;
@@ -1559,6 +1561,31 @@
   border-radius: 8px;
   background: #ffd0c7;
   font-weight: 900;
+}
+
+.manager-notice {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 2px solid #2b211b;
+  border-radius: 8px;
+  background: #dff4bf;
+  font-weight: 900;
+}
+
+.manager-tools {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 1fr)) auto auto;
+  align-items: end;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 12px;
+  border: 2px solid #2b211b;
+  border-radius: 8px;
+  background: #fff0c8;
+}
+
+.word-import-input {
+  display: none;
 }
 
 .word-list {
@@ -1591,6 +1618,12 @@
 
 .word-card small {
   grid-column: 1 / -1;
+}
+
+.word-card-actions {
+  display: flex;
+  gap: 8px;
+  align-items: start;
 }
 
 .small-action.danger {
@@ -2001,7 +2034,8 @@
   }
 
   .manager-header,
-  .word-form {
+  .word-form,
+  .manager-tools {
     grid-template-columns: 1fr;
   }
 

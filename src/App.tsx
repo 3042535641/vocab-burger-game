@@ -272,7 +272,7 @@ function App() {
 
         return [...currentCustomers, newCustomer]
       })
-    }, getRandomDelay(servedCount))
+    }, getRandomDelay(servedCount, customers.length))
 
     return () => window.clearTimeout(spawnTimer)
   }, [
@@ -310,6 +310,64 @@ function App() {
       saveCustomWords(nextWords)
       return nextWords
     })
+  }
+
+  const handleUpdateWord = (word: WordEntry) => {
+    const exists = wordPool.some(
+      (item) =>
+        item.id !== word.id &&
+        item.english.toLowerCase() === word.english.toLowerCase(),
+    )
+
+    if (exists) {
+      return false
+    }
+
+    setCustomWords((currentWords) => {
+      const nextWords = currentWords.map((item) =>
+        item.id === word.id ? word : item,
+      )
+      saveCustomWords(nextWords)
+      return nextWords
+    })
+
+    return true
+  }
+
+  const handleImportWords = (importedWords: WordEntry[]) => {
+    const knownEnglish = new Set(
+      [...words, ...customWords].map((word) =>
+        word.english.trim().toLowerCase(),
+      ),
+    )
+    const nextWords = [...customWords]
+    let addedCount = 0
+
+    for (const word of importedWords) {
+      const normalizedEnglish = word.english.trim().toLowerCase()
+
+      if (!normalizedEnglish || knownEnglish.has(normalizedEnglish)) {
+        continue
+      }
+
+      knownEnglish.add(normalizedEnglish)
+      nextWords.push({
+        ...word,
+        id: word.id.startsWith('custom-')
+          ? word.id
+          : `custom-${Date.now()}-${addedCount}`,
+        english: normalizedEnglish,
+        wrongOptions: word.wrongOptions.slice(0, 3),
+      })
+      addedCount += 1
+    }
+
+    if (addedCount > 0) {
+      setCustomWords(nextWords)
+      saveCustomWords(nextWords)
+    }
+
+    return addedCount
   }
 
   const startGame = () => {
@@ -596,7 +654,9 @@ function App() {
       <WordManager
         customWords={customWords}
         onAddWord={handleAddWord}
+        onUpdateWord={handleUpdateWord}
         onDeleteWord={handleDeleteWord}
+        onImportWords={handleImportWords}
         onClose={closeWordManager}
       />
     )

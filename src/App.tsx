@@ -4,268 +4,49 @@ import CustomerQueue from './components/CustomerQueue'
 import OrderTicket from './components/OrderTicket'
 import QuizPanel from './components/QuizPanel'
 import WordManager from './components/WordManager'
+import {
+  bossStepWordIds,
+  comboBonus,
+  correctScore,
+  maxCustomers,
+  stepWordIds,
+  targetRegularServed,
+  wrongPenalty,
+} from './constants/game'
 import { words } from './data/words'
 import type { WordEntry } from './data/words'
+import { useTimedImpact } from './hooks/useTimedImpact'
 import type {
-  AnswerQuestion,
-  BurgerStep,
   Customer,
   Feedback,
   GameStatus,
 } from './types/game'
+import type { GameRecords } from './types/records'
 import { gameAudio } from './utils/audio'
+import {
+  bossLines,
+  bossVictoryLines,
+  buildQuestion,
+  correctLines,
+  createCustomer,
+  getRandomDelay,
+  getWaitingLine,
+  pickLine,
+  wrongLines,
+} from './utils/gameLogic'
+import {
+  loadCustomWords,
+  loadRecords,
+  saveCustomWords,
+  saveRecords,
+} from './utils/storage'
 import './App.css'
-
-const maxCustomers = 3
-const targetRegularServed = 6
-const basePatience = 75
-const bossPatience = 58
-const correctScore = 12
-const comboBonus = 3
-const wrongPenalty = 5
-const customWordsStorageKey = 'vocab-burger-custom-words'
-const recordsStorageKey = 'vocab-burger-records'
-
-type GameRecords = {
-  highScore: number
-  bestCombo: number
-  wins: number
-  rounds: number
-  history: Array<{
-    score: number
-    bestCombo: number
-    servedCount: number
-    bossDefeated: boolean
-    playedAt: string
-  }>
-}
-
-const defaultRecords: GameRecords = {
-  highScore: 0,
-  bestCombo: 0,
-  wins: 0,
-  rounds: 0,
-  history: [],
-}
 
 const categoryLabels: Record<WordEntry['category'], string> = {
   food: '食材',
   action: '动作',
   shop: '店铺',
   feeling: '情绪',
-}
-
-const customerProfiles = [
-  { name: '小明', avatar: 'round' },
-  { name: '安娜', avatar: 'star' },
-  { name: 'Leo', avatar: 'cap' },
-  { name: '糖糖', avatar: 'bow' },
-  { name: '阿杰', avatar: 'shade' },
-  { name: 'Mia', avatar: 'bun' },
-]
-
-const idleLines = [
-  '老板，来个能背会单词的汉堡。',
-  '我饿了，但我更怕考试。',
-  '快点快点，我的胃在背单词。',
-  '这家店怎么还考英语？离谱但上头。',
-]
-
-const correctLines = [
-  '可以，这口知识有嚼劲。',
-  '答对了，给你打个精神小费。',
-  '这波像开了单词挂。',
-  '汉堡和脑子都熟了。',
-]
-
-const wrongLines = [
-  '啊？这个答案把我耐心煎焦了。',
-  '别乱点，我不是实验汉堡。',
-  '我的沉默震耳欲聋。',
-  '这题错得很有节目效果。',
-]
-
-const bossLines = [
-  '我来了，题目加辣，耐心减半。',
-  '答错一次，我就用眼神煎肉饼。',
-  '让我看看谁是背词区传奇。',
-]
-
-const bossVictoryLines = [
-  'Boss 破防：这汉堡怎么还带知识点暴击？',
-  '全班认证：你把 Boss 和生词一起煎熟了。',
-  '今日名场面：Vocab Burger 店长封神。',
-]
-
-const pickLine = (lines: string[], seed: number) => lines[seed % lines.length]
-
-const getWaitingLine = (customer: Customer, seed: number) => {
-  const waitedSeconds = customer.maxPatience - customer.patience
-
-  if (customer.isBoss) {
-    return waitedSeconds >= 20
-      ? 'Boss：20 秒了，还没好？我开始加压了。'
-      : pickLine(bossLines, seed)
-  }
-
-  if (customer.patience <= 12) {
-    return '再不上菜，我就把菜单背下来投诉。'
-  }
-
-  if (waitedSeconds >= 20) {
-    return '我已经等 20 秒了，lettuce 都快拼成 le-t-tu-ce 了。'
-  }
-
-  return customer.speech
-}
-
-const loadCustomWords = (): WordEntry[] => {
-  try {
-    const rawWords = window.localStorage.getItem(customWordsStorageKey)
-
-    if (!rawWords) {
-      return []
-    }
-
-    const parsedWords = JSON.parse(rawWords) as WordEntry[]
-
-    return parsedWords.filter(
-      (word) =>
-        word.id &&
-        word.chinese &&
-        word.english &&
-        Array.isArray(word.wrongOptions) &&
-        word.wrongOptions.length >= 3,
-    )
-  } catch {
-    return []
-  }
-}
-
-const loadRecords = (): GameRecords => {
-  try {
-    const rawRecords = window.localStorage.getItem(recordsStorageKey)
-
-    if (!rawRecords) {
-      return defaultRecords
-    }
-
-    return { ...defaultRecords, ...(JSON.parse(rawRecords) as GameRecords) }
-  } catch {
-    return defaultRecords
-  }
-}
-
-const saveCustomWords = (nextWords: WordEntry[]) => {
-  window.localStorage.setItem(customWordsStorageKey, JSON.stringify(nextWords))
-}
-
-const saveRecords = (nextRecords: GameRecords) => {
-  window.localStorage.setItem(recordsStorageKey, JSON.stringify(nextRecords))
-}
-
-const stepWordIds = ['bun', 'patty', 'flip', 'lettuce', 'tomato', 'sauce']
-const bossStepWordIds = [
-  'bun',
-  'patty',
-  'flip',
-  'lettuce',
-  'tomato',
-  'sauce',
-  'perfect',
-]
-
-const getRandomDelay = (served: number) => {
-  const pressure = Math.min(served, targetRegularServed - 1) * 400
-  const baseDelay = Math.max(8000, 10000 - pressure)
-  return baseDelay + Math.floor(Math.random() * 5000)
-}
-
-const pickWordForStep = (
-  wordId: string,
-  index: number,
-  isBoss: boolean,
-  wordPool: WordEntry[],
-) => {
-  const customWords = wordPool.filter((word) => word.id.startsWith('custom-'))
-  const shouldUseCustom =
-    customWords.length > 0 &&
-    !['bun', 'patty', 'flip'].includes(wordId) &&
-    (index + (isBoss ? 1 : 0)) % 2 === 1
-
-  if (shouldUseCustom) {
-    return customWords[index % customWords.length]
-  }
-
-  return wordPool.find((entry) => entry.id === wordId) ?? words[0]
-}
-
-const buildSteps = (isBoss: boolean, wordPool: WordEntry[]): BurgerStep[] => {
-  const ids = isBoss ? bossStepWordIds : stepWordIds
-
-  return ids.map((wordId, index) => {
-    const word = pickWordForStep(wordId, index, isBoss, wordPool)
-
-    const stepText: Record<string, { label: string; ingredient: string }> = {
-      bun: { label: '放面包底', ingredient: '面包底' },
-      patty: { label: '放肉饼开始煎', ingredient: '肉饼' },
-      flip: { label: '答对才能翻面', ingredient: '完美翻面' },
-      lettuce: { label: '放生菜', ingredient: '生菜' },
-      tomato: { label: '放番茄', ingredient: '番茄' },
-      sauce: { label: '挤酱并盖上面包', ingredient: '酱汁 + 面包盖' },
-      perfect: { label: '喊出完美汉堡', ingredient: 'Perfect Burger' },
-    }
-
-    return {
-      id: wordId === 'perfect' ? 'top' : wordId,
-      label: stepText[wordId].label,
-      ingredient: stepText[wordId].ingredient,
-      stationText: `订单提示：${word.chinese}`,
-      word,
-    }
-  })
-}
-
-const createCustomer = (
-  id: number,
-  forceBoss = false,
-  wordPool: WordEntry[] = words,
-): Customer => {
-  const isBoss = forceBoss
-  const maxPatience = isBoss ? bossPatience : basePatience
-  const profile = customerProfiles[id % customerProfiles.length]
-
-  return {
-    id,
-    name: isBoss ? 'Boss 老板同学' : profile.name,
-    avatar: isBoss ? 'boss' : profile.avatar,
-    speech: isBoss ? pickLine(bossLines, id) : pickLine(idleLines, id),
-    patience: maxPatience,
-    maxPatience,
-    stepIndex: 0,
-    doneness: 0,
-    burn: 0,
-    mistakes: 0,
-    isBoss,
-    steps: buildSteps(isBoss, wordPool),
-  }
-}
-
-const buildQuestion = (customer?: Customer): AnswerQuestion | undefined => {
-  const step = customer?.steps[customer.stepIndex]
-
-  if (!step) {
-    return undefined
-  }
-
-  const options = [step.word.english, ...step.word.wrongOptions]
-  const offset = (customer.id + customer.stepIndex) % options.length
-
-  return {
-    chinese: step.word.chinese,
-    correctAnswer: step.word.english,
-    options: [...options.slice(offset), ...options.slice(0, offset)],
-  }
 }
 
 function App() {
@@ -289,11 +70,7 @@ function App() {
   const [showTutorial, setShowTutorial] = useState(false)
   const [finalizedRound, setFinalizedRound] = useState(false)
   const [victoryLine, setVictoryLine] = useState('')
-  const [impactText, setImpactText] = useState('')
-  const [impact, setImpact] = useState<
-    'correct' | 'wrong' | 'serve' | 'victory' | null
-  >(null)
-  const impactTimerRef = useRef<number | undefined>(undefined)
+  const { clearImpact, impact, impactText, triggerImpact } = useTimedImpact()
   const finaleTimerRef = useRef<number | undefined>(undefined)
   const wordPool = useMemo(() => [...words, ...customWords], [customWords])
   const previewWords = useMemo(() => {
@@ -323,7 +100,6 @@ function App() {
 
   useEffect(() => {
     return () => {
-      window.clearTimeout(impactTimerRef.current)
       window.clearTimeout(finaleTimerRef.current)
       gameAudio.stopMusic()
     }
@@ -488,27 +264,6 @@ function App() {
     view,
   ])
 
-  const triggerImpact = (
-    kind: 'correct' | 'wrong' | 'serve' | 'victory',
-    text = '',
-  ) => {
-    const impactDurations = {
-      correct: 1100,
-      wrong: 1300,
-      serve: 1400,
-      victory: 21000,
-    }
-
-    window.clearTimeout(impactTimerRef.current)
-    setImpact(kind)
-    setImpactText(text)
-    impactTimerRef.current = window.setTimeout(() => {
-      setImpact(null)
-      setImpactText('')
-      impactTimerRef.current = undefined
-    }, impactDurations[kind])
-  }
-
   const handleAddWord = (word: WordEntry) => {
     const exists = wordPool.some(
       (item) => item.english.toLowerCase() === word.english.toLowerCase(),
@@ -539,7 +294,7 @@ function App() {
     const firstCustomer = createCustomer(1, false, wordPool)
 
     window.clearTimeout(finaleTimerRef.current)
-    window.clearTimeout(impactTimerRef.current)
+    clearImpact()
     setView('game')
 
     if (musicEnabled) {
@@ -559,21 +314,17 @@ function App() {
     setBossDefeated(false)
     setFinalizedRound(false)
     setVictoryLine('')
-    setImpact(null)
-    setImpactText('')
     setFeedback(null)
     setBanner('第一位顾客来了，完成 6 份普通订单后 Boss 登场')
   }
 
   const endGame = () => {
     window.clearTimeout(finaleTimerRef.current)
-    window.clearTimeout(impactTimerRef.current)
+    clearImpact()
     gameAudio.stopMusic()
     setGameStatus('ended')
     setCustomers([])
     setActiveCustomerId(undefined)
-    setImpact(null)
-    setImpactText('')
     setBanner('今日营业结束')
   }
 
@@ -637,8 +388,7 @@ function App() {
       finaleTimerRef.current = window.setTimeout(() => {
         gameAudio.stopMusic()
         setGameStatus('ended')
-        setImpact(null)
-        setImpactText('')
+        clearImpact()
         finaleTimerRef.current = undefined
       }, 21000)
       return

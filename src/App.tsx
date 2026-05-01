@@ -193,7 +193,7 @@ function App() {
 
           remainingCustomers.push({
             ...nextCustomer,
-            speech: getWaitingLine(nextCustomer, customer.id + nextPatience),
+            speech: getWaitingLine(nextCustomer),
           })
         }
 
@@ -390,7 +390,7 @@ function App() {
         setGameStatus('ended')
         clearImpact()
         finaleTimerRef.current = undefined
-      }, 21000)
+      }, 10000)
       return
     }
 
@@ -679,38 +679,28 @@ function App() {
     >
       {impact === 'victory' && (
         <div className="victory-show" aria-live="assertive">
-          <div className="victory-stage-label">OBJECTION!</div>
           <div className="victory-spotlight" />
-          <div className="victory-confetti" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-          </div>
           <div className="victory-speedlines" aria-hidden="true" />
           <div className="victory-impact-burst" aria-hidden="true" />
-          <div className="victory-boss-cutin" aria-hidden="true">
-            <span>Boss</span>
+          <div className="boss-performance" aria-hidden="true">
+            <div className="boss-head">
+              <span className="boss-eye boss-eye-left" />
+              <span className="boss-eye boss-eye-right" />
+              <span className="boss-brow boss-brow-left" />
+              <span className="boss-brow boss-brow-right" />
+              <span className="boss-mouth" />
+              <span className="boss-sweat boss-sweat-one" />
+              <span className="boss-sweat boss-sweat-two" />
+            </div>
+            <div className="boss-desk" />
+            <div className="boss-impact-ring" />
           </div>
           <div className="victory-crack" aria-hidden="true">
             <span />
             <span />
             <span />
           </div>
-          <div className="victory-card">
-            <small>FINAL VERDICT</small>
-            <p>破防判定！</p>
-            <strong>证据：Perfect Burger</strong>
-            <span>全班欢呼 + 知识点暴击 + Boss 当场沉默</span>
-          </div>
-          <div className="victory-evidence" aria-hidden="true">
-            <strong>EXHIBIT A</strong>
-            <span>100% 熟词汉堡</span>
-          </div>
+          <div className="boss-burger-finale" aria-hidden="true" />
         </div>
       )}
       {impactText && impact !== 'victory' && (

@@ -172,21 +172,20 @@ class GameAudio {
 
   playVictory() {
     this.finaleActive = true
+    this.clearScheduledEffects()
     this.stopBossMusic()
     this.setIntensity(0)
     this.playOneShot(audioFiles.serve, 0.86, 1.04)
     this.playOneShot(audioFiles.correct, 0.58, 1.24, 120)
     this.playOneShot(audioFiles.boss, 0.38, 1.18, 260)
-    this.playTone(523, 0.1, 'square', 0.05)
-    this.playTone(659, 0.1, 'square', 0.05, 90)
-    this.playTone(784, 0.12, 'triangle', 0.05, 180)
-    this.playTone(1046, 0.16, 'triangle', 0.055, 320)
+    this.playTone(523, 0.08, 'square', 0.04)
+    this.playTone(784, 0.1, 'triangle', 0.045, 160)
+    this.playTone(1046, 0.12, 'triangle', 0.05, 320)
 
-    for (let delay = 3600; delay <= 16000; delay += 4200) {
+    for (let delay = 2200; delay <= 7600; delay += 2700) {
       this.playOneShot(audioFiles.correct, 0.34, 1.12, delay)
-      this.playTone(392, 0.12, 'square', 0.035, delay + 80)
-      this.playTone(523, 0.12, 'square', 0.035, delay + 220)
-      this.playTone(659, 0.16, 'triangle', 0.04, delay + 380)
+      this.playTone(523, 0.1, 'square', 0.032, delay + 120)
+      this.playTone(659, 0.12, 'triangle', 0.036, delay + 260)
     }
   }
 

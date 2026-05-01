@@ -25,7 +25,7 @@ export const impactDurations = {
   correct: 1100,
   wrong: 1300,
   serve: 1400,
-  victory: 21000,
+  victory: 10000,
 } as const
 
 export type ImpactKind = keyof typeof impactDurations

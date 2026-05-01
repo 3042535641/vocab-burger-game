@@ -53,13 +53,13 @@ export const bossVictoryLines = [
 export const pickLine = (lines: string[], seed: number) =>
   lines[seed % lines.length]
 
-export const getWaitingLine = (customer: Customer, seed: number) => {
+export const getWaitingLine = (customer: Customer) => {
   const waitedSeconds = customer.maxPatience - customer.patience
 
   if (customer.isBoss) {
     return waitedSeconds >= 20
       ? 'Boss：20 秒了，还没好？我开始加压了。'
-      : pickLine(bossLines, seed)
+      : customer.speech
   }
 
   if (customer.patience <= 12) {

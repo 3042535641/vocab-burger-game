@@ -678,29 +678,34 @@ function App() {
       } ${bossSpawned && !bossDefeated ? 'boss-mode' : ''}`}
     >
       {impact === 'victory' && (
-        <div className="victory-show" aria-live="assertive">
-          <div className="victory-spotlight" />
-          <div className="victory-speedlines" aria-hidden="true" />
-          <div className="victory-impact-burst" aria-hidden="true" />
-          <div className="boss-performance" aria-hidden="true">
-            <div className="boss-head">
-              <span className="boss-eye boss-eye-left" />
-              <span className="boss-eye boss-eye-right" />
-              <span className="boss-brow boss-brow-left" />
-              <span className="boss-brow boss-brow-right" />
-              <span className="boss-mouth" />
-              <span className="boss-sweat boss-sweat-one" />
-              <span className="boss-sweat boss-sweat-two" />
+        <div className="boss-finale-scene" aria-live="assertive">
+          <div className="boss-finale-lights" aria-hidden="true" />
+          <div className="boss-finale-shockwave" aria-hidden="true" />
+          <div className="boss-finale-stage" aria-hidden="true">
+            <div className="boss-finale-table" />
+            <div className="boss-finale-boss">
+              <span className="finale-eye finale-eye-left" />
+              <span className="finale-eye finale-eye-right" />
+              <span className="finale-brow finale-brow-left" />
+              <span className="finale-brow finale-brow-right" />
+              <span className="finale-mouth" />
+              <span className="finale-sweat finale-sweat-left" />
+              <span className="finale-sweat finale-sweat-right" />
+              <span className="finale-smoke finale-smoke-one" />
+              <span className="finale-smoke finale-smoke-two" />
             </div>
-            <div className="boss-desk" />
-            <div className="boss-impact-ring" />
+            <div className="boss-finale-burger" />
+            <div className="boss-finale-stars">
+              <span />
+              <span />
+              <span />
+            </div>
           </div>
-          <div className="victory-crack" aria-hidden="true">
+          <div className="boss-finale-cracks" aria-hidden="true">
             <span />
             <span />
             <span />
           </div>
-          <div className="boss-burger-finale" aria-hidden="true" />
         </div>
       )}
       {impactText && impact !== 'victory' && (

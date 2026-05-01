@@ -17,6 +17,7 @@ class GameAudio {
   private bossActive = false
   private finaleActive = false
   private effectTimers = new Set<number>()
+  private oneShotPools = new Map<string, HTMLAudioElement[]>()
 
   private getAudioContext() {
     if (!this.audioContext) {
@@ -49,11 +50,32 @@ class GameAudio {
 
   private playOneShot(src: string, volume = 0.7, playbackRate = 1, delay = 0) {
     this.scheduleEffect(() => {
-      const audio = new Audio(src)
+      const audio = this.getPooledAudio(src)
       audio.volume = volume
       audio.playbackRate = playbackRate
+      audio.currentTime = 0
       void audio.play().catch(() => undefined)
     }, delay)
+  }
+
+  private getPooledAudio(src: string) {
+    const pool = this.oneShotPools.get(src) ?? []
+    const available = pool.find((audio) => audio.paused || audio.ended)
+
+    if (available) {
+      return available
+    }
+
+    if (pool.length >= 4) {
+      pool[0].pause()
+      return pool[0]
+    }
+
+    const audio = new Audio(src)
+    audio.preload = 'auto'
+    pool.push(audio)
+    this.oneShotPools.set(src, pool)
+    return audio
   }
 
   private playTone(

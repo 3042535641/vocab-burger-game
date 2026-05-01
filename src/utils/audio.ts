@@ -299,17 +299,18 @@ class GameAudio {
     this.playOneShot(audioFiles.serve, 0.86, 1.04)
     this.playOneShot(audioFiles.correct, 0.58, 1.24, 120)
     this.playOneShot(audioFiles.boss, 0.38, 1.18, 260)
-    this.playTone(523, 0.08, 'square', 0.04)
-    this.playTone(784, 0.1, 'triangle', 0.045, 160)
-    this.playTone(1046, 0.12, 'triangle', 0.05, 320)
-    this.playTone(1568, 0.08, 'square', 0.04, 520)
-    this.playTone(1318, 0.08, 'square', 0.035, 640)
+    this.playTone(392, 0.16, 'sawtooth', 0.038, 0)
+    this.playTone(523, 0.14, 'triangle', 0.04, 150)
+    this.playTone(659, 0.14, 'triangle', 0.04, 300)
+    this.playTone(784, 0.16, 'triangle', 0.044, 450)
+    this.playTone(1046, 0.22, 'sine', 0.05, 650)
+    this.playTone(1318, 0.18, 'sine', 0.042, 930)
 
-    for (let delay = 2200; delay <= 7600; delay += 2700) {
-      this.playOneShot(audioFiles.correct, 0.34, 1.12, delay)
-      this.playTone(523, 0.1, 'square', 0.032, delay + 120)
-      this.playTone(659, 0.12, 'triangle', 0.036, delay + 260)
-      this.playTone(988, 0.08, 'square', 0.028, delay + 420)
+    for (let delay = 1800; delay <= 7200; delay += 1800) {
+      this.playOneShot(audioFiles.correct, 0.28, 1.18, delay)
+      this.playTone(659, 0.12, 'triangle', 0.028, delay + 80)
+      this.playTone(880, 0.12, 'sine', 0.032, delay + 220)
+      this.playTone(1175, 0.16, 'sine', 0.034, delay + 380)
     }
   }
 

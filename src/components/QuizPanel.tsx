@@ -1,21 +1,24 @@
-import type { AnswerQuestion, Customer, Feedback } from '../types/game'
+import { memo } from 'react'
+import type { AnswerQuestion, Feedback } from '../types/game'
 
 type QuizPanelProps = {
-  customer?: Customer
+  hasCustomer: boolean
   question?: AnswerQuestion
+  stationText?: string
   feedback: Feedback
   combo: number
   onAnswer: (answer: string) => void
 }
 
 function QuizPanel({
-  customer,
+  hasCustomer,
   question,
+  stationText,
   feedback,
   combo,
   onAnswer,
 }: QuizPanelProps) {
-  if (!customer || !question) {
+  if (!hasCustomer || !question) {
     return (
       <section className="panel quiz-panel">
         <h2>单词题</h2>
@@ -29,7 +32,7 @@ function QuizPanel({
       <div className="question-card">
         <p className="question-label">看中文，选择正确英文</p>
         <h2>{question.chinese}</h2>
-        <p>{customer.steps[customer.stepIndex].stationText}</p>
+        <p>{stationText}</p>
       </div>
 
       <div className="answer-grid">
@@ -62,4 +65,4 @@ function QuizPanel({
   )
 }
 
-export default QuizPanel
+export default memo(QuizPanel)

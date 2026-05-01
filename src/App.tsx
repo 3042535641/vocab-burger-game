@@ -1,4 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import BurgerStation from './components/BurgerStation'
 import CustomerQueue from './components/CustomerQueue'
 import OrderTicket from './components/OrderTicket'
@@ -26,7 +33,6 @@ import { gameAudio } from './utils/audio'
 import {
   bossLines,
   bossVictoryLines,
-  buildQuestion,
   correctLines,
   createCustomer,
   getRandomDelay,
@@ -72,6 +78,7 @@ function App() {
   const [victoryLine, setVictoryLine] = useState('')
   const { clearImpact, impact, impactText, triggerImpact } = useTimedImpact()
   const finaleTimerRef = useRef<number | undefined>(undefined)
+  const answerHandlerRef = useRef<(answer: string) => void>(() => undefined)
   const wordPool = useMemo(() => [...words, ...customWords], [customWords])
   const previewWords = useMemo(() => {
     const previewIds = new Set([...stepWordIds, ...bossStepWordIds])
@@ -88,10 +95,35 @@ function App() {
   const activeCustomer =
     customers.find((customer) => customer.id === activeCustomerId) ??
     customers[0]
+  const activeQuestionCustomerId = activeCustomer?.id
+  const activeQuestionStepIndex = activeCustomer?.stepIndex
+  const activeStep =
+    activeQuestionStepIndex === undefined
+      ? undefined
+      : activeCustomer?.steps[activeQuestionStepIndex]
   const activeQuestion = useMemo(
-    () => buildQuestion(activeCustomer),
-    [activeCustomer],
+    () => {
+      if (
+        activeQuestionCustomerId === undefined ||
+        activeQuestionStepIndex === undefined ||
+        !activeStep
+      ) {
+        return undefined
+      }
+
+      const options = [activeStep.word.english, ...activeStep.word.wrongOptions]
+      const offset =
+        (activeQuestionCustomerId + activeQuestionStepIndex) % options.length
+
+      return {
+        chinese: activeStep.word.chinese,
+        correctAnswer: activeStep.word.english,
+        options: [...options.slice(offset), ...options.slice(0, offset)],
+      }
+    },
+    [activeQuestionCustomerId, activeQuestionStepIndex, activeStep],
   )
+  const activeStationText = activeStep?.stationText
   const goalText = bossSpawned
     ? bossDefeated
       ? 'Boss 已完成'
@@ -408,7 +440,7 @@ function App() {
     )
   }
 
-  const handleAnswer = (answer: string) => {
+  const handleAnswerInternal = (answer: string) => {
     if (!activeCustomer || !activeQuestion) {
       return
     }
@@ -497,6 +529,14 @@ function App() {
     gameAudio.playWrong(activeCustomer.isBoss)
     triggerImpact('wrong', activeCustomer.isBoss ? 'Boss 暴击！' : 'MISS!')
   }
+
+  useLayoutEffect(() => {
+    answerHandlerRef.current = handleAnswerInternal
+  })
+
+  const handleAnswer = useCallback((answer: string) => {
+    answerHandlerRef.current(answer)
+  }, [])
 
   const toggleMusic = () => {
     setMusicEnabled((enabled) => {
@@ -700,6 +740,12 @@ function App() {
               <span />
               <span />
             </div>
+            <div className="boss-finale-smashes">
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
           </div>
         </div>
       )}
@@ -758,8 +804,9 @@ function App() {
       </div>
 
       <QuizPanel
-        customer={activeCustomer}
+        hasCustomer={Boolean(activeCustomer)}
         question={activeQuestion}
+        stationText={activeStationText}
         feedback={feedback}
         combo={combo}
         onAnswer={handleAnswer}

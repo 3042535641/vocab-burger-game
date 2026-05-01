@@ -74,9 +74,54 @@ export const getWaitingLine = (customer: Customer) => {
 }
 
 export const getRandomDelay = (served: number) => {
-  const pressure = Math.min(served, targetRegularServed - 1) * 400
-  const baseDelay = Math.max(8000, 10000 - pressure)
+  const pressure = Math.min(served, targetRegularServed - 1) * 500
+  const baseDelay = Math.max(7500, 10000 - pressure)
   return baseDelay + Math.floor(Math.random() * 5000)
+}
+
+const getAverageDoneness = (firstSide: number, secondSide: number) => {
+  if (secondSide <= 0) {
+    return Math.round(firstSide)
+  }
+
+  return Math.round((firstSide + secondSide) / 2)
+}
+
+export const cookPatty = (
+  customer: Customer,
+  isWrongAnswer = false,
+): Customer => {
+  if (!customer.pattySide || customer.pattySide === 'done') {
+    return customer
+  }
+
+  const firstSideIncrement = isWrongAnswer ? 6 : 7
+  const secondSideIncrement = 6
+  const nextFirstSide =
+    customer.pattySide === 'first'
+      ? Math.min(100, customer.firstSideDoneness + firstSideIncrement)
+      : customer.firstSideDoneness
+  const nextSecondSide =
+    customer.pattySide === 'second'
+      ? Math.min(100, customer.secondSideDoneness + secondSideIncrement)
+      : customer.secondSideDoneness
+  const hotSide =
+    customer.pattySide === 'first' ? nextFirstSide : nextSecondSide
+  const burnIncrement = isWrongAnswer
+    ? 8
+    : hotSide >= 88
+      ? 4
+      : hotSide >= 72
+        ? 2
+        : 1
+
+  return {
+    ...customer,
+    firstSideDoneness: nextFirstSide,
+    secondSideDoneness: nextSecondSide,
+    doneness: getAverageDoneness(nextFirstSide, nextSecondSide),
+    burn: Math.min(100, customer.burn + burnIncrement),
+  }
 }
 
 const pickWordForStep = (
@@ -145,6 +190,9 @@ export const createCustomer = (
     maxPatience,
     stepIndex: 0,
     doneness: 0,
+    firstSideDoneness: 0,
+    secondSideDoneness: 0,
+    pattySide: null,
     burn: 0,
     mistakes: 0,
     isBoss,

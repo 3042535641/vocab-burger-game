@@ -4,6 +4,8 @@ export type GameStatus = 'idle' | 'playing' | 'ended'
 
 export type Mood = 'happy' | 'waiting' | 'worried' | 'angry'
 
+export type PattySide = 'first' | 'second' | 'done' | null
+
 export type BurgerStep = {
   id: string
   label: string
@@ -21,6 +23,9 @@ export type Customer = {
   maxPatience: number
   stepIndex: number
   doneness: number
+  firstSideDoneness: number
+  secondSideDoneness: number
+  pattySide: PattySide
   burn: number
   mistakes: number
   isBoss: boolean

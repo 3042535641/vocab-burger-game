@@ -2,24 +2,68 @@ import type { Customer } from '../types/game'
 
 type BurgerStationProps = {
   customer?: Customer
+  customers: Customer[]
+  activeCustomerId?: number
+  onSelectCustomer: (id: number) => void
 }
 
-function BurgerStation({ customer }: BurgerStationProps) {
+function BurgerStation({
+  customer,
+  customers,
+  activeCustomerId,
+  onSelectCustomer,
+}: BurgerStationProps) {
   const completedStepIds = customer?.steps
     .slice(0, customer.stepIndex)
     .map((step) => step.id)
 
   const burn = customer?.burn ?? 0
-  const doneness = customer?.doneness ?? 0
+  const firstSide = customer?.firstSideDoneness ?? 0
+  const secondSide = customer?.secondSideDoneness ?? 0
   const pattyClass = burn >= 80 ? 'burned' : burn >= 45 ? 'toasty' : ''
   const flipWindowClass =
-    doneness >= 55 && doneness <= 85 && burn < 45 ? 'ready' : ''
+    firstSide >= 55 && firstSide <= 85 && burn < 45 ? 'ready' : ''
 
   return (
     <section className="panel burger-station" aria-label="汉堡制作台">
       <div className="section-heading">
         <h2>制作台</h2>
-        <span>熟度 {doneness}% / 焦度 {burn}%</span>
+        <span>
+          A面 {firstSide}% / B面 {secondSide}% · 焦度 {burn}%
+        </span>
+      </div>
+
+      <div className="grill-slots" aria-label="煎锅槽位">
+        {[0, 1, 2].map((slotIndex) => {
+          const slotCustomer = customers[slotIndex]
+          const isActive = slotCustomer?.id === activeCustomerId
+
+          if (!slotCustomer) {
+            return (
+              <span className="grill-slot empty" key={slotIndex}>
+                空锅位
+              </span>
+            )
+          }
+
+          return (
+            <button
+              type="button"
+              className={`grill-slot ${isActive ? 'active' : ''} ${
+                slotCustomer.burn >= 60 ? 'danger' : ''
+              }`}
+              key={slotCustomer.id}
+              onClick={() => onSelectCustomer(slotCustomer.id)}
+            >
+              <strong>{slotCustomer.isBoss ? 'BOSS' : `#${slotIndex + 1}`}</strong>
+              <span>{slotCustomer.name}</span>
+              <small>
+                A {slotCustomer.firstSideDoneness}% / B{' '}
+                {slotCustomer.secondSideDoneness}%
+              </small>
+            </button>
+          )
+        })}
       </div>
 
       <div className="grill-lights" aria-hidden="true">
@@ -44,7 +88,7 @@ function BurgerStation({ customer }: BurgerStationProps) {
         )}
         {customer && completedStepIds?.includes('patty') && (
           <span className={`burger-layer patty ${pattyClass}`}>
-            {burn >= 80 ? '烧焦肉饼' : '肉饼'}
+            {burn >= 80 ? '烤焦肉饼' : '肉饼'}
           </span>
         )}
         {customer && completedStepIds?.includes('bun') && (
@@ -58,9 +102,15 @@ function BurgerStation({ customer }: BurgerStationProps) {
       {customer && (
         <div className="cook-meters" aria-label="肉饼状态">
           <div>
-            <span>熟度</span>
+            <span>A面</span>
             <div className="meter">
-              <span style={{ width: `${doneness}%` }} />
+              <span style={{ width: `${firstSide}%` }} />
+            </div>
+          </div>
+          <div>
+            <span>B面</span>
+            <div className="meter">
+              <span style={{ width: `${secondSide}%` }} />
             </div>
           </div>
           <div>
@@ -70,7 +120,7 @@ function BurgerStation({ customer }: BurgerStationProps) {
             </div>
           </div>
           <p className={`flip-window ${flipWindowClass}`}>
-            {flipWindowClass ? '最佳翻面窗口！' : '等待熟度进入 55%-85%'}
+            {flipWindowClass ? '第一面最佳翻面窗口！' : '第一面 55%-85% 时翻面最香'}
           </p>
         </div>
       )}

@@ -33,6 +33,7 @@ import { gameAudio } from './utils/audio'
 import {
   bossLines,
   bossVictoryLines,
+  cookPatty,
   correctLines,
   createCustomer,
   getRandomDelay,
@@ -199,16 +200,7 @@ function App() {
         let bossEscaped = false
 
         for (const customer of currentCustomers) {
-          const isPattyWaiting =
-            customer.steps[customer.stepIndex]?.id === 'flip'
           const nextPatience = customer.patience - 1
-          const nextDoneness =
-            customer.steps[customer.stepIndex]?.id === 'patty' || isPattyWaiting
-              ? Math.min(100, customer.doneness + 7)
-              : customer.doneness
-          const nextBurn = isPattyWaiting
-            ? Math.min(100, customer.burn + (nextDoneness >= 70 ? 3 : 1))
-            : customer.burn
 
           if (nextPatience <= 0) {
             escapedCount += 1
@@ -216,12 +208,10 @@ function App() {
             continue
           }
 
-          const nextCustomer = {
+          const nextCustomer = cookPatty({
             ...customer,
             patience: nextPatience,
-            doneness: nextDoneness,
-            burn: nextBurn,
-          }
+          })
 
           remainingCustomers.push({
             ...nextCustomer,
@@ -385,8 +375,10 @@ function App() {
     const perfectBonus =
       customer.mistakes === 0 &&
       customer.burn < 45 &&
-      customer.doneness >= 55 &&
-      customer.doneness <= 85
+      customer.firstSideDoneness >= 55 &&
+      customer.firstSideDoneness <= 85 &&
+      customer.secondSideDoneness >= 35 &&
+      customer.secondSideDoneness <= 90
         ? 30
         : 0
     const bossBonus = customer.isBoss ? 80 : 0
@@ -452,8 +444,8 @@ function App() {
       const step = activeCustomer.steps[activeCustomer.stepIndex]
       const isPerfectFlip =
         step.id === 'flip' &&
-        activeCustomer.doneness >= 55 &&
-        activeCustomer.doneness <= 85 &&
+        activeCustomer.firstSideDoneness >= 55 &&
+        activeCustomer.firstSideDoneness <= 85 &&
         activeCustomer.burn < 45
 
       setCombo(nextCombo)
@@ -466,6 +458,12 @@ function App() {
       const nextCustomer = {
         ...activeCustomer,
         stepIndex: activeCustomer.stepIndex + 1,
+        pattySide:
+          step.id === 'patty'
+            ? 'first'
+            : step.id === 'flip'
+              ? 'second'
+              : activeCustomer.pattySide,
         speech: pickLine(correctLines, activeCustomer.id + nextCombo),
       }
 
@@ -502,21 +500,14 @@ function App() {
           return customer
         }
 
-        const isPattyWaiting = customer.steps[customer.stepIndex]?.id === 'flip'
-
-        return {
+        return cookPatty({
           ...customer,
           mistakes: customer.mistakes + 1,
           speech: customer.isBoss
             ? pickLine(bossLines, customer.mistakes + customer.id + 1)
             : pickLine(wrongLines, customer.mistakes + customer.id + 1),
           patience: Math.max(1, customer.patience - 4),
-          doneness:
-            customer.steps[customer.stepIndex]?.id === 'patty' || isPattyWaiting
-              ? Math.min(100, customer.doneness + 6)
-              : customer.doneness,
-          burn: isPattyWaiting ? Math.min(100, customer.burn + 8) : customer.burn,
-        }
+        }, true)
       }),
     )
     setFeedback({
@@ -794,7 +785,12 @@ function App() {
           activeCustomerId={activeCustomer?.id}
           onSelectCustomer={setActiveCustomerId}
         />
-        <BurgerStation customer={activeCustomer} />
+        <BurgerStation
+          customer={activeCustomer}
+          customers={customers}
+          activeCustomerId={activeCustomer?.id}
+          onSelectCustomer={setActiveCustomerId}
+        />
         <OrderTicket
           customer={activeCustomer}
           servedCount={servedCount}

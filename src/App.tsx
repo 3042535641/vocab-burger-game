@@ -81,45 +81,32 @@ function App() {
   const wordPool = useMemo(() => [...words, ...customWords], [customWords])
   const previewWords = useMemo(() => {
     const previewIds = new Set([...stepWordIds, ...bossStepWordIds])
-    const pickedWords = wordPool.filter(
-      (word) => previewIds.has(word.id) || word.id.startsWith('custom-'),
-    )
-
-    return pickedWords.filter(
-      (word, index, list) =>
-        list.findIndex((item) => item.english === word.english) === index,
-    )
+    return wordPool
+      .filter((word) => previewIds.has(word.id) || word.id.startsWith('custom-'))
+      .filter(
+        (word, index, list) =>
+          list.findIndex((item) => item.english === word.english) === index,
+      )
   }, [wordPool])
 
   const activeCustomer =
     customers.find((customer) => customer.id === activeCustomerId) ??
     customers[0]
-  const activeQuestionCustomerId = activeCustomer?.id
-  const activeQuestionStepIndex = activeCustomer?.stepIndex
-  const activeStep =
-    activeQuestionStepIndex === undefined
-      ? undefined
-      : activeCustomer?.steps[activeQuestionStepIndex]
+  const activeStep = activeCustomer?.steps[activeCustomer.stepIndex]
   const activeQuestion = useMemo(() => {
-    if (
-      activeQuestionCustomerId === undefined ||
-      activeQuestionStepIndex === undefined ||
-      !activeStep
-    ) {
+    if (!activeCustomer || !activeStep) {
       return undefined
     }
 
     const options = [activeStep.word.english, ...activeStep.word.wrongOptions]
-    const offset =
-      (activeQuestionCustomerId + activeQuestionStepIndex) % options.length
+    const offset = (activeCustomer.id + activeCustomer.stepIndex) % options.length
 
     return {
       chinese: activeStep.word.chinese,
       correctAnswer: activeStep.word.english,
       options: [...options.slice(offset), ...options.slice(0, offset)],
     }
-  }, [activeQuestionCustomerId, activeQuestionStepIndex, activeStep])
-  const activeStationText = activeStep?.stationText
+  }, [activeCustomer, activeStep])
   const goalText = bossSpawned
     ? bossDefeated
       ? 'Boss 已完成'
@@ -257,11 +244,15 @@ function App() {
         const newCustomer = createCustomer(nextCustomerId, false, wordPool)
         setNextCustomerId((id) => id + 1)
         setBanner(
-          servedCount >= 4 ? '高峰期来了，新顾客加速进店！' : '新顾客进店了',
+          currentCustomers.length === 0
+            ? '新顾客补位进店，别让锅空着！'
+            : servedCount >= 4
+              ? '高峰期来了，新顾客加速进店！'
+              : '新顾客进店了',
         )
         gameAudio.playArrival()
 
-        if (!activeCustomerId) {
+        if (!activeCustomerId || currentCustomers.length === 0) {
           setActiveCustomerId(newCustomer.id)
         }
 
@@ -401,6 +392,7 @@ function App() {
   const spawnBoss = (id: number) => {
     const boss = createCustomer(id, true, wordPool)
 
+    gameAudio.stopNormalMusic()
     setBossSpawned(true)
     setNextCustomerId(id + 1)
     setCustomers([boss])
@@ -444,7 +436,7 @@ function App() {
       kind: perfectBonus ? 'correct' : 'info',
       message: perfectBonus
         ? `Perfect Burger！额外加 ${perfectBonus} 分`
-        : `汉堡完成，获得 ${gainedScore} 分`,
+        : `${customer.recipe.name} 完成，获得 ${gainedScore} 分`,
     })
     gameAudio.playServe(perfectBonus > 0)
     triggerImpact('serve', perfectBonus ? 'PERFECT!' : '出餐！')
@@ -495,14 +487,6 @@ function App() {
         activeCustomer.firstSideDoneness >= 55 &&
         activeCustomer.firstSideDoneness <= 85 &&
         activeCustomer.burn < 45
-
-      setCombo(nextCombo)
-      setBestCombo((currentBest) => Math.max(currentBest, nextCombo))
-      setScore(
-        (currentScore) =>
-          currentScore + correctScore + Math.max(0, nextCombo - 1) * comboBonus,
-      )
-
       const nextCustomer = {
         ...activeCustomer,
         stepIndex: activeCustomer.stepIndex + 1,
@@ -514,6 +498,13 @@ function App() {
               : activeCustomer.pattySide,
         speech: pickLine(correctLines, activeCustomer.id + nextCombo),
       }
+
+      setCombo(nextCombo)
+      setBestCombo((currentBest) => Math.max(currentBest, nextCombo))
+      setScore(
+        (currentScore) =>
+          currentScore + correctScore + Math.max(0, nextCombo - 1) * comboBonus,
+      )
 
       if (nextCustomer.stepIndex >= nextCustomer.steps.length) {
         finishBurger(nextCustomer, nextCombo)
@@ -774,6 +765,7 @@ function App() {
         <div className="boss-finale-scene" aria-live="assertive">
           <div className="boss-finale-lights" aria-hidden="true" />
           <div className="boss-finale-stage" aria-hidden="true">
+            <div className="finale-verdict">破防判定</div>
             <div className="boss-finale-table" />
             <div className="boss-finale-boss">
               <span className="finale-eye finale-eye-left" />
@@ -790,11 +782,7 @@ function App() {
               <span className="finale-vein" />
             </div>
             <div className="boss-finale-burger" />
-            <div className="boss-finale-stars">
-              <span />
-              <span />
-              <span />
-            </div>
+            <div className="finale-callout">知识点暴击成立</div>
           </div>
         </div>
       )}
@@ -860,7 +848,7 @@ function App() {
       <QuizPanel
         hasCustomer={Boolean(activeCustomer)}
         question={activeQuestion}
-        stationText={activeStationText}
+        stationText={activeStep?.stationText}
         feedback={feedback}
         combo={combo}
         onAnswer={handleAnswer}

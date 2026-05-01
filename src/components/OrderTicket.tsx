@@ -30,8 +30,8 @@ function OrderTicket({
       ) : (
         <>
           <div className="ticket-meta">
-            <strong>{customer.name}</strong>
-            <span>{customer.isBoss ? '终极加料单' : '经典课堂单'}</span>
+            <strong>{customer.recipe.name}</strong>
+            <span>{customer.recipe.tag}</span>
           </div>
           <ol className="recipe-list">
             {customer.steps.map((step, index) => (
@@ -65,6 +65,7 @@ export default memo(OrderTicket, (previous, next) => {
     previous.targetServed === next.targetServed &&
     previous.bossSpawned === next.bossSpawned &&
     previousCustomer?.id === nextCustomer?.id &&
-    previousCustomer?.stepIndex === nextCustomer?.stepIndex
+    previousCustomer?.stepIndex === nextCustomer?.stepIndex &&
+    previousCustomer?.recipe.id === nextCustomer?.recipe.id
   )
 })

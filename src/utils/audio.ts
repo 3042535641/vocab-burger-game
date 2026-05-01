@@ -213,10 +213,22 @@ class GameAudio {
 
   }
 
+  stopNormalMusic() {
+    if (!this.music) {
+      return
+    }
+
+    this.music.pause()
+    this.music.currentTime = 0
+    this.music.volume = 0.2
+    this.music.playbackRate = 1
+  }
+
   startBossMusic() {
     this.finaleActive = false
     this.bossActive = true
-    this.startMusic()
+    this.stopNormalMusic()
+    this.startGroove()
 
     if (!this.bossMusic) {
       this.bossMusic = new Audio(audioFiles.boss)
@@ -315,6 +327,9 @@ class GameAudio {
   }
 
   startMusic() {
+    this.finaleActive = false
+    this.bossActive = false
+
     if (!this.music) {
       this.music = new Audio(audioFiles.music)
       this.music.loop = true
@@ -329,13 +344,14 @@ class GameAudio {
   stopMusic() {
     this.finaleActive = false
     this.clearScheduledEffects()
+    this.stopBossMusic()
 
     if (!this.music) {
-      this.stopBossMusic()
+      this.setIntensity(0)
+      this.stopGroove()
       return
     }
 
-    this.stopBossMusic()
     this.music.pause()
     this.music.currentTime = 0
     this.music.playbackRate = 1

@@ -14,10 +14,17 @@ export type BurgerStep = {
   word: WordEntry
 }
 
+export type BurgerRecipe = {
+  id: string
+  name: string
+  tag: string
+}
+
 export type Customer = {
   id: number
   name: string
   avatar: string
+  recipe: BurgerRecipe
   speech: string
   patience: number
   maxPatience: number

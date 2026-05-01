@@ -1417,8 +1417,10 @@
   word-break: break-word;
   overflow-wrap: anywhere;
   contain: layout paint;
-  will-change: transform;
-  transition: transform 100ms ease;
+  transition:
+    background 100ms ease,
+    box-shadow 100ms ease,
+    filter 100ms ease;
 }
 
 .answer-button:hover {
@@ -1426,7 +1428,8 @@
   box-shadow:
     0 4px 0 #9b6b4b,
     0 0 0 4px rgba(255, 210, 77, 0.28);
-  transform: translateY(-2px);
+  filter: saturate(1.08);
+  transform: none;
 }
 
 .answer-button:active {
@@ -1927,6 +1930,163 @@
   top: 46%;
   right: 14%;
   animation-delay: 2.55s;
+}
+
+.boss-finale-scene {
+  background:
+    radial-gradient(circle at 50% 36%, rgba(255, 247, 232, 0.34), transparent 22%),
+    repeating-linear-gradient(100deg, #211814 0 42px, #d94731 42px 84px, #ffe27a 84px 126px),
+    #2b211b;
+  animation: finale-scene-life 10s linear both;
+}
+
+.boss-finale-scene::before {
+  background:
+    radial-gradient(ellipse at 50% 44%, rgba(255, 226, 122, 0.46) 0 18%, transparent 46%),
+    linear-gradient(90deg, rgba(43, 33, 27, 0.34), transparent 18% 82%, rgba(43, 33, 27, 0.34));
+  opacity: 1;
+}
+
+.boss-finale-lights {
+  background:
+    radial-gradient(ellipse at 18% 10%, rgba(255, 247, 232, 0.42), transparent 36%),
+    radial-gradient(ellipse at 82% 10%, rgba(255, 247, 232, 0.38), transparent 36%);
+  animation: finale-lights-soft 10s ease both;
+}
+
+.boss-finale-stage {
+  width: min(860px, 92vw);
+  height: min(640px, 82vh);
+}
+
+.finale-verdict {
+  position: absolute;
+  z-index: 8;
+  top: 18px;
+  left: 50%;
+  padding: 8px 20px;
+  border: 5px solid #2b211b;
+  border-radius: 8px;
+  color: #2b211b;
+  background: #ffe27a;
+  box-shadow:
+    0 8px 0 #8e5a20,
+    0 0 0 8px rgba(255, 247, 232, 0.35);
+  font-size: clamp(22px, 4vw, 44px);
+  font-weight: 1000;
+  text-shadow: 2px 2px 0 #fff7e8;
+  transform: translateX(-50%) rotate(-2deg);
+  animation: verdict-drop 9.4s cubic-bezier(0.18, 1, 0.2, 1) 180ms both;
+}
+
+.boss-finale-table {
+  bottom: 44px;
+  width: min(690px, 86vw);
+  height: 112px;
+  border-radius: 8px 8px 22px 22px;
+  background:
+    radial-gradient(circle at 15% 45%, #ffe27a 0 13px, transparent 14px),
+    radial-gradient(circle at 85% 45%, #ffe27a 0 13px, transparent 14px),
+    linear-gradient(#b85f36, #6b3826);
+  animation: table-stage-slam 8.8s cubic-bezier(0.18, 1, 0.2, 1) 500ms both;
+}
+
+.boss-finale-boss {
+  width: min(420px, 58vw);
+  border-radius: 50% 50% 22% 22%;
+  background:
+    radial-gradient(circle at 31% 34%, #fff7e8 0 16px, transparent 17px),
+    radial-gradient(circle at 69% 34%, #fff7e8 0 16px, transparent 17px),
+    linear-gradient(12deg, #d94731 0 29%, #211814 30% 100%);
+  box-shadow:
+    0 18px 0 rgba(43, 33, 27, 0.28),
+    0 0 0 14px rgba(255, 226, 122, 0.28);
+  animation: boss-face-stage 9s cubic-bezier(0.18, 1, 0.2, 1) 240ms both;
+}
+
+.finale-eye {
+  top: 31%;
+  width: 52px;
+  height: 52px;
+  box-shadow:
+    inset 0 -15px 0 #45a6d6,
+    inset 0 0 0 12px #fff7e8;
+  animation: boss-eye-stage 8.2s cubic-bezier(0.18, 1, 0.2, 1) 700ms both;
+}
+
+.finale-eye::after {
+  left: 16px;
+  top: 13px;
+  width: 15px;
+  height: 15px;
+  animation: pupil-stage-panic 1.8s ease-in-out 950ms 4;
+}
+
+.finale-brow-left {
+  animation: brow-stage-left 8s ease 820ms both;
+}
+
+.finale-brow-right {
+  animation: brow-stage-right 8s ease 820ms both;
+}
+
+.finale-cheek {
+  animation: cheek-stage 7.6s ease 950ms both;
+}
+
+.finale-mouth {
+  width: 150px;
+  animation: mouth-stage-break 8s ease 820ms both;
+}
+
+.finale-vein {
+  animation: vein-stage-pop 4.6s ease 1.2s both;
+}
+
+.finale-sweat-left {
+  animation: sweat-stage-fall 3.4s ease 1.6s both;
+}
+
+.finale-sweat-right {
+  animation: sweat-stage-fall 3.8s ease 1.35s both;
+}
+
+.finale-smoke-one {
+  animation: smoke-stage-rise 4.1s ease 2.15s both;
+}
+
+.finale-smoke-two {
+  animation: smoke-stage-rise 4.4s ease 2.45s both;
+}
+
+.boss-finale-burger {
+  width: min(210px, 30vw);
+  animation: burger-stage-hit 8.4s cubic-bezier(0.18, 1, 0.2, 1) 1.05s both;
+}
+
+.finale-callout {
+  position: absolute;
+  z-index: 9;
+  right: 4%;
+  bottom: 118px;
+  max-width: min(340px, 42vw);
+  padding: 12px 18px;
+  border: 5px solid #2b211b;
+  border-radius: 8px;
+  color: #fff7e8;
+  background: #d94731;
+  box-shadow:
+    0 8px 0 #7a1f18,
+    0 0 0 8px rgba(255, 226, 122, 0.24);
+  font-size: clamp(20px, 3vw, 36px);
+  font-weight: 1000;
+  text-shadow: 2px 2px 0 #2b211b;
+  transform: rotate(3deg);
+  animation: finale-callout-pop 7.4s cubic-bezier(0.18, 1, 0.2, 1) 2.35s both;
+}
+
+.boss-finale-stars {
+  display: none;
 }
 
 .shop-sign,
@@ -3070,5 +3230,267 @@
   }
   100% {
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes finale-lights-soft {
+  0%,
+  6% {
+    opacity: 0;
+  }
+  16%,
+  88% {
+    opacity: 0.58;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes verdict-drop {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-80px) scale(1.18) rotate(-8deg);
+  }
+  16% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(8px) scale(0.96) rotate(2deg);
+  }
+  28%,
+  84% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1) rotate(-2deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-18px) scale(0.96) rotate(-2deg);
+  }
+}
+
+@keyframes table-stage-slam {
+  0%,
+  12% {
+    transform: translateY(80px);
+  }
+  18% {
+    transform: translateY(-14px) rotate(-1deg);
+  }
+  25% {
+    transform: translateY(8px) rotate(1deg);
+  }
+  34%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+}
+
+@keyframes boss-face-stage {
+  0% {
+    opacity: 0;
+    transform: translateY(-80px) scale(0.86) rotate(-6deg);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0) scale(1.06) rotate(3deg);
+  }
+  20% {
+    transform: translateY(0) scale(1) rotate(0);
+  }
+  34% {
+    transform: translateY(14px) scale(1.08, 0.9) rotate(-2deg);
+  }
+  48% {
+    transform: translateY(-10px) scale(0.97, 1.06) rotate(2deg);
+  }
+  64% {
+    transform: translateY(9px) scale(1.04, 0.95) rotate(-2deg);
+  }
+  80% {
+    opacity: 1;
+    transform: translateY(4px) scale(1) rotate(1deg);
+  }
+  100% {
+    opacity: 0.24;
+    transform: translateY(72px) scale(0.86, 0.72) rotate(6deg);
+  }
+}
+
+@keyframes boss-eye-stage {
+  0%,
+  18% {
+    transform: scale(1);
+  }
+  25%,
+  42% {
+    transform: scale(1.48, 1.22) translateY(-5px);
+  }
+  56% {
+    transform: scale(0.86, 1.35) translateY(4px);
+  }
+  74%,
+  100% {
+    transform: scale(1.08, 0.92);
+  }
+}
+
+@keyframes pupil-stage-panic {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-7px, 3px);
+  }
+  50% {
+    transform: translate(6px, -3px);
+  }
+  75% {
+    transform: translate(3px, 5px);
+  }
+}
+
+@keyframes brow-stage-left {
+  0%,
+  22% {
+    transform: rotate(18deg);
+  }
+  42%,
+  100% {
+    transform: translate(-14px, -18px) rotate(-28deg);
+  }
+}
+
+@keyframes brow-stage-right {
+  0%,
+  22% {
+    transform: rotate(-18deg);
+  }
+  42%,
+  100% {
+    transform: translate(14px, -18px) rotate(28deg);
+  }
+}
+
+@keyframes cheek-stage {
+  0%,
+  18% {
+    opacity: 0;
+  }
+  30%,
+  76% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes mouth-stage-break {
+  0%,
+  20% {
+    height: 38px;
+    transform: translateX(-50%) scale(1);
+  }
+  36% {
+    height: 112px;
+    border-radius: 999px;
+    transform: translateX(-50%) scale(0.86, 1.12);
+  }
+  54% {
+    height: 26px;
+    transform: translateX(-50%) scale(1.22, 0.8);
+  }
+  78%,
+  100% {
+    height: 72px;
+    transform: translateX(-50%) scale(0.92, 1.02);
+  }
+}
+
+@keyframes vein-stage-pop {
+  0%,
+  14% {
+    opacity: 0;
+    transform: scale(0.3) rotate(0);
+  }
+  24%,
+  76% {
+    opacity: 1;
+    transform: scale(1) rotate(10deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.18) rotate(-8deg);
+  }
+}
+
+@keyframes sweat-stage-fall {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) rotate(24deg);
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(138px) rotate(24deg);
+  }
+}
+
+@keyframes smoke-stage-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.4);
+  }
+  20% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-96px) scale(1.7);
+  }
+}
+
+@keyframes burger-stage-hit {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 90px) scale(0.52) rotate(-18deg);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(-50%, -154px) scale(1.08) rotate(15deg);
+  }
+  34% {
+    transform: translate(-50%, -76px) scale(1) rotate(-8deg);
+  }
+  52% {
+    transform: translate(-50%, -120px) scale(1.05) rotate(8deg);
+  }
+  76%,
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -92px) scale(1) rotate(-4deg);
+  }
+}
+
+@keyframes finale-callout-pop {
+  0%,
+  18% {
+    opacity: 0;
+    transform: translateX(80px) scale(0.8) rotate(10deg);
+  }
+  30% {
+    opacity: 1;
+    transform: translateX(0) scale(1.06) rotate(-2deg);
+  }
+  44%,
+  86% {
+    opacity: 1;
+    transform: translateX(0) scale(1) rotate(3deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(20px) scale(0.94) rotate(3deg);
   }
 }

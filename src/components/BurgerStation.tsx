@@ -18,7 +18,6 @@ function BurgerStation({
   const completedStepIds = customer?.steps
     .slice(0, customer.stepIndex)
     .map((step) => step.id)
-
   const burn = customer?.burn ?? 0
   const firstSide = customer?.firstSideDoneness ?? 0
   const secondSide = customer?.secondSideDoneness ?? 0
@@ -58,7 +57,7 @@ function BurgerStation({
               onClick={() => onSelectCustomer(slotCustomer.id)}
             >
               <strong>{slotCustomer.isBoss ? 'BOSS' : `锅 ${slotIndex + 1}`}</strong>
-              <span>{slotCustomer.name}</span>
+              <span>{slotCustomer.recipe.name}</span>
               <small>
                 A {slotCustomer.firstSideDoneness}% / B{' '}
                 {slotCustomer.secondSideDoneness}%

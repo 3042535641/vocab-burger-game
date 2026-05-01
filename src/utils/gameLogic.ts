@@ -6,7 +6,7 @@ import {
   targetRegularServed,
 } from '../constants/game'
 import { words, type WordEntry } from '../data/words'
-import type { AnswerQuestion, BurgerStep, Customer } from '../types/game'
+import type { AnswerQuestion, BurgerRecipe, BurgerStep, Customer } from '../types/game'
 
 export const customerProfiles = [
   { name: '小明', avatar: 'round' },
@@ -15,6 +15,13 @@ export const customerProfiles = [
   { name: '糖糖', avatar: 'bow' },
   { name: '阿杰', avatar: 'shade' },
   { name: 'Mia', avatar: 'bun' },
+]
+
+const recipes: BurgerRecipe[] = [
+  { id: 'classic', name: '经典课堂堡', tag: '均衡配方' },
+  { id: 'green', name: '生菜冷静堡', tag: '多菜清爽' },
+  { id: 'tomato', name: '番茄冲刺堡', tag: '酸甜加速' },
+  { id: 'sauce', name: '爆酱记忆堡', tag: '酱汁加倍' },
 ]
 
 export const idleLines = [
@@ -53,6 +60,11 @@ export const bossVictoryLines = [
 export const pickLine = (lines: string[], seed: number) =>
   lines[seed % lines.length]
 
+export const pickRecipe = (id: number, isBoss: boolean) =>
+  isBoss
+    ? { id: 'boss', name: '终极 Boss 破防堡', tag: '全配方加压' }
+    : recipes[id % recipes.length]
+
 export const getWaitingLine = (customer: Customer) => {
   const waitedSeconds = customer.maxPatience - customer.patience
 
@@ -74,10 +86,13 @@ export const getWaitingLine = (customer: Customer) => {
 }
 
 export const getRandomDelay = (served: number, queueSize = 0) => {
-  const servedPressure = Math.min(served, targetRegularServed - 1) * 520
-  const queueRelief = Math.max(0, queueSize - 1) * 850
-  const baseDelay = Math.max(6200, 11000 - servedPressure + queueRelief)
-  const randomWindow = Math.max(2800, 5200 - served * 280)
+  if (queueSize === 0) {
+    return 1100 + Math.floor(Math.random() * 900)
+  }
+
+  const servedPressure = Math.min(served, targetRegularServed - 1) * 620
+  const baseDelay = Math.max(4800, 9200 - servedPressure)
+  const randomWindow = Math.max(2200, 4300 - served * 320)
 
   return baseDelay + Math.floor(Math.random() * randomWindow)
 }
@@ -127,6 +142,21 @@ export const cookPatty = (
   }
 }
 
+const recipeStepIds = (recipe: BurgerRecipe, isBoss: boolean) => {
+  if (isBoss) {
+    return bossStepWordIds
+  }
+
+  const variants: Record<string, string[]> = {
+    classic: stepWordIds,
+    green: ['bun', 'patty', 'flip', 'lettuce', 'sauce'],
+    tomato: ['bun', 'patty', 'flip', 'tomato', 'lettuce', 'sauce'],
+    sauce: ['bun', 'patty', 'flip', 'sauce', 'lettuce', 'tomato'],
+  }
+
+  return variants[recipe.id] ?? stepWordIds
+}
+
 const pickWordForStep = (
   wordId: string,
   index: number,
@@ -149,12 +179,12 @@ const pickWordForStep = (
 export const buildSteps = (
   isBoss: boolean,
   wordPool: WordEntry[],
+  recipe: BurgerRecipe,
 ): BurgerStep[] => {
-  const ids = isBoss ? bossStepWordIds : stepWordIds
+  const ids = recipeStepIds(recipe, isBoss)
 
   return ids.map((wordId, index) => {
     const word = pickWordForStep(wordId, index, isBoss, wordPool)
-
     const stepText: Record<string, { label: string; ingredient: string }> = {
       bun: { label: '放面包底', ingredient: '面包底' },
       patty: { label: '放肉饼开始煎', ingredient: '肉饼' },
@@ -183,11 +213,13 @@ export const createCustomer = (
   const isBoss = forceBoss
   const maxPatience = isBoss ? bossPatience : basePatience
   const profile = customerProfiles[id % customerProfiles.length]
+  const recipe = pickRecipe(id, isBoss)
 
   return {
     id,
     name: isBoss ? 'Boss 老板同学' : profile.name,
     avatar: isBoss ? 'boss' : profile.avatar,
+    recipe,
     speech: isBoss ? pickLine(bossLines, id) : pickLine(idleLines, id),
     patience: maxPatience,
     maxPatience,
@@ -199,7 +231,7 @@ export const createCustomer = (
     burn: 0,
     mistakes: 0,
     isBoss,
-    steps: buildSteps(isBoss, wordPool),
+    steps: buildSteps(isBoss, wordPool, recipe),
   }
 }
 

@@ -1,5 +1,7 @@
 import type { Customer } from '../types/game'
 
+const grillSlotIndexes = [0, 1]
+
 type BurgerStationProps = {
   customer?: Customer
   customers: Customer[]
@@ -34,7 +36,7 @@ function BurgerStation({
       </div>
 
       <div className="grill-slots" aria-label="煎锅槽位">
-        {[0, 1, 2].map((slotIndex) => {
+        {grillSlotIndexes.map((slotIndex) => {
           const slotCustomer = customers[slotIndex]
           const isActive = slotCustomer?.id === activeCustomerId
 
@@ -55,7 +57,7 @@ function BurgerStation({
               key={slotCustomer.id}
               onClick={() => onSelectCustomer(slotCustomer.id)}
             >
-              <strong>{slotCustomer.isBoss ? 'BOSS' : `#${slotIndex + 1}`}</strong>
+              <strong>{slotCustomer.isBoss ? 'BOSS' : `锅 ${slotIndex + 1}`}</strong>
               <span>{slotCustomer.name}</span>
               <small>
                 A {slotCustomer.firstSideDoneness}% / B{' '}
@@ -67,7 +69,6 @@ function BurgerStation({
       </div>
 
       <div className="grill-lights" aria-hidden="true">
-        <span />
         <span />
         <span />
       </div>

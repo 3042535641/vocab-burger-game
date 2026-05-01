@@ -1,4 +1,4 @@
-export const maxCustomers = 3
+export const maxCustomers = 2
 export const targetRegularServed = 6
 export const basePatience = 75
 export const bossPatience = 58

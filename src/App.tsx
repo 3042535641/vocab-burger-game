@@ -711,7 +711,6 @@ function App() {
       {impact === 'victory' && (
         <div className="boss-finale-scene" aria-live="assertive">
           <div className="boss-finale-lights" aria-hidden="true" />
-          <div className="boss-finale-shockwave" aria-hidden="true" />
           <div className="boss-finale-stage" aria-hidden="true">
             <div className="boss-finale-table" />
             <div className="boss-finale-boss">
@@ -719,20 +718,17 @@ function App() {
               <span className="finale-eye finale-eye-right" />
               <span className="finale-brow finale-brow-left" />
               <span className="finale-brow finale-brow-right" />
+              <span className="finale-cheek finale-cheek-left" />
+              <span className="finale-cheek finale-cheek-right" />
               <span className="finale-mouth" />
               <span className="finale-sweat finale-sweat-left" />
               <span className="finale-sweat finale-sweat-right" />
               <span className="finale-smoke finale-smoke-one" />
               <span className="finale-smoke finale-smoke-two" />
+              <span className="finale-vein" />
             </div>
             <div className="boss-finale-burger" />
             <div className="boss-finale-stars">
-              <span />
-              <span />
-              <span />
-            </div>
-            <div className="boss-finale-smashes">
-              <span />
               <span />
               <span />
               <span />

@@ -23,11 +23,7 @@ import {
 import { words } from './data/words'
 import type { WordEntry } from './data/words'
 import { useTimedImpact } from './hooks/useTimedImpact'
-import type {
-  Customer,
-  Feedback,
-  GameStatus,
-} from './types/game'
+import type { Customer, Feedback, GameStatus } from './types/game'
 import type { GameRecords } from './types/records'
 import { gameAudio } from './utils/audio'
 import {
@@ -55,6 +51,8 @@ const categoryLabels: Record<WordEntry['category'], string> = {
   shop: '店铺',
   feeling: '情绪',
 }
+
+const normalizeEnglish = (value: string) => value.trim().toLowerCase()
 
 function App() {
   const [gameStatus, setGameStatus] = useState<GameStatus>('idle')
@@ -102,28 +100,25 @@ function App() {
     activeQuestionStepIndex === undefined
       ? undefined
       : activeCustomer?.steps[activeQuestionStepIndex]
-  const activeQuestion = useMemo(
-    () => {
-      if (
-        activeQuestionCustomerId === undefined ||
-        activeQuestionStepIndex === undefined ||
-        !activeStep
-      ) {
-        return undefined
-      }
+  const activeQuestion = useMemo(() => {
+    if (
+      activeQuestionCustomerId === undefined ||
+      activeQuestionStepIndex === undefined ||
+      !activeStep
+    ) {
+      return undefined
+    }
 
-      const options = [activeStep.word.english, ...activeStep.word.wrongOptions]
-      const offset =
-        (activeQuestionCustomerId + activeQuestionStepIndex) % options.length
+    const options = [activeStep.word.english, ...activeStep.word.wrongOptions]
+    const offset =
+      (activeQuestionCustomerId + activeQuestionStepIndex) % options.length
 
-      return {
-        chinese: activeStep.word.chinese,
-        correctAnswer: activeStep.word.english,
-        options: [...options.slice(offset), ...options.slice(0, offset)],
-      }
-    },
-    [activeQuestionCustomerId, activeQuestionStepIndex, activeStep],
-  )
+    return {
+      chinese: activeStep.word.chinese,
+      correctAnswer: activeStep.word.english,
+      options: [...options.slice(offset), ...options.slice(0, offset)],
+    }
+  }, [activeQuestionCustomerId, activeQuestionStepIndex, activeStep])
   const activeStationText = activeStep?.stationText
   const goalText = bossSpawned
     ? bossDefeated
@@ -286,12 +281,15 @@ function App() {
     view,
   ])
 
-  const handleAddWord = (word: WordEntry) => {
-    const exists = wordPool.some(
-      (item) => item.english.toLowerCase() === word.english.toLowerCase(),
+  const hasDuplicateEnglish = (word: WordEntry) =>
+    wordPool.some(
+      (item) =>
+        item.id !== word.id &&
+        normalizeEnglish(item.english) === normalizeEnglish(word.english),
     )
 
-    if (exists) {
+  const handleAddWord = (word: WordEntry) => {
+    if (hasDuplicateEnglish(word)) {
       return false
     }
 
@@ -313,13 +311,7 @@ function App() {
   }
 
   const handleUpdateWord = (word: WordEntry) => {
-    const exists = wordPool.some(
-      (item) =>
-        item.id !== word.id &&
-        item.english.toLowerCase() === word.english.toLowerCase(),
-    )
-
-    if (exists) {
+    if (hasDuplicateEnglish(word)) {
       return false
     }
 
@@ -336,15 +328,13 @@ function App() {
 
   const handleImportWords = (importedWords: WordEntry[]) => {
     const knownEnglish = new Set(
-      [...words, ...customWords].map((word) =>
-        word.english.trim().toLowerCase(),
-      ),
+      [...words, ...customWords].map((word) => normalizeEnglish(word.english)),
     )
     const nextWords = [...customWords]
     let addedCount = 0
 
     for (const word of importedWords) {
-      const normalizedEnglish = word.english.trim().toLowerCase()
+      const normalizedEnglish = normalizeEnglish(word.english)
 
       if (!normalizedEnglish || knownEnglish.has(normalizedEnglish)) {
         continue
@@ -544,7 +534,7 @@ function App() {
               : '翻面成功，但熟度不是最佳窗口。'
             : '答对了，动作完成！',
       })
-      setBanner(nextCombo >= 5 ? '锦旗进度达成！继续连对！' : '继续制作下一步')
+      setBanner(nextCombo >= 5 ? '锦旗进度达成，继续连对！' : '继续制作下一步')
       gameAudio.playCorrect(nextCombo)
       triggerImpact('correct', nextCombo >= 3 ? `Combo x${nextCombo}` : 'HIT!')
       return
@@ -558,23 +548,24 @@ function App() {
           return customer
         }
 
-        return cookPatty({
-          ...customer,
-          mistakes: customer.mistakes + 1,
-          speech: customer.isBoss
-            ? pickLine(bossLines, customer.mistakes + customer.id + 1)
-            : pickLine(wrongLines, customer.mistakes + customer.id + 1),
-          patience: Math.max(1, customer.patience - 4),
-        }, true)
+        return cookPatty(
+          {
+            ...customer,
+            mistakes: customer.mistakes + 1,
+            speech: customer.isBoss
+              ? pickLine(bossLines, customer.mistakes + customer.id + 1)
+              : pickLine(wrongLines, customer.mistakes + customer.id + 1),
+            patience: Math.max(1, customer.patience - 4),
+          },
+          true,
+        )
       }),
     )
     setFeedback({
       kind: 'wrong',
       message: `答错了，正确答案是 ${activeQuestion.correctAnswer}`,
     })
-    setBanner(
-      activeCustomer.isBoss ? 'Boss：这都能错？再快点！' : '顾客更着急了',
-    )
+    setBanner(activeCustomer.isBoss ? 'Boss：这都能错？再快点！' : '顾客更着急了')
     gameAudio.playWrong(activeCustomer.isBoss)
     triggerImpact('wrong', activeCustomer.isBoss ? 'Boss 暴击！' : 'MISS!')
   }
@@ -631,12 +622,16 @@ function App() {
       aria-labelledby="tutorial-title"
     >
       <section className="panel tutorial-panel">
-        <p className="eyebrow">课堂规则速通</p>
+        <p className="eyebrow">课堂规则速览</p>
         <h2 id="tutorial-title">开店前先看三条</h2>
         <ol>
-          <li>看中文选英文，答对才会推进汉堡步骤；答错扣分、扣耐心，还可能把肉饼煎焦。</li>
-          <li>肉饼熟度到 55%-85%、焦度低于 45 时翻面最香，能拿 Perfect Burger 加分。</li>
-          <li>普通顾客约 20 秒开始着急，完成 6 位后 Boss 登场；打败 Boss 进入结算。</li>
+          <li>
+            看中文选英文，答对才会推进汉堡步骤；答错会扣分、扣耐心，还可能把肉饼煎焦。
+          </li>
+          <li>
+            肉饼第一面 55%-85%、焦度低于 45 时翻面最香，双面控制好可拿 Perfect Burger。
+          </li>
+          <li>普通顾客约 20 秒开始着急，完成 6 位后 Boss 登场。</li>
         </ol>
         <button
           type="button"
@@ -665,7 +660,10 @@ function App() {
   if (gameStatus === 'idle') {
     return (
       <main className="game-shell start-screen">
-        <section className="panel intro-panel start-dashboard" aria-labelledby="game-title">
+        <section
+          className="panel intro-panel start-dashboard"
+          aria-labelledby="game-title"
+        >
           <div className="intro-hero">
             <div>
               <p className="eyebrow">Vocab Burger Shop</p>
@@ -683,7 +681,9 @@ function App() {
           <div className="record-strip" aria-label="历史记录">
             <span>最高分 {records.highScore}</span>
             <span>最佳 Combo {records.bestCombo}</span>
-            <span>通关 {records.wins}/{records.rounds}</span>
+            <span>
+              通关 {records.wins}/{records.rounds}
+            </span>
           </div>
 
           <section className="word-preview" aria-labelledby="preview-title">
@@ -727,7 +727,9 @@ function App() {
 
   if (gameStatus === 'ended') {
     return (
-      <main className={`game-shell start-screen ${bossDefeated ? 'victory-result' : ''}`}>
+      <main
+        className={`game-shell start-screen ${bossDefeated ? 'victory-result' : ''}`}
+      >
         <section className="panel intro-panel result-panel" aria-labelledby="result-title">
           <p className="eyebrow">{bossDefeated ? 'Boss 破防结算' : '营业结算'}</p>
           <h1 id="result-title">今日得分：{score}</h1>

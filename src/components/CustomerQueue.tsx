@@ -1,5 +1,5 @@
-import type { Customer, Mood } from '../types/game'
 import { maxCustomers } from '../constants/game'
+import type { Customer, Mood } from '../types/game'
 
 const getMood = (customer: Customer): Mood => {
   const waitedSeconds = customer.maxPatience - customer.patience
@@ -57,7 +57,9 @@ function CustomerQueue({
     <section className="panel customer-line" aria-label="顾客队伍">
       <div className="section-heading">
         <h2>顾客队伍</h2>
-        <span>{customers.length}/{maxCustomers}</span>
+        <span>
+          {customers.length}/{maxCustomers}
+        </span>
       </div>
       <div className="customer-list">
         {customers.map((customer) => {

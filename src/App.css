@@ -1592,9 +1592,9 @@
       180px,
       0.55fr
     );
-  align-items: stretch;
+  align-items: center;
   gap: 10px;
-  min-height: 128px;
+  min-height: 132px;
   background:
     linear-gradient(90deg, rgba(255, 255, 255, 0.58), transparent 35%),
     #fff0c8;
@@ -1636,18 +1636,27 @@
 .answer-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 78px;
+  align-content: center;
+  align-items: stretch;
   gap: 8px;
+  min-height: 78px;
 }
 
 .answer-button {
   position: relative;
   overflow: hidden;
-  min-height: 78px;
+  width: 100%;
+  height: 78px;
+  min-height: 0;
   padding: 10px;
   background: linear-gradient(#fff8ea, #f1d4a8);
   box-shadow: 0 4px 0 #9b6b4b;
   font-size: 18px;
   letter-spacing: 0;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  contain: layout paint;
   transition:
     transform 120ms ease,
     filter 120ms ease,
@@ -1682,8 +1691,9 @@
 
 .quiz-footer {
   display: grid;
-  align-content: stretch;
+  align-content: center;
   gap: 8px;
+  min-height: 100%;
 }
 
 .combo,
@@ -1893,7 +1903,12 @@
   }
 
   .answer-button {
-    min-height: 54px;
+    height: 58px;
+  }
+
+  .answer-grid {
+    grid-auto-rows: 58px;
+    min-height: 116px;
   }
 
   .question-card h2 {

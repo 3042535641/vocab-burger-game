@@ -22,6 +22,7 @@ class GameAudio {
   private intensity = 0
   private bossActive = false
   private finaleActive = false
+  private effectTimers = new Set<number>()
 
   private getAudioContext() {
     if (!this.audioContext) {
@@ -41,8 +42,25 @@ class GameAudio {
     return this.audioContext
   }
 
+  private scheduleEffect(callback: () => void, delay = 0) {
+    const timer = window.setTimeout(() => {
+      this.effectTimers.delete(timer)
+      callback()
+    }, delay)
+
+    this.effectTimers.add(timer)
+  }
+
+  private clearScheduledEffects() {
+    for (const timer of this.effectTimers) {
+      window.clearTimeout(timer)
+    }
+
+    this.effectTimers.clear()
+  }
+
   private playOneShot(src: string, volume = 0.7, playbackRate = 1, delay = 0) {
-    window.setTimeout(() => {
+    this.scheduleEffect(() => {
       const audio = new Audio(src)
       audio.volume = volume
       audio.playbackRate = playbackRate
@@ -57,7 +75,7 @@ class GameAudio {
     volume = 0.055,
     delay = 0,
   ) {
-    window.setTimeout(() => {
+    this.scheduleEffect(() => {
       const context = this.getAudioContext()
       const oscillator = context.createOscillator()
       const gain = context.createGain()
@@ -125,7 +143,7 @@ class GameAudio {
       }
 
       this.arcadeStep += 1
-    }, 460)
+    }, 760)
   }
 
   private startBossLayer() {
@@ -326,6 +344,7 @@ class GameAudio {
 
   stopMusic() {
     this.finaleActive = false
+    this.clearScheduledEffects()
 
     if (!this.music) {
       this.stopBossMusic()

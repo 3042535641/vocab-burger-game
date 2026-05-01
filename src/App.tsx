@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import BurgerStation from './components/BurgerStation'
 import CustomerQueue from './components/CustomerQueue'
 import OrderTicket from './components/OrderTicket'
@@ -293,6 +293,8 @@ function App() {
   const [impact, setImpact] = useState<
     'correct' | 'wrong' | 'serve' | 'victory' | null
   >(null)
+  const impactTimerRef = useRef<number | undefined>(undefined)
+  const finaleTimerRef = useRef<number | undefined>(undefined)
   const wordPool = useMemo(() => [...words, ...customWords], [customWords])
   const previewWords = useMemo(() => {
     const previewIds = new Set([...stepWordIds, ...bossStepWordIds])
@@ -320,7 +322,11 @@ function App() {
     : `目标：${servedCount}/${targetRegularServed}`
 
   useEffect(() => {
-    return () => gameAudio.stopMusic()
+    return () => {
+      window.clearTimeout(impactTimerRef.current)
+      window.clearTimeout(finaleTimerRef.current)
+      gameAudio.stopMusic()
+    }
   }, [])
 
   useEffect(() => {
@@ -493,15 +499,14 @@ function App() {
       victory: 21000,
     }
 
+    window.clearTimeout(impactTimerRef.current)
     setImpact(kind)
     setImpactText(text)
-    window.setTimeout(
-      () => {
-        setImpact(null)
-        setImpactText('')
-      },
-      impactDurations[kind],
-    )
+    impactTimerRef.current = window.setTimeout(() => {
+      setImpact(null)
+      setImpactText('')
+      impactTimerRef.current = undefined
+    }, impactDurations[kind])
   }
 
   const handleAddWord = (word: WordEntry) => {
@@ -533,6 +538,8 @@ function App() {
   const startGame = () => {
     const firstCustomer = createCustomer(1, false, wordPool)
 
+    window.clearTimeout(finaleTimerRef.current)
+    window.clearTimeout(impactTimerRef.current)
     setView('game')
 
     if (musicEnabled) {
@@ -552,15 +559,21 @@ function App() {
     setBossDefeated(false)
     setFinalizedRound(false)
     setVictoryLine('')
+    setImpact(null)
+    setImpactText('')
     setFeedback(null)
     setBanner('第一位顾客来了，完成 6 份普通订单后 Boss 登场')
   }
 
   const endGame = () => {
+    window.clearTimeout(finaleTimerRef.current)
+    window.clearTimeout(impactTimerRef.current)
     gameAudio.stopMusic()
     setGameStatus('ended')
     setCustomers([])
     setActiveCustomerId(undefined)
+    setImpact(null)
+    setImpactText('')
     setBanner('今日营业结束')
   }
 
@@ -615,14 +628,18 @@ function App() {
 
     if (customer.isBoss) {
       const line = pickLine(bossVictoryLines, score + nextCombo)
+      window.clearTimeout(finaleTimerRef.current)
       setBossDefeated(true)
       setVictoryLine(line)
       setBanner(line)
       gameAudio.playVictory()
       triggerImpact('victory', 'Boss 破防！')
-      window.setTimeout(() => {
+      finaleTimerRef.current = window.setTimeout(() => {
         gameAudio.stopMusic()
         setGameStatus('ended')
+        setImpact(null)
+        setImpactText('')
+        finaleTimerRef.current = undefined
       }, 21000)
       return
     }

@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import type { Customer } from '../types/game'
 
 type OrderTicketProps = {
@@ -55,4 +56,15 @@ function OrderTicket({
   )
 }
 
-export default OrderTicket
+export default memo(OrderTicket, (previous, next) => {
+  const previousCustomer = previous.customer
+  const nextCustomer = next.customer
+
+  return (
+    previous.servedCount === next.servedCount &&
+    previous.targetServed === next.targetServed &&
+    previous.bossSpawned === next.bossSpawned &&
+    previousCustomer?.id === nextCustomer?.id &&
+    previousCustomer?.stepIndex === nextCustomer?.stepIndex
+  )
+})

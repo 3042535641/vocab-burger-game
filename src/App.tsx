@@ -701,11 +701,6 @@ function App() {
               <span />
             </div>
           </div>
-          <div className="boss-finale-cracks" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-          </div>
         </div>
       )}
       {impactText && impact !== 'victory' && (

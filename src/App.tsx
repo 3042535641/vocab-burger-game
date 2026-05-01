@@ -679,6 +679,7 @@ function App() {
     >
       {impact === 'victory' && (
         <div className="victory-show" aria-live="assertive">
+          <div className="victory-stage-label">OBJECTION!</div>
           <div className="victory-spotlight" />
           <div className="victory-confetti" aria-hidden="true">
             <span />
@@ -691,8 +692,14 @@ function App() {
             <span />
           </div>
           <div className="victory-speedlines" aria-hidden="true" />
+          <div className="victory-impact-burst" aria-hidden="true" />
           <div className="victory-boss-cutin" aria-hidden="true">
             <span>Boss</span>
+          </div>
+          <div className="victory-crack" aria-hidden="true">
+            <span />
+            <span />
+            <span />
           </div>
           <div className="victory-card">
             <small>FINAL VERDICT</small>

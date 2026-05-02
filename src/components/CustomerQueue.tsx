@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { maxCustomers } from '../constants/game'
 import type { Customer, Mood } from '../types/game'
 
@@ -88,7 +89,7 @@ function CustomerQueue({
               </span>
               <span className="customer-info">
                 <strong>{customer.name}</strong>
-                <span>{customer.isBoss ? '超级顾客' : '经典汉堡'}</span>
+                <span>{customer.recipe.name}</span>
                 <span>情绪：{moodLabels[mood]}</span>
               </span>
               <span className={`speech-bubble ${mood}`}>{customer.speech}</span>
@@ -103,4 +104,4 @@ function CustomerQueue({
   )
 }
 
-export default CustomerQueue
+export default memo(CustomerQueue)

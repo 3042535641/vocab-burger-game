@@ -29,12 +29,15 @@ import { gameAudio } from './utils/audio'
 import {
   bossLines,
   bossVictoryLines,
+  buildQuestion,
   cookPatty,
   correctLines,
   createCustomer,
   getRandomDelay,
+  getTargetQueueSize,
   getWaitingLine,
   pickLine,
+  recipeCatalog,
   wrongLines,
 } from './utils/gameLogic'
 import {
@@ -88,25 +91,16 @@ function App() {
           list.findIndex((item) => item.english === word.english) === index,
       )
   }, [wordPool])
+  const previewRecipes = recipeCatalog
 
   const activeCustomer =
     customers.find((customer) => customer.id === activeCustomerId) ??
     customers[0]
   const activeStep = activeCustomer?.steps[activeCustomer.stepIndex]
-  const activeQuestion = useMemo(() => {
-    if (!activeCustomer || !activeStep) {
-      return undefined
-    }
-
-    const options = [activeStep.word.english, ...activeStep.word.wrongOptions]
-    const offset = (activeCustomer.id + activeCustomer.stepIndex) % options.length
-
-    return {
-      chinese: activeStep.word.chinese,
-      correctAnswer: activeStep.word.english,
-      options: [...options.slice(offset), ...options.slice(0, offset)],
-    }
-  }, [activeCustomer, activeStep])
+  const activeQuestion = useMemo(
+    () => buildQuestion(activeCustomer),
+    [activeCustomer],
+  )
   const goalText = bossSpawned
     ? bossDefeated
       ? 'Boss 已完成'
@@ -237,7 +231,12 @@ function App() {
 
     const spawnTimer = window.setTimeout(() => {
       setCustomers((currentCustomers) => {
-        if (currentCustomers.length >= maxCustomers) {
+        const targetQueueSize = getTargetQueueSize(servedCount)
+
+        if (
+          currentCustomers.length >= maxCustomers ||
+          currentCustomers.length >= targetQueueSize
+        ) {
           return currentCustomers
         }
 
@@ -676,6 +675,24 @@ function App() {
               通关 {records.wins}/{records.rounds}
             </span>
           </div>
+
+          <section className="recipe-preview" aria-labelledby="recipe-preview-title">
+            <div className="section-heading">
+              <h2 id="recipe-preview-title">本局汉堡配方</h2>
+              <span>随机出单</span>
+            </div>
+            <div className="recipe-preview-grid">
+              {previewRecipes.map((recipe) => (
+                <article
+                  className={`recipe-preview-card recipe-${recipe.id}`}
+                  key={recipe.id}
+                >
+                  <strong>{recipe.name}</strong>
+                  <span>{recipe.tag}</span>
+                </article>
+              ))}
+            </div>
+          </section>
 
           <section className="word-preview" aria-labelledby="preview-title">
             <div className="section-heading">

@@ -24,6 +24,8 @@ const recipes: BurgerRecipe[] = [
   { id: 'sauce', name: '爆酱记忆堡', tag: '酱汁加倍' },
 ]
 
+export const recipeCatalog = recipes
+
 export const idleLines = [
   '老板，来个能背会单词的汉堡。',
   '我饿了，但我更怕考试。',
@@ -95,6 +97,14 @@ export const getRandomDelay = (served: number, queueSize = 0) => {
   const randomWindow = Math.max(2200, 4300 - served * 320)
 
   return baseDelay + Math.floor(Math.random() * randomWindow)
+}
+
+export const getTargetQueueSize = (served: number) => {
+  if (served >= 2) {
+    return 2
+  }
+
+  return 1
 }
 
 const getAverageDoneness = (firstSide: number, secondSide: number) => {

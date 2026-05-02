@@ -310,6 +310,64 @@
   font-weight: 900;
 }
 
+.recipe-preview {
+  margin: 0 0 16px;
+  padding: 12px;
+  border: 2px solid #2b211b;
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.58), transparent 40%),
+    #e7f6df;
+}
+
+.recipe-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.recipe-preview-card {
+  display: grid;
+  gap: 4px;
+  min-height: 72px;
+  padding: 10px;
+  border: 2px solid #2b211b;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 88% 18%, rgba(255, 226, 122, 0.42), transparent 28%),
+    #fffdf6;
+  box-shadow: 0 4px 0 #7a4830;
+  text-align: left;
+}
+
+.recipe-preview-card strong {
+  font-size: 16px;
+}
+
+.recipe-preview-card span {
+  color: #7b4a2d;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.recipe-green {
+  background:
+    radial-gradient(circle at 88% 18%, rgba(101, 189, 97, 0.36), transparent 28%),
+    #fffdf6;
+}
+
+.recipe-tomato {
+  background:
+    radial-gradient(circle at 88% 18%, rgba(217, 71, 49, 0.32), transparent 28%),
+    #fffdf6;
+}
+
+.recipe-sauce {
+  background:
+    radial-gradient(circle at 88% 18%, rgba(154, 62, 34, 0.28), transparent 28%),
+    #fffdf6;
+}
+
 .tutorial-backdrop {
   display: grid;
   position: fixed;
@@ -2143,6 +2201,7 @@
   }
 
   .intro-hero,
+  .recipe-preview-grid,
   .preview-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -2168,6 +2227,7 @@
 
   .recipe-list,
   .answer-grid,
+  .recipe-preview-grid,
   .preview-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -2212,6 +2272,7 @@
 @media (max-width: 560px) {
   .recipe-list,
   .answer-grid,
+  .recipe-preview-grid,
   .preview-grid,
   .intro-hero {
     grid-template-columns: 1fr;

@@ -134,12 +134,13 @@ export const getWaitingLine = (customer: Customer) => {
 
 export const getRandomDelay = (served: number, queueSize = 0) => {
   if (queueSize === 0) {
-    return 1100 + Math.floor(Math.random() * 900)
+    return 360 + Math.floor(Math.random() * 520)
   }
 
-  const servedPressure = Math.min(served, targetRegularServed - 1) * 620
-  const baseDelay = Math.max(4800, 9200 - servedPressure)
-  const randomWindow = Math.max(2200, 4300 - served * 320)
+  const progress = Math.min(served / Math.max(1, targetRegularServed - 1), 1)
+  const queueRelief = queueSize >= 2 ? 1200 : 0
+  const baseDelay = Math.max(4300, 9200 - progress * 3900 + queueRelief)
+  const randomWindow = Math.max(1800, 4300 - progress * 1900)
 
   return baseDelay + Math.floor(Math.random() * randomWindow)
 }

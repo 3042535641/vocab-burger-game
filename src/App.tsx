@@ -193,6 +193,12 @@ function App() {
           }
         }
 
+        setActiveCustomerId((currentActiveId) =>
+          result.customers.some((customer) => customer.id === currentActiveId)
+            ? currentActiveId
+            : result.customers[0]?.id,
+        )
+
         return result.customers
       })
     }, 1000)
@@ -394,9 +400,15 @@ function App() {
     const nextServedCount = customer.isBoss ? servedCount : servedCount + 1
 
     setScore((currentScore) => currentScore + gainedScore)
-    setCustomers((currentCustomers) =>
-      currentCustomers.filter((item) => item.id !== customer.id),
-    )
+    setCustomers((currentCustomers) => {
+      const nextCustomers = currentCustomers.filter((item) => item.id !== customer.id)
+      setActiveCustomerId((currentActiveId) =>
+        currentActiveId === customer.id || !currentActiveId
+          ? nextCustomers[0]?.id
+          : currentActiveId,
+      )
+      return nextCustomers
+    })
     setFeedback({
       kind: perfectBonus ? 'correct' : 'info',
       message: perfectBonus

@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react'
 import BurgerStation from './components/BurgerStation'
+import BossFinale from './components/BossFinale'
 import CustomerQueue from './components/CustomerQueue'
 import OrderTicket from './components/OrderTicket'
 import QuizPanel from './components/QuizPanel'
@@ -740,34 +741,7 @@ function App() {
         combo >= 3 ? 'combo-hot' : ''
       } ${bossSpawned && !bossDefeated ? 'boss-mode' : ''}`}
     >
-      {impact === 'victory' && (
-        <div className="boss-finale-scene" aria-live="assertive">
-          <div className="boss-finale-lights" aria-hidden="true" />
-          <div className="boss-finale-stage" aria-hidden="true">
-            <div className="boss-finale-impact" />
-            <div className="boss-finale-glitch" />
-            <div className="boss-finale-afterimage afterimage-one" />
-            <div className="boss-finale-afterimage afterimage-two" />
-            <div className="boss-finale-table" />
-            <div className="boss-finale-boss">
-              <span className="finale-eye finale-eye-left" />
-              <span className="finale-eye finale-eye-right" />
-              <span className="finale-brow finale-brow-left" />
-              <span className="finale-brow finale-brow-right" />
-              <span className="finale-cheek finale-cheek-left" />
-              <span className="finale-cheek finale-cheek-right" />
-              <span className="finale-mouth" />
-              <span className="finale-sweat finale-sweat-left" />
-              <span className="finale-sweat finale-sweat-right" />
-              <span className="finale-smoke finale-smoke-one" />
-              <span className="finale-smoke finale-smoke-two" />
-              <span className="finale-vein" />
-            </div>
-            <div className="boss-finale-burger" />
-            <div className="finale-callout">知识点暴击成立</div>
-          </div>
-        </div>
-      )}
+      {impact === 'victory' && <BossFinale />}
       {impactText && impact !== 'victory' && (
         <div className={`hit-text hit-${impact}`}>{impactText}</div>
       )}

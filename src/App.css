@@ -2239,6 +2239,366 @@
   display: none;
 }
 
+.medical-finale {
+  background:
+    linear-gradient(115deg, transparent 0 32%, rgba(217, 71, 49, 0.36) 32% 35%, transparent 35%),
+    repeating-linear-gradient(0deg, rgba(45, 132, 121, 0.18) 0 3px, transparent 3px 34px),
+    linear-gradient(180deg, #d7f3ed 0%, #fff0c8 46%, #d94731 100%);
+  animation: medical-finale-life 10s linear both;
+}
+
+.medical-finale::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.92;
+  background:
+    linear-gradient(90deg, rgba(43, 33, 27, 0.22), transparent 18% 82%, rgba(43, 33, 27, 0.22)),
+    repeating-linear-gradient(90deg, transparent 0 42px, rgba(255, 255, 255, 0.18) 42px 46px);
+}
+
+.medical-finale-lights {
+  position: absolute;
+  inset: 0;
+  background:
+    conic-gradient(
+      from 18deg at 50% 8%,
+      transparent 0 24deg,
+      rgba(255, 247, 232, 0.62) 24deg 38deg,
+      transparent 38deg 132deg,
+      rgba(255, 247, 232, 0.48) 132deg 148deg,
+      transparent 148deg 360deg
+    );
+  mix-blend-mode: screen;
+  animation: medical-lights-sweep 10s ease both;
+}
+
+.medical-finale-board {
+  display: flex;
+  position: absolute;
+  z-index: 2;
+  top: 5vh;
+  left: 50%;
+  justify-content: space-between;
+  gap: 14px;
+  width: min(760px, 82vw);
+  padding: 16px 24px;
+  border: 6px solid #2b211b;
+  border-radius: 8px;
+  color: #dff4bf;
+  background:
+    linear-gradient(115deg, transparent 0 40%, rgba(255, 255, 255, 0.08) 40% 44%, transparent 44%),
+    #174f49;
+  box-shadow: 0 12px 0 rgba(43, 33, 27, 0.34);
+  font-size: clamp(18px, 3vw, 38px);
+  font-weight: 1000;
+  text-transform: uppercase;
+  transform: translateX(-50%) rotate(-1deg);
+  animation: medical-board-drop 9.4s cubic-bezier(0.18, 1, 0.2, 1) both;
+}
+
+.medical-finale-board span {
+  min-width: 0;
+  padding: 2px 8px;
+  overflow: hidden;
+  border: 2px solid rgba(223, 244, 191, 0.4);
+  border-radius: 6px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.medical-finale-board span:nth-child(2) {
+  color: #ffe27a;
+  transform: rotate(2deg);
+}
+
+.medical-finale-stage {
+  display: grid;
+  position: relative;
+  z-index: 3;
+  place-items: center;
+  width: min(900px, 92vw);
+  height: min(640px, 78vh);
+  margin-top: 7vh;
+  animation: medical-stage-bounce 10s steps(2, jump-none) both;
+}
+
+.medical-impact-ring {
+  position: absolute;
+  border: 10px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  opacity: 0;
+  animation: medical-ring-pulse 5.4s cubic-bezier(0.18, 1, 0.2, 1) both;
+}
+
+.ring-one {
+  width: min(640px, 86vw);
+  aspect-ratio: 1;
+  animation-delay: 520ms;
+}
+
+.ring-two {
+  width: min(430px, 68vw);
+  aspect-ratio: 1;
+  border-color: rgba(217, 71, 49, 0.62);
+  animation-delay: 1.4s;
+}
+
+.medical-word-card {
+  position: absolute;
+  z-index: 7;
+  min-width: 116px;
+  padding: 10px 16px;
+  border: 5px solid #2b211b;
+  border-radius: 8px;
+  color: #2b211b;
+  background:
+    linear-gradient(90deg, rgba(45, 132, 121, 0.18) 0 10px, transparent 10px),
+    #fffdf6;
+  box-shadow:
+    0 8px 0 rgba(43, 33, 27, 0.36),
+    0 0 0 6px rgba(255, 226, 122, 0.2);
+  font-size: clamp(20px, 3vw, 36px);
+  font-weight: 1000;
+  text-align: center;
+  opacity: 0;
+}
+
+.card-root {
+  top: 23%;
+  left: 4%;
+  animation: medical-card-hit-left 8.4s cubic-bezier(0.18, 1, 0.2, 1) 1s both;
+}
+
+.card-term {
+  top: 42%;
+  right: 3%;
+  color: #fffdf6;
+  background: #d94731;
+  animation: medical-card-hit-right 8.4s cubic-bezier(0.18, 1, 0.2, 1) 1.45s both;
+}
+
+.card-sterile {
+  bottom: 19%;
+  left: 12%;
+  background: #d9eff8;
+  animation: medical-card-hit-left 8.4s cubic-bezier(0.18, 1, 0.2, 1) 2s both;
+}
+
+.medical-finale-professor {
+  position: relative;
+  z-index: 5;
+  width: min(360px, 54vw);
+  aspect-ratio: 0.82;
+  border: 8px solid #2b211b;
+  border-radius: 48% 48% 18% 18%;
+  background:
+    radial-gradient(circle at 31% 34%, #fff7e8 0 15px, transparent 16px),
+    radial-gradient(circle at 69% 34%, #fff7e8 0 15px, transparent 16px),
+    linear-gradient(#ffd7aa 0 55%, #fffdf6 55%);
+  box-shadow:
+    0 18px 0 rgba(43, 33, 27, 0.26),
+    0 0 0 14px rgba(45, 132, 121, 0.22);
+  transform-origin: 50% 90%;
+  animation:
+    professor-breakdown 9.2s cubic-bezier(0.18, 1, 0.2, 1) 260ms both,
+    professor-gakuen-shake 680ms steps(2, jump-none) 2.1s 9;
+}
+
+.medical-finale-professor span {
+  position: absolute;
+  display: block;
+}
+
+.professor-hair {
+  top: -5%;
+  left: 12%;
+  right: 12%;
+  height: 25%;
+  border: 5px solid #2b211b;
+  border-radius: 999px 999px 24px 24px;
+  background:
+    linear-gradient(90deg, #fffdf6 0 18%, #2b211b 18% 82%, #fffdf6 82%);
+}
+
+.professor-glasses {
+  top: 31%;
+  left: 20%;
+  width: 60%;
+  height: 17%;
+  border-top: 6px solid #2b211b;
+  background:
+    radial-gradient(ellipse at 26% 48%, transparent 0 28%, #2b211b 29% 35%, transparent 36%),
+    radial-gradient(ellipse at 74% 48%, transparent 0 28%, #2b211b 29% 35%, transparent 36%),
+    linear-gradient(90deg, transparent 0 46%, #2b211b 46% 54%, transparent 54%);
+  animation: glasses-crack 7.2s ease 1.3s both;
+}
+
+.professor-eye {
+  top: 32%;
+  width: 58px;
+  height: 58px;
+  border: 5px solid #2b211b;
+  border-radius: 999px;
+  background:
+    repeating-conic-gradient(from 0deg, #2d8479 0 20deg, #fffdf6 20deg 40deg);
+  box-shadow: inset 0 0 0 13px #fffdf6;
+  animation:
+    professor-eye-pop 7.8s cubic-bezier(0.18, 1, 0.2, 1) 760ms both,
+    professor-eye-spin 540ms linear 1.5s 10;
+}
+
+.professor-eye::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #2b211b;
+  animation: professor-pupil-run 1.1s steps(2, jump-none) 1.4s 7;
+}
+
+.professor-eye-left {
+  left: 21%;
+}
+
+.professor-eye-right {
+  right: 21%;
+}
+
+.professor-brow {
+  top: 25%;
+  width: 74px;
+  height: 9px;
+  border: 3px solid #2b211b;
+  border-radius: 999px;
+  background: #2b211b;
+}
+
+.professor-brow-left {
+  left: 17%;
+  transform: rotate(18deg);
+  animation: professor-brow-left 7.8s ease 820ms both;
+}
+
+.professor-brow-right {
+  right: 17%;
+  transform: rotate(-18deg);
+  animation: professor-brow-right 7.8s ease 820ms both;
+}
+
+.professor-mouth {
+  left: 50%;
+  bottom: 25%;
+  width: 132px;
+  height: 42px;
+  border: 7px solid #2b211b;
+  border-radius: 999px 999px 18px 18px;
+  background:
+    radial-gradient(ellipse at 50% 100%, #ff8a8a 0 30%, transparent 32%),
+    #fff7e8;
+  transform: translateX(-50%);
+  animation: professor-mouth-yell 7.8s ease 820ms both;
+}
+
+.professor-coat {
+  left: 8%;
+  right: 8%;
+  bottom: -1%;
+  height: 28%;
+  border-top: 6px solid #2b211b;
+  background:
+    linear-gradient(115deg, transparent 0 42%, #2b211b 42% 45%, transparent 45%),
+    linear-gradient(65deg, transparent 0 42%, #2b211b 42% 45%, transparent 45%),
+    #fffdf6;
+}
+
+.professor-tie {
+  left: 50%;
+  bottom: 1%;
+  width: 34px;
+  height: 24%;
+  border: 4px solid #2b211b;
+  background: #2d8479;
+  transform: translateX(-50%);
+}
+
+.professor-sweat {
+  width: 24px;
+  height: 44px;
+  border: 4px solid #2b211b;
+  border-radius: 999px 999px 999px 10px;
+  background: #d9eff8;
+  opacity: 0;
+}
+
+.sweat-one {
+  top: 31%;
+  left: -24px;
+  animation: medical-sweat-fall 3.5s ease 1.7s both;
+}
+
+.sweat-two {
+  top: 17%;
+  right: -22px;
+  animation: medical-sweat-fall 3.8s ease 1.45s both;
+}
+
+.medical-burger-bonk {
+  position: absolute;
+  z-index: 8;
+  bottom: 76px;
+  left: 50%;
+  width: min(190px, 30vw);
+  height: 96px;
+  border: 6px solid #2b211b;
+  border-radius: 999px 999px 26px 26px;
+  background:
+    radial-gradient(circle at 24% 24%, #fff3b1 0 5px, transparent 6px),
+    radial-gradient(circle at 56% 20%, #fff3b1 0 5px, transparent 6px),
+    linear-gradient(#f2bd63 0 34%, #72c959 35% 48%, #85452b 49% 72%, #d88d38 73%);
+  box-shadow: 0 12px 0 rgba(43, 33, 27, 0.3);
+  opacity: 0;
+  animation:
+    medical-burger-bonk 8.4s cubic-bezier(0.18, 1, 0.2, 1) 1.1s both,
+    medical-burger-vibrate 720ms steps(2, jump-none) 2.55s 7;
+}
+
+.medical-ecg-line {
+  position: absolute;
+  z-index: 4;
+  right: 2%;
+  bottom: 30px;
+  left: 2%;
+  height: 58px;
+  opacity: 0;
+  background:
+    linear-gradient(115deg, transparent 0 12%, #dff4bf 12% 14%, transparent 14% 22%, #dff4bf 22% 24%, transparent 24% 32%, #dff4bf 32% 34%, transparent 34%),
+    linear-gradient(90deg, transparent 0 2%, #dff4bf 2% 98%, transparent 98%);
+  filter: drop-shadow(0 0 8px rgba(223, 244, 191, 0.9));
+  animation: medical-ecg-rush 8.4s ease 1.4s both;
+}
+
+.medical-finale-caption {
+  position: absolute;
+  z-index: 9;
+  bottom: 10px;
+  left: 50%;
+  padding: 10px 18px;
+  border: 5px solid #2b211b;
+  border-radius: 8px;
+  color: #fffdf6;
+  background: #2d8479;
+  box-shadow: 0 8px 0 #174f49;
+  font-size: clamp(18px, 3vw, 34px);
+  font-weight: 1000;
+  text-align: center;
+  transform: translateX(-50%) rotate(-1deg);
+  animation: medical-caption-slam 7.8s cubic-bezier(0.18, 1, 0.2, 1) 2.4s both;
+}
+
 /* Medical-student art pass: lecture notes, lab bench, flashcards, and ECG energy. */
 .game-shell::before {
   background:
@@ -2634,7 +2994,442 @@
   animation: none;
 }
 
+@keyframes medical-finale-life {
+  0% {
+    opacity: 0;
+    filter: saturate(0.8);
+  }
+
+  6%,
+  92% {
+    opacity: 1;
+    filter: saturate(1.15);
+  }
+
+  100% {
+    opacity: 0;
+    filter: saturate(0.8);
+  }
+}
+
+@keyframes medical-lights-sweep {
+  0%,
+  10% {
+    opacity: 0;
+    transform: rotate(-10deg);
+  }
+
+  22%,
+  78% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(13deg);
+  }
+}
+
+@keyframes medical-board-drop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -90px) rotate(-6deg);
+  }
+
+  14%,
+  88% {
+    opacity: 1;
+    transform: translate(-50%, 0) rotate(-1deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -24px) rotate(2deg);
+  }
+}
+
+@keyframes medical-stage-bounce {
+  0%,
+  18%,
+  42%,
+  66%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  26% {
+    transform: translate(-10px, 4px);
+  }
+
+  52% {
+    transform: translate(8px, -3px);
+  }
+
+  74% {
+    transform: translate(-5px, -2px);
+  }
+}
+
+@keyframes medical-ring-pulse {
+  0%,
+  16% {
+    opacity: 0;
+    transform: scale(0.48);
+  }
+
+  30%,
+  72% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.32);
+  }
+}
+
+@keyframes medical-card-hit-left {
+  0%,
+  14% {
+    opacity: 0;
+    transform: translate(-140px, -40px) rotate(-18deg) scale(0.72);
+  }
+
+  24%,
+  78% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(-4deg) scale(1);
+  }
+
+  86% {
+    opacity: 1;
+    transform: translate(8px, -6px) rotate(3deg) scale(1.06);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-28px, -20px) rotate(-8deg) scale(0.86);
+  }
+}
+
+@keyframes medical-card-hit-right {
+  0%,
+  14% {
+    opacity: 0;
+    transform: translate(140px, -30px) rotate(18deg) scale(0.72);
+  }
+
+  24%,
+  78% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(5deg) scale(1);
+  }
+
+  86% {
+    opacity: 1;
+    transform: translate(-8px, -6px) rotate(-3deg) scale(1.06);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(28px, -20px) rotate(8deg) scale(0.86);
+  }
+}
+
+@keyframes professor-breakdown {
+  0% {
+    opacity: 0;
+    transform: translateY(80px) scale(0.7);
+  }
+
+  14% {
+    opacity: 1;
+    transform: translateY(0) scale(1.04);
+  }
+
+  24% {
+    transform: translateY(0) scale(1);
+  }
+
+  46% {
+    transform: translateY(-18px) rotate(-2deg) scale(1.08);
+  }
+
+  70% {
+    transform: translateY(8px) rotate(2deg) scale(0.98);
+  }
+
+  88% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg) scale(1.03);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(80px) rotate(4deg) scale(0.78);
+  }
+}
+
+@keyframes professor-gakuen-shake {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 9px -4px;
+  }
+}
+
+@keyframes glasses-crack {
+  0%,
+  28% {
+    transform: scaleX(1);
+    filter: none;
+  }
+
+  42%,
+  78% {
+    transform: scaleX(1.08) rotate(1deg);
+    filter: drop-shadow(4px 2px 0 rgba(217, 71, 49, 0.5));
+  }
+
+  100% {
+    transform: scaleX(0.92);
+  }
+}
+
+@keyframes professor-eye-pop {
+  0%,
+  16% {
+    transform: scale(0.4);
+  }
+
+  28%,
+  72% {
+    transform: scale(1.12);
+  }
+
+  100% {
+    transform: scale(0.72);
+  }
+}
+
+@keyframes professor-eye-spin {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 22px 0;
+  }
+}
+
+@keyframes professor-pupil-run {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(10px, -6px);
+  }
+}
+
+@keyframes professor-brow-left {
+  0%,
+  24% {
+    transform: rotate(18deg);
+  }
+
+  48%,
+  78% {
+    transform: translateY(-12px) rotate(-18deg);
+  }
+
+  100% {
+    transform: rotate(28deg);
+  }
+}
+
+@keyframes professor-brow-right {
+  0%,
+  24% {
+    transform: rotate(-18deg);
+  }
+
+  48%,
+  78% {
+    transform: translateY(-12px) rotate(18deg);
+  }
+
+  100% {
+    transform: rotate(-28deg);
+  }
+}
+
+@keyframes professor-mouth-yell {
+  0%,
+  22% {
+    height: 20px;
+    transform: translateX(-50%) scaleX(0.76);
+  }
+
+  42%,
+  76% {
+    height: 92px;
+    border-radius: 18px 18px 999px 999px;
+    transform: translateX(-50%) scaleX(1.18);
+  }
+
+  100% {
+    height: 36px;
+    transform: translateX(-50%) scaleX(0.9);
+  }
+}
+
+@keyframes medical-sweat-fall {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) rotate(16deg);
+  }
+
+  24%,
+  72% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(130px) rotate(28deg);
+  }
+}
+
+@keyframes medical-burger-bonk {
+  0%,
+  14% {
+    opacity: 0;
+    transform: translate(-50%, 110px) rotate(-18deg) scale(0.56);
+  }
+
+  28% {
+    opacity: 1;
+    transform: translate(-50%, -230px) rotate(18deg) scale(1.06);
+  }
+
+  44% {
+    transform: translate(-50%, 18px) rotate(-8deg) scale(1.22);
+  }
+
+  66%,
+  84% {
+    opacity: 1;
+    transform: translate(-50%, -20px) rotate(4deg) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 90px) rotate(12deg) scale(0.8);
+  }
+}
+
+@keyframes medical-burger-vibrate {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: -8px 4px;
+  }
+}
+
+@keyframes medical-ecg-rush {
+  0%,
+  18% {
+    opacity: 0;
+    transform: translateX(-22%);
+  }
+
+  30%,
+  80% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(22%);
+  }
+}
+
+@keyframes medical-caption-slam {
+  0%,
+  22% {
+    opacity: 0;
+    transform: translate(-50%, 60px) rotate(8deg) scale(0.72);
+  }
+
+  34%,
+  82% {
+    opacity: 1;
+    transform: translate(-50%, 0) rotate(-1deg) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 28px) rotate(2deg) scale(0.86);
+  }
+}
+
 @media (max-width: 900px) {
+  .medical-finale-board {
+    top: 4vh;
+    width: min(520px, 88vw);
+    padding: 10px;
+    gap: 6px;
+    font-size: clamp(13px, 4vw, 20px);
+  }
+
+  .medical-finale-board span {
+    padding: 2px 4px;
+  }
+
+  .medical-finale-stage {
+    width: 94vw;
+    height: 78vh;
+    margin-top: 8vh;
+  }
+
+  .medical-finale-professor {
+    width: min(300px, 66vw);
+  }
+
+  .medical-word-card {
+    min-width: 88px;
+    padding: 8px 10px;
+  }
+
+  .card-root {
+    top: 25%;
+    left: 1%;
+  }
+
+  .card-term {
+    top: 45%;
+    right: 1%;
+  }
+
+  .card-sterile {
+    bottom: 22%;
+    left: 4%;
+  }
+
+  .medical-finale-caption {
+    width: min(330px, 82vw);
+    font-size: clamp(16px, 5vw, 24px);
+  }
+
   .play-shell {
     height: auto;
     min-height: 100svh;

@@ -196,55 +196,70 @@ class GameAudio {
   }
 
   private playFinaleGroove() {
-    const bassPattern = [98, 98, 73, 98, 65, 82, 98, 49]
-    const leadPattern = [784, 1046, 880, 1175, 1568, 1175, 1760, 988]
-    const bonkPattern = [0, 600, 1200, 2400, 3600, 5200, 6800, 8200]
+    const bassPattern = [98, 49, 98, 65, 123, 65, 98, 73]
+    const chantPattern = [784, 988, 1175, 988, 1568, 1175, 988, 784]
+    const sirenPattern = [392, 523, 659, 784, 1046, 784, 659, 523]
+    const slamDelays = [0, 420, 840, 1680, 2520, 3360, 5040, 6720, 8400]
 
-    bonkPattern.forEach((delay, index) => {
-      this.playOneShot(audioFiles.serve, index === 0 ? 0.68 : 0.38, 0.82, delay)
-      this.playTone(82, 0.16, 'sawtooth', 0.052, delay)
-      this.playTone(164, 0.08, 'square', 0.028, delay + 34)
+    slamDelays.forEach((delay, index) => {
+      const heavy = index === 0 || index % 3 === 0
+
+      this.playOneShot(audioFiles.serve, heavy ? 0.88 : 0.48, heavy ? 0.82 : 0.94, delay)
+      this.playOneShot(audioFiles.wrong, heavy ? 0.22 : 0.12, 0.66, delay + 28)
+      this.playTone(73, heavy ? 0.24 : 0.15, 'sawtooth', heavy ? 0.068 : 0.045, delay)
+      this.playTone(146, 0.08, 'square', 0.036, delay + 42)
     })
 
-    for (let index = 0; index < 24; index += 1) {
-      const delay = 960 + index * 260
+    for (let index = 0; index < 38; index += 1) {
+      const delay = 760 + index * 210
       const bass = bassPattern[index % bassPattern.length]
-      const lead = leadPattern[index % leadPattern.length]
-      const isStrongBeat = index % 4 === 0
-      const isAnswerBeat = index % 4 === 2
+      const chant = chantPattern[index % chantPattern.length]
+      const siren = sirenPattern[index % sirenPattern.length]
+      const strongBeat = index % 4 === 0
+      const offBeat = index % 4 === 2
 
       this.playTone(
         bass,
-        isStrongBeat ? 0.17 : 0.1,
+        strongBeat ? 0.18 : 0.1,
         'sawtooth',
-        isStrongBeat ? 0.042 : 0.026,
+        strongBeat ? 0.052 : 0.034,
         delay,
       )
 
-      if (isStrongBeat) {
-        this.playOneShot(audioFiles.wrong, 0.2, 0.72, delay + 20)
-      }
-
       this.playTone(
-        lead,
-        0.055,
-        index % 3 === 0 ? 'square' : 'triangle',
-        isAnswerBeat ? 0.036 : 0.024,
-        delay + 92,
+        chant,
+        0.065,
+        index % 2 === 0 ? 'square' : 'triangle',
+        offBeat ? 0.048 : 0.034,
+        delay + 74,
       )
 
-      if (isAnswerBeat) {
-        this.playTone(lead * 1.25, 0.045, 'square', 0.022, delay + 150)
+      if (offBeat) {
+        this.playTone(chant * 1.5, 0.045, 'square', 0.026, delay + 124)
+        this.playTone(siren, 0.09, 'sawtooth', 0.024, delay + 168)
+      }
+
+      if (index % 8 === 7) {
+        this.playOneShot(audioFiles.correct, 0.34, 1.3, delay + 30)
+        this.playTone(1760, 0.06, 'square', 0.032, delay + 120)
+        this.playTone(2093, 0.06, 'square', 0.026, delay + 190)
       }
     }
 
-    const glitchRun = [1568, 1175, 1760, 880, 2093, 740]
+    const lectureGliss = [1046, 988, 1175, 784, 1568, 740, 1760, 659, 2093]
 
-    glitchRun.forEach((frequency, index) => {
-      const delay = 1120 + index * 135
-      const type = index % 2 === 0 ? 'square' : 'sawtooth'
+    lectureGliss.forEach((frequency, index) => {
+      const delay = 1180 + index * 105
+      const target = index % 2 === 0 ? frequency * 0.58 : frequency * 1.35
 
-      this.playTone(frequency, 0.07, type, 0.026, delay)
+      this.playTone(
+        frequency,
+        0.075,
+        index % 3 === 0 ? 'sawtooth' : 'square',
+        0.034,
+        delay,
+      )
+      this.playTone(target, 0.045, 'triangle', 0.022, delay + 52)
     })
   }
 
@@ -359,24 +374,26 @@ class GameAudio {
   playVictory() {
     this.finaleActive = true
     this.clearScheduledEffects()
+    this.stopNormalMusic()
     this.stopBossMusic()
+    this.stopGroove()
     this.setIntensity(0)
-    this.playOneShot(audioFiles.serve, 0.86, 1.04)
-    this.playOneShot(audioFiles.correct, 0.58, 1.24, 120)
-    this.playOneShot(audioFiles.boss, 0.38, 1.18, 260)
-    this.playTone(392, 0.16, 'sawtooth', 0.038, 0)
-    this.playTone(523, 0.14, 'triangle', 0.04, 150)
-    this.playTone(659, 0.14, 'triangle', 0.04, 300)
-    this.playTone(784, 0.16, 'triangle', 0.044, 450)
-    this.playTone(1046, 0.22, 'sine', 0.05, 650)
-    this.playTone(1318, 0.18, 'sine', 0.042, 930)
+    this.playOneShot(audioFiles.serve, 0.96, 0.86)
+    this.playOneShot(audioFiles.correct, 0.72, 1.28, 120)
+    this.playOneShot(audioFiles.boss, 0.52, 1.22, 260)
+    this.playTone(196, 0.18, 'sawtooth', 0.052, 0)
+    this.playTone(392, 0.16, 'square', 0.048, 110)
+    this.playTone(784, 0.14, 'square', 0.046, 220)
+    this.playTone(1175, 0.15, 'triangle', 0.044, 330)
+    this.playTone(1568, 0.18, 'square', 0.044, 460)
+    this.playTone(2093, 0.24, 'sine', 0.05, 620)
     this.playFinaleGroove()
 
-    for (let delay = 1800; delay <= 7200; delay += 1800) {
-      this.playOneShot(audioFiles.correct, 0.28, 1.18, delay)
-      this.playTone(659, 0.12, 'triangle', 0.028, delay + 80)
-      this.playTone(880, 0.12, 'sine', 0.032, delay + 220)
-      this.playTone(1175, 0.16, 'sine', 0.034, delay + 380)
+    for (let delay = 1800; delay <= 8400; delay += 1400) {
+      this.playOneShot(audioFiles.correct, 0.36, 1.22, delay)
+      this.playTone(523, 0.1, 'triangle', 0.032, delay + 60)
+      this.playTone(880, 0.11, 'square', 0.036, delay + 170)
+      this.playTone(1318, 0.13, 'square', 0.034, delay + 300)
     }
   }
 

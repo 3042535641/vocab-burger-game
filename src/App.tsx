@@ -13,11 +13,9 @@ import OrderTicket from './components/OrderTicket'
 import QuizPanel from './components/QuizPanel'
 import WordManager from './components/WordManager'
 import {
-  bossStepWordIds,
   comboBonus,
   correctScore,
   maxCustomers,
-  stepWordIds,
   targetRegularServed,
   wrongPenalty,
 } from './constants/game'
@@ -86,9 +84,7 @@ function App() {
   const answerHandlerRef = useRef<(answer: string) => void>(() => undefined)
   const wordPool = useMemo(() => [...words, ...customWords], [customWords])
   const previewWords = useMemo(() => {
-    const previewIds = new Set([...stepWordIds, ...bossStepWordIds])
     return wordPool
-      .filter((word) => previewIds.has(word.id) || word.id.startsWith('custom-'))
       .filter(
         (word, index, list) =>
           list.findIndex((item) => item.english === word.english) === index,

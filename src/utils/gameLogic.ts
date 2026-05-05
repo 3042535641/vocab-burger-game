@@ -1,7 +1,6 @@
 import {
   basePatience,
   bossPatience,
-  bossStepWordIds,
   stepWordIds,
   targetRegularServed,
 } from '../constants/game'
@@ -13,6 +12,11 @@ import type {
   Customer,
   Mood,
 } from '../types/game'
+
+type RecipeStepPlan = {
+  layerId: string
+  wordId: string
+}
 
 export const customerProfiles = [
   { name: '医学生小明', avatar: 'round' },
@@ -28,6 +32,9 @@ const recipes: BurgerRecipe[] = [
   { id: 'green', name: '症状识别清爽堡', tag: 'symptom 快速识别' },
   { id: 'tomato', name: '炎症反应冲刺堡', tag: 'inflammation 加压' },
   { id: 'sauce', name: '治疗护理记忆堡', tag: 'treatment + nursing' },
+  { id: 'vascular', name: '动脉心电能量堡', tag: 'vital + artery' },
+  { id: 'pharma', name: '药理抗生素爆酱堡', tag: 'dosage + antibiotic' },
+  { id: 'exam', name: '期末病理破防堡', tag: 'pathology + prognosis' },
 ]
 
 export const recipeCatalog = recipes
@@ -273,23 +280,42 @@ export const scoreBurger = (customer: Customer): BurgerScoreResult => {
   }
 }
 
-const recipeStepIds = (recipe: BurgerRecipe, isBoss: boolean) => {
+const baseStepPlans = (wordIds: string[]): RecipeStepPlan[] =>
+  stepWordIds.map((layerId, index) => ({
+    layerId,
+    wordId: wordIds[index] ?? layerId,
+  }))
+
+const bossStepPlans: RecipeStepPlan[] = [
+  { layerId: 'bun', wordId: 'anatomy' },
+  { layerId: 'patty', wordId: 'physiology' },
+  { layerId: 'flip', wordId: 'flip' },
+  { layerId: 'lettuce', wordId: 'lettuce' },
+  { layerId: 'tomato', wordId: 'pathology' },
+  { layerId: 'sauce', wordId: 'antibiotic' },
+  { layerId: 'perfect', wordId: 'perfect' },
+]
+
+const recipeStepPlans = (recipe: BurgerRecipe, isBoss: boolean) => {
   if (isBoss) {
-    return bossStepWordIds
+    return bossStepPlans
   }
 
-  const variants: Record<string, string[]> = {
-    classic: stepWordIds,
-    green: ['bun', 'patty', 'flip', 'lettuce', 'sauce'],
-    tomato: ['bun', 'patty', 'flip', 'tomato', 'lettuce', 'sauce'],
-    sauce: ['bun', 'patty', 'flip', 'sauce', 'lettuce', 'tomato'],
+  const variants: Record<string, RecipeStepPlan[]> = {
+    classic: baseStepPlans(['bun', 'patty', 'flip', 'anatomy', 'physiology', 'order']),
+    green: baseStepPlans(['bun', 'patty', 'flip', 'lettuce', 'vital', 'sauce']),
+    tomato: baseStepPlans(['bun', 'patty', 'flip', 'tomato', 'pathology', 'chronic']),
+    sauce: baseStepPlans(['bun', 'patty', 'flip', 'dosage', 'serve', 'antibiotic']),
+    vascular: baseStepPlans(['bun', 'artery', 'flip', 'vital', 'edema', 'prognosis']),
+    pharma: baseStepPlans(['bun', 'patty', 'flip', 'vaccine', 'dosage', 'antibiotic']),
+    exam: baseStepPlans(['anatomy', 'pathology', 'flip', 'fracture', 'malignant', 'benign']),
   }
 
-  return variants[recipe.id] ?? stepWordIds
+  return variants[recipe.id] ?? baseStepPlans(stepWordIds)
 }
 
 const pickWordForStep = (
-  wordId: string,
+  plan: RecipeStepPlan,
   index: number,
   isBoss: boolean,
   wordPool: WordEntry[],
@@ -297,14 +323,14 @@ const pickWordForStep = (
   const customWords = wordPool.filter((word) => word.id.startsWith('custom-'))
   const shouldUseCustom =
     customWords.length > 0 &&
-    !['bun', 'patty', 'flip'].includes(wordId) &&
+    !['bun', 'patty', 'flip'].includes(plan.layerId) &&
     (index + (isBoss ? 1 : 0)) % 2 === 1
 
   if (shouldUseCustom) {
     return customWords[index % customWords.length]
   }
 
-  return wordPool.find((entry) => entry.id === wordId) ?? words[0]
+  return wordPool.find((entry) => entry.id === plan.wordId) ?? words[0]
 }
 
 export const buildSteps = (
@@ -312,10 +338,10 @@ export const buildSteps = (
   wordPool: WordEntry[],
   recipe: BurgerRecipe,
 ): BurgerStep[] => {
-  const ids = recipeStepIds(recipe, isBoss)
+  const plans = recipeStepPlans(recipe, isBoss)
 
-  return ids.map((wordId, index) => {
-    const word = pickWordForStep(wordId, index, isBoss, wordPool)
+  return plans.map((plan, index) => {
+    const word = pickWordForStep(plan, index, isBoss, wordPool)
     const stepText: Record<string, { label: string; ingredient: string }> = {
       bun: { label: '放细胞词根底', ingredient: '细胞词根底' },
       patty: { label: '放组织肉饼开始煎', ingredient: '组织肉饼' },
@@ -327,9 +353,9 @@ export const buildSteps = (
     }
 
     return {
-      id: wordId === 'perfect' ? 'top' : wordId,
-      label: stepText[wordId].label,
-      ingredient: stepText[wordId].ingredient,
+      id: plan.layerId === 'perfect' ? 'top' : plan.layerId,
+      label: stepText[plan.layerId].label,
+      ingredient: stepText[plan.layerId].ingredient,
       stationText: `医学术语提示：${word.chinese}`,
       word,
     }

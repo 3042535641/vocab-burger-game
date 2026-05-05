@@ -678,6 +678,7 @@ function App() {
                   <small>
                     {categoryLabels[word.category]} / 难度 {word.difficulty}
                   </small>
+                  {word.note && <em>{word.note}</em>}
                 </article>
               ))}
             </div>

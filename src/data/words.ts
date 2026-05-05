@@ -5,6 +5,7 @@ export type WordEntry = {
   wrongOptions: string[]
   category: 'food' | 'action' | 'shop' | 'feeling'
   difficulty: 1 | 2 | 3
+  note?: string
 }
 
 export const words: WordEntry[] = [
@@ -15,6 +16,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['call', 'shell', 'sell'],
     category: 'food',
     difficulty: 1,
+    note: '医学最基础单位，注意不要和 call / sell 混。',
   },
   {
     id: 'patty',
@@ -23,6 +25,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['issue', 'vessel', 'organ'],
     category: 'food',
     difficulty: 1,
+    note: 'tissue 是“组织”，不是 issue。',
   },
   {
     id: 'flip',
@@ -31,6 +34,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['prognosis', 'dose', 'dialogue'],
     category: 'action',
     difficulty: 3,
+    note: 'dia- 表示“通过”，-gnosis 表示“认识”。',
   },
   {
     id: 'lettuce',
@@ -39,6 +43,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['syndrome', 'sample', 'system'],
     category: 'food',
     difficulty: 2,
+    note: 'symptom 是单个症状，syndrome 是综合征。',
   },
   {
     id: 'tomato',
@@ -47,6 +52,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['infection', 'injection', 'infusion'],
     category: 'food',
     difficulty: 3,
+    note: 'inflamm- 和“发炎、点燃”有关。',
   },
   {
     id: 'sauce',
@@ -55,6 +61,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['therapy', 'testing', 'training'],
     category: 'food',
     difficulty: 2,
+    note: 'treat + -ment，表示治疗过程或方案。',
   },
   {
     id: 'order',
@@ -63,6 +70,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['technology', 'therapy', 'toxicology'],
     category: 'shop',
     difficulty: 3,
+    note: 'termin- 表示术语边界，-logy 表示学科。',
   },
   {
     id: 'customer',
@@ -71,6 +79,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['medical record', 'medicine store', 'middle school'],
     category: 'shop',
     difficulty: 2,
+    note: 'medical student 是医学生，不是病例或病历。',
   },
   {
     id: 'angry',
@@ -79,6 +88,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['chronic', 'active', 'actual'],
     category: 'feeling',
     difficulty: 2,
+    note: 'acute 表示急性；chronic 表示慢性。',
   },
   {
     id: 'perfect',
@@ -87,6 +97,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['stable', 'systolic', 'sensitive'],
     category: 'feeling',
     difficulty: 3,
+    note: 'sterile 常用于无菌操作、无菌环境。',
   },
   {
     id: 'hurry',
@@ -95,6 +106,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['rehabilitate', 'respirate', 'reassure'],
     category: 'action',
     difficulty: 3,
+    note: 're- + suscit，表示重新唤起生命体征。',
   },
   {
     id: 'serve',
@@ -103,6 +115,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['nutrition', 'nausea', 'neuron'],
     category: 'action',
     difficulty: 2,
+    note: 'nursing 是护理；nutrition 是营养。',
   },
   {
     id: 'anatomy',
@@ -111,6 +124,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['anemia', 'anxiety', 'antibody'],
     category: 'food',
     difficulty: 2,
+    note: 'ana- 有“分开、向上”之意，解剖即分层观察结构。',
   },
   {
     id: 'physiology',
@@ -119,6 +133,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['pathology', 'psychology', 'pharmacy'],
     category: 'food',
     difficulty: 3,
+    note: 'physio- 和自然/功能有关，-logy 是学科。',
   },
   {
     id: 'pathology',
@@ -127,6 +142,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['physiology', 'pharmacology', 'psychology'],
     category: 'food',
     difficulty: 3,
+    note: 'patho- 表示疾病，-logy 表示学科。',
   },
   {
     id: 'artery',
@@ -135,6 +151,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['vein', 'nerve', 'airway'],
     category: 'food',
     difficulty: 2,
+    note: 'artery 动脉；vein 静脉。',
   },
   {
     id: 'vital',
@@ -143,6 +160,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['viral', 'visual', 'visible'],
     category: 'feeling',
     difficulty: 2,
+    note: 'vital signs 就是生命体征。',
   },
   {
     id: 'chronic',
@@ -151,6 +169,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['acute', 'clinic', 'critical'],
     category: 'feeling',
     difficulty: 2,
+    note: 'chronic 表示长期、慢性的状态。',
   },
   {
     id: 'benign',
@@ -159,6 +178,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['malignant', 'begin', 'binding'],
     category: 'feeling',
     difficulty: 3,
+    note: 'benign 良性；malignant 恶性。',
   },
   {
     id: 'malignant',
@@ -167,6 +187,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['benign', 'magnificent', 'management'],
     category: 'feeling',
     difficulty: 3,
+    note: 'mal- 常有“不良”含义，注意和 benign 对比。',
   },
   {
     id: 'edema',
@@ -175,6 +196,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['enema', 'edamame', 'enzyme'],
     category: 'food',
     difficulty: 3,
+    note: 'edema 是水肿，拼写里有 -ema。',
   },
   {
     id: 'fracture',
@@ -183,6 +205,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['fraction', 'function', 'friction'],
     category: 'food',
     difficulty: 3,
+    note: 'fract- 表示破裂，骨折就是 fracture。',
   },
   {
     id: 'antibiotic',
@@ -191,6 +214,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['antibody', 'antigen', 'antiseptic'],
     category: 'action',
     difficulty: 3,
+    note: 'anti- 表示对抗，bio- 和生命有关。',
   },
   {
     id: 'vaccine',
@@ -199,6 +223,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['vacation', 'vascular', 'vitamin'],
     category: 'action',
     difficulty: 2,
+    note: 'vaccine 疫苗，别看成 vacation。',
   },
   {
     id: 'dosage',
@@ -207,6 +232,7 @@ export const words: WordEntry[] = [
     wrongOptions: ['diagnosis', 'disease', 'damage'],
     category: 'action',
     difficulty: 2,
+    note: 'dosage 指剂量，dose 是一次剂量。',
   },
   {
     id: 'prognosis',
@@ -215,5 +241,6 @@ export const words: WordEntry[] = [
     wrongOptions: ['diagnosis', 'progress', 'program'],
     category: 'shop',
     difficulty: 3,
+    note: 'pro- 有“向前”，prognosis 指预后判断。',
   },
 ]

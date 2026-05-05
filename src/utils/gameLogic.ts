@@ -356,7 +356,9 @@ export const buildSteps = (
       id: plan.layerId === 'perfect' ? 'top' : plan.layerId,
       label: stepText[plan.layerId].label,
       ingredient: stepText[plan.layerId].ingredient,
-      stationText: `医学术语提示：${word.chinese}`,
+      stationText: word.note
+        ? `医学术语提示：${word.chinese}｜${word.note}`
+        : `医学术语提示：${word.chinese}`,
       word,
     }
   })

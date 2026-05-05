@@ -278,6 +278,19 @@
   font-weight: 900;
 }
 
+.preview-card em {
+  display: -webkit-box;
+  min-height: 32px;
+  overflow: hidden;
+  color: #2d7d73;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .start-actions {
   display: flex;
   flex-wrap: wrap;
@@ -1475,6 +1488,17 @@
 .question-card h2 {
   margin: 5px 0;
   font-size: 34px;
+}
+
+.question-card p:last-child {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #2d7d73;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .answer-grid {

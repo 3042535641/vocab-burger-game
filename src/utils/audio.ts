@@ -195,6 +195,59 @@ class GameAudio {
     this.grooveStep = 0
   }
 
+  private playFinaleGroove() {
+    const bassPattern = [98, 98, 73, 98, 65, 82, 98, 49]
+    const leadPattern = [784, 1046, 880, 1175, 1568, 1175, 1760, 988]
+    const bonkPattern = [0, 600, 1200, 2400, 3600, 5200, 6800, 8200]
+
+    bonkPattern.forEach((delay, index) => {
+      this.playOneShot(audioFiles.serve, index === 0 ? 0.68 : 0.38, 0.82, delay)
+      this.playTone(82, 0.16, 'sawtooth', 0.052, delay)
+      this.playTone(164, 0.08, 'square', 0.028, delay + 34)
+    })
+
+    for (let index = 0; index < 24; index += 1) {
+      const delay = 960 + index * 260
+      const bass = bassPattern[index % bassPattern.length]
+      const lead = leadPattern[index % leadPattern.length]
+      const isStrongBeat = index % 4 === 0
+      const isAnswerBeat = index % 4 === 2
+
+      this.playTone(
+        bass,
+        isStrongBeat ? 0.17 : 0.1,
+        'sawtooth',
+        isStrongBeat ? 0.042 : 0.026,
+        delay,
+      )
+
+      if (isStrongBeat) {
+        this.playOneShot(audioFiles.wrong, 0.2, 0.72, delay + 20)
+      }
+
+      this.playTone(
+        lead,
+        0.055,
+        index % 3 === 0 ? 'square' : 'triangle',
+        isAnswerBeat ? 0.036 : 0.024,
+        delay + 92,
+      )
+
+      if (isAnswerBeat) {
+        this.playTone(lead * 1.25, 0.045, 'square', 0.022, delay + 150)
+      }
+    }
+
+    const glitchRun = [1568, 1175, 1760, 880, 2093, 740]
+
+    glitchRun.forEach((frequency, index) => {
+      const delay = 1120 + index * 135
+      const type = index % 2 === 0 ? 'square' : 'sawtooth'
+
+      this.playTone(frequency, 0.07, type, 0.026, delay)
+    })
+  }
+
   setIntensity(level: number) {
     this.intensity = Math.max(0, Math.min(1, level))
 
@@ -317,11 +370,7 @@ class GameAudio {
     this.playTone(784, 0.16, 'triangle', 0.044, 450)
     this.playTone(1046, 0.22, 'sine', 0.05, 650)
     this.playTone(1318, 0.18, 'sine', 0.042, 930)
-
-    ;[1568, 1175, 1760, 880, 2093, 740].forEach((frequency, index) => {
-      const delay = 1120 + index * 135
-      this.playTone(frequency, 0.07, index % 2 === 0 ? 'square' : 'sawtooth', 0.026, delay)
-    })
+    this.playFinaleGroove()
 
     for (let delay = 1800; delay <= 7200; delay += 1800) {
       this.playOneShot(audioFiles.correct, 0.28, 1.18, delay)

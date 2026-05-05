@@ -744,7 +744,10 @@ function App() {
         <div className="boss-finale-scene" aria-live="assertive">
           <div className="boss-finale-lights" aria-hidden="true" />
           <div className="boss-finale-stage" aria-hidden="true">
-            <div className="finale-verdict">破防判定</div>
+            <div className="boss-finale-impact" />
+            <div className="boss-finale-glitch" />
+            <div className="boss-finale-afterimage afterimage-one" />
+            <div className="boss-finale-afterimage afterimage-two" />
             <div className="boss-finale-table" />
             <div className="boss-finale-boss">
               <span className="finale-eye finale-eye-left" />

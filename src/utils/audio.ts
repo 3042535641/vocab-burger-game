@@ -318,6 +318,11 @@ class GameAudio {
     this.playTone(1046, 0.22, 'sine', 0.05, 650)
     this.playTone(1318, 0.18, 'sine', 0.042, 930)
 
+    ;[1568, 1175, 1760, 880, 2093, 740].forEach((frequency, index) => {
+      const delay = 1120 + index * 135
+      this.playTone(frequency, 0.07, index % 2 === 0 ? 'square' : 'sawtooth', 0.026, delay)
+    })
+
     for (let delay = 1800; delay <= 7200; delay += 1800) {
       this.playOneShot(audioFiles.correct, 0.28, 1.18, delay)
       this.playTone(659, 0.12, 'triangle', 0.028, delay + 80)

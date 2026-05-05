@@ -21,16 +21,16 @@ function QuizPanel({
   if (!hasCustomer || !question) {
     return (
       <section className="panel quiz-panel">
-        <h2>单词题</h2>
-        <p className="muted">有顾客点单后，这里会出现四选一题目。</p>
+        <h2>医学术语题</h2>
+        <p className="muted">有医学生点单后，这里会出现医学英语四选一题目。</p>
       </section>
     )
   }
 
   return (
-    <section className="panel quiz-panel" aria-label="单词题">
+    <section className="panel quiz-panel" aria-label="医学术语题">
       <div className="question-card">
-        <p className="question-label">看中文，选择正确英文</p>
+        <p className="question-label">看中文医学概念，选择正确英文术语</p>
         <h2>{question.chinese}</h2>
         <p>{stationText}</p>
       </div>

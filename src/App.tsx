@@ -51,10 +51,10 @@ import {
 import './App.css'
 
 const categoryLabels: Record<WordEntry['category'], string> = {
-  food: '食材',
-  action: '动作',
-  shop: '店铺',
-  feeling: '情绪',
+  food: '基础医学',
+  action: '医学动作',
+  shop: '课堂场景',
+  feeling: '状态描述',
 }
 
 const normalizeEnglish = (value: string) => value.trim().toLowerCase()
@@ -181,10 +181,10 @@ function App() {
           setFeedback({
             kind: 'wrong',
             message: result.bossEscaped
-              ? 'Boss 等到爆炸离开了，营业失败。'
-              : '有顾客等太久离开了！',
+              ? '医学英语教授等到爆炸离开了，课堂挑战失败。'
+              : '有医学生等太久走了！',
           })
-          setBanner(result.bossEscaped ? 'Boss 战失败' : '队伍流失，节奏要稳住')
+          setBanner(result.bossEscaped ? '教授 Boss 战失败' : '医学生流失，节奏要稳住')
 
           if (result.bossEscaped) {
             setGameStatus('ended')
@@ -224,10 +224,10 @@ function App() {
         setNextCustomerId((id) => id + 1)
         setBanner(
           currentCustomers.length === 0
-            ? '新顾客补位进店，别让锅空着！'
+            ? '新医学生补位进店，别让锅空着！'
             : servedCount >= 4
-              ? '高峰期来了，新顾客加速进店！'
-              : '新顾客进店了',
+              ? '下课高峰来了，新医学生加速进店！'
+              : '新医学生进店了',
         )
         gameAudio.playArrival()
 
@@ -355,7 +355,7 @@ function App() {
     setFinalizedRound(false)
     setVictoryLine('')
     setFeedback(null)
-    setBanner('第一位顾客来了，完成 6 份普通订单后 Boss 登场')
+    setBanner('第一位医学生来了，完成 6 份普通订单后教授 Boss 登场')
   }
 
   const endGame = () => {
@@ -376,10 +376,10 @@ function App() {
     setNextCustomerId(id + 1)
     setCustomers([boss])
     setActiveCustomerId(boss.id)
-    setBanner('超级顾客 Boss 登场：完成这单就结算！')
+    setBanner('医学英语教授 Boss 登场：完成这份终极订单就结算！')
     setFeedback({
       kind: 'info',
-      message: 'Boss 订单更多，耐心更短，答错会被嘲讽。',
+      message: '教授订单术语更多，耐心更短，答错会被追问词根。',
     })
     gameAudio.playBoss()
 
@@ -399,7 +399,7 @@ function App() {
     setFeedback({
       kind: perfectBonus ? 'correct' : 'info',
       message: perfectBonus
-        ? `Perfect Burger！额外加 ${perfectBonus} 分`
+        ? `Sterile Perfect Burger！额外加 ${perfectBonus} 分`
         : `${customer.recipe.name} 完成，获得 ${gainedScore} 分`,
     })
     gameAudio.playServe(perfectBonus > 0)
@@ -412,7 +412,7 @@ function App() {
       setVictoryLine(line)
       setBanner(line)
       gameAudio.playVictory()
-      triggerImpact('victory', 'Boss 破防！')
+      triggerImpact('victory', '教授破防！')
       finaleTimerRef.current = window.setTimeout(() => {
         gameAudio.stopMusic()
         setGameStatus('ended')
@@ -431,7 +431,7 @@ function App() {
 
     setBanner(
       nextCombo >= 5
-        ? '连续答对 5 题，获得课堂锦旗！'
+        ? '连续答对 5 题，获得医学英语锦旗！'
         : `已完成 ${nextServedCount}/${targetRegularServed}，继续营业`,
     )
   }
@@ -517,9 +517,9 @@ function App() {
       kind: 'wrong',
       message: `答错了，正确答案是 ${activeQuestion.correctAnswer}`,
     })
-    setBanner(activeCustomer.isBoss ? 'Boss：这都能错？再快点！' : '顾客更着急了')
+    setBanner(activeCustomer.isBoss ? '教授：这个词根都能错？再快点！' : '医学生更着急了')
     gameAudio.playWrong(activeCustomer.isBoss)
-    triggerImpact('wrong', activeCustomer.isBoss ? 'Boss 暴击！' : 'MISS!')
+    triggerImpact('wrong', activeCustomer.isBoss ? '教授追问！' : 'MISS!')
   }
 
   useLayoutEffect(() => {
@@ -574,16 +574,16 @@ function App() {
       aria-labelledby="tutorial-title"
     >
       <section className="panel tutorial-panel">
-        <p className="eyebrow">课堂规则速览</p>
+        <p className="eyebrow">医学英语规则速览</p>
         <h2 id="tutorial-title">开店前先看三条</h2>
         <ol>
           <li>
-            看中文选英文，答对才会推进汉堡步骤；答错会扣分、扣耐心，还可能把肉饼煎焦。
+            看中文医学概念选英文术语，答对才会推进汉堡步骤；答错会扣分、扣耐心，还可能把组织肉饼煎焦。
           </li>
           <li>
-            肉饼第一面 55%-85%、焦度低于 45 时翻面最香，双面控制好可拿 Perfect Burger。
+            组织肉饼第一面 55%-85%、焦度低于 45 时翻面最香，双面控制好可拿 Sterile Perfect Burger。
           </li>
-          <li>普通顾客约 20 秒开始着急，完成 6 位后 Boss 登场。</li>
+          <li>普通医学生约 20 秒开始着急，完成 6 份后医学英语教授 Boss 登场。</li>
         </ol>
         <button
           type="button"
@@ -618,15 +618,15 @@ function App() {
         >
           <div className="intro-hero">
             <div>
-              <p className="eyebrow">Vocab Burger Shop</p>
-              <h1 id="game-title">单词汉堡店</h1>
+              <p className="eyebrow">Medical Vocab Burger Shop</p>
+              <h1 id="game-title">医学英语汉堡店</h1>
               <p>
-                顾客会随机排队点餐。先看本局单词，再看中文选英文，
-                答对才能完成汉堡动作；答错会扣分、掉耐心，还可能把肉饼煎焦。
+                医学生会随机排队点餐。先看本局医学英语术语，再看中文概念选英文，
+                答对才能完成汉堡动作；答错会扣分、掉耐心，还可能把组织肉饼煎焦。
               </p>
             </div>
             <div className="start-mascot" aria-hidden="true">
-              <span>背词</span>
+              <span>医学词</span>
             </div>
           </div>
 
@@ -640,7 +640,7 @@ function App() {
 
           <section className="recipe-preview" aria-labelledby="recipe-preview-title">
             <div className="section-heading">
-              <h2 id="recipe-preview-title">本局汉堡配方</h2>
+              <h2 id="recipe-preview-title">本局医学汉堡配方</h2>
               <span>随机出单</span>
             </div>
             <div className="recipe-preview-grid">
@@ -658,7 +658,7 @@ function App() {
 
           <section className="word-preview" aria-labelledby="preview-title">
             <div className="section-heading">
-              <h2 id="preview-title">本局单词预习</h2>
+              <h2 id="preview-title">本局医学术语预习</h2>
               <span>{previewWords.length} 个词</span>
             </div>
             <div className="preview-grid">
@@ -701,16 +701,16 @@ function App() {
         className={`game-shell start-screen ${bossDefeated ? 'victory-result' : ''}`}
       >
         <section className="panel intro-panel result-panel" aria-labelledby="result-title">
-          <p className="eyebrow">{bossDefeated ? 'Boss 破防结算' : '营业结算'}</p>
+          <p className="eyebrow">{bossDefeated ? '教授破防结算' : '营业结算'}</p>
           <h1 id="result-title">今日得分：{score}</h1>
           <p>
-            完成 {servedCount} 份普通汉堡，流失 {lostCustomers} 位顾客，最高连对{' '}
+            完成 {servedCount} 份普通医学汉堡，流失 {lostCustomers} 位医学生，最高连对{' '}
             {bestCombo} 题。
           </p>
           <p>
             {bossDefeated
-              ? victoryLine || 'Boss 已完成，适合课堂展示收尾。'
-              : 'Boss 未完成，可以再开一局。'}
+              ? victoryLine || '教授 Boss 已完成，适合医学英语课堂展示收尾。'
+              : '教授 Boss 未完成，可以再开一局。'}
           </p>
           <div className="record-strip" aria-label="历史记录">
             <span>历史最高 {Math.max(records.highScore, score)}</span>
@@ -773,8 +773,8 @@ function App() {
       )}
       <header className="game-header">
         <div className="title-lockup">
-          <p className="eyebrow">课堂汇报版</p>
-          <h1>单词汉堡店</h1>
+          <p className="eyebrow">医学英语词汇学版</p>
+          <h1>医学英语汉堡店</h1>
         </div>
         <div className="stats" aria-label="游戏状态">
           <span>得分 {score}</span>
@@ -799,8 +799,8 @@ function App() {
         </div>
       </header>
 
-      <section className="shop-scene compact-scene" aria-label="汉堡店场景">
-        <div className="shop-sign">VOCAB BURGER</div>
+      <section className="shop-scene compact-scene" aria-label="医学英语汉堡店场景">
+        <div className="shop-sign">MED VOCAB BURGER</div>
         <div className="awning" aria-hidden="true" />
         <div className="counter-rail" aria-hidden="true" />
       </section>

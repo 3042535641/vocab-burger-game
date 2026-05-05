@@ -15,54 +15,54 @@ import type {
 } from '../types/game'
 
 export const customerProfiles = [
-  { name: '小明', avatar: 'round' },
-  { name: '安娜', avatar: 'star' },
-  { name: 'Leo', avatar: 'cap' },
-  { name: '糖糖', avatar: 'bow' },
-  { name: '阿杰', avatar: 'shade' },
-  { name: 'Mia', avatar: 'bun' },
+  { name: '医学生小明', avatar: 'round' },
+  { name: '背词王安娜', avatar: 'star' },
+  { name: '解剖课 Leo', avatar: 'cap' },
+  { name: '护理专业糖糖', avatar: 'bow' },
+  { name: '药理课阿杰', avatar: 'shade' },
+  { name: '实验课 Mia', avatar: 'bun' },
 ]
 
 const recipes: BurgerRecipe[] = [
-  { id: 'classic', name: '经典课堂堡', tag: '均衡配方' },
-  { id: 'green', name: '生菜冷静堡', tag: '多菜清爽' },
-  { id: 'tomato', name: '番茄冲刺堡', tag: '酸甜加速' },
-  { id: 'sauce', name: '爆酱记忆堡', tag: '酱汁加倍' },
+  { id: 'classic', name: '基础解剖词根堡', tag: 'cell + tissue 打底' },
+  { id: 'green', name: '症状识别清爽堡', tag: 'symptom 快速识别' },
+  { id: 'tomato', name: '炎症反应冲刺堡', tag: 'inflammation 加压' },
+  { id: 'sauce', name: '治疗护理记忆堡', tag: 'treatment + nursing' },
 ]
 
 export const recipeCatalog = recipes
 
 export const idleLines = [
-  '老板，来个能背会单词的汉堡。',
-  '我饿了，但我更怕考试。',
-  '快点快点，我的胃在背单词。',
-  '这家店怎么还考英语？离谱但上头。',
+  '同学，来一份能记住 medical terms 的汉堡。',
+  '我不怕排队，我怕 diagnosis 拼错。',
+  '快点快点，教材已经开始发热了。',
+  '这家店怎么还查医学英语？离谱但很适合汇报。',
 ]
 
 export const correctLines = [
-  '可以，这口知识有嚼劲。',
-  '答对了，给你打个精神小费。',
-  '这波像开了单词挂。',
-  '汉堡和脑子都熟了。',
+  '可以，这个术语有医学味了。',
+  '答对了，课堂笔记清清楚楚。',
+  '这波像开了医学词根透视。',
+  '汉堡熟了，medical English 也熟了。',
 ]
 
 export const wrongLines = [
-  '啊？这个答案把我耐心煎焦了。',
-  '别乱点，我不是实验汉堡。',
-  '我的沉默震耳欲聋。',
-  '这题错得很有节目效果。',
+  '啊？这个选项像把 symptom 当 syndrome 了。',
+  '别乱点，我不是随机对照试验里的汉堡。',
+  '我的教材沉默得像考前一晚。',
+  '这题错得很有课堂展示效果。',
 ]
 
 export const bossLines = [
-  '我来了，题目加辣，耐心减半。',
-  '答错一次，我就用眼神煎肉饼。',
-  '让我看看谁是背词区传奇。',
+  '医学英语教授来了，术语加压，耐心减半。',
+  '答错一次，我就追问词根、前缀、后缀。',
+  '让我看看谁是真正的医学英语词汇学选手。',
 ]
 
 export const bossVictoryLines = [
-  'Boss 破防：这汉堡怎么还带知识点暴击？',
-  '全班认证：你把 Boss 和生词一起煎熟了。',
-  '今日名场面：Vocab Burger 店长封神。',
+  '教授破防：这份汉堡怎么把 terminology 和词根都讲明白了？',
+  '全班认证：你把 Boss、词根和汉堡一起煎熟了。',
+  '今日名场面：Medical Vocab Burger 课堂封神。',
 ]
 
 export const pickLine = (lines: string[], seed: number) =>
@@ -109,7 +109,7 @@ export const getUrgencyLabel = (customer: Customer) => {
 
 export const pickRecipe = (id: number, isBoss: boolean) =>
   isBoss
-    ? { id: 'boss', name: '终极 Boss 破防堡', tag: '全配方加压' }
+    ? { id: 'boss', name: '教授终极术语堡', tag: '全术语加压' }
     : recipes[id % recipes.length]
 
 export const getWaitingLine = (customer: Customer) => {
@@ -117,16 +117,16 @@ export const getWaitingLine = (customer: Customer) => {
 
   if (customer.isBoss) {
     return waitedSeconds >= 20
-      ? 'Boss：20 秒了，还没好？我开始加压了。'
+      ? '教授：20 秒了，还没出餐？我要追问词源了。'
       : customer.speech
   }
 
   if (customer.patience <= 12) {
-    return '再不上菜，我就把菜单背下来投诉。'
+    return '再不出餐，我就把教材目录背下来催单。'
   }
 
   if (waitedSeconds >= 20) {
-    return '我已经等 20 秒了，lettuce 都快拼成 le-t-tu-ce 了。'
+    return '我已经等 20 秒了，cell 和 sell 都快混了。'
   }
 
   return customer.speech
@@ -316,20 +316,20 @@ export const buildSteps = (
   return ids.map((wordId, index) => {
     const word = pickWordForStep(wordId, index, isBoss, wordPool)
     const stepText: Record<string, { label: string; ingredient: string }> = {
-      bun: { label: '放面包底', ingredient: '面包底' },
-      patty: { label: '放肉饼开始煎', ingredient: '肉饼' },
-      flip: { label: '答对才能翻面', ingredient: '完美翻面' },
-      lettuce: { label: '放生菜', ingredient: '生菜' },
-      tomato: { label: '放番茄', ingredient: '番茄' },
-      sauce: { label: '挤酱并盖上面包', ingredient: '酱汁 + 面包盖' },
-      perfect: { label: '喊出完美汉堡', ingredient: 'Perfect Burger' },
+      bun: { label: '放细胞词根底', ingredient: '细胞词根底' },
+      patty: { label: '放组织肉饼开始煎', ingredient: '组织肉饼' },
+      flip: { label: '答对诊断术语才能翻面', ingredient: '诊断翻面' },
+      lettuce: { label: '加入症状生菜', ingredient: '症状生菜' },
+      tomato: { label: '加入炎症番茄', ingredient: '炎症番茄' },
+      sauce: { label: '挤治疗酱并盖上护理面包', ingredient: '治疗酱 + 护理面包盖' },
+      perfect: { label: '喊出无菌完美汉堡', ingredient: 'Sterile Perfect Burger' },
     }
 
     return {
       id: wordId === 'perfect' ? 'top' : wordId,
       label: stepText[wordId].label,
       ingredient: stepText[wordId].ingredient,
-      stationText: `订单提示：${word.chinese}`,
+      stationText: `医学术语提示：${word.chinese}`,
       word,
     }
   })
@@ -347,7 +347,7 @@ export const createCustomer = (
 
   return {
     id,
-    name: isBoss ? 'Boss 老板同学' : profile.name,
+    name: isBoss ? '医学英语教授 Boss' : profile.name,
     avatar: isBoss ? 'boss' : profile.avatar,
     recipe,
     speech: isBoss ? pickLine(bossLines, id) : pickLine(idleLines, id),

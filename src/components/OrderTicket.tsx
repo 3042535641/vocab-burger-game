@@ -15,18 +15,18 @@ function OrderTicket({
   bossSpawned,
 }: OrderTicketProps) {
   return (
-    <section className="panel order-ticket" aria-label="订单小票">
+    <section className="panel order-ticket" aria-label="医学汉堡订单小票">
       <div className="section-heading">
         <h2>订单小票</h2>
         <span>
           {bossSpawned
-            ? 'Boss 战'
+            ? '教授 Boss'
             : `${Math.min(servedCount, targetServed)}/${targetServed}`}
         </span>
       </div>
 
       {!customer ? (
-        <p className="muted">当前没有选中的顾客。</p>
+        <p className="muted">当前没有选中的医学生订单。</p>
       ) : (
         <>
           <div className="ticket-meta">

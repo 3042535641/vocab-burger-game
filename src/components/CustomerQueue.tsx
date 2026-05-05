@@ -35,16 +35,16 @@ function CustomerQueue({
   if (customers.length === 0) {
     return (
       <section className="panel customer-line">
-        <h2>顾客队伍</h2>
-        <p className="muted">暂时没人排队，准备迎接下一位顾客。</p>
+        <h2>医学生队伍</h2>
+        <p className="muted">暂时没有医学生排队，准备迎接下一位背词人。</p>
       </section>
     )
   }
 
   return (
-    <section className="panel customer-line" aria-label="顾客队伍">
+    <section className="panel customer-line" aria-label="医学生队伍">
       <div className="section-heading">
-        <h2>顾客队伍</h2>
+        <h2>医学生队伍</h2>
         <span>
           {customers.length}/{maxCustomers}
         </span>
@@ -73,7 +73,7 @@ function CustomerQueue({
                 aria-hidden="true"
               >
                 <span className="face-text">
-                  {customer.isBoss ? 'BOSS' : moodFaces[mood]}
+                  {customer.isBoss ? '教授' : moodFaces[mood]}
                 </span>
               </span>
               <span className="customer-info">

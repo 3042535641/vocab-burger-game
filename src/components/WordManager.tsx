@@ -27,10 +27,10 @@ const categoryOptions: WordEntry['category'][] = [
 ]
 
 const categoryLabels: Record<WordEntry['category'], string> = {
-  food: '食材',
-  action: '动作',
-  shop: '店铺',
-  feeling: '情绪',
+  food: '基础医学',
+  action: '医学动作',
+  shop: '课堂场景',
+  feeling: '状态描述',
 }
 
 const emptyDraft: WordDraft = {
@@ -54,7 +54,7 @@ const normalizeDraft = (draft: WordDraft, id = createId()): WordEntry | string =
   const uniqueWrongOptions = [...new Set(wrongOptions)].slice(0, 3)
 
   if (!chinese || !english || uniqueWrongOptions.length !== 3) {
-    return '请填写中文、英文，并用英文逗号分隔 3 个不同的错误选项。'
+    return '请填写中文医学概念、英文术语，并用英文逗号分隔 3 个不同的干扰项。'
   }
 
   if (uniqueWrongOptions.includes(english)) {
@@ -157,11 +157,11 @@ function WordManager({
       : onAddWord(normalized)
 
     if (!saved) {
-      setError('这个英文单词已经在题库里了，请换一个。')
+      setError('这个医学英语术语已经在题库里了，请换一个。')
       return
     }
 
-    setNotice(editingId ? '已更新单词。' : '已加入题库。')
+    setNotice(editingId ? '已更新术语。' : '已加入医学英语题库。')
     resetForm()
   }
 
@@ -179,10 +179,10 @@ function WordManager({
     const link = document.createElement('a')
 
     link.href = url
-    link.download = 'vocab-burger-custom-words.json'
+    link.download = 'medical-vocab-burger-custom-words.json'
     link.click()
     URL.revokeObjectURL(url)
-    setNotice(`已导出 ${customWords.length} 个自定义词。`)
+    setNotice(`已导出 ${customWords.length} 个自定义医学术语。`)
   }
 
   const handleImport = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -201,7 +201,7 @@ function WordManager({
       }))
       const addedCount = onImportWords(validWords)
 
-      setNotice(`已导入 ${addedCount} 个新词，重复或无效词已跳过。`)
+      setNotice(`已导入 ${addedCount} 个新医学术语，重复或无效词已跳过。`)
       setError('')
     } catch {
       setError('导入失败：请选择合法的 JSON 词库文件。')
@@ -215,33 +215,33 @@ function WordManager({
       <section className="panel manager-panel" aria-labelledby="manager-title">
         <div className="manager-header">
           <div>
-            <p className="eyebrow">Word Bank Lab</p>
-            <h1 id="manager-title">词库管理</h1>
+            <p className="eyebrow">Medical Word Bank Lab</p>
+            <h1 id="manager-title">医学英语词库管理</h1>
           </div>
           <button type="button" className="small-action" onClick={onClose}>
-            返回游戏
+            返回汉堡店
           </button>
         </div>
 
         <form className="word-form" onSubmit={handleSubmit}>
           <label>
-            中文
+            中文医学概念
             <input
               value={draft.chinese}
               onChange={(event) => setDraftField('chinese', event.target.value)}
-              placeholder="例如：离谱"
+              placeholder="例如：炎症"
             />
           </label>
           <label>
-            英文
+            英文术语
             <input
               value={draft.english}
               onChange={(event) => setDraftField('english', event.target.value)}
-              placeholder="例如：wild"
+              placeholder="例如：inflammation"
             />
           </label>
           <label>
-            3 个错误选项
+            3 个干扰项
             <input
               value={draft.wrongOptions}
               onChange={(event) =>
@@ -282,7 +282,7 @@ function WordManager({
             </select>
           </label>
           <button type="submit" className="primary-action">
-            {editingId ? '保存修改' : '加入题库'}
+            {editingId ? '保存修改' : '加入医学题库'}
           </button>
           {editingId && (
             <button type="button" className="small-action" onClick={resetForm}>
@@ -329,14 +329,14 @@ function WordManager({
             </select>
           </label>
           <button type="button" className="small-action" onClick={handleExport}>
-            导出词库
+            导出医学词库
           </button>
           <button
             type="button"
             className="small-action"
             onClick={() => fileInputRef.current?.click()}
           >
-            导入词库
+            导入医学词库
           </button>
           <input
             ref={fileInputRef}
@@ -353,7 +353,7 @@ function WordManager({
         <div className="word-list">
           {filteredWords.length === 0 ? (
             <p className="muted">
-              当前筛选下没有自定义词。导入或添加后会自动保存到浏览器，并混入游戏题目和开局预习词表。
+              当前筛选下没有自定义医学术语。导入或添加后会自动保存到浏览器，并混入游戏题目和开局预习词表。
             </p>
           ) : (
             filteredWords.map((word) => (

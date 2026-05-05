@@ -1,24 +1,11 @@
 import { memo } from 'react'
 import { maxCustomers } from '../constants/game'
 import type { Customer, Mood } from '../types/game'
-
-const getMood = (customer: Customer): Mood => {
-  const waitedSeconds = customer.maxPatience - customer.patience
-
-  if (customer.patience <= 12) {
-    return 'angry'
-  }
-
-  if (waitedSeconds >= 20) {
-    return 'worried'
-  }
-
-  if (waitedSeconds >= 10) {
-    return 'waiting'
-  }
-
-  return 'happy'
-}
+import {
+  getCustomerMood,
+  getUrgencyLabel,
+  getWaitedSeconds,
+} from '../utils/gameLogic'
 
 const moodLabels: Record<Mood, string> = {
   happy: '期待',
@@ -64,11 +51,13 @@ function CustomerQueue({
       </div>
       <div className="customer-list">
         {customers.map((customer) => {
-          const mood = getMood(customer)
+          const mood = getCustomerMood(customer)
           const patienceRatio = Math.max(
             0,
             Math.round((customer.patience / customer.maxPatience) * 100),
           )
+          const waitedSeconds = getWaitedSeconds(customer)
+          const urgencyLabel = getUrgencyLabel(customer)
 
           return (
             <button
@@ -91,6 +80,9 @@ function CustomerQueue({
                 <strong>{customer.name}</strong>
                 <span>{customer.recipe.name}</span>
                 <span>情绪：{moodLabels[mood]}</span>
+              </span>
+              <span className={`urgency-badge ${mood}`}>
+                {urgencyLabel} · {waitedSeconds}s
               </span>
               <span className={`speech-bubble ${mood}`}>{customer.speech}</span>
               <span className="patience-bar" aria-label={`耐心 ${patienceRatio}%`}>

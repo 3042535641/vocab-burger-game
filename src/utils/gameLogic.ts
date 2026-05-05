@@ -6,7 +6,13 @@ import {
   targetRegularServed,
 } from '../constants/game'
 import { words, type WordEntry } from '../data/words'
-import type { AnswerQuestion, BurgerRecipe, BurgerStep, Customer } from '../types/game'
+import type {
+  AnswerQuestion,
+  BurgerRecipe,
+  BurgerStep,
+  Customer,
+  Mood,
+} from '../types/game'
 
 export const customerProfiles = [
   { name: '小明', avatar: 'round' },
@@ -62,13 +68,52 @@ export const bossVictoryLines = [
 export const pickLine = (lines: string[], seed: number) =>
   lines[seed % lines.length]
 
+export const getWaitedSeconds = (customer: Customer) =>
+  customer.maxPatience - customer.patience
+
+export const getCustomerMood = (customer: Customer): Mood => {
+  const waitedSeconds = getWaitedSeconds(customer)
+
+  if (customer.patience <= 12) {
+    return 'angry'
+  }
+
+  if (waitedSeconds >= 20) {
+    return 'worried'
+  }
+
+  if (waitedSeconds >= 10) {
+    return 'waiting'
+  }
+
+  return 'happy'
+}
+
+export const getUrgencyLabel = (customer: Customer) => {
+  const waitedSeconds = getWaitedSeconds(customer)
+
+  if (customer.patience <= 12) {
+    return '快生气了'
+  }
+
+  if (waitedSeconds >= 20) {
+    return '20 秒着急'
+  }
+
+  if (waitedSeconds >= 10) {
+    return '开始催单'
+  }
+
+  return '刚到店'
+}
+
 export const pickRecipe = (id: number, isBoss: boolean) =>
   isBoss
     ? { id: 'boss', name: '终极 Boss 破防堡', tag: '全配方加压' }
     : recipes[id % recipes.length]
 
 export const getWaitingLine = (customer: Customer) => {
-  const waitedSeconds = customer.maxPatience - customer.patience
+  const waitedSeconds = getWaitedSeconds(customer)
 
   if (customer.isBoss) {
     return waitedSeconds >= 20

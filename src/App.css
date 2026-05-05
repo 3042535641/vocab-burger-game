@@ -989,6 +989,37 @@
   font-size: 13px;
 }
 
+.urgency-badge {
+  align-self: start;
+  justify-self: start;
+  grid-column: 1 / -1;
+  min-height: 24px;
+  padding: 3px 8px;
+  border: 2px solid #2b211b;
+  border-radius: 999px;
+  background: #d9eff8;
+  color: #2b211b;
+  font-size: 12px;
+  font-weight: 1000;
+  line-height: 1.1;
+}
+
+.urgency-badge.waiting {
+  background: #fff0c8;
+}
+
+.urgency-badge.worried {
+  background: #ffe08a;
+  animation: urgency-pop 1.1s steps(2, jump-none) infinite;
+}
+
+.urgency-badge.angry {
+  color: #fff7e8;
+  background: #d94731;
+  box-shadow: 0 0 0 3px rgba(217, 71, 49, 0.18);
+  animation: urgency-pop 680ms steps(2, jump-none) infinite;
+}
+
 .patience-bar {
   grid-column: 1 / -1;
   height: 10px;
@@ -3317,6 +3348,18 @@
   }
   50% {
     transform: translateX(1px) rotate(-1deg);
+  }
+}
+
+@keyframes urgency-pop {
+  0%,
+  100% {
+    filter: saturate(1);
+    transform: translateX(0);
+  }
+  50% {
+    filter: saturate(1.45);
+    transform: translateX(2px);
   }
 }
 

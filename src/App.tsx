@@ -35,9 +35,11 @@ import {
   createCustomer,
   getRandomDelay,
   getTargetQueueSize,
-  getWaitingLine,
+  isPerfectFlipWindow,
   pickLine,
   recipeCatalog,
+  scoreBurger,
+  tickCustomers,
   wrongLines,
 } from './utils/gameLogic'
 import {
@@ -171,48 +173,26 @@ function App() {
 
     const timer = window.setInterval(() => {
       setCustomers((currentCustomers) => {
-        const remainingCustomers: Customer[] = []
-        let escapedCount = 0
-        let bossEscaped = false
+        const result = tickCustomers(currentCustomers)
 
-        for (const customer of currentCustomers) {
-          const nextPatience = customer.patience - 1
-
-          if (nextPatience <= 0) {
-            escapedCount += 1
-            bossEscaped = bossEscaped || customer.isBoss
-            continue
-          }
-
-          const nextCustomer = cookPatty({
-            ...customer,
-            patience: nextPatience,
-          })
-
-          remainingCustomers.push({
-            ...nextCustomer,
-            speech: getWaitingLine(nextCustomer),
-          })
-        }
-
-        if (escapedCount > 0) {
-          setLostCustomers((count) => count + escapedCount)
+        if (result.escapedCount > 0) {
+          setLostCustomers((count) => count + result.escapedCount)
           setCombo(0)
           setFeedback({
             kind: 'wrong',
-            message: bossEscaped
+            message: result.bossEscaped
               ? 'Boss 等到爆炸离开了，营业失败。'
               : '有顾客等太久离开了！',
           })
-          setBanner(bossEscaped ? 'Boss 战失败' : '队伍流失，节奏要稳住')
+          setBanner(result.bossEscaped ? 'Boss 战失败' : '队伍流失，节奏要稳住')
 
-          if (bossEscaped) {
+          if (result.bossEscaped) {
             setGameStatus('ended')
             gameAudio.stopMusic()
           }
         }
 
-        return remainingCustomers
+        return result.customers
       })
     }, 1000)
 
@@ -409,22 +389,7 @@ function App() {
   }
 
   const finishBurger = (customer: Customer, nextCombo: number) => {
-    const burnPenalty = customer.burn >= 80 ? 25 : customer.burn >= 45 ? 10 : 0
-    const patienceBonus = Math.max(0, Math.round(customer.patience / 2))
-    const perfectBonus =
-      customer.mistakes === 0 &&
-      customer.burn < 45 &&
-      customer.firstSideDoneness >= 55 &&
-      customer.firstSideDoneness <= 85 &&
-      customer.secondSideDoneness >= 35 &&
-      customer.secondSideDoneness <= 90
-        ? 30
-        : 0
-    const bossBonus = customer.isBoss ? 80 : 0
-    const gainedScore = Math.max(
-      8,
-      35 + patienceBonus + perfectBonus + bossBonus - burnPenalty,
-    )
+    const { gainedScore, perfectBonus } = scoreBurger(customer)
     const nextServedCount = customer.isBoss ? servedCount : servedCount + 1
 
     setScore((currentScore) => currentScore + gainedScore)
@@ -482,10 +447,7 @@ function App() {
       const nextCombo = combo + 1
       const step = activeCustomer.steps[activeCustomer.stepIndex]
       const isPerfectFlip =
-        step.id === 'flip' &&
-        activeCustomer.firstSideDoneness >= 55 &&
-        activeCustomer.firstSideDoneness <= 85 &&
-        activeCustomer.burn < 45
+        step.id === 'flip' && isPerfectFlipWindow(activeCustomer)
       const nextCustomer = {
         ...activeCustomer,
         stepIndex: activeCustomer.stepIndex + 1,

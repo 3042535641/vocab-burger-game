@@ -107,6 +107,19 @@ export const getTargetQueueSize = (served: number) => {
   return 1
 }
 
+export type CustomerTickResult = {
+  customers: Customer[]
+  escapedCount: number
+  bossEscaped: boolean
+}
+
+export type BurgerScoreResult = {
+  burnPenalty: number
+  gainedScore: number
+  patienceBonus: number
+  perfectBonus: number
+}
+
 const getAverageDoneness = (firstSide: number, secondSide: number) => {
   if (secondSide <= 0) {
     return Math.round(firstSide)
@@ -149,6 +162,68 @@ export const cookPatty = (
     secondSideDoneness: nextSecondSide,
     doneness: getAverageDoneness(nextFirstSide, nextSecondSide),
     burn: Math.min(100, customer.burn + burnIncrement),
+  }
+}
+
+export const tickCustomers = (customers: Customer[]): CustomerTickResult => {
+  const remainingCustomers: Customer[] = []
+  let escapedCount = 0
+  let bossEscaped = false
+
+  for (const customer of customers) {
+    const nextPatience = customer.patience - 1
+
+    if (nextPatience <= 0) {
+      escapedCount += 1
+      bossEscaped = bossEscaped || customer.isBoss
+      continue
+    }
+
+    const nextCustomer = cookPatty({
+      ...customer,
+      patience: nextPatience,
+    })
+
+    remainingCustomers.push({
+      ...nextCustomer,
+      speech: getWaitingLine(nextCustomer),
+    })
+  }
+
+  return {
+    customers: remainingCustomers,
+    escapedCount,
+    bossEscaped,
+  }
+}
+
+export const isPerfectFlipWindow = (customer: Customer) =>
+  customer.firstSideDoneness >= 55 &&
+  customer.firstSideDoneness <= 85 &&
+  customer.burn < 45
+
+export const scoreBurger = (customer: Customer): BurgerScoreResult => {
+  const burnPenalty = customer.burn >= 80 ? 25 : customer.burn >= 45 ? 10 : 0
+  const patienceBonus = Math.max(0, Math.round(customer.patience / 2))
+  const perfectBonus =
+    customer.mistakes === 0 &&
+    customer.burn < 45 &&
+    customer.firstSideDoneness >= 55 &&
+    customer.firstSideDoneness <= 85 &&
+    customer.secondSideDoneness >= 35 &&
+    customer.secondSideDoneness <= 90
+      ? 30
+      : 0
+  const bossBonus = customer.isBoss ? 80 : 0
+
+  return {
+    burnPenalty,
+    gainedScore: Math.max(
+      8,
+      35 + patienceBonus + perfectBonus + bossBonus - burnPenalty,
+    ),
+    patienceBonus,
+    perfectBonus,
   }
 }
 

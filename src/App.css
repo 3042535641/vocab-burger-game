@@ -2239,6 +2239,363 @@
   display: none;
 }
 
+/* Medical-student art pass: lecture notes, lab bench, flashcards, and ECG energy. */
+.game-shell::before {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.38) 0 18%, transparent 18% 100%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(43, 126, 116, 0.1) 0 2px,
+      transparent 2px 32px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(43, 126, 116, 0.08) 0 2px,
+      transparent 2px 32px
+    );
+}
+
+.panel {
+  position: relative;
+  background:
+    linear-gradient(90deg, rgba(45, 132, 121, 0.14) 0 8px, transparent 8px),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.76), transparent 48%),
+    #fffdf6;
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 255, 255, 0.44),
+    0 8px 0 #2d7d73,
+    0 16px 28px rgba(35, 84, 76, 0.2);
+}
+
+.panel:not(.burger-station)::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 18px;
+  height: 18px;
+  opacity: 0.42;
+  background:
+    linear-gradient(90deg, transparent 38%, #2d7d73 38% 62%, transparent 62%),
+    linear-gradient(0deg, transparent 38%, #2d7d73 38% 62%, transparent 62%);
+  pointer-events: none;
+}
+
+.start-dashboard {
+  background:
+    linear-gradient(90deg, rgba(45, 132, 121, 0.12) 0 12px, transparent 12px),
+    repeating-linear-gradient(0deg, rgba(45, 132, 121, 0.08) 0 2px, transparent 2px 32px),
+    #fffdf6;
+}
+
+.start-dashboard::before {
+  content: 'MED OPEN';
+  background: #2d8479;
+  box-shadow: 0 4px 0 #174f49;
+}
+
+.intro-hero {
+  grid-template-columns: minmax(0, 1fr) 168px;
+}
+
+.start-mascot {
+  border-radius: 999px 999px 28px 28px;
+  background:
+    radial-gradient(circle at 34% 38%, #2b211b 0 6px, transparent 7px),
+    radial-gradient(circle at 65% 38%, #2b211b 0 6px, transparent 7px),
+    linear-gradient(90deg, transparent 44%, #2d7d73 44% 56%, transparent 56%),
+    linear-gradient(#ffd7aa 0 52%, #fffdf6 52% 76%, #45a6d6 76%);
+  box-shadow:
+    0 8px 0 #2d7d73,
+    0 0 0 6px rgba(69, 166, 214, 0.18);
+}
+
+.start-mascot::before {
+  width: 90px;
+  background:
+    linear-gradient(90deg, #fffdf6 0 40%, #2d7d73 40% 60%, #fffdf6 60%),
+    #fffdf6;
+}
+
+.start-mascot span {
+  background: #d9eff8;
+}
+
+.record-strip span,
+.stats span {
+  background:
+    linear-gradient(90deg, rgba(45, 132, 121, 0.18) 0 8px, transparent 8px),
+    #f6fff7;
+}
+
+.word-preview,
+.recipe-preview,
+.manager-tools {
+  background:
+    repeating-linear-gradient(0deg, rgba(45, 132, 121, 0.08) 0 2px, transparent 2px 30px),
+    #eefaf6;
+}
+
+.word-preview::before {
+  background: repeating-linear-gradient(90deg, #2d8479 0 14px, #fffdf6 14px 28px);
+}
+
+.preview-card,
+.recipe-preview-card,
+.word-card {
+  background:
+    linear-gradient(90deg, rgba(217, 71, 49, 0.12) 0 7px, transparent 7px),
+    linear-gradient(#fffdf6, #f7fff8);
+}
+
+.preview-card::after {
+  content: 'TERM';
+  justify-self: start;
+  width: max-content;
+  padding: 1px 6px;
+  border: 2px solid #2b211b;
+  border-radius: 999px;
+  color: #fffdf6;
+  background: #2d8479;
+  font-size: 10px;
+  font-weight: 1000;
+}
+
+.shop-scene,
+.compact-scene {
+  background:
+    linear-gradient(90deg, rgba(43, 33, 27, 0.16) 0 2px, transparent 2px 100%),
+    linear-gradient(0deg, transparent 0 58%, rgba(255, 255, 255, 0.18) 58% 60%, transparent 60%),
+    linear-gradient(#cdeee8 0 54%, #2d8479 54% 58%, #f1c371 58%);
+}
+
+.shop-scene::after {
+  content: 'TODAY: MED TERMS';
+  background: #174f49;
+}
+
+.shop-sign {
+  color: #f6fff7;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.12), transparent 32%),
+    #174f49;
+  box-shadow: 0 4px 0 #0d302c;
+}
+
+.awning {
+  background: repeating-linear-gradient(
+    90deg,
+    #2d8479 0 56px,
+    #fffdf6 56px 112px,
+    #d94731 112px 168px,
+    #fffdf6 168px 224px
+  );
+}
+
+.counter-rail {
+  background:
+    linear-gradient(90deg, #dff4bf 0 18%, #2d8479 18% 21%, #dff4bf 21% 34%, transparent 34%),
+    #2b211b;
+}
+
+.banner {
+  background:
+    linear-gradient(90deg, transparent 0 12%, rgba(45, 132, 121, 0.18) 12% 16%, transparent 16%),
+    #dff4bf;
+}
+
+.customer-ticket {
+  background:
+    linear-gradient(90deg, rgba(45, 132, 121, 0.14) 0 8px, transparent 8px),
+    #fffdf6;
+}
+
+.customer-ticket::before {
+  content: 'MED ID';
+  background: #d9eff8;
+}
+
+.customer-ticket::after {
+  content: '';
+  position: absolute;
+  top: 11px;
+  right: 58px;
+  width: 30px;
+  height: 12px;
+  border-bottom: 3px solid #2d8479;
+  border-left: 3px solid #2d8479;
+  border-radius: 0 0 0 999px;
+  opacity: 0.72;
+}
+
+.customer-ticket.active {
+  background:
+    linear-gradient(90deg, rgba(217, 71, 49, 0.14) 0 8px, transparent 8px),
+    #fff0c8;
+}
+
+.customer-avatar {
+  background:
+    radial-gradient(circle at 34% 40%, #2b211b 0 3px, transparent 4px),
+    radial-gradient(circle at 64% 40%, #2b211b 0 3px, transparent 4px),
+    linear-gradient(90deg, transparent 43%, #2d7d73 43% 57%, transparent 57%),
+    linear-gradient(#ffd3a3 0 58%, #fffdf6 58%);
+}
+
+.avatar-star,
+.avatar-shade,
+.avatar-bun {
+  background:
+    radial-gradient(circle at 34% 42%, #2b211b 0 3px, transparent 4px),
+    radial-gradient(circle at 64% 42%, #2b211b 0 3px, transparent 4px),
+    linear-gradient(90deg, transparent 43%, #2d7d73 43% 57%, transparent 57%),
+    linear-gradient(#ffe0b9 0 58%, #fffdf6 58%);
+}
+
+.avatar-boss {
+  background:
+    radial-gradient(circle at 34% 42%, #2b211b 0 4px, transparent 5px),
+    radial-gradient(circle at 64% 42%, #2b211b 0 4px, transparent 5px),
+    linear-gradient(#ffd3a3 0 58%, #174f49 58%);
+}
+
+.speech-bubble {
+  background:
+    linear-gradient(90deg, rgba(45, 132, 121, 0.12) 0 7px, transparent 7px),
+    #fffdf6;
+}
+
+.burger-station {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.62), transparent 36%),
+    repeating-linear-gradient(0deg, rgba(45, 132, 121, 0.06) 0 2px, transparent 2px 28px),
+    #eefaf6;
+}
+
+.grill-slot {
+  background:
+    repeating-linear-gradient(45deg, rgba(43, 33, 27, 0.09) 0 8px, transparent 8px 16px),
+    #d8e7e3;
+}
+
+.grill-slot.active {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.55), transparent),
+    #dff4bf;
+}
+
+.grill-slot.empty {
+  background:
+    repeating-linear-gradient(45deg, rgba(45, 132, 121, 0.12) 0 8px, transparent 8px 16px),
+    rgba(255, 255, 255, 0.62);
+}
+
+.grill-lights::before {
+  content: 'LAB HEAT';
+  align-self: center;
+  margin-right: 4px;
+  color: #174f49;
+  font-size: 11px;
+  font-weight: 1000;
+}
+
+.burger-stack {
+  border-color: #2d7d73;
+  background:
+    linear-gradient(90deg, rgba(45, 132, 121, 0.14) 0 2px, transparent 2px 18px),
+    repeating-linear-gradient(0deg, rgba(69, 166, 214, 0.08) 0 2px, transparent 2px 26px),
+    linear-gradient(#fffdf6, #d8e7e3);
+}
+
+.burger-stack::before {
+  content: 'ECG';
+  display: grid;
+  place-items: center;
+  color: #dff4bf;
+  background:
+    linear-gradient(115deg, transparent 0 28%, #dff4bf 28% 32%, transparent 32% 42%, #dff4bf 42% 46%, transparent 46%),
+    #174f49;
+  font-size: 10px;
+  font-weight: 1000;
+}
+
+.meter {
+  background:
+    repeating-linear-gradient(90deg, rgba(45, 132, 121, 0.14) 0 8px, transparent 8px 16px),
+    #fffdf6;
+}
+
+.meter span {
+  background: linear-gradient(90deg, #45a6d6, #75c760);
+}
+
+.flip-window.ready {
+  background: #d9eff8;
+}
+
+.bottom-bun,
+.top-bun {
+  background:
+    radial-gradient(circle at 22% 34%, #fff3b1 0 3px, transparent 4px),
+    radial-gradient(circle at 54% 28%, #fff3b1 0 3px, transparent 4px),
+    linear-gradient(#f2bd63, #d88d38);
+}
+
+.patty {
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 210, 139, 0.18) 0 8px, transparent 8px 18px),
+    linear-gradient(#96533a, #6f3828);
+}
+
+.order-ticket {
+  background:
+    linear-gradient(90deg, rgba(217, 71, 49, 0.12) 0 10px, transparent 10px),
+    repeating-linear-gradient(0deg, rgba(45, 132, 121, 0.08) 0 2px, transparent 2px 25px),
+    #fffdf6;
+}
+
+.question-card::before {
+  content: 'TERM CARD';
+  background: #2d8479;
+}
+
+.quiz-panel {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.66), transparent 35%),
+    repeating-linear-gradient(0deg, rgba(45, 132, 121, 0.07) 0 2px, transparent 2px 28px),
+    #eefaf6;
+}
+
+.answer-button {
+  background:
+    linear-gradient(90deg, rgba(45, 132, 121, 0.12) 0 7px, transparent 7px),
+    linear-gradient(#fffdf6, #e9f6f2);
+  box-shadow: 0 4px 0 #2d7d73;
+}
+
+.answer-button:hover {
+  background:
+    linear-gradient(90deg, rgba(217, 71, 49, 0.13) 0 7px, transparent 7px),
+    linear-gradient(#fffdf6, #d9eff8);
+  box-shadow:
+    0 4px 0 #2d7d73,
+    0 0 0 4px rgba(69, 166, 214, 0.22);
+}
+
+.combo {
+  background: #d9eff8;
+}
+
+.feedback.info {
+  background: #d9eff8;
+}
+
+.manager-panel {
+  background:
+    linear-gradient(90deg, rgba(45, 132, 121, 0.12) 0 12px, transparent 12px),
+    #fffdf6;
+}
+
 .shop-sign,
 .counter-rail,
 .banner,

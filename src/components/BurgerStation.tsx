@@ -26,9 +26,9 @@ function BurgerStation({
     firstSide >= 55 && firstSide <= 85 && burn < 45 ? 'ready' : ''
 
   return (
-    <section className="panel burger-station" aria-label="汉堡制作台">
+    <section className="panel burger-station" aria-label="医学英语汉堡制作台">
       <div className="section-heading">
-        <h2>制作台</h2>
+        <h2>术语制作台</h2>
         <span>
           A面 {firstSide}% / B面 {secondSide}% · 焦度 {burn}%
         </span>
@@ -56,7 +56,7 @@ function BurgerStation({
               key={slotCustomer.id}
               onClick={() => onSelectCustomer(slotCustomer.id)}
             >
-              <strong>{slotCustomer.isBoss ? 'BOSS' : `锅 ${slotIndex + 1}`}</strong>
+              <strong>{slotCustomer.isBoss ? '教授' : `锅 ${slotIndex + 1}`}</strong>
               <span>{slotCustomer.recipe.name}</span>
               <small>
                 A {slotCustomer.firstSideDoneness}% / B{' '}
@@ -75,24 +75,24 @@ function BurgerStation({
       <div className="burger-stack">
         {!customer && <span className="empty-plate">等待订单</span>}
         {customer && completedStepIds?.includes('top') && (
-          <span className="burger-layer top-bun">面包盖</span>
+          <span className="burger-layer top-bun">护理面包盖</span>
         )}
         {customer && completedStepIds?.includes('sauce') && (
-          <span className="burger-layer sauce">酱汁</span>
+          <span className="burger-layer sauce">治疗酱</span>
         )}
         {customer && completedStepIds?.includes('tomato') && (
-          <span className="burger-layer tomato">番茄</span>
+          <span className="burger-layer tomato">炎症番茄</span>
         )}
         {customer && completedStepIds?.includes('lettuce') && (
-          <span className="burger-layer lettuce">生菜</span>
+          <span className="burger-layer lettuce">症状生菜</span>
         )}
         {customer && completedStepIds?.includes('patty') && (
           <span className={`burger-layer patty ${pattyClass}`}>
-            {burn >= 80 ? '烤焦肉饼' : '肉饼'}
+            {burn >= 80 ? '烤焦组织肉饼' : '组织肉饼'}
           </span>
         )}
         {customer && completedStepIds?.includes('bun') && (
-          <span className="burger-layer bottom-bun">面包底</span>
+          <span className="burger-layer bottom-bun">细胞词根底</span>
         )}
         {customer && completedStepIds?.length === 0 && (
           <span className="empty-plate">空盘子</span>
@@ -127,8 +127,8 @@ function BurgerStation({
 
       <p className="current-step">
         {customer
-          ? `当前动作：${customer.steps[customer.stepIndex]?.label ?? '完成汉堡'}`
-          : '请选择或等待一位顾客'}
+          ? `当前动作：${customer.steps[customer.stepIndex]?.label ?? '完成医学汉堡'}`
+          : '请选择或等待一位医学生'}
       </p>
     </section>
   )

@@ -8,10 +8,10 @@ import {
 } from '../utils/gameLogic'
 
 const moodLabels: Record<Mood, string> = {
-  happy: '期待',
-  waiting: '等待中',
-  worried: '着急',
-  angry: '生气',
+  happy: '备考中',
+  waiting: '背词中',
+  worried: '快忘词',
+  angry: '要破防',
 }
 
 const moodFaces: Record<Mood, string> = {

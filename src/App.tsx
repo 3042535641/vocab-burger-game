@@ -55,6 +55,55 @@ const categoryLabels: Record<WordEntry['category'], string> = {
   feeling: '状态描述',
 }
 
+const getServiceRank = (
+  score: number,
+  bestCombo: number,
+  lostCustomers: number,
+  bossDefeated: boolean,
+) => {
+  const penalty = lostCustomers * 80
+  const bossBonus = bossDefeated ? 160 : 0
+  const rankScore = score + bestCombo * 12 + bossBonus - penalty
+
+  if (rankScore >= 760) {
+    return {
+      comment: '全班起立，医学英语汉堡之神。',
+      label: 'SSS',
+      tier: 'sss',
+    }
+  }
+
+  if (rankScore >= 560) {
+    return {
+      comment: '术语、熟度、节奏都在线。',
+      label: 'S',
+      tier: 's',
+    }
+  }
+
+  if (rankScore >= 390) {
+    return {
+      comment: '课堂展示很稳，可以继续冲连击。',
+      label: 'A',
+      tier: 'a',
+    }
+  }
+
+  if (rankScore >= 240) {
+    return {
+      comment: '能开店，但还会被教授追问。',
+      label: 'B',
+      tier: 'b',
+    }
+  }
+
+  return {
+    comment: '建议先看预习词表，再开一局。',
+    label: 'C',
+    tier: 'c',
+  }
+}
+
 const normalizeEnglish = (value: string) => value.trim().toLowerCase()
 
 function App() {
@@ -72,6 +121,7 @@ function App() {
   const [feedback, setFeedback] = useState<Feedback>(null)
   const [banner, setBanner] = useState('准备营业')
   const [musicEnabled, setMusicEnabled] = useState(true)
+  const [performanceMode, setPerformanceMode] = useState(true)
   const [view, setView] = useState<'game' | 'words'>('game')
   const [customWords, setCustomWords] = useState<WordEntry[]>(loadCustomWords)
   const [records, setRecords] = useState<GameRecords>(loadRecords)
@@ -123,6 +173,12 @@ function App() {
       ? 'Boss 已完成'
       : 'Boss 战进行中'
     : `目标：${servedCount}/${targetRegularServed}`
+  const serviceRank = getServiceRank(score, bestCombo, lostCustomers, bossDefeated)
+  const rushProgress = bossSpawned
+    ? bossDefeated
+      ? 100
+      : Math.max(12, Math.round(((activeCustomer?.stepIndex ?? 0) / 7) * 100))
+    : Math.round((servedCount / targetRegularServed) * 100)
 
   useEffect(() => {
     return () => {
@@ -576,6 +632,10 @@ function App() {
     })
   }
 
+  const togglePerformanceMode = () => {
+    setPerformanceMode((enabled) => !enabled)
+  }
+
   const openWordManager = () => {
     gameAudio.stopMusic()
     setView('words')
@@ -740,6 +800,9 @@ function App() {
               ? victoryLine || '教授 Boss 已完成，适合医学英语课堂展示收尾。'
               : '教授 Boss 未完成，可以再开一局。'}
           </p>
+          <p className={`result-rank rank-${serviceRank.tier}`}>
+            本局评级：{serviceRank.label} · {serviceRank.comment}
+          </p>
           <div className="record-strip" aria-label="历史记录">
             <span>历史最高 {Math.max(records.highScore, score)}</span>
             <span>历史 Combo {Math.max(records.bestCombo, bestCombo)}</span>
@@ -766,7 +829,9 @@ function App() {
     <main
       className={`game-shell play-shell ${impact ? `impact-${impact}` : ''} ${
         combo >= 3 ? 'combo-hot' : ''
-      } ${bossSpawned && !bossDefeated ? 'boss-mode' : ''}`}
+      } ${bossSpawned && !bossDefeated ? 'boss-mode' : ''} ${
+        performanceMode ? 'performance-mode' : ''
+      }`}
     >
       {impact === 'victory' && <BossFinale />}
       {impactText && impact !== 'victory' && (
@@ -781,8 +846,18 @@ function App() {
           <span>得分 {score}</span>
           <span>Combo {combo}</span>
           <span>{goalText}</span>
+          <span className={`rank-badge rank-${serviceRank.tier}`}>
+            评级 {serviceRank.label}
+          </span>
           <button type="button" className="small-action" onClick={toggleMusic}>
             {musicEnabled ? '音乐开' : '音乐关'}
+          </button>
+          <button
+            type="button"
+            className="small-action"
+            onClick={togglePerformanceMode}
+          >
+            {performanceMode ? '性能模式' : '特效开'}
           </button>
           <button
             type="button"
@@ -807,6 +882,20 @@ function App() {
       </section>
 
       <div className="banner">{banner}</div>
+      <div
+        className={`rush-meter ${bossSpawned && !bossDefeated ? 'boss-rush' : ''}`}
+        aria-label={bossSpawned ? 'Boss 压力进度' : '课堂高峰进度'}
+      >
+        <span>
+          {bossSpawned && !bossDefeated
+            ? '教授压力条'
+            : `课堂高峰 ${servedCount}/${targetRegularServed}`}
+        </span>
+        <strong>{Math.min(100, rushProgress)}%</strong>
+        <div className="rush-track" aria-hidden="true">
+          <span style={{ width: `${Math.min(100, rushProgress)}%` }} />
+        </div>
+      </div>
 
       <div className="shop-layout">
         <CustomerQueue

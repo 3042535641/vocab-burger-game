@@ -2974,6 +2974,45 @@
   background: #d9eff8;
 }
 
+.play-shell .answer-button,
+.play-shell .customer-ticket,
+.play-shell .small-action,
+.play-shell .primary-action {
+  transition:
+    background-color 80ms ease,
+    box-shadow 80ms ease,
+    transform 80ms ease;
+  will-change: auto;
+}
+
+.play-shell .answer-button:hover,
+.play-shell .customer-ticket:hover {
+  filter: none;
+}
+
+.play-shell .answer-button:active {
+  animation: none;
+  transform: translateY(2px);
+}
+
+.play-shell .preview-card:hover {
+  filter: none;
+}
+
+.play-shell .question-card,
+.play-shell .answer-grid,
+.play-shell .quiz-footer {
+  contain: layout paint;
+}
+
+.play-shell .shop-scene::before,
+.play-shell .counter-rail,
+.play-shell .speech-bubble,
+.play-shell .burger-stack::before,
+.play-shell .patty {
+  animation: none;
+}
+
 .manager-panel {
   background:
     linear-gradient(90deg, rgba(45, 132, 121, 0.12) 0 12px, transparent 12px),

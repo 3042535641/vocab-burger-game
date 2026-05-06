@@ -28,7 +28,6 @@ import { gameAudio } from './utils/audio'
 import {
   bossLines,
   bossVictoryLines,
-  buildQuestion,
   cookPatty,
   correctLines,
   createCustomer,
@@ -95,11 +94,30 @@ function App() {
   const activeCustomer =
     customers.find((customer) => customer.id === activeCustomerId) ??
     customers[0]
-  const activeStep = activeCustomer?.steps[activeCustomer.stepIndex]
-  const activeQuestion = useMemo(
-    () => buildQuestion(activeCustomer),
-    [activeCustomer],
-  )
+  const activeQuestionCustomerId = activeCustomer?.id
+  const activeQuestionStepIndex = activeCustomer?.stepIndex
+  const activeStep =
+    activeQuestionStepIndex === undefined
+      ? undefined
+      : activeCustomer?.steps[activeQuestionStepIndex]
+  const activeQuestion = useMemo(() => {
+    if (
+      activeQuestionCustomerId === undefined ||
+      activeQuestionStepIndex === undefined ||
+      !activeStep
+    ) {
+      return undefined
+    }
+
+    const options = [activeStep.word.english, ...activeStep.word.wrongOptions]
+    const offset = (activeQuestionCustomerId + activeQuestionStepIndex) % options.length
+
+    return {
+      chinese: activeStep.word.chinese,
+      correctAnswer: activeStep.word.english,
+      options: [...options.slice(offset), ...options.slice(0, offset)],
+    }
+  }, [activeQuestionCustomerId, activeQuestionStepIndex, activeStep])
   const goalText = bossSpawned
     ? bossDefeated
       ? 'Boss 已完成'

@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import type { Customer } from '../types/game'
 
 const grillSlotIndexes = [0, 1]
@@ -134,4 +135,32 @@ function BurgerStation({
   )
 }
 
-export default BurgerStation
+const customerRenderKey = (customer?: Customer) =>
+  customer
+    ? [
+        customer.id,
+        customer.stepIndex,
+        customer.firstSideDoneness,
+        customer.secondSideDoneness,
+        customer.burn,
+        customer.pattySide,
+        customer.recipe.id,
+        customer.isBoss,
+      ].join(':')
+    : 'empty'
+
+const queueRenderKey = (customers: Customer[]) =>
+  customers
+    .map(
+      (customer) =>
+        `${customer.id}:${customer.stepIndex}:${customer.firstSideDoneness}:${customer.secondSideDoneness}:${customer.burn}:${customer.recipe.id}`,
+    )
+    .join('|')
+
+export default memo(
+  BurgerStation,
+  (previous, next) =>
+    previous.activeCustomerId === next.activeCustomerId &&
+    customerRenderKey(previous.customer) === customerRenderKey(next.customer) &&
+    queueRenderKey(previous.customers) === queueRenderKey(next.customers),
+)

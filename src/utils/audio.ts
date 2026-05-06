@@ -51,6 +51,10 @@ class GameAudio {
   }
 
   private playOneShot(src: string, volume = 0.7, playbackRate = 1, delay = 0) {
+    if (this.effectTimers.size > 72) {
+      return
+    }
+
     this.scheduleEffect(() => {
       const audio = this.getPooledAudio(src)
       audio.volume = volume
@@ -87,6 +91,10 @@ class GameAudio {
     volume = 0.055,
     delay = 0,
   ) {
+    if (this.effectTimers.size > 72) {
+      return
+    }
+
     this.scheduleEffect(() => {
       const context = this.getAudioContext()
       const oscillator = context.createOscillator()
@@ -199,7 +207,7 @@ class GameAudio {
     const bassPattern = [98, 49, 98, 65, 123, 65, 98, 73]
     const chantPattern = [784, 988, 1175, 988, 1568, 1175, 988, 784]
     const sirenPattern = [392, 523, 659, 784, 1046, 784, 659, 523]
-    const slamDelays = [0, 420, 840, 1680, 2520, 3360, 5040, 6720, 8400]
+    const slamDelays = [0, 520, 1040, 2080, 3640, 5200, 7280]
 
     slamDelays.forEach((delay, index) => {
       const heavy = index === 0 || index % 3 === 0
@@ -210,8 +218,8 @@ class GameAudio {
       this.playTone(146, 0.08, 'square', 0.036, delay + 42)
     })
 
-    for (let index = 0; index < 38; index += 1) {
-      const delay = 760 + index * 210
+    for (let index = 0; index < 26; index += 1) {
+      const delay = 760 + index * 280
       const bass = bassPattern[index % bassPattern.length]
       const chant = chantPattern[index % chantPattern.length]
       const siren = sirenPattern[index % sirenPattern.length]
@@ -246,7 +254,7 @@ class GameAudio {
       }
     }
 
-    const lectureGliss = [1046, 988, 1175, 784, 1568, 740, 1760, 659, 2093]
+    const lectureGliss = [1046, 988, 1175, 784, 1568, 740]
 
     lectureGliss.forEach((frequency, index) => {
       const delay = 1180 + index * 105
@@ -389,7 +397,7 @@ class GameAudio {
     this.playTone(2093, 0.24, 'sine', 0.05, 620)
     this.playFinaleGroove()
 
-    for (let delay = 1800; delay <= 8400; delay += 1400) {
+    for (let delay = 1800; delay <= 7400; delay += 1800) {
       this.playOneShot(audioFiles.correct, 0.36, 1.22, delay)
       this.playTone(523, 0.1, 'triangle', 0.032, delay + 60)
       this.playTone(880, 0.11, 'square', 0.036, delay + 170)

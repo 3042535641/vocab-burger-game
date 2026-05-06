@@ -206,6 +206,14 @@ function App() {
   }, [])
 
   useEffect(() => {
+    gameAudio.setEnabled(musicEnabled)
+  }, [musicEnabled])
+
+  useEffect(() => {
+    gameAudio.setPerformanceMode(performanceMode)
+  }, [performanceMode])
+
+  useEffect(() => {
     if (gameStatus !== 'playing') {
       gameAudio.setIntensity(0)
       return
@@ -639,10 +647,13 @@ function App() {
       }
 
       if (currentSettings.musicEnabled) {
+        gameAudio.setEnabled(false)
         gameAudio.stopMusic()
         saveSettings(nextSettings)
         return nextSettings
       }
+
+      gameAudio.setEnabled(true)
 
       if (gameStatus === 'playing') {
         if (bossSpawned && !bossDefeated) {

@@ -35,7 +35,7 @@ function QuizPanel({
       <div className="question-card">
         <p className="question-label">看中文医学概念，选择正确英文术语</p>
         <h2>{question.chinese}</h2>
-        <p>{stationText}</p>
+        <p className="question-hint">{stationText}</p>
       </div>
 
       <div className="answer-grid" data-combo={combo >= 3 ? 'hot' : 'normal'}>

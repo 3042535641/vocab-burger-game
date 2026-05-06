@@ -6093,3 +6093,180 @@
     font-size: 24px;
   }
 }
+
+/* Mobile quiz readability fix: no clipped hints, no sideways scroll. */
+.game-shell,
+.panel,
+.shop-scene,
+.quiz-panel,
+.answer-grid,
+.question-card {
+  max-width: 100%;
+}
+
+.question-label,
+.question-hint {
+  overflow-wrap: anywhere;
+}
+
+.question-hint {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #2d7d73;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+@media (max-width: 760px) {
+  .game-shell {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: clip;
+  }
+
+  .play-shell {
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+
+  .game-header,
+  .shop-scene,
+  .banner,
+  .rush-meter,
+  .shop-layout,
+  .quiz-panel {
+    width: 100%;
+    max-width: calc(100vw - 12px);
+  }
+
+  .stats {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .stats span,
+  .stats button {
+    border-width: 2px;
+    box-shadow: 0 3px 0 rgba(43, 33, 27, 0.22);
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .shop-scene {
+    overflow: hidden;
+  }
+
+  .quiz-panel {
+    bottom: 6px;
+    overflow: visible;
+    contain: layout paint;
+  }
+
+  .quiz-panel::after {
+    top: -18px;
+    right: 10px;
+    z-index: 12;
+    padding: 4px 9px;
+    border-width: 3px;
+    font-size: 13px;
+    transform-origin: right center;
+  }
+
+  .question-card {
+    align-content: start;
+    min-height: 0;
+    padding: 18px 10px 12px;
+    text-align: center;
+  }
+
+  .question-card::before {
+    top: -10px;
+    left: 10px;
+    padding: 1px 6px;
+    font-size: 10px;
+  }
+
+  .question-label {
+    color: #8a4a46;
+    font-size: 13px;
+    font-weight: 1000;
+    line-height: 1.25;
+  }
+
+  .question-card h2 {
+    margin: 6px 0;
+    font-size: clamp(30px, 11vw, 44px);
+    line-height: 1.05;
+  }
+
+  .question-card p:last-child,
+  .question-hint {
+    display: block;
+    overflow: visible;
+    font-size: 14px;
+    line-height: 1.32;
+    -webkit-line-clamp: unset;
+  }
+
+  .answer-grid {
+    width: 100%;
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .answer-button {
+    min-width: 0;
+    border-width: 2px;
+    box-shadow: 0 3px 0 #9b6b4b;
+    transform: translateZ(0);
+  }
+
+  .answer-button:hover {
+    box-shadow: 0 3px 0 #9b6b4b;
+    transform: translateZ(0);
+  }
+
+  .combo,
+  .feedback {
+    min-width: 0;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  .game-header,
+  .shop-scene,
+  .banner,
+  .rush-meter,
+  .shop-layout,
+  .quiz-panel {
+    max-width: calc(100vw - 12px);
+  }
+
+  .stats span,
+  .stats button {
+    min-height: 38px;
+    padding: 5px;
+    font-size: 12px;
+  }
+
+  .quiz-panel {
+    padding: 8px;
+  }
+
+  .question-card {
+    padding: 17px 8px 10px;
+  }
+
+  .question-label,
+  .question-hint {
+    font-size: 12px;
+  }
+
+  .answer-grid {
+    gap: 7px;
+  }
+}

@@ -51,7 +51,7 @@ class GameAudio {
   }
 
   private playOneShot(src: string, volume = 0.7, playbackRate = 1, delay = 0) {
-    if (this.effectTimers.size > 72) {
+    if (this.effectTimers.size > 56) {
       return
     }
 
@@ -91,7 +91,7 @@ class GameAudio {
     volume = 0.055,
     delay = 0,
   ) {
-    if (this.effectTimers.size > 72) {
+    if (this.effectTimers.size > 56) {
       return
     }
 
@@ -148,8 +148,8 @@ class GameAudio {
 
     const normalLead = [523, 659, 784, 659, 880, 784, 659, 587]
     const normalBass = [130, 130, 164, 130, 196, 164, 146, 130]
-    const bossLead = [196, 185, 146, 185, 220, 185, 146, 123]
-    const bossBass = [65, 61, 55, 61, 49, 55, 61, 65]
+    const bossLead = [247, 196, 330, 185, 392, 220, 370, 165]
+    const bossBass = [61, 49, 73, 55, 82, 49, 73, 41]
 
     this.grooveTimer = window.setInterval(() => {
       if (this.finaleActive) {
@@ -165,10 +165,10 @@ class GameAudio {
 
       this.playDirectTone(
         lead,
-        this.bossActive ? 0.12 : 0.09,
+        this.bossActive ? 0.1 : 0.08,
         this.bossActive ? 'sawtooth' : 'square',
-        (this.bossActive ? 0.024 : 0.032) * hype,
-        this.bossActive ? lead * 0.74 : lead * 1.22,
+        (this.bossActive ? 0.03 : 0.024) * hype,
+        this.bossActive ? lead * (step % 2 === 0 ? 1.42 : 0.68) : lead * 1.18,
       )
 
       if (step % 2 === 0) {
@@ -182,15 +182,16 @@ class GameAudio {
       }
 
       if (!this.bossActive && step % 4 === 3) {
-        this.playDirectTone(1046, 0.06, 'square', 0.02 * hype, 1318)
+        this.playDirectTone(1046, 0.05, 'square', 0.014 * hype, 1318)
       }
 
-      if (this.bossActive && step % 4 === 1) {
-        this.playDirectTone(92, 0.18, 'sawtooth', 0.026, 55)
+      if (this.bossActive && step % 2 === 1) {
+        this.playDirectTone(92, 0.16, 'sawtooth', 0.028, 55)
+        this.playDirectTone(740, 0.045, 'square', 0.018, 1110)
       }
 
       this.grooveStep += 1
-    }, 900)
+    }, 760)
   }
 
   private stopGroove() {
@@ -204,10 +205,10 @@ class GameAudio {
   }
 
   private playFinaleGroove() {
-    const bassPattern = [98, 49, 98, 65, 123, 65, 98, 73]
-    const chantPattern = [784, 988, 1175, 988, 1568, 1175, 988, 784]
-    const sirenPattern = [392, 523, 659, 784, 1046, 784, 659, 523]
-    const slamDelays = [0, 520, 1040, 2080, 3640, 5200, 7280]
+    const bassPattern = [98, 49, 123, 61, 146, 73, 196, 49]
+    const chantPattern = [784, 1175, 988, 1568, 1046, 1760, 1175, 2093]
+    const sirenPattern = [392, 659, 523, 1046, 784, 1318, 659, 1568]
+    const slamDelays = [0, 520, 1040, 2140, 3600, 5480, 7600]
 
     slamDelays.forEach((delay, index) => {
       const heavy = index === 0 || index % 3 === 0
@@ -218,8 +219,8 @@ class GameAudio {
       this.playTone(146, 0.08, 'square', 0.036, delay + 42)
     })
 
-    for (let index = 0; index < 26; index += 1) {
-      const delay = 760 + index * 280
+    for (let index = 0; index < 18; index += 1) {
+      const delay = 720 + index * 340
       const bass = bassPattern[index % bassPattern.length]
       const chant = chantPattern[index % chantPattern.length]
       const siren = sirenPattern[index % sirenPattern.length]
@@ -254,7 +255,7 @@ class GameAudio {
       }
     }
 
-    const lectureGliss = [1046, 988, 1175, 784, 1568, 740]
+    const lectureGliss = [1046, 988, 1175, 784, 1568, 740, 2093, 1568]
 
     lectureGliss.forEach((frequency, index) => {
       const delay = 1180 + index * 105
@@ -311,8 +312,8 @@ class GameAudio {
       this.bossMusic.loop = true
     }
 
-    this.bossMusic.volume = 0.48
-    this.bossMusic.playbackRate = 0.78
+    this.bossMusic.volume = 0.56
+    this.bossMusic.playbackRate = 0.72
     void this.bossMusic.play().catch(() => undefined)
 
     if (this.music) {
@@ -335,12 +336,15 @@ class GameAudio {
   }
 
   playCorrect(combo = 1) {
-    this.playOneShot(audioFiles.correct, 0.72, 1 + Math.min(combo, 8) * 0.025)
-    this.playTone(660 + Math.min(combo, 8) * 32, 0.07, 'square', 0.045)
-    this.playTone(990 + Math.min(combo, 8) * 36, 0.045, 'square', 0.026, 45)
+    const comboLevel = Math.min(combo, 8)
+
+    this.playOneShot(audioFiles.correct, 0.72, 1 + comboLevel * 0.03)
+    this.playTone(660 + comboLevel * 36, 0.07, 'square', 0.045)
+    this.playTone(990 + comboLevel * 42, 0.045, 'square', 0.026, 45)
+    this.playTone(196 + comboLevel * 18, 0.055, 'triangle', 0.018, 24)
 
     if (combo >= 3) {
-      this.playOneShot(audioFiles.correct, 0.42, 1.18, 70)
+      this.playOneShot(audioFiles.correct, 0.38, 1.18 + comboLevel * 0.02, 70)
       this.playTone(880, 0.08, 'triangle', 0.04, 75)
       this.playTone(1320, 0.055, 'square', 0.03, 135)
     }
@@ -407,6 +411,7 @@ class GameAudio {
 
   startMusic() {
     this.finaleActive = false
+    this.stopBossMusic()
     this.bossActive = false
 
     if (!this.music) {

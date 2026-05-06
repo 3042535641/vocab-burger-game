@@ -28,14 +28,17 @@ function QuizPanel({
   }
 
   return (
-    <section className="panel quiz-panel" aria-label="医学术语题">
+    <section
+      className={`panel quiz-panel ${feedback ? `quiz-${feedback.kind}` : ''}`}
+      aria-label="医学术语题"
+    >
       <div className="question-card">
         <p className="question-label">看中文医学概念，选择正确英文术语</p>
         <h2>{question.chinese}</h2>
         <p>{stationText}</p>
       </div>
 
-      <div className="answer-grid">
+      <div className="answer-grid" data-combo={combo >= 3 ? 'hot' : 'normal'}>
         {question.options.map((option) => (
           <button
             type="button"

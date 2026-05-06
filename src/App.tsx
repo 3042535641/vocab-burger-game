@@ -43,8 +43,10 @@ import {
 import {
   loadCustomWords,
   loadRecords,
+  loadSettings,
   saveCustomWords,
   saveRecords,
+  saveSettings,
 } from './utils/storage'
 import './App.css'
 
@@ -106,6 +108,21 @@ const getServiceRank = (
 
 const normalizeEnglish = (value: string) => value.trim().toLowerCase()
 
+const formatPlayedAt = (value: string) => {
+  const date = new Date(value)
+
+  if (Number.isNaN(date.getTime())) {
+    return '未知时间'
+  }
+
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const hour = date.getHours().toString().padStart(2, '0')
+  const minute = date.getMinutes().toString().padStart(2, '0')
+
+  return `${month}/${day} ${hour}:${minute}`
+}
+
 function App() {
   const [gameStatus, setGameStatus] = useState<GameStatus>('idle')
   const [customers, setCustomers] = useState<Customer[]>([])
@@ -120,8 +137,7 @@ function App() {
   const [bossDefeated, setBossDefeated] = useState(false)
   const [feedback, setFeedback] = useState<Feedback>(null)
   const [banner, setBanner] = useState('准备营业')
-  const [musicEnabled, setMusicEnabled] = useState(true)
-  const [performanceMode, setPerformanceMode] = useState(true)
+  const [settings, setSettings] = useState(loadSettings)
   const [view, setView] = useState<'game' | 'words'>('game')
   const [customWords, setCustomWords] = useState<WordEntry[]>(loadCustomWords)
   const [records, setRecords] = useState<GameRecords>(loadRecords)
@@ -131,6 +147,8 @@ function App() {
   const { clearImpact, impact, impactText, triggerImpact } = useTimedImpact()
   const finaleTimerRef = useRef<number | undefined>(undefined)
   const answerHandlerRef = useRef<(answer: string) => void>(() => undefined)
+  const musicEnabled = settings.musicEnabled
+  const performanceMode = settings.performanceMode
   const wordPool = useMemo(() => [...words, ...customWords], [customWords])
   const previewWords = useMemo(() => {
     return wordPool
@@ -614,10 +632,16 @@ function App() {
   }, [])
 
   const toggleMusic = () => {
-    setMusicEnabled((enabled) => {
-      if (enabled) {
+    setSettings((currentSettings) => {
+      const nextSettings = {
+        ...currentSettings,
+        musicEnabled: !currentSettings.musicEnabled,
+      }
+
+      if (currentSettings.musicEnabled) {
         gameAudio.stopMusic()
-        return false
+        saveSettings(nextSettings)
+        return nextSettings
       }
 
       if (gameStatus === 'playing') {
@@ -628,12 +652,21 @@ function App() {
         }
       }
 
-      return true
+      saveSettings(nextSettings)
+      return nextSettings
     })
   }
 
   const togglePerformanceMode = () => {
-    setPerformanceMode((enabled) => !enabled)
+    setSettings((currentSettings) => {
+      const nextSettings = {
+        ...currentSettings,
+        performanceMode: !currentSettings.performanceMode,
+      }
+
+      saveSettings(nextSettings)
+      return nextSettings
+    })
   }
 
   const openWordManager = () => {
@@ -652,6 +685,36 @@ function App() {
       }
     }
   }
+
+  const historyPanel = (
+    <section
+      className={`history-panel ${records.history.length === 0 ? 'empty-history' : ''}`}
+      aria-labelledby="history-title"
+    >
+      <div className="section-heading">
+        <h2 id="history-title">近期成绩</h2>
+        <span>{records.history.length > 0 ? `${records.history.length} 局` : '暂无记录'}</span>
+      </div>
+      {records.history.length > 0 ? (
+        <div className="history-list">
+          {records.history.map((round, index) => (
+            <article
+              className={`history-card ${round.bossDefeated ? 'win' : 'fail'}`}
+              key={`${round.playedAt}-${index}`}
+            >
+              <strong>{round.bossDefeated ? '通关' : '未通关'} · {round.score} 分</strong>
+              <span>
+                Combo {round.bestCombo} / 出餐 {round.servedCount}
+              </span>
+              <small>{formatPlayedAt(round.playedAt)}</small>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <p>完成第一局后会记录最高分、通关次数和最近成绩，课堂汇报时可以直接展示进步轨迹。</p>
+      )}
+    </section>
+  )
 
   const tutorial = (
     <div
@@ -724,6 +787,8 @@ function App() {
               通关 {records.wins}/{records.rounds}
             </span>
           </div>
+
+          {historyPanel}
 
           <section className="recipe-preview" aria-labelledby="recipe-preview-title">
             <div className="section-heading">
@@ -810,6 +875,7 @@ function App() {
               通关次数 {records.wins + (finalizedRound ? 0 : bossDefeated ? 1 : 0)}
             </span>
           </div>
+          {historyPanel}
           <button type="button" className="primary-action" onClick={startGame}>
             再开一局
           </button>

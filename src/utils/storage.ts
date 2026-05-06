@@ -1,6 +1,11 @@
 import type { WordEntry } from '../data/words'
-import { customWordsStorageKey, recordsStorageKey } from '../constants/game'
+import {
+  customWordsStorageKey,
+  recordsStorageKey,
+  settingsStorageKey,
+} from '../constants/game'
 import { defaultRecords, type GameRecords } from '../types/records'
+import { defaultSettings, type GameSettings } from '../types/settings'
 
 export const loadCustomWords = (): WordEntry[] => {
   try {
@@ -45,4 +50,22 @@ export const loadRecords = (): GameRecords => {
 
 export const saveRecords = (nextRecords: GameRecords) => {
   window.localStorage.setItem(recordsStorageKey, JSON.stringify(nextRecords))
+}
+
+export const loadSettings = (): GameSettings => {
+  try {
+    const rawSettings = window.localStorage.getItem(settingsStorageKey)
+
+    if (!rawSettings) {
+      return defaultSettings
+    }
+
+    return { ...defaultSettings, ...(JSON.parse(rawSettings) as GameSettings) }
+  } catch {
+    return defaultSettings
+  }
+}
+
+export const saveSettings = (nextSettings: GameSettings) => {
+  window.localStorage.setItem(settingsStorageKey, JSON.stringify(nextSettings))
 }

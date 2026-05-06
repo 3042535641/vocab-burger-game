@@ -8,6 +8,7 @@ export const wrongPenalty = 5
 
 export const customWordsStorageKey = 'vocab-burger-custom-words'
 export const recordsStorageKey = 'vocab-burger-records'
+export const settingsStorageKey = 'vocab-burger-settings'
 
 export const stepWordIds = ['bun', 'patty', 'flip', 'lettuce', 'tomato', 'sauce']
 

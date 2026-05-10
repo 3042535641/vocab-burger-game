@@ -396,6 +396,64 @@
   font-weight: 800;
 }
 
+.missed-review {
+  margin: 0 0 16px;
+  padding: 12px;
+  border: 2px solid #2b211b;
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(217, 71, 49, 0.14) 0 8px, transparent 8px),
+    linear-gradient(180deg, #fffdf6, #fff1e8);
+  box-shadow: 0 4px 0 rgba(43, 33, 27, 0.18);
+}
+
+.missed-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.missed-card {
+  display: grid;
+  gap: 3px;
+  min-height: 86px;
+  padding: 9px;
+  border: 2px solid #2b211b;
+  border-radius: 8px;
+  background: #fffdf6;
+}
+
+.missed-card strong,
+.missed-card span,
+.missed-card small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.missed-card strong {
+  color: #2b211b;
+  font-size: 15px;
+  font-weight: 1000;
+  white-space: nowrap;
+}
+
+.missed-card span {
+  color: #d94731;
+  font-size: 14px;
+  font-weight: 1000;
+  white-space: nowrap;
+}
+
+.missed-card small {
+  display: -webkit-box;
+  color: #2d7d73;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .recipe-preview {
   margin: 0 0 16px;
   padding: 12px;
@@ -3738,6 +3796,7 @@
   .intro-hero,
   .recipe-preview-grid,
   .history-list,
+  .missed-list,
   .preview-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -3773,6 +3832,7 @@
   .answer-grid,
   .recipe-preview-grid,
   .history-list,
+  .missed-list,
   .preview-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -3819,6 +3879,7 @@
   .answer-grid,
   .recipe-preview-grid,
   .history-list,
+  .missed-list,
   .preview-grid,
   .intro-hero {
     grid-template-columns: 1fr;

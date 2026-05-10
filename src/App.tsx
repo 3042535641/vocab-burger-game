@@ -28,6 +28,7 @@ import { gameAudio } from './utils/audio'
 import {
   bossLines,
   bossVictoryLines,
+  buildQuestion,
   cookPatty,
   correctLines,
   createCustomer,
@@ -144,6 +145,7 @@ function App() {
   const [showTutorial, setShowTutorial] = useState(false)
   const [finalizedRound, setFinalizedRound] = useState(false)
   const [victoryLine, setVictoryLine] = useState('')
+  const [missedWords, setMissedWords] = useState<WordEntry[]>([])
   const { clearImpact, impact, impactText, triggerImpact } = useTimedImpact()
   const finaleTimerRef = useRef<number | undefined>(undefined)
   const answerHandlerRef = useRef<(answer: string) => void>(() => undefined)
@@ -162,30 +164,12 @@ function App() {
   const activeCustomer =
     customers.find((customer) => customer.id === activeCustomerId) ??
     customers[0]
-  const activeQuestionCustomerId = activeCustomer?.id
   const activeQuestionStepIndex = activeCustomer?.stepIndex
   const activeStep =
     activeQuestionStepIndex === undefined
       ? undefined
       : activeCustomer?.steps[activeQuestionStepIndex]
-  const activeQuestion = useMemo(() => {
-    if (
-      activeQuestionCustomerId === undefined ||
-      activeQuestionStepIndex === undefined ||
-      !activeStep
-    ) {
-      return undefined
-    }
-
-    const options = [activeStep.word.english, ...activeStep.word.wrongOptions]
-    const offset = (activeQuestionCustomerId + activeQuestionStepIndex) % options.length
-
-    return {
-      chinese: activeStep.word.chinese,
-      correctAnswer: activeStep.word.english,
-      options: [...options.slice(offset), ...options.slice(0, offset)],
-    }
-  }, [activeQuestionCustomerId, activeQuestionStepIndex, activeStep])
+  const activeQuestion = useMemo(() => buildQuestion(activeCustomer), [activeCustomer])
   const goalText = bossSpawned
     ? bossDefeated
       ? 'Boss 已完成'
@@ -457,6 +441,7 @@ function App() {
     setBossDefeated(false)
     setFinalizedRound(false)
     setVictoryLine('')
+    setMissedWords([])
     setFeedback(null)
     setBanner('第一位医学生来了，完成 6 份普通订单后教授 Boss 登场')
   }
@@ -602,6 +587,13 @@ function App() {
     }
 
     setCombo(0)
+    if (activeStep?.word) {
+      setMissedWords((currentWords) =>
+        currentWords.some((word) => word.id === activeStep.word.id)
+          ? currentWords
+          : [...currentWords, activeStep.word].slice(-6),
+      )
+    }
     setScore((currentScore) => Math.max(0, currentScore - wrongPenalty))
     setCustomers((currentCustomers) =>
       currentCustomers.map((customer) => {
@@ -724,6 +716,24 @@ function App() {
       ) : (
         <p>完成第一局后会记录最高分、通关次数和最近成绩，课堂汇报时可以直接展示进步轨迹。</p>
       )}
+    </section>
+  )
+
+  const missedReviewPanel = missedWords.length > 0 && (
+    <section className="missed-review" aria-labelledby="missed-review-title">
+      <div className="section-heading">
+        <h2 id="missed-review-title">本局错题复盘</h2>
+        <span>{missedWords.length} 个术语</span>
+      </div>
+      <div className="missed-list">
+        {missedWords.map((word) => (
+          <article className="missed-card" key={word.id}>
+            <strong>{word.chinese}</strong>
+            <span>{word.english}</span>
+            {word.note && <small>{word.note}</small>}
+          </article>
+        ))}
+      </div>
     </section>
   )
 
@@ -886,6 +896,7 @@ function App() {
               通关次数 {records.wins + (finalizedRound ? 0 : bossDefeated ? 1 : 0)}
             </span>
           </div>
+          {missedReviewPanel}
           {historyPanel}
           <button type="button" className="primary-action" onClick={startGame}>
             再开一局

@@ -869,7 +869,7 @@
 
 .rush-meter {
   display: grid;
-  grid-template-columns: auto auto minmax(140px, 1fr);
+  grid-template-columns: auto auto auto minmax(140px, 1fr);
   align-items: center;
   gap: 10px;
   min-height: 38px;
@@ -884,12 +884,25 @@
   font-weight: 1000;
 }
 
+.rush-meter em {
+  max-width: 180px;
+  overflow: hidden;
+  color: #13665d;
+  font-style: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .rush-meter.boss-rush {
   color: #fff7e8;
   background:
     linear-gradient(90deg, rgba(255, 255, 255, 0.16), transparent 34%),
     #d94731;
   text-shadow: 1px 1px 0 #2b211b;
+}
+
+.rush-meter.boss-rush em {
+  color: #ffe27a;
 }
 
 .rush-track {
@@ -6170,6 +6183,19 @@
   overflow-wrap: anywhere;
 }
 
+.play-shell .answer-button,
+.play-shell .customer-ticket,
+.play-shell .grill-slot {
+  backface-visibility: hidden;
+  contain: layout paint;
+  transform: translateZ(0);
+}
+
+.play-shell .answer-button:hover,
+.play-shell .customer-ticket:hover {
+  filter: none;
+}
+
 .question-hint {
   display: -webkit-box;
   overflow: hidden;
@@ -6276,6 +6302,16 @@
     width: 100%;
     min-width: 0;
     gap: 8px;
+  }
+
+  .rush-meter {
+    grid-template-columns: 1fr auto;
+  }
+
+  .rush-meter em {
+    grid-column: 1 / -1;
+    max-width: 100%;
+    white-space: normal;
   }
 
   .answer-button {

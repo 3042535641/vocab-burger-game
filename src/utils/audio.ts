@@ -45,11 +45,11 @@ class GameAudio {
   }
 
   private getEffectLimit() {
-    return this.leanMode ? 34 : 56
+    return this.leanMode ? 24 : 40
   }
 
   private scheduleEffect(callback: () => void, delay = 0) {
-    if (!this.enabled || this.effectTimers.size > this.getEffectLimit()) {
+    if (!this.enabled || this.effectTimers.size >= this.getEffectLimit()) {
       return
     }
 
@@ -75,7 +75,7 @@ class GameAudio {
   }
 
   private playOneShot(src: string, volume = 0.7, playbackRate = 1, delay = 0) {
-    if (!this.enabled || this.effectTimers.size > this.getEffectLimit()) {
+    if (!this.enabled || this.effectTimers.size >= this.getEffectLimit()) {
       return
     }
 
@@ -115,7 +115,7 @@ class GameAudio {
     volume = 0.055,
     delay = 0,
   ) {
-    if (!this.enabled || this.effectTimers.size > this.getEffectLimit()) {
+    if (!this.enabled || this.effectTimers.size >= this.getEffectLimit()) {
       return
     }
 

@@ -19,57 +19,62 @@ type RecipeStepPlan = {
 }
 
 export const customerProfiles = [
-  { name: '医学生小明', avatar: 'round' },
+  { name: '早八医学生小明', avatar: 'round' },
   { name: '背词王安娜', avatar: 'star' },
-  { name: '解剖课 Leo', avatar: 'cap' },
-  { name: '护理专业糖糖', avatar: 'bow' },
+  { name: '解剖图谱 Leo', avatar: 'cap' },
+  { name: '护理技能糖糖', avatar: 'bow' },
   { name: '药理课阿杰', avatar: 'shade' },
-  { name: '实验课 Mia', avatar: 'bun' },
+  { name: '实验报告 Mia', avatar: 'bun' },
 ]
 
 const recipes: BurgerRecipe[] = [
-  { id: 'classic', name: '基础解剖词根堡', tag: 'cell + tissue 打底' },
-  { id: 'green', name: '症状识别清爽堡', tag: 'symptom 快速识别' },
-  { id: 'tomato', name: '炎症反应冲刺堡', tag: 'inflammation 加压' },
-  { id: 'sauce', name: '治疗护理记忆堡', tag: 'treatment + nursing' },
-  { id: 'vascular', name: '动脉心电能量堡', tag: 'vital + artery' },
-  { id: 'pharma', name: '药理抗生素爆酱堡', tag: 'dosage + antibiotic' },
-  { id: 'exam', name: '期末病理破防堡', tag: 'pathology + prognosis' },
+  { id: 'classic', name: '细胞词根打底堡', tag: 'cell + tissue 稳住基本盘' },
+  { id: 'green', name: '症状鉴别清醒堡', tag: 'symptom 别和 syndrome 互殴' },
+  { id: 'tomato', name: '炎症红温冲刺堡', tag: 'inflammation 一口上头' },
+  { id: 'sauce', name: '治疗护理封层堡', tag: 'treatment + nursing 盖住焦虑' },
+  { id: 'vascular', name: '动脉心电蹦迪堡', tag: 'vital + artery 节律拉满' },
+  { id: 'pharma', name: '药理抗生素爆酱堡', tag: 'dosage + antibiotic 精准给量' },
+  { id: 'exam', name: '期末病理破防堡', tag: 'pathology + prognosis 背完再睡' },
 ]
 
 export const recipeCatalog = recipes
 
 export const idleLines = [
-  '同学，来一份能记住 medical terms 的汉堡。',
-  '我不怕排队，我怕 diagnosis 拼错。',
-  '快点快点，教材已经开始发热了。',
-  '这家店怎么还查医学英语？离谱但很适合汇报。',
+  '同学，来一份能记住 medical terms 的汉堡，少放焦虑多放词根。',
+  '我不怕排队，我怕 diagnosis 拼错后被全班沉默注视。',
+  '快点快点，教材已经开始发热，PPT 也在偷偷加载。',
+  '这家店怎么还查医学英语？离谱，但非常适合课程汇报。',
+  '今天不背词根，明天病历翻译就背刺我。',
+  '给我来个不焦的，最好能顺便治一下考前遗忘。',
 ]
 
 export const correctLines = [
-  '可以，这个术语有医学味了。',
-  '答对了，课堂笔记清清楚楚。',
-  '这波像开了医学词根透视。',
+  '可以，这个术语有医学味了，像刚消毒过。',
+  '答对了，课堂笔记清清楚楚，老师眼神暂时放过你。',
+  '这波像开了医学词根透视，前缀后缀都在发光。',
   '汉堡熟了，medical English 也熟了。',
+  '啪！术语盖章成功，记忆神经元开始加班。',
 ]
 
 export const wrongLines = [
-  '啊？这个选项像把 symptom 当 syndrome 了。',
+  '啊？这个选项像把 symptom 当 syndrome 了，病历都愣住了。',
   '别乱点，我不是随机对照试验里的汉堡。',
-  '我的教材沉默得像考前一晚。',
-  '这题错得很有课堂展示效果。',
+  '我的教材沉默得像考前一晚的宿舍。',
+  '这题错得很有课堂展示效果，但我的耐心正在退烧失败。',
+  '术语错位警报：词根正在从锅里爬出来抗议。',
 ]
 
 export const bossLines = [
-  '医学英语教授来了，术语加压，耐心减半。',
-  '答错一次，我就追问词根、前缀、后缀。',
+  '医学英语教授来了，术语加压，耐心减半，眼镜反光增强。',
+  '答错一次，我就追问词根、前缀、后缀，再追问为什么。',
   '让我看看谁是真正的医学英语词汇学选手。',
+  '这份 Boss 订单要精准、无菌、还要有课堂汇报节目效果。',
 ]
 
 export const bossVictoryLines = [
-  '教授破防：这份汉堡怎么把 terminology 和词根都讲明白了？',
+  '教授表情失控：这份汉堡怎么把 terminology 和词根都讲明白了？',
   '全班认证：你把 Boss、词根和汉堡一起煎熟了。',
-  '今日名场面：Medical Vocab Burger 课堂封神。',
+  '今日名场面：Medical Vocab Burger 课堂封神，病历翻译都鼓掌。',
 ]
 
 export const pickLine = (lines: string[], seed: number) =>
@@ -158,6 +163,30 @@ export const getTargetQueueSize = (served: number) => {
   }
 
   return 1
+}
+
+export const getPressureLabel = (
+  served: number,
+  queueSize: number,
+  bossActive: boolean,
+) => {
+  if (bossActive) {
+    return '教授眼镜反光'
+  }
+
+  if (queueSize === 0) {
+    return '锅位空窗预警'
+  }
+
+  if (served >= 4) {
+    return '下课前红温'
+  }
+
+  if (served >= 2) {
+    return '双锅手忙脚乱'
+  }
+
+  return '热身背词期'
 }
 
 export type CustomerTickResult = {
@@ -399,12 +428,19 @@ export const buildQuestion = (
 ): AnswerQuestion | undefined => {
   const step = customer?.steps[customer.stepIndex]
 
+  return buildQuestionFromStep(step, (customer?.id ?? 0) + (customer?.stepIndex ?? 0))
+}
+
+export const buildQuestionFromStep = (
+  step?: BurgerStep,
+  seed = 0,
+): AnswerQuestion | undefined => {
   if (!step) {
     return undefined
   }
 
   const options = [step.word.english, ...step.word.wrongOptions]
-  const offset = (customer.id + customer.stepIndex) % options.length
+  const offset = seed % options.length
 
   return {
     chinese: step.word.chinese,

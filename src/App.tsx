@@ -28,10 +28,11 @@ import { gameAudio } from './utils/audio'
 import {
   bossLines,
   bossVictoryLines,
-  buildQuestion,
+  buildQuestionFromStep,
   cookPatty,
   correctLines,
   createCustomer,
+  getPressureLabel,
   getRandomDelay,
   getTargetQueueSize,
   isPerfectFlipWindow,
@@ -70,7 +71,7 @@ const getServiceRank = (
 
   if (rankScore >= 760) {
     return {
-      comment: '全班起立，医学英语汉堡之神。',
+      comment: '全班起立，医学英语汉堡之神，词根都排队敬礼。',
       label: 'SSS',
       tier: 'sss',
     }
@@ -78,7 +79,7 @@ const getServiceRank = (
 
   if (rankScore >= 560) {
     return {
-      comment: '术语、熟度、节奏都在线。',
+      comment: '术语、熟度、节奏都在线，像无菌操作一样稳。',
       label: 'S',
       tier: 's',
     }
@@ -86,7 +87,7 @@ const getServiceRank = (
 
   if (rankScore >= 390) {
     return {
-      comment: '课堂展示很稳，可以继续冲连击。',
+      comment: '课堂展示很稳，可以继续冲连击，把 PPT 都打出节拍。',
       label: 'A',
       tier: 'a',
     }
@@ -94,14 +95,14 @@ const getServiceRank = (
 
   if (rankScore >= 240) {
     return {
-      comment: '能开店，但还会被教授追问。',
+      comment: '能开店，但教授的眼镜已经开始反光。',
       label: 'B',
       tier: 'b',
     }
   }
 
   return {
-    comment: '建议先看预习词表，再开一局。',
+    comment: '建议先看预习词表，不然汉堡和术语会一起糊。',
     label: 'C',
     tier: 'c',
   }
@@ -169,7 +170,12 @@ function App() {
     activeQuestionStepIndex === undefined
       ? undefined
       : activeCustomer?.steps[activeQuestionStepIndex]
-  const activeQuestion = useMemo(() => buildQuestion(activeCustomer), [activeCustomer])
+  const activeQuestionSeed =
+    (activeCustomer?.id ?? 0) + (activeQuestionStepIndex ?? 0)
+  const activeQuestion = useMemo(
+    () => buildQuestionFromStep(activeStep, activeQuestionSeed),
+    [activeQuestionSeed, activeStep],
+  )
   const goalText = bossSpawned
     ? bossDefeated
       ? 'Boss 已完成'
@@ -179,8 +185,20 @@ function App() {
   const rushProgress = bossSpawned
     ? bossDefeated
       ? 100
-      : Math.max(12, Math.round(((activeCustomer?.stepIndex ?? 0) / 7) * 100))
+      : Math.max(
+          12,
+          Math.round(
+            ((activeCustomer?.stepIndex ?? 0) /
+              Math.max(1, activeCustomer?.steps.length ?? 7)) *
+              100,
+          ),
+        )
     : Math.round((servedCount / targetRegularServed) * 100)
+  const pressureLabel = getPressureLabel(
+    servedCount,
+    customers.length,
+    bossSpawned && !bossDefeated,
+  )
 
   useEffect(() => {
     return () => {
@@ -979,6 +997,7 @@ function App() {
             ? '教授压力条'
             : `课堂高峰 ${servedCount}/${targetRegularServed}`}
         </span>
+        <em>{pressureLabel}</em>
         <strong>{Math.min(100, rushProgress)}%</strong>
         <div className="rush-track" aria-hidden="true">
           <span style={{ width: `${Math.min(100, rushProgress)}%` }} />

@@ -3,16 +3,16 @@ function BossFinale() {
     <div className="boss-finale-scene medical-finale" aria-live="assertive">
       <div className="medical-finale-lights" aria-hidden="true" />
       <div className="medical-finale-board" aria-hidden="true">
-        <span>ROOT</span>
+        <span>PREFIX</span>
         <span>DIAGNOSIS</span>
-        <span>COMBO</span>
+        <span>RED HOT</span>
       </div>
       <div className="medical-finale-stage" aria-hidden="true">
         <div className="medical-impact-ring ring-one" />
         <div className="medical-impact-ring ring-two" />
         <div className="medical-impact-ring ring-three" />
-        <div className="medical-word-card card-root">ROOT</div>
-        <div className="medical-word-card card-term">TERM</div>
+        <div className="medical-word-card card-root">词根暴击</div>
+        <div className="medical-word-card card-term">术语盖章</div>
         <div className="medical-word-card card-sterile">STERILE</div>
         <div className="medical-word-card card-bonk">BONK!</div>
         <div className="medical-finale-professor">
@@ -34,8 +34,8 @@ function BossFinale() {
         </div>
         <div className="medical-burger-bonk" />
         <div className="medical-ecg-line" />
-        <div className="medical-finale-caption">MEDICAL VOCAB COMBO</div>
-        <div className="medical-finale-subcaption">教授表情管理：失败</div>
+        <div className="medical-finale-caption">MEDICAL VOCAB OVERDOSE</div>
+        <div className="medical-finale-subcaption">教授表情管理：抢救中</div>
       </div>
     </div>
   )

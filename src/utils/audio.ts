@@ -31,6 +31,7 @@ class GameAudio {
   private oneShotPools = new Map<string, HTMLAudioElement[]>()
   private grooveTimer?: number
   private grooveStep = 0
+  private pageVisible = true
 
   private getAudioContext() {
     if (!this.audioContext) {
@@ -49,7 +50,11 @@ class GameAudio {
   }
 
   private scheduleEffect(callback: () => void, delay = 0) {
-    if (!this.enabled || this.effectTimers.size >= this.getEffectLimit()) {
+    if (
+      !this.enabled ||
+      !this.pageVisible ||
+      this.effectTimers.size >= this.getEffectLimit()
+    ) {
       return
     }
 
@@ -75,7 +80,11 @@ class GameAudio {
   }
 
   private playOneShot(src: string, volume = 0.7, playbackRate = 1, delay = 0) {
-    if (!this.enabled || this.effectTimers.size >= this.getEffectLimit()) {
+    if (
+      !this.enabled ||
+      !this.pageVisible ||
+      this.effectTimers.size >= this.getEffectLimit()
+    ) {
       return
     }
 
@@ -115,7 +124,11 @@ class GameAudio {
     volume = 0.055,
     delay = 0,
   ) {
-    if (!this.enabled || this.effectTimers.size >= this.getEffectLimit()) {
+    if (
+      !this.enabled ||
+      !this.pageVisible ||
+      this.effectTimers.size >= this.getEffectLimit()
+    ) {
       return
     }
 
@@ -144,7 +157,7 @@ class GameAudio {
     volume = 0.04,
     bendTo?: number,
   ) {
-    if (!this.enabled) {
+    if (!this.enabled || !this.pageVisible) {
       return
     }
 
@@ -197,7 +210,7 @@ class GameAudio {
   }
 
   private startGroove() {
-    if (!this.enabled || this.grooveTimer) {
+    if (!this.enabled || !this.pageVisible || this.grooveTimer) {
       return
     }
 
@@ -356,7 +369,49 @@ class GameAudio {
   }
 
   setPerformanceMode(enabled: boolean) {
+    const shouldRestartGroove = Boolean(this.grooveTimer)
     this.leanMode = enabled
+
+    if (shouldRestartGroove) {
+      this.stopGroove()
+      this.startGroove()
+    }
+  }
+
+  setPageVisible(visible: boolean) {
+    this.pageVisible = visible
+
+    if (!visible) {
+      this.clearScheduledEffects()
+      this.stopGroove()
+      this.music?.pause()
+      this.bossMusic?.pause()
+
+      if (this.audioContext?.state === 'running') {
+        void this.audioContext.suspend()
+      }
+
+      return
+    }
+
+    if (!this.enabled || this.finaleActive) {
+      return
+    }
+
+    if (this.audioContext?.state === 'suspended') {
+      void this.audioContext.resume()
+    }
+
+    if (this.bossActive && this.bossMusic) {
+      void this.bossMusic.play().catch(() => undefined)
+      this.startGroove()
+      return
+    }
+
+    if (this.music) {
+      void this.music.play().catch(() => undefined)
+      this.startGroove()
+    }
   }
 
   setIntensity(level: number) {

@@ -11,6 +11,7 @@ import type {
   BurgerStep,
   Customer,
   Mood,
+  PattySide,
 } from '../types/game'
 
 type RecipeStepPlan = {
@@ -283,6 +284,43 @@ export const isPerfectFlipWindow = (customer: Customer) =>
   customer.firstSideDoneness >= 55 &&
   customer.firstSideDoneness <= 85 &&
   customer.burn < 45
+
+export const getNextPattySide = (
+  currentSide: PattySide,
+  completedStepId: string,
+): PattySide => {
+  if (completedStepId === 'patty') {
+    return 'first'
+  }
+
+  if (completedStepId === 'flip') {
+    return 'second'
+  }
+
+  if (completedStepId === 'lettuce' && currentSide === 'second') {
+    return 'done'
+  }
+
+  return currentSide
+}
+
+export const getCorrectFeedbackMessage = (
+  stepId: string,
+  isPerfectFlip: boolean,
+  pattySide: PattySide,
+) => {
+  if (stepId === 'flip') {
+    return isPerfectFlip
+      ? '完美翻面！熟度刚刚好。'
+      : '翻面成功，但熟度不是最佳窗口。'
+  }
+
+  if (stepId === 'lettuce' && pattySide === 'second') {
+    return '肉饼出锅上堡！煎锅停止加热。'
+  }
+
+  return '答对了，动作完成！'
+}
 
 export const scoreBurger = (customer: Customer): BurgerScoreResult => {
   const burnPenalty = customer.burn >= 80 ? 25 : customer.burn >= 45 ? 10 : 0

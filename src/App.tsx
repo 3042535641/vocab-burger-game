@@ -32,6 +32,8 @@ import {
   cookPatty,
   correctLines,
   createCustomer,
+  getCorrectFeedbackMessage,
+  getNextPattySide,
   getPressureLabel,
   getRandomDelay,
   getTargetQueueSize,
@@ -204,6 +206,20 @@ function App() {
     return () => {
       window.clearTimeout(finaleTimerRef.current)
       gameAudio.stopMusic()
+    }
+  }, [])
+
+  useEffect(() => {
+    const syncVisibility = () => {
+      gameAudio.setPageVisible(document.visibilityState === 'visible')
+    }
+
+    syncVisibility()
+    document.addEventListener('visibilitychange', syncVisibility)
+
+    return () => {
+      document.removeEventListener('visibilitychange', syncVisibility)
+      gameAudio.setPageVisible(true)
     }
   }, [])
 
@@ -563,14 +579,7 @@ function App() {
       const nextCustomer = {
         ...activeCustomer,
         stepIndex: activeCustomer.stepIndex + 1,
-        pattySide:
-          step.id === 'patty'
-            ? 'first'
-            : step.id === 'flip'
-              ? 'second'
-              : step.id === 'lettuce' && activeCustomer.pattySide === 'second'
-                ? 'done'
-                : activeCustomer.pattySide,
+        pattySide: getNextPattySide(activeCustomer.pattySide, step.id),
         speech: pickLine(correctLines, activeCustomer.id + nextCombo),
       }
 
@@ -593,14 +602,11 @@ function App() {
       )
       setFeedback({
         kind: 'correct',
-        message:
-          step.id === 'flip'
-            ? isPerfectFlip
-              ? '完美翻面！熟度刚刚好。'
-              : '翻面成功，但熟度不是最佳窗口。'
-            : step.id === 'lettuce' && activeCustomer.pattySide === 'second'
-              ? '肉饼出锅上堡！煎锅停止加热。'
-            : '答对了，动作完成！',
+        message: getCorrectFeedbackMessage(
+          step.id,
+          isPerfectFlip,
+          activeCustomer.pattySide,
+        ),
       })
       setBanner(nextCombo >= 5 ? '锦旗进度达成，继续连对！' : '继续制作下一步')
       gameAudio.playCorrect(nextCombo)

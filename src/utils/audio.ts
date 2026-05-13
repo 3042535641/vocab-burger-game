@@ -214,9 +214,9 @@ class GameAudio {
       return
     }
 
-    const normalLead = [784, 988, 1175, 988, 1568, 1175, 988, 784]
-    const normalBass = [98, 130, 98, 164, 130, 196, 164, 130]
-    const normalChant = [1568, 1175, 1760, 1318]
+    const normalLead = [784, 988, 1175, 988, 1568, 1175, 1760, 988]
+    const normalBass = [98, 130, 98, 164, 130, 196, 82, 130]
+    const normalChant = [1568, 1175, 1760, 1318, 2093, 1568]
     const bossLead = [247, 370, 196, 392, 185, 330, 220, 494]
     const bossBass = [49, 61, 41, 73, 55, 82, 49, 98]
     const bossAlarm = [740, 555, 880, 415]
@@ -263,6 +263,12 @@ class GameAudio {
         this.playDirectTone(247, 0.075, 'triangle', 0.022 * hype, 123)
       }
 
+      if (!this.bossActive && !this.leanMode && step % 16 === 12) {
+        this.playDirectTone(1046, 0.045, 'square', 0.02 * hype, 1568)
+        this.playDirectTone(1318, 0.045, 'square', 0.018 * hype, 1976)
+        this.playDirectTone(1568, 0.055, 'square', 0.016 * hype, 1046)
+      }
+
       if (this.bossActive && step % ornamentEvery === 1) {
         const alarm = bossAlarm[Math.floor(step / ornamentEvery) % bossAlarm.length]
         this.playDirectTone(92, 0.18, 'sawtooth', 0.034, 43)
@@ -271,7 +277,7 @@ class GameAudio {
       }
 
       this.grooveStep += 1
-    }, this.leanMode ? 690 : 520)
+    }, this.leanMode ? 690 : 485)
   }
 
   private stopGroove() {
@@ -529,6 +535,7 @@ class GameAudio {
         { delay: 210, duration: 0.05, frequency: 2093, type: 'square', volume: 0.028 },
         { delay: 270, duration: 0.06, frequency: 2637, type: 'triangle', volume: 0.024 },
         { delay: 330, duration: 0.055, frequency: 3136, type: 'square', volume: 0.022 },
+        { delay: 390, duration: 0.045, frequency: 1568, type: 'square', volume: 0.018 },
       ])
     }
   }
@@ -577,6 +584,7 @@ class GameAudio {
     this.playOneShot(audioFiles.arrival, 0.6)
     this.playTone(392, 0.08, 'square', 0.03)
     this.playTone(784, 0.045, 'square', 0.018, 80)
+    this.playTone(1175, 0.04, 'square', 0.016, 138)
   }
 
   playBoss() {

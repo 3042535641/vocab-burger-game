@@ -26,6 +26,8 @@ export const customerProfiles = [
   { name: '护理技能糖糖', avatar: 'bow' },
   { name: '药理课阿杰', avatar: 'shade' },
   { name: '实验报告 Mia', avatar: 'bun' },
+  { name: '病历翻译小周', avatar: 'cap' },
+  { name: '词根急救队 Nana', avatar: 'star' },
 ]
 
 const recipes: BurgerRecipe[] = [
@@ -36,6 +38,8 @@ const recipes: BurgerRecipe[] = [
   { id: 'vascular', name: '动脉心电蹦迪堡', tag: 'vital + artery 节律拉满' },
   { id: 'pharma', name: '药理抗生素爆酱堡', tag: 'dosage + antibiotic 精准给量' },
   { id: 'exam', name: '期末病理破防堡', tag: 'pathology + prognosis 背完再睡' },
+  { id: 'immune', name: '免疫反应弹幕堡', tag: 'vaccine + benign 抗体开麦' },
+  { id: 'ward', name: '查房病例速记堡', tag: 'diagnosis + treatment 现场追问' },
 ]
 
 export const recipeCatalog = recipes
@@ -47,6 +51,9 @@ export const idleLines = [
   '这家店怎么还查医学英语？离谱，但非常适合课程汇报。',
   '今天不背词根，明天病历翻译就背刺我。',
   '给我来个不焦的，最好能顺便治一下考前遗忘。',
+  '我刚从自习室出来，脑子里只有 prefix 和一份热汉堡。',
+  '请把 syndrome、symptom、sign 分开放，不然我会当场红温。',
+  '这不是普通汉堡，这是医学英语词汇学临床技能训练。',
 ]
 
 export const correctLines = [
@@ -55,6 +62,8 @@ export const correctLines = [
   '这波像开了医学词根透视，前缀后缀都在发光。',
   '汉堡熟了，medical English 也熟了。',
   '啪！术语盖章成功，记忆神经元开始加班。',
+  '答得漂亮，词根像心电图一样开始蹦迪。',
+  '无菌命中！这个英文术语可以直接写进病历。',
 ]
 
 export const wrongLines = [
@@ -63,6 +72,8 @@ export const wrongLines = [
   '我的教材沉默得像考前一晚的宿舍。',
   '这题错得很有课堂展示效果，但我的耐心正在退烧失败。',
   '术语错位警报：词根正在从锅里爬出来抗议。',
+  '这个答案像把 benign 煎成 malignant，危险发言。',
+  '错得很响，连隔壁解剖图谱都合上了。',
 ]
 
 export const bossLines = [
@@ -70,6 +81,8 @@ export const bossLines = [
   '答错一次，我就追问词根、前缀、后缀，再追问为什么。',
   '让我看看谁是真正的医学英语词汇学选手。',
   '这份 Boss 订单要精准、无菌、还要有课堂汇报节目效果。',
+  '请解释一下为什么 anti- 不是 auntie，课堂现在很安静。',
+  '我不急，我只是把倒计时写进了病程记录。',
 ]
 
 export const bossVictoryLines = [
@@ -369,14 +382,16 @@ const recipeStepPlans = (recipe: BurgerRecipe, isBoss: boolean) => {
   }
 
   const variants: Record<string, RecipeStepPlan[]> = {
-    classic: baseStepPlans(['bun', 'patty', 'flip', 'anatomy', 'physiology', 'order']),
-    green: baseStepPlans(['bun', 'patty', 'flip', 'lettuce', 'vital', 'sauce']),
-    tomato: baseStepPlans(['bun', 'patty', 'flip', 'tomato', 'pathology', 'chronic']),
-    sauce: baseStepPlans(['bun', 'patty', 'flip', 'dosage', 'serve', 'antibiotic']),
-    vascular: baseStepPlans(['bun', 'artery', 'flip', 'vital', 'edema', 'prognosis']),
-    pharma: baseStepPlans(['bun', 'patty', 'flip', 'vaccine', 'dosage', 'antibiotic']),
-    exam: baseStepPlans(['anatomy', 'pathology', 'flip', 'fracture', 'malignant', 'benign']),
-  }
+  classic: baseStepPlans(['bun', 'patty', 'flip', 'anatomy', 'physiology', 'order']),
+  green: baseStepPlans(['bun', 'patty', 'flip', 'lettuce', 'vital', 'sauce']),
+  tomato: baseStepPlans(['bun', 'patty', 'flip', 'tomato', 'pathology', 'chronic']),
+  sauce: baseStepPlans(['bun', 'patty', 'flip', 'dosage', 'serve', 'antibiotic']),
+  vascular: baseStepPlans(['bun', 'artery', 'flip', 'vital', 'edema', 'prognosis']),
+  pharma: baseStepPlans(['bun', 'patty', 'flip', 'vaccine', 'dosage', 'antibiotic']),
+  exam: baseStepPlans(['anatomy', 'pathology', 'flip', 'fracture', 'malignant', 'benign']),
+  immune: baseStepPlans(['vaccine', 'patty', 'flip', 'benign', 'chronic', 'antibiotic']),
+  ward: baseStepPlans(['order', 'patty', 'flip', 'diagnosis', 'treatment', 'prognosis']),
+}
 
   return variants[recipe.id] ?? baseStepPlans(stepWordIds)
 }

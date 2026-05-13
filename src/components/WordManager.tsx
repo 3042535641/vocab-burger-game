@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import type { WordEntry } from '../data/words'
+import { categoryLabels } from '../utils/display'
 
 type WordManagerProps = {
   customWords: WordEntry[]
@@ -26,13 +27,6 @@ const categoryOptions: WordEntry['category'][] = [
   'feeling',
 ]
 
-const categoryLabels: Record<WordEntry['category'], string> = {
-  food: '基础医学',
-  action: '医学动作',
-  shop: '课堂场景',
-  feeling: '状态描述',
-}
-
 const emptyDraft: WordDraft = {
   chinese: '',
   english: '',
@@ -43,18 +37,56 @@ const emptyDraft: WordDraft = {
 
 const createId = () => `custom-${Date.now()}-${Math.floor(Math.random() * 999)}`
 
+const fallbackWrongOptions = [
+  'cell',
+  'tissue',
+  'diagnosis',
+  'symptom',
+  'treatment',
+  'pathology',
+  'prognosis',
+  'antibiotic',
+  'vaccine',
+  'dosage',
+  'benign',
+  'malignant',
+]
+
+const getAutoWrongOptions = (english: string) => {
+  const normalizedEnglish = english.trim().toLowerCase()
+  const typoOption =
+    normalizedEnglish.length > 4
+      ? normalizedEnglish.slice(0, -1)
+      : `${normalizedEnglish}ing`
+  const similarOption = normalizedEnglish.includes('tion')
+    ? normalizedEnglish.replace('tion', 'sion')
+    : `${normalizedEnglish}ology`
+
+  return [...fallbackWrongOptions, typoOption, similarOption]
+    .map((option) => option.trim().toLowerCase())
+    .filter((option) => option && option !== normalizedEnglish)
+    .filter((option, index, list) => list.indexOf(option) === index)
+    .slice(0, 3)
+}
+
 const normalizeDraft = (draft: WordDraft, id = createId()): WordEntry | string => {
   const chinese = draft.chinese.trim()
   const english = draft.english.trim().toLowerCase()
-  const wrongOptions = draft.wrongOptions
+  const manualWrongOptions = draft.wrongOptions
     .split(',')
     .map((option) => option.trim().toLowerCase())
     .filter(Boolean)
+  const wrongOptions =
+    manualWrongOptions.length > 0 ? manualWrongOptions : getAutoWrongOptions(english)
 
   const uniqueWrongOptions = [...new Set(wrongOptions)].slice(0, 3)
 
-  if (!chinese || !english || uniqueWrongOptions.length !== 3) {
-    return '请填写中文医学概念、英文术语，并用英文逗号分隔 3 个不同的干扰项。'
+  if (!chinese || !english) {
+    return '请至少填写中文医学概念和英文术语。'
+  }
+
+  if (uniqueWrongOptions.length !== 3) {
+    return '自动干扰项不足，请展开高级设置并手动填写 3 个不同的干扰项。'
   }
 
   if (uniqueWrongOptions.includes(english)) {
@@ -113,6 +145,7 @@ function WordManager({
   const [difficultyFilter, setDifficultyFilter] = useState<
     'all' | WordEntry['difficulty']
   >('all')
+  const [showAdvancedForm, setShowAdvancedForm] = useState(false)
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -139,6 +172,7 @@ function WordManager({
   const resetForm = () => {
     setDraft(emptyDraft)
     setEditingId(null)
+    setShowAdvancedForm(false)
     setError('')
   }
 
@@ -168,6 +202,7 @@ function WordManager({
   const handleEdit = (word: WordEntry) => {
     setDraft(toDraft(word))
     setEditingId(word.id)
+    setShowAdvancedForm(true)
     setError('')
     setNotice('')
   }
@@ -223,7 +258,10 @@ function WordManager({
           </button>
         </div>
 
-        <form className="word-form" onSubmit={handleSubmit}>
+        <form
+          className={`word-form ${showAdvancedForm ? 'advanced-open' : ''}`}
+          onSubmit={handleSubmit}
+        >
           <label>
             中文医学概念
             <input
@@ -240,7 +278,21 @@ function WordManager({
               placeholder="例如：inflammation"
             />
           </label>
-          <label>
+          <button type="submit" className="primary-action">
+            {editingId ? '保存修改' : '一键加入题库'}
+          </button>
+          <button
+            type="button"
+            className="small-action"
+            onClick={() => setShowAdvancedForm((isOpen) => !isOpen)}
+          >
+            {showAdvancedForm ? '收起高级' : '高级设置'}
+          </button>
+          <p className="quick-add-tip">
+            默认会自动生成 3 个干扰项，并按“课堂场景 / 难度 1”保存；需要精修再展开高级设置。
+          </p>
+
+          <label className="advanced-field">
             3 个干扰项
             <input
               value={draft.wrongOptions}
@@ -250,7 +302,7 @@ function WordManager({
               placeholder="weird, windy, whale"
             />
           </label>
-          <label>
+          <label className="advanced-field">
             分类
             <select
               value={draft.category}
@@ -265,7 +317,7 @@ function WordManager({
               ))}
             </select>
           </label>
-          <label>
+          <label className="advanced-field">
             难度
             <select
               value={draft.difficulty}
@@ -281,9 +333,6 @@ function WordManager({
               <option value={3}>3 挑战</option>
             </select>
           </label>
-          <button type="submit" className="primary-action">
-            {editingId ? '保存修改' : '加入医学题库'}
-          </button>
           {editingId && (
             <button type="button" className="small-action" onClick={resetForm}>
               取消编辑

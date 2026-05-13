@@ -2138,9 +2138,20 @@
 
 .word-form {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr)) auto auto;
+  grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr) auto auto;
   gap: 10px;
   align-items: end;
+  padding: 12px;
+  border: 2px solid #2b211b;
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(45, 132, 121, 0.12) 0 8px, transparent 8px),
+    #fffdf6;
+  box-shadow: 0 4px 0 rgba(43, 33, 27, 0.16);
+}
+
+.word-form.advanced-open {
+  grid-template-columns: repeat(5, minmax(0, 1fr)) auto auto;
 }
 
 .word-form label,
@@ -2163,6 +2174,31 @@
   background: #fffdf6;
   font: inherit;
   font-size: 15px;
+}
+
+.quick-add-tip {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 8px 10px;
+  border: 2px dashed rgba(43, 33, 27, 0.38);
+  border-radius: 8px;
+  color: #2d7d73;
+  background: rgba(223, 244, 191, 0.55);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.word-form:not(.advanced-open) .advanced-field {
+  display: none;
+}
+
+.word-form:not(.advanced-open) .quick-add-tip {
+  display: block;
+}
+
+.word-form.advanced-open .quick-add-tip {
+  background: #fff0c8;
+  color: #7b4a2d;
 }
 
 .manager-error {
@@ -4127,6 +4163,7 @@
 
   .manager-header,
   .word-form,
+  .word-form.advanced-open,
   .manager-tools {
     grid-template-columns: 1fr;
   }

@@ -1447,6 +1447,220 @@
     #2b211b;
 }
 
+/* Extra classroom-show polish: louder medical diner stage without adding assets. */
+.play-shell .shop-scene {
+  isolation: isolate;
+}
+
+.play-shell .shop-scene::before {
+  background:
+    linear-gradient(90deg, transparent 0 8%, rgba(255, 255, 255, 0.55) 10%, transparent 12% 100%),
+    repeating-linear-gradient(90deg, #174f49 0 46px, #ffe27a 46px 68px, #d94731 68px 90px);
+  animation: sign-glitch 1.7s steps(2, jump-none) infinite;
+}
+
+.play-shell .shop-scene::after {
+  content: 'MED TERMS FEVER';
+  transform: rotate(-1deg);
+  animation: med-stage-sign-pop 1.35s ease-in-out infinite;
+}
+
+.play-shell .shop-sign {
+  border-width: 4px;
+  background:
+    radial-gradient(circle at 92% 50%, #ffe27a 0 9px, transparent 10px),
+    linear-gradient(90deg, #123f3a, #1e6f66 52%, #123f3a);
+  box-shadow:
+    0 5px 0 #2b211b,
+    0 0 0 5px rgba(255, 226, 122, 0.22);
+  text-shadow:
+    2px 2px 0 #2b211b,
+    -1px 0 0 #d94731;
+  animation: med-neon-stutter 1.15s steps(2, jump-none) infinite;
+}
+
+.play-shell .shop-scene .awning {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #2b211b 0 26px,
+      #ffe27a 26px 48px,
+      #d94731 48px 70px,
+      #fff7e8 70px 88px
+    );
+  box-shadow:
+    0 8px 0 rgba(43, 33, 27, 0.42),
+    0 18px 0 rgba(217, 71, 49, 0.14);
+}
+
+.play-shell .burger-station {
+  background:
+    radial-gradient(circle at 86% 15%, rgba(255, 226, 122, 0.42), transparent 20%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.7), transparent 36%),
+    repeating-linear-gradient(0deg, rgba(45, 132, 121, 0.12) 0 7px, transparent 7px 18px),
+    #eefaf6;
+}
+
+.play-shell .grill-lights {
+  border-bottom-color: #174f49;
+  background:
+    linear-gradient(90deg, rgba(217, 71, 49, 0.08), transparent),
+    repeating-linear-gradient(90deg, rgba(43, 33, 27, 0.07) 0 8px, transparent 8px 16px);
+}
+
+.play-shell .grill-lights::after {
+  content: 'SIZZLE';
+  position: absolute;
+  right: 14px;
+  bottom: -13px;
+  padding: 1px 8px;
+  border: 2px solid #2b211b;
+  border-radius: 999px;
+  background: #ffe27a;
+  color: #2b211b;
+  font-size: 10px;
+  font-weight: 1000;
+  transform: rotate(2deg);
+}
+
+.play-shell .answer-button::before {
+  content: 'MED';
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  padding: 1px 6px;
+  border: 2px solid rgba(43, 33, 27, 0.72);
+  border-radius: 999px;
+  background: rgba(255, 226, 122, 0.78);
+  color: #174f49;
+  font-size: 10px;
+  font-weight: 1000;
+  transform: rotate(-7deg);
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.play-shell .answer-button:hover::before {
+  content: 'HIT?';
+  background: #dff4bf;
+  animation: med-sticker-wiggle 260ms ease both;
+}
+
+.play-shell.combo-hot .answer-button::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 2px dashed rgba(217, 71, 49, 0.45);
+  border-radius: 6px;
+  pointer-events: none;
+  animation: combo-border-tap 820ms steps(2, jump-none) infinite;
+}
+
+.play-shell.boss-mode .shop-sign {
+  background:
+    radial-gradient(circle at 92% 50%, #d94731 0 9px, transparent 10px),
+    linear-gradient(90deg, #2b211b, #7a1f18 52%, #2b211b);
+  color: #ffe27a;
+  animation-duration: 720ms;
+}
+
+.play-shell.boss-mode .burger-station {
+  border-color: #7a1f18;
+  box-shadow:
+    0 4px 0 #7a1f18,
+    0 0 0 4px rgba(217, 71, 49, 0.18);
+}
+
+.play-shell::before {
+  background:
+    radial-gradient(circle at 13% 18%, rgba(255, 226, 122, 0.26), transparent 16%),
+    radial-gradient(circle at 88% 20%, rgba(217, 71, 49, 0.18), transparent 18%),
+    repeating-linear-gradient(135deg, rgba(45, 132, 121, 0.08) 0 10px, transparent 10px 24px);
+}
+
+.play-shell.combo-hot::before {
+  animation: med-background-fever 1.25s steps(2, jump-none) infinite;
+}
+
+.play-shell .panel {
+  border-width: 3px;
+}
+
+.play-shell .panel::after {
+  opacity: 0.52;
+}
+
+.play-shell .section-heading h2 {
+  text-shadow: 2px 2px 0 rgba(255, 226, 122, 0.62);
+}
+
+.play-shell .banner {
+  border-width: 3px;
+  background:
+    linear-gradient(90deg, rgba(217, 71, 49, 0.16) 0 10px, transparent 10px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.34) 0 12px, transparent 12px 24px),
+    #dff4bf;
+  box-shadow:
+    0 5px 0 #2b211b,
+    0 0 0 4px rgba(255, 226, 122, 0.24);
+  transform: rotate(-0.35deg);
+}
+
+.play-shell.boss-mode .banner {
+  color: #fff7e8;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 226, 122, 0.2) 0 12px, transparent 12px 24px),
+    #d94731;
+  text-shadow: 2px 2px 0 #2b211b;
+}
+
+.play-shell .rush-meter {
+  border-width: 3px;
+  transform: rotate(0.25deg);
+}
+
+.play-shell .customer-ticket {
+  background:
+    linear-gradient(90deg, rgba(255, 226, 122, 0.18) 0 9px, transparent 9px),
+    linear-gradient(#fffdf6, #eefaf6);
+}
+
+.play-shell .customer-ticket.active {
+  transform: translateY(-1px) rotate(-0.35deg);
+}
+
+.play-shell .speech-bubble {
+  border-width: 3px;
+}
+
+.play-shell .quiz-panel {
+  background:
+    radial-gradient(circle at 92% 12%, rgba(255, 226, 122, 0.38), transparent 18%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(217, 239, 248, 0.82));
+}
+
+.play-shell .question-card {
+  border-width: 3px;
+  background:
+    linear-gradient(90deg, rgba(45, 132, 121, 0.18) 0 10px, transparent 10px),
+    linear-gradient(180deg, #e8f7ff, #fffdf6);
+}
+
+.play-shell .question-card h2 {
+  text-shadow:
+    3px 3px 0 rgba(255, 226, 122, 0.75),
+    -2px 0 0 rgba(217, 71, 49, 0.18);
+}
+
+.play-shell .cook-meters {
+  border: 3px solid #2b211b;
+  border-radius: 8px;
+  padding: 8px;
+  background:
+    linear-gradient(90deg, rgba(255, 226, 122, 0.24), transparent),
+    #fffdf6;
+}
+
 .burger-stack {
   display: flex;
   position: relative;
@@ -4953,6 +5167,64 @@
   }
 }
 
+@keyframes med-stage-sign-pop {
+  0%,
+  100% {
+    transform: rotate(-1deg) translateY(0) scale(1);
+  }
+  50% {
+    transform: rotate(1deg) translateY(-2px) scale(1.025);
+  }
+}
+
+@keyframes med-neon-stutter {
+  0%,
+  100% {
+    filter: saturate(1);
+    transform: translateY(0);
+  }
+  50% {
+    filter: saturate(1.45);
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes med-sticker-wiggle {
+  0% {
+    transform: rotate(-7deg) scale(1);
+  }
+  55% {
+    transform: rotate(7deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(-3deg) scale(1);
+  }
+}
+
+@keyframes combo-border-tap {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(0.985);
+  }
+}
+
+@keyframes med-background-fever {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    opacity: 0.84;
+    transform: translate3d(1px, -1px, 0);
+  }
+}
+
 @keyframes ready-flash {
   0%,
   100% {
@@ -5642,7 +5914,10 @@
 .play-shell.performance-mode .patty,
 .play-shell.performance-mode .steam,
 .play-shell.performance-mode .shop-sign,
-.play-shell.performance-mode .awning {
+.play-shell.performance-mode .awning,
+.play-shell.performance-mode .shop-scene::after,
+.play-shell.performance-mode.combo-hot::before,
+.play-shell.performance-mode.combo-hot .answer-button::after {
   animation: none !important;
 }
 

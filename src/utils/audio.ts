@@ -201,10 +201,12 @@ class GameAudio {
       return
     }
 
-    const normalLead = [659, 784, 988, 784, 1175, 988, 784, 659]
-    const normalBass = [130, 98, 130, 164, 196, 164, 130, 98]
+    const normalLead = [784, 988, 1175, 988, 1568, 1175, 988, 784]
+    const normalBass = [98, 130, 98, 164, 130, 196, 164, 130]
+    const normalChant = [1568, 1175, 1760, 1318]
     const bossLead = [247, 370, 196, 392, 185, 330, 220, 494]
     const bossBass = [49, 61, 41, 73, 55, 82, 49, 98]
+    const bossAlarm = [740, 555, 880, 415]
 
     this.grooveTimer = window.setInterval(() => {
       if (!this.enabled || this.finaleActive) {
@@ -216,15 +218,15 @@ class GameAudio {
       const bassPattern = this.bossActive ? bossBass : normalBass
       const lead = leadPattern[step % leadPattern.length]
       const bass = bassPattern[step % bassPattern.length]
-      const hype = 1 + this.intensity * 0.7
+      const hype = 1 + this.intensity * 0.9
       const ornamentEvery = this.leanMode ? 4 : 2
 
       this.playDirectTone(
         lead,
-        this.bossActive ? 0.1 : 0.075,
+        this.bossActive ? 0.1 : 0.06,
         this.bossActive ? 'sawtooth' : 'square',
-        (this.bossActive ? 0.033 : 0.028) * hype,
-        this.bossActive ? lead * (step % 2 === 0 ? 1.55 : 0.58) : lead * 1.34,
+        (this.bossActive ? 0.036 : 0.032) * hype,
+        this.bossActive ? lead * (step % 2 === 0 ? 1.55 : 0.58) : lead * 1.5,
       )
 
       if (step % 2 === 0) {
@@ -238,18 +240,25 @@ class GameAudio {
       }
 
       if (!this.bossActive && step % ornamentEvery === 1) {
-        this.playDirectTone(1568, 0.045, 'square', 0.016 * hype, 2093)
-        this.playDirectTone(784, 0.038, 'triangle', 0.012 * hype, 1175)
+        const chant = normalChant[Math.floor(step / ornamentEvery) % normalChant.length]
+        this.playDirectTone(chant, 0.042, 'square', 0.022 * hype, chant * 1.25)
+        this.playDirectTone(chant / 2, 0.035, 'triangle', 0.014 * hype, chant)
+      }
+
+      if (!this.bossActive && !this.leanMode && step % 8 === 6) {
+        this.playDirectTone(1976, 0.04, 'square', 0.02 * hype, 2637)
+        this.playDirectTone(247, 0.075, 'triangle', 0.022 * hype, 123)
       }
 
       if (this.bossActive && step % ornamentEvery === 1) {
+        const alarm = bossAlarm[Math.floor(step / ornamentEvery) % bossAlarm.length]
         this.playDirectTone(92, 0.18, 'sawtooth', 0.034, 43)
-        this.playDirectTone(740, 0.052, 'square', 0.022, 1480)
+        this.playDirectTone(alarm, 0.052, 'square', 0.026, alarm * 1.85)
         this.playDirectTone(185, 0.075, 'sawtooth', 0.026, 82)
       }
 
       this.grooveStep += 1
-    }, this.leanMode ? 760 : 620)
+    }, this.leanMode ? 690 : 520)
   }
 
   private stopGroove() {
@@ -455,6 +464,7 @@ class GameAudio {
         { delay: 75, duration: 0.08, frequency: 880, type: 'triangle', volume: 0.04 },
         { delay: 135, duration: 0.055, frequency: 1320, type: 'square', volume: 0.03 },
         { delay: 190, duration: 0.045, frequency: 1760, type: 'square', volume: 0.024 },
+        { delay: 245, duration: 0.05, frequency: 660, type: 'square', volume: 0.026 },
       ])
     }
 
@@ -463,6 +473,7 @@ class GameAudio {
       this.playToneSequence([
         { delay: 210, duration: 0.05, frequency: 2093, type: 'square', volume: 0.028 },
         { delay: 270, duration: 0.06, frequency: 2637, type: 'triangle', volume: 0.024 },
+        { delay: 330, duration: 0.055, frequency: 3136, type: 'square', volume: 0.022 },
       ])
     }
   }
@@ -490,6 +501,7 @@ class GameAudio {
       { delay: 75, duration: 0.08, frequency: 784, type: 'square', volume: 0.04 },
       { delay: 150, duration: 0.06, frequency: 1046, type: 'triangle', volume: 0.03 },
       { delay: 220, duration: 0.045, frequency: 1568, type: 'square', volume: 0.022 },
+      { delay: 285, duration: 0.04, frequency: 784, type: 'square', volume: 0.026 },
     ])
 
     if (isPerfect) {

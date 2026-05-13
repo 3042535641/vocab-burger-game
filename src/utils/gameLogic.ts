@@ -373,9 +373,9 @@ export const buildSteps = (
     const word = pickWordForStep(plan, index, isBoss, wordPool)
     const stepText: Record<string, { label: string; ingredient: string }> = {
       bun: { label: '放细胞词根底', ingredient: '细胞词根底' },
-      patty: { label: '放组织肉饼开始煎', ingredient: '组织肉饼' },
+      patty: { label: '组织肉饼下锅开煎', ingredient: '肉饼下锅' },
       flip: { label: '答对诊断术语才能翻面', ingredient: '诊断翻面' },
-      lettuce: { label: '加入症状生菜', ingredient: '症状生菜' },
+      lettuce: { label: '肉饼出锅，加入症状生菜', ingredient: '出锅肉饼 + 症状生菜' },
       tomato: { label: '加入炎症番茄', ingredient: '炎症番茄' },
       sauce: { label: '挤治疗酱并盖上护理面包', ingredient: '治疗酱 + 护理面包盖' },
       perfect: { label: '喊出无菌完美汉堡', ingredient: 'Sterile Perfect Burger' },

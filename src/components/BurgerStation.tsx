@@ -25,6 +25,15 @@ function BurgerStation({
   const pattyClass = burn >= 80 ? 'burned' : burn >= 45 ? 'toasty' : ''
   const flipWindowClass =
     firstSide >= 55 && firstSide <= 85 && burn < 45 ? 'ready' : ''
+  const isPattyOnGrill =
+    customer?.pattySide === 'first' || customer?.pattySide === 'second'
+  const isPattyPlated =
+    customer?.pattySide === 'done' ||
+    Boolean(
+      completedStepIds?.some((stepId) =>
+        ['lettuce', 'tomato', 'sauce', 'top'].includes(stepId),
+      ),
+    )
 
   return (
     <section className="panel burger-station" aria-label="医学英语汉堡制作台">
@@ -68,9 +77,17 @@ function BurgerStation({
         })}
       </div>
 
-      <div className="grill-lights" aria-hidden="true">
+      <div
+        className={`grill-lights ${isPattyOnGrill ? 'grill-cooking' : ''}`}
+        aria-hidden="true"
+      >
         <span />
         <span />
+        {isPattyOnGrill && (
+          <span className={`grill-patty ${pattyClass}`}>
+            {customer?.pattySide === 'first' ? 'A 面' : 'B 面'}
+          </span>
+        )}
       </div>
 
       <div className="burger-stack">
@@ -87,7 +104,7 @@ function BurgerStation({
         {customer && completedStepIds?.includes('lettuce') && (
           <span className="burger-layer lettuce">症状生菜</span>
         )}
-        {customer && completedStepIds?.includes('patty') && (
+        {customer && isPattyPlated && (
           <span className={`burger-layer patty ${pattyClass}`}>
             {burn >= 80 ? '烤焦组织肉饼' : '组织肉饼'}
           </span>
@@ -121,7 +138,13 @@ function BurgerStation({
             </div>
           </div>
           <p className={`flip-window ${flipWindowClass}`}>
-            {flipWindowClass ? '第一面最佳翻面窗口！' : '第一面 55%-85% 时翻面最香'}
+            {customer.pattySide === 'done'
+              ? '肉饼已出锅，熟度锁定，不再继续变焦。'
+              : customer.pattySide === 'second'
+                ? 'B 面正在煎，答对下一步即可出锅上堡。'
+                : flipWindowClass
+                  ? '第一面最佳翻面窗口！'
+                  : '第一面 55%-85% 时翻面最香'}
           </p>
         </div>
       )}

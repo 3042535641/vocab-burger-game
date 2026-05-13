@@ -1384,11 +1384,17 @@
 
 .grill-lights {
   display: flex;
+  position: relative;
+  align-items: center;
   gap: 6px;
-  margin-bottom: 6px;
+  min-height: 48px;
+  margin-bottom: 8px;
+  padding: 6px 10px 6px 0;
+  border-bottom: 3px solid #2b211b;
 }
 
 .grill-lights span {
+  flex: 0 0 auto;
   width: 14px;
   height: 14px;
   border: 2px solid #2b211b;
@@ -1406,6 +1412,39 @@
 .grill-lights span:nth-child(3) {
   background: #65bd61;
   animation-delay: 260ms;
+}
+
+.grill-lights .grill-patty {
+  display: grid;
+  place-items: center;
+  width: min(128px, 42%);
+  height: 34px;
+  margin-left: auto;
+  border: 3px solid #2b211b;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 22% 35%, rgba(255, 255, 255, 0.45) 0 4px, transparent 5px),
+    repeating-linear-gradient(90deg, rgba(43, 33, 27, 0.18) 0 7px, transparent 7px 15px),
+    #8b4b2e;
+  box-shadow: 0 4px 0 rgba(43, 33, 27, 0.3);
+  color: #fff7e8;
+  font-size: 13px;
+  font-weight: 1000;
+  letter-spacing: 0;
+  animation: grill-patty-sizzle 620ms ease-in-out infinite;
+}
+
+.grill-lights .grill-patty.toasty {
+  background:
+    radial-gradient(circle at 22% 35%, rgba(255, 255, 255, 0.35) 0 4px, transparent 5px),
+    repeating-linear-gradient(90deg, rgba(43, 33, 27, 0.26) 0 7px, transparent 7px 15px),
+    #6d3928;
+}
+
+.grill-lights .grill-patty.burned {
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 226, 122, 0.12) 0 7px, transparent 7px 15px),
+    #2b211b;
 }
 
 .burger-stack {
@@ -3251,6 +3290,7 @@
 .play-shell .counter-rail,
 .play-shell .speech-bubble,
 .play-shell .burger-stack::before,
+.play-shell .grill-patty,
 .play-shell .patty {
   animation: none;
 }
@@ -4900,6 +4940,16 @@
   50% {
     opacity: 1;
     transform: scale(1.16);
+  }
+}
+
+@keyframes grill-patty-sizzle {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-2px) rotate(1deg);
   }
 }
 

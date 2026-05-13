@@ -568,7 +568,9 @@ function App() {
             ? 'first'
             : step.id === 'flip'
               ? 'second'
-              : activeCustomer.pattySide,
+              : step.id === 'lettuce' && activeCustomer.pattySide === 'second'
+                ? 'done'
+                : activeCustomer.pattySide,
         speech: pickLine(correctLines, activeCustomer.id + nextCombo),
       }
 
@@ -596,6 +598,8 @@ function App() {
             ? isPerfectFlip
               ? '完美翻面！熟度刚刚好。'
               : '翻面成功，但熟度不是最佳窗口。'
+            : step.id === 'lettuce' && activeCustomer.pattySide === 'second'
+              ? '肉饼出锅上堡！煎锅停止加热。'
             : '答对了，动作完成！',
       })
       setBanner(nextCombo >= 5 ? '锦旗进度达成，继续连对！' : '继续制作下一步')

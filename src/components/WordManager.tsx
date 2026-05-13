@@ -2,6 +2,15 @@ import { useMemo, useRef, useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import type { WordEntry } from '../data/words'
 import { categoryLabels } from '../utils/display'
+import {
+  categoryOptions,
+  createCustomWordId,
+  emptyWordDraft,
+  isWordEntry,
+  normalizeWordDraft,
+  toWordDraft,
+  type WordDraft,
+} from '../utils/wordHelpers'
 
 type WordManagerProps = {
   customWords: WordEntry[]
@@ -12,123 +21,6 @@ type WordManagerProps = {
   onClose: () => void
 }
 
-type WordDraft = {
-  chinese: string
-  english: string
-  wrongOptions: string
-  category: WordEntry['category']
-  difficulty: WordEntry['difficulty']
-}
-
-const categoryOptions: WordEntry['category'][] = [
-  'food',
-  'action',
-  'shop',
-  'feeling',
-]
-
-const emptyDraft: WordDraft = {
-  chinese: '',
-  english: '',
-  wrongOptions: '',
-  category: 'shop',
-  difficulty: 1,
-}
-
-const createId = () => `custom-${Date.now()}-${Math.floor(Math.random() * 999)}`
-
-const fallbackWrongOptions = [
-  'cell',
-  'tissue',
-  'diagnosis',
-  'symptom',
-  'treatment',
-  'pathology',
-  'prognosis',
-  'antibiotic',
-  'vaccine',
-  'dosage',
-  'benign',
-  'malignant',
-]
-
-const getAutoWrongOptions = (english: string) => {
-  const normalizedEnglish = english.trim().toLowerCase()
-  const typoOption =
-    normalizedEnglish.length > 4
-      ? normalizedEnglish.slice(0, -1)
-      : `${normalizedEnglish}ing`
-  const similarOption = normalizedEnglish.includes('tion')
-    ? normalizedEnglish.replace('tion', 'sion')
-    : `${normalizedEnglish}ology`
-
-  return [...fallbackWrongOptions, typoOption, similarOption]
-    .map((option) => option.trim().toLowerCase())
-    .filter((option) => option && option !== normalizedEnglish)
-    .filter((option, index, list) => list.indexOf(option) === index)
-    .slice(0, 3)
-}
-
-const normalizeDraft = (draft: WordDraft, id = createId()): WordEntry | string => {
-  const chinese = draft.chinese.trim()
-  const english = draft.english.trim().toLowerCase()
-  const manualWrongOptions = draft.wrongOptions
-    .split(',')
-    .map((option) => option.trim().toLowerCase())
-    .filter(Boolean)
-  const wrongOptions =
-    manualWrongOptions.length > 0 ? manualWrongOptions : getAutoWrongOptions(english)
-
-  const uniqueWrongOptions = [...new Set(wrongOptions)].slice(0, 3)
-
-  if (!chinese || !english) {
-    return '请至少填写中文医学概念和英文术语。'
-  }
-
-  if (uniqueWrongOptions.length !== 3) {
-    return '自动干扰项不足，请展开高级设置并手动填写 3 个不同的干扰项。'
-  }
-
-  if (uniqueWrongOptions.includes(english)) {
-    return '错误选项里不能包含正确答案。'
-  }
-
-  return {
-    id,
-    chinese,
-    english,
-    wrongOptions: uniqueWrongOptions,
-    category: draft.category,
-    difficulty: draft.difficulty,
-  }
-}
-
-const toDraft = (word: WordEntry): WordDraft => ({
-  chinese: word.chinese,
-  english: word.english,
-  wrongOptions: word.wrongOptions.join(', '),
-  category: word.category,
-  difficulty: word.difficulty,
-})
-
-const isWordEntry = (value: unknown): value is WordEntry => {
-  if (!value || typeof value !== 'object') {
-    return false
-  }
-
-  const word = value as Partial<WordEntry>
-
-  return (
-    typeof word.id === 'string' &&
-    typeof word.chinese === 'string' &&
-    typeof word.english === 'string' &&
-    Array.isArray(word.wrongOptions) &&
-    word.wrongOptions.length >= 3 &&
-    categoryOptions.includes(word.category as WordEntry['category']) &&
-    [1, 2, 3].includes(Number(word.difficulty))
-  )
-}
-
 function WordManager({
   customWords,
   onAddWord,
@@ -137,7 +29,7 @@ function WordManager({
   onImportWords,
   onClose,
 }: WordManagerProps) {
-  const [draft, setDraft] = useState<WordDraft>(emptyDraft)
+  const [draft, setDraft] = useState<WordDraft>(emptyWordDraft)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [categoryFilter, setCategoryFilter] = useState<'all' | WordEntry['category']>(
     'all',
@@ -170,7 +62,7 @@ function WordManager({
   }
 
   const resetForm = () => {
-    setDraft(emptyDraft)
+    setDraft(emptyWordDraft)
     setEditingId(null)
     setShowAdvancedForm(false)
     setError('')
@@ -179,7 +71,7 @@ function WordManager({
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    const normalized = normalizeDraft(draft, editingId ?? createId())
+    const normalized = normalizeWordDraft(draft, editingId ?? createCustomWordId())
 
     if (typeof normalized === 'string') {
       setError(normalized)
@@ -200,7 +92,7 @@ function WordManager({
   }
 
   const handleEdit = (word: WordEntry) => {
-    setDraft(toDraft(word))
+    setDraft(toWordDraft(word))
     setEditingId(word.id)
     setShowAdvancedForm(true)
     setError('')

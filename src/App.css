@@ -731,12 +731,12 @@
   border: 2px solid #2b211b;
   border-radius: 8px;
   background:
-    radial-gradient(circle at 12% 16%, rgba(255, 226, 122, 0.42), transparent 12%),
-    radial-gradient(circle at 84% 18%, rgba(69, 166, 214, 0.26), transparent 13%),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.26) 0 1px, transparent 1px 100%),
-    linear-gradient(0deg, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px 100%),
-    linear-gradient(90deg, rgba(92, 40, 20, 0.18) 0 2px, transparent 2px 100%),
-    linear-gradient(#ffd58d 0 14%, #f7b55d 14% 54%, #c56b34 54% 58%, #7a4830 58%);
+    radial-gradient(circle at 12% 16%, rgba(255, 226, 122, 0.38), transparent 12%),
+    radial-gradient(circle at 84% 18%, rgba(69, 166, 214, 0.3), transparent 13%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.45) 0 1px, transparent 1px 100%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.36) 0 1px, transparent 1px 100%),
+    linear-gradient(90deg, rgba(45, 132, 121, 0.12) 0 2px, transparent 2px 100%),
+    linear-gradient(#d9f4ec 0 15%, #bce8df 15% 54%, #2d8479 54% 58%, #6c4632 58%);
   background-size:
     auto,
     auto,
@@ -772,7 +772,7 @@
 }
 
 .shop-scene::after {
-  content: 'MED TERM COMBO  |  ROOT + PATTY + SAUCE';
+  content: 'PRESCRIPTION MENU  |  ROOT + TERM + BURGER';
   position: absolute;
   bottom: 34px;
   left: 8%;
@@ -783,7 +783,7 @@
   color: #ffe9a9;
   background:
     radial-gradient(circle at 95% 50%, #ffd24d 0 6px, transparent 7px),
-    linear-gradient(90deg, #174f49, #33201c);
+    linear-gradient(90deg, #174f49, #2b211b);
   box-shadow:
     inset 0 -4px 0 rgba(0, 0, 0, 0.22),
     0 4px 0 #000;
@@ -816,7 +816,7 @@
   color: #ffe9a9;
   background:
     radial-gradient(circle at 92% 50%, #ffd24d 0 8px, transparent 9px),
-    linear-gradient(90deg, #174f49, #33201c 52%, #174f49);
+    linear-gradient(90deg, #174f49, #2b211b 52%, #174f49);
   box-shadow:
     inset 0 -4px 0 rgba(0, 0, 0, 0.32),
     0 4px 0 #000,
@@ -829,15 +829,21 @@
 
 .shop-sign::before,
 .shop-sign::after {
-  content: '';
+  content: '+';
   position: absolute;
   top: 50%;
-  width: 10px;
-  height: 10px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
   border: 2px solid #2b211b;
   border-radius: 50%;
-  background: #ffd24d;
-  box-shadow: 0 0 12px rgba(255, 210, 77, 0.9);
+  color: #fffdf6;
+  background: #d94731;
+  box-shadow: 0 0 12px rgba(217, 71, 49, 0.8);
+  font-size: 16px;
+  font-weight: 1000;
+  line-height: 1;
   transform: translateY(-50%);
 }
 
@@ -846,7 +852,204 @@
 }
 
 .shop-sign::after {
+  content: '';
   right: 6px;
+  width: 16px;
+  height: 8px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, #fffdf6 0 50%, #45a6d6 50%);
+}
+
+.scene-glow {
+  position: absolute;
+  z-index: 1;
+  width: 110px;
+  height: 74px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 226, 122, 0.58), transparent 68%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.scene-glow-left {
+  top: 10px;
+  left: 6%;
+  transform: rotate(-8deg);
+}
+
+.scene-glow-right {
+  top: 8px;
+  right: 7%;
+  background: radial-gradient(circle, rgba(69, 166, 214, 0.38), transparent 68%);
+}
+
+.menu-board {
+  position: absolute;
+  z-index: 5;
+  top: 16px;
+  left: 7%;
+  display: grid;
+  gap: 3px;
+  min-width: 112px;
+  padding: 7px 10px;
+  border: 3px solid #2b211b;
+  border-radius: 8px;
+  color: #2b211b;
+  background:
+    linear-gradient(90deg, rgba(217, 71, 49, 0.12), transparent 42%),
+    repeating-linear-gradient(0deg, rgba(45, 132, 121, 0.12) 0 2px, transparent 2px 13px),
+    #fffdf6;
+  box-shadow:
+    inset 0 -5px 0 rgba(0, 0, 0, 0.24),
+    0 4px 0 rgba(43, 33, 27, 0.32);
+  font-size: 9px;
+  font-weight: 1000;
+  letter-spacing: 0;
+  transform: rotate(-2deg);
+}
+
+.menu-board span {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.menu-board span::after {
+  content: 'Rx';
+  color: #d94731;
+}
+
+.kitchen-window {
+  position: absolute;
+  z-index: 2;
+  top: 70px;
+  right: 18%;
+  width: 180px;
+  height: 42px;
+  border: 3px solid #2b211b;
+  border-radius: 10px 10px 6px 6px;
+  background:
+    linear-gradient(90deg, transparent 47%, #2b211b 47% 53%, transparent 53%),
+    radial-gradient(circle at 22% 60%, rgba(255, 226, 122, 0.62) 0 11px, transparent 12px),
+    radial-gradient(circle at 74% 58%, rgba(217, 71, 49, 0.45) 0 11px, transparent 12px),
+    linear-gradient(#d9eff8 0 50%, #fff7e8 50%);
+  box-shadow:
+    inset 0 -6px 0 rgba(45, 132, 121, 0.18),
+    0 5px 0 rgba(43, 33, 27, 0.28);
+}
+
+.ecg-neon {
+  position: absolute;
+  z-index: 4;
+  right: 33%;
+  bottom: 50px;
+  width: 128px;
+  height: 30px;
+  border-bottom: 4px solid #2b211b;
+  opacity: 0.92;
+}
+
+.ecg-neon::before {
+  content: '';
+  position: absolute;
+  inset: 2px 0 0;
+  background: linear-gradient(
+    110deg,
+    transparent 0 15%,
+    #75c760 15% 21%,
+    transparent 21% 31%,
+    #75c760 31% 38%,
+    transparent 38% 46%,
+    #75c760 46% 52%,
+    transparent 52% 64%,
+    #75c760 64% 72%,
+    transparent 72%
+  );
+  clip-path: polygon(0 62%, 15% 62%, 22% 20%, 30% 80%, 40% 55%, 54% 55%, 62% 12%, 72% 74%, 84% 55%, 100% 55%, 100% 100%, 0 100%);
+  filter: drop-shadow(0 0 5px rgba(117, 199, 96, 0.65));
+}
+
+.kitchen-window span {
+  position: absolute;
+  bottom: 6px;
+  width: 36px;
+  height: 10px;
+  border: 2px solid #2b211b;
+  border-radius: 999px;
+  background: #f2bd63;
+}
+
+.kitchen-window span:first-child {
+  left: 22px;
+}
+
+.kitchen-window span:last-child {
+  right: 26px;
+  background: #75c760;
+}
+
+.sauce-shelf {
+  position: absolute;
+  z-index: 5;
+  right: 7%;
+  bottom: 38px;
+  display: flex;
+  align-items: end;
+  gap: 7px;
+  padding: 5px 9px 4px;
+  border: 3px solid #2b211b;
+  border-radius: 8px;
+  background: #fffdf6;
+  box-shadow: 0 4px 0 rgba(43, 33, 27, 0.28);
+}
+
+.sauce-shelf span {
+  width: 15px;
+  height: 28px;
+  border: 2px solid #2b211b;
+  border-radius: 7px 7px 4px 4px;
+  background: linear-gradient(#ffe27a 0 30%, #d94731 30%);
+}
+
+.sauce-shelf span:nth-child(2) {
+  height: 34px;
+  background: linear-gradient(#fff7e8 0 30%, #75c760 30%);
+}
+
+.sauce-shelf span:nth-child(3) {
+  background: linear-gradient(#d9eff8 0 30%, #45a6d6 30%);
+}
+
+.shop-mascot {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  bottom: 23px;
+  width: 62px;
+  height: 46px;
+  border: 3px solid #2b211b;
+  border-radius: 28px 28px 14px 14px;
+  background:
+    radial-gradient(circle at 27% 32%, #fff7e8 0 4px, transparent 5px),
+    radial-gradient(circle at 70% 32%, #fff7e8 0 4px, transparent 5px),
+    linear-gradient(#f2bd63 0 46%, #75c760 46% 66%, #d94731 66%);
+  box-shadow:
+    inset 0 -5px 0 rgba(43, 33, 27, 0.18),
+    0 5px 0 rgba(43, 33, 27, 0.28);
+  transform: translateX(-50%) rotate(2deg);
+}
+
+.shop-mascot span {
+  position: absolute;
+  right: -14px;
+  top: 11px;
+  width: 20px;
+  height: 8px;
+  border: 2px solid #2b211b;
+  border-radius: 999px;
+  background: #fffdf6;
+  transform: rotate(-18deg);
 }
 
 .awning {
@@ -6968,6 +7171,35 @@
     overflow: hidden;
   }
 
+  .menu-board,
+  .kitchen-window,
+  .sauce-shelf,
+  .ecg-neon {
+    transform: scale(0.78);
+    transform-origin: center;
+  }
+
+  .menu-board {
+    top: 8px;
+    left: 4%;
+  }
+
+  .kitchen-window {
+    right: 6%;
+    width: 138px;
+  }
+
+  .ecg-neon {
+    right: 30%;
+    bottom: 42px;
+    width: 86px;
+  }
+
+  .sauce-shelf,
+  .shop-mascot {
+    display: none;
+  }
+
   .quiz-panel {
     bottom: 6px;
     overflow: visible;
@@ -7121,6 +7353,13 @@
 
   .compact-scene {
     min-height: 78px;
+  }
+
+  .scene-glow,
+  .menu-board,
+  .kitchen-window,
+  .ecg-neon {
+    display: none;
   }
 
   .shop-sign {

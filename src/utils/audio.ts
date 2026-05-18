@@ -46,6 +46,10 @@ class GameAudio {
   }
 
   private getEffectLimit() {
+    if (this.finaleActive) {
+      return this.leanMode ? 32 : 56
+    }
+
     return this.leanMode ? 24 : 40
   }
 
@@ -294,7 +298,7 @@ class GameAudio {
     const bassPattern = [98, 49, 123, 61, 196, 73, 247, 49]
     const chantPattern = [784, 1175, 988, 1568, 1175, 2093, 1568, 2349]
     const sirenPattern = [392, 784, 523, 1175, 659, 1568, 784, 2093]
-    const slamDelays = [0, 480, 960, 1820, 3000, 4440, 6120, 7840]
+    const slamDelays = [0, 360, 720, 1320, 2200, 3300, 4720, 6400, 8120]
 
     slamDelays.forEach((delay, index) => {
       const heavy = index === 0 || index % 3 === 0
@@ -306,8 +310,8 @@ class GameAudio {
       this.playTone(880, 0.045, 'square', 0.022, delay + 112)
     })
 
-    for (let index = 0; index < (this.leanMode ? 14 : 22); index += 1) {
-      const delay = 640 + index * 290
+    for (let index = 0; index < (this.leanMode ? 14 : 24); index += 1) {
+      const delay = 560 + index * 265
       const bass = bassPattern[index % bassPattern.length]
       const chant = chantPattern[index % chantPattern.length]
       const siren = sirenPattern[index % sirenPattern.length]
@@ -356,6 +360,15 @@ class GameAudio {
         delay,
       )
       this.playTone(target, 0.045, 'triangle', 0.022, delay + 52)
+    })
+
+    const rootChant = [392, 523, 392, 659, 392, 784, 392, 1046]
+
+    rootChant.forEach((frequency, index) => {
+      const delay = 2550 + index * 190
+
+      this.playTone(frequency, 0.055, 'square', 0.03, delay)
+      this.playTone(frequency * 2, 0.035, 'triangle', 0.018, delay + 72)
     })
   }
 
@@ -529,6 +542,14 @@ class GameAudio {
       ])
     }
 
+    if (combo >= 4 && !this.leanMode) {
+      this.playToneSequence([
+        { delay: 118, duration: 0.036, frequency: 1568, type: 'square', volume: 0.026 },
+        { delay: 176, duration: 0.036, frequency: 1568, type: 'square', volume: 0.022 },
+        { delay: 234, duration: 0.042, frequency: 1976, type: 'square', volume: 0.024 },
+      ])
+    }
+
     if (combo >= 6 && !this.leanMode) {
       this.playOneShot(audioFiles.correct, 0.3, 1.38, 145)
       this.playToneSequence([
@@ -536,6 +557,14 @@ class GameAudio {
         { delay: 270, duration: 0.06, frequency: 2637, type: 'triangle', volume: 0.024 },
         { delay: 330, duration: 0.055, frequency: 3136, type: 'square', volume: 0.022 },
         { delay: 390, duration: 0.045, frequency: 1568, type: 'square', volume: 0.018 },
+      ])
+    }
+
+    if (combo >= 8 && !this.leanMode) {
+      this.playOneShot(audioFiles.serve, 0.22, 1.42, 260)
+      this.playToneSequence([
+        { delay: 420, duration: 0.05, frequency: 3520, type: 'square', volume: 0.02 },
+        { delay: 476, duration: 0.06, frequency: 1760, type: 'triangle', volume: 0.018 },
       ])
     }
   }
@@ -550,6 +579,8 @@ class GameAudio {
     this.playTone(isBoss ? 110 : 146, 0.16, 'sawtooth', 0.058, 0)
     this.playTone(isBoss ? 55 : 82, 0.14, 'square', 0.038, 90)
     this.playTone(isBoss ? 220 : 294, 0.05, 'sawtooth', 0.026, 170)
+    this.playTone(isBoss ? 392 : 523, 0.04, 'square', 0.022, 235)
+    this.playTone(isBoss ? 196 : 262, 0.07, 'sawtooth', 0.03, 285)
   }
 
   playServe(isPerfect = false) {
@@ -558,6 +589,7 @@ class GameAudio {
     }
 
     this.playOneShot(audioFiles.serve, 0.82, 1)
+    this.playOneShot(audioFiles.serve, 0.32, 0.72, 105)
     this.playToneSequence([
       { delay: 0, duration: 0.06, frequency: 523, type: 'square', volume: 0.035 },
       { delay: 75, duration: 0.08, frequency: 784, type: 'square', volume: 0.04 },
@@ -599,6 +631,8 @@ class GameAudio {
       { delay: 120, duration: 0.16, frequency: 164, type: 'sawtooth', volume: 0.044 },
       { delay: 260, duration: 0.2, frequency: 61, type: 'square', volume: 0.038 },
       { delay: 420, duration: 0.08, frequency: 740, type: 'square', volume: 0.026 },
+      { delay: 510, duration: 0.06, frequency: 1480, type: 'square', volume: 0.024 },
+      { delay: 590, duration: 0.08, frequency: 370, type: 'sawtooth', volume: 0.03 },
     ])
   }
 

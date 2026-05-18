@@ -11,10 +11,15 @@ function BossFinale() {
         <div className="medical-impact-ring ring-one" />
         <div className="medical-impact-ring ring-two" />
         <div className="medical-impact-ring ring-three" />
+        <div className="medical-impact-ring ring-four" />
         <div className="medical-word-card card-root">词根暴击</div>
         <div className="medical-word-card card-term">术语盖章</div>
         <div className="medical-word-card card-sterile">STERILE</div>
+        <div className="medical-word-card card-itis">-ITIS!</div>
+        <div className="medical-word-card card-anti">ANTI-</div>
         <div className="medical-word-card card-bonk">BONK!</div>
+        <div className="medical-callout callout-left">查房沉默</div>
+        <div className="medical-callout callout-right">词汇会诊通过</div>
         <div className="medical-finale-professor">
           <span className="professor-hair" />
           <span className="professor-glasses" />

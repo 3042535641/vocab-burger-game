@@ -920,30 +920,28 @@ function App() {
         </div>
       </header>
 
-      <section className="shop-scene compact-scene" aria-label="医学英语汉堡店场景">
-        <div className="scene-glow scene-glow-left" aria-hidden="true" />
-        <div className="scene-glow scene-glow-right" aria-hidden="true" />
-        <div className="shop-sign">MED VOCAB BURGER</div>
-        <div className="menu-board" aria-hidden="true">
+      <section className="shop-scene compact-scene lab-diner-scene" aria-label="医学英语汉堡店场景">
+        <div className="lab-diner-halo" aria-hidden="true" />
+        <div className="lab-diner-sign" aria-hidden="true">
+          <span>MEDICAL</span>
+          <strong>BURGER LAB</strong>
+        </div>
+        <div className="lab-diner-rx-menu" aria-hidden="true">
           <span>ROOT</span>
           <span>TERM</span>
           <span>COMBO</span>
         </div>
-        <div className="awning" aria-hidden="true" />
-        <div className="kitchen-window" aria-hidden="true">
+        <div className="lab-diner-window" aria-hidden="true">
           <span />
           <span />
         </div>
-        <div className="ecg-neon" aria-hidden="true" />
-        <div className="sauce-shelf" aria-hidden="true">
+        <div className="lab-diner-shelf" aria-hidden="true">
           <span />
           <span />
           <span />
         </div>
-        <div className="shop-mascot" aria-hidden="true">
-          <span />
-        </div>
-        <div className="counter-rail" aria-hidden="true" />
+        <div className="lab-diner-counter" aria-hidden="true" />
+        <div className="lab-diner-runner" aria-hidden="true" />
       </section>
 
       <div className="banner">{banner}</div>

@@ -7664,3 +7664,281 @@
     display: none;
   }
 }
+
+/* Lab-diner repaint: new scene classes replace the old awning/sign pseudo-art. */
+.play-shell .lab-diner-scene {
+  min-height: 154px;
+  border-width: 4px;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 16% 22%, rgba(255, 226, 122, 0.44), transparent 15%),
+    radial-gradient(circle at 86% 18%, rgba(217, 71, 49, 0.22), transparent 17%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.42) 0 1px, transparent 1px 100%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.34) 0 1px, transparent 1px 100%),
+    linear-gradient(#dff7ef 0 51%, #2d8479 51% 56%, #6f4634 56% 100%);
+  background-size:
+    auto,
+    auto,
+    46px 30px,
+    46px 30px,
+    auto;
+  box-shadow:
+    inset 0 0 0 7px rgba(255, 253, 246, 0.24),
+    inset 0 -20px 0 rgba(43, 33, 27, 0.16),
+    0 9px 0 #2b211b;
+}
+
+.play-shell .lab-diner-scene::before,
+.play-shell .lab-diner-scene::after,
+.play-shell .lab-diner-scene .shop-sign,
+.play-shell .lab-diner-scene .awning,
+.play-shell .lab-diner-scene .counter-rail,
+.play-shell .lab-diner-scene .menu-board,
+.play-shell .lab-diner-scene .kitchen-window,
+.play-shell .lab-diner-scene .ecg-neon,
+.play-shell .lab-diner-scene .sauce-shelf,
+.play-shell .lab-diner-scene .shop-mascot,
+.play-shell .lab-diner-scene .scene-glow {
+  display: none !important;
+  content: none !important;
+}
+
+.lab-diner-halo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(ellipse at 50% 24%, rgba(255, 226, 122, 0.32), transparent 28%),
+    linear-gradient(120deg, transparent 0 40%, rgba(255, 255, 255, 0.26) 42% 45%, transparent 47%);
+  pointer-events: none;
+}
+
+.lab-diner-sign {
+  position: absolute;
+  z-index: 8;
+  top: 13px;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  min-width: min(440px, 52vw);
+  padding: 8px 28px 9px;
+  border: 4px solid #2b211b;
+  border-radius: 14px;
+  color: #fffdf6;
+  background:
+    radial-gradient(circle at 7% 50%, #ffe27a 0 8px, transparent 9px),
+    radial-gradient(circle at 93% 50%, #ffe27a 0 8px, transparent 9px),
+    linear-gradient(90deg, #154943, #2b211b 50%, #154943);
+  box-shadow:
+    inset 0 -6px 0 rgba(0, 0, 0, 0.32),
+    0 6px 0 #2b211b,
+    0 0 0 6px rgba(255, 226, 122, 0.22);
+  text-align: center;
+  transform: translateX(-50%) rotate(-0.8deg);
+}
+
+.lab-diner-sign span {
+  color: #ffe27a;
+  font-size: 11px;
+  font-weight: 1000;
+  letter-spacing: 0;
+}
+
+.lab-diner-sign strong {
+  font-size: clamp(20px, 3vw, 34px);
+  letter-spacing: 1px;
+  line-height: 0.95;
+  text-shadow:
+    3px 3px 0 #2b211b,
+    -2px 0 0 #d94731;
+}
+
+.lab-diner-rx-menu {
+  position: absolute;
+  z-index: 6;
+  top: 18px;
+  left: 5.4%;
+  display: grid;
+  gap: 3px;
+  min-width: 120px;
+  padding: 8px 11px;
+  border: 4px solid #2b211b;
+  border-radius: 10px;
+  color: #2b211b;
+  background:
+    linear-gradient(90deg, rgba(217, 71, 49, 0.12), transparent 42%),
+    repeating-linear-gradient(0deg, rgba(45, 132, 121, 0.12) 0 2px, transparent 2px 14px),
+    #fffdf6;
+  box-shadow:
+    inset 0 -5px 0 rgba(45, 132, 121, 0.12),
+    0 5px 0 rgba(43, 33, 27, 0.28);
+  font-size: 10px;
+  font-weight: 1000;
+  transform: rotate(-2.4deg);
+}
+
+.lab-diner-rx-menu span {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.lab-diner-rx-menu span::after {
+  content: 'Rx';
+  color: #d94731;
+}
+
+.lab-diner-window {
+  position: absolute;
+  z-index: 3;
+  right: 17%;
+  bottom: 35px;
+  width: 178px;
+  height: 48px;
+  border: 4px solid #2b211b;
+  border-radius: 14px 14px 8px 8px;
+  background:
+    linear-gradient(90deg, transparent 46%, #2b211b 46% 54%, transparent 54%),
+    radial-gradient(circle at 24% 60%, rgba(255, 226, 122, 0.7) 0 12px, transparent 13px),
+    radial-gradient(circle at 76% 58%, rgba(217, 71, 49, 0.42) 0 12px, transparent 13px),
+    linear-gradient(#d9eff8 0 50%, #fffdf6 50%);
+  box-shadow:
+    inset 0 -7px 0 rgba(45, 132, 121, 0.16),
+    0 6px 0 rgba(43, 33, 27, 0.26);
+}
+
+.lab-diner-window span {
+  position: absolute;
+  bottom: 7px;
+  width: 40px;
+  height: 10px;
+  border: 2px solid #2b211b;
+  border-radius: 999px;
+  background: #f2bd63;
+}
+
+.lab-diner-window span:first-child {
+  left: 24px;
+}
+
+.lab-diner-window span:last-child {
+  right: 24px;
+  background: #75c760;
+}
+
+.lab-diner-shelf {
+  position: absolute;
+  z-index: 7;
+  right: 6%;
+  bottom: 24px;
+  display: flex;
+  gap: 7px;
+  align-items: end;
+  padding: 6px 10px 5px;
+  border: 4px solid #2b211b;
+  border-radius: 11px;
+  background: #fffdf6;
+  box-shadow:
+    inset 0 -4px 0 rgba(45, 132, 121, 0.1),
+    0 5px 0 rgba(43, 33, 27, 0.28);
+}
+
+.lab-diner-shelf span {
+  width: 15px;
+  height: 30px;
+  border: 2px solid #2b211b;
+  border-radius: 8px 8px 4px 4px;
+  background: linear-gradient(#ffe27a 0 30%, #d94731 30%);
+}
+
+.lab-diner-shelf span:nth-child(2) {
+  height: 38px;
+  background: linear-gradient(#fffdf6 0 30%, #75c760 30%);
+}
+
+.lab-diner-shelf span:nth-child(3) {
+  height: 33px;
+  background: linear-gradient(#d9eff8 0 30%, #45a6d6 30%);
+}
+
+.lab-diner-counter {
+  position: absolute;
+  z-index: 4;
+  right: 4%;
+  bottom: 5px;
+  left: 4%;
+  height: 22px;
+  border: 3px solid #2b211b;
+  border-radius: 10px;
+  background:
+    linear-gradient(90deg, #dff4bf 0 15%, #2d8479 15% 18%, #dff4bf 18% 31%, transparent 31%),
+    #2b211b;
+  box-shadow:
+    inset 0 -4px 0 rgba(0, 0, 0, 0.26),
+    0 4px 0 rgba(43, 33, 27, 0.24);
+}
+
+.lab-diner-runner {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  bottom: 31px;
+  width: 86px;
+  height: 34px;
+  border: 4px solid #2b211b;
+  border-radius: 999px 999px 16px 16px;
+  background:
+    radial-gradient(circle at 25% 28%, #fff3b1 0 3px, transparent 4px),
+    radial-gradient(circle at 58% 24%, #fff3b1 0 3px, transparent 4px),
+    linear-gradient(#f2bd63 0 46%, #75c760 46% 62%, #d94731 62% 74%, #8a4a2f 74%);
+  box-shadow:
+    inset 0 -4px 0 rgba(43, 33, 27, 0.2),
+    0 5px 0 rgba(43, 33, 27, 0.3);
+  transform: translateX(-50%) rotate(1deg);
+}
+
+.play-shell .burger-stack::before {
+  display: none !important;
+  content: none !important;
+}
+
+.play-shell .burger-stack {
+  border-color: #2b211b;
+  background:
+    radial-gradient(ellipse at 50% 94%, rgba(43, 33, 27, 0.18), transparent 54%),
+    linear-gradient(90deg, rgba(45, 132, 121, 0.1) 0 2px, transparent 2px 24px),
+    repeating-linear-gradient(0deg, rgba(69, 166, 214, 0.08) 0 2px, transparent 2px 28px),
+    linear-gradient(#fffdf6, #e3f4f0);
+}
+
+@media (max-width: 760px) {
+  .play-shell .lab-diner-scene {
+    min-height: 92px;
+  }
+
+  .lab-diner-sign {
+    top: 10px;
+    min-width: min(280px, 66vw);
+    padding: 6px 15px;
+  }
+
+  .lab-diner-sign span {
+    font-size: 9px;
+  }
+
+  .lab-diner-sign strong {
+    font-size: clamp(16px, 6vw, 22px);
+  }
+
+  .lab-diner-rx-menu,
+  .lab-diner-window,
+  .lab-diner-shelf,
+  .lab-diner-runner {
+    display: none;
+  }
+
+  .lab-diner-counter {
+    height: 15px;
+  }
+}

@@ -1749,19 +1749,8 @@
 }
 
 .play-shell .grill-lights::after {
-  content: 'SIZZLE';
-  position: absolute;
-  right: 10px;
-  top: -18px;
-  padding: 2px 9px;
-  border: 2px solid #2b211b;
-  border-radius: 999px;
-  background: #ffe27a;
-  color: #2b211b;
-  font-size: 10px;
-  font-weight: 1000;
-  transform: rotate(2deg);
-  pointer-events: none;
+  content: none;
+  display: none;
 }
 
 .play-shell .answer-button::before {
@@ -7940,5 +7929,211 @@
 
   .lab-diner-counter {
     height: 15px;
+  }
+}
+
+/* Surgical grill repaint: the main play surface gets the same art direction. */
+.play-shell .burger-station {
+  overflow: hidden;
+  border-width: 4px;
+  background:
+    radial-gradient(circle at 88% 12%, rgba(255, 226, 122, 0.36), transparent 18%),
+    radial-gradient(circle at 16% 18%, rgba(69, 166, 214, 0.18), transparent 19%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.42) 0 1px, transparent 1px 100%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.32) 0 1px, transparent 1px 100%),
+    linear-gradient(#e3f8f0 0 45%, #c4e9e2 45% 100%);
+  background-size:
+    auto,
+    auto,
+    44px 28px,
+    44px 28px,
+    auto;
+  box-shadow:
+    inset 0 0 0 6px rgba(255, 253, 246, 0.28),
+    0 7px 0 #2b211b;
+}
+
+.play-shell .burger-station .section-heading {
+  position: relative;
+  z-index: 2;
+  padding-bottom: 8px;
+  border-bottom: 4px solid rgba(43, 33, 27, 0.22);
+}
+
+.play-shell .burger-station .section-heading h2 {
+  text-shadow:
+    3px 3px 0 #ffe27a,
+    -2px 0 0 rgba(217, 71, 49, 0.24);
+}
+
+.play-shell .burger-station .section-heading span {
+  padding: 5px 10px;
+  border: 3px solid #2b211b;
+  border-radius: 999px;
+  color: #fffdf6;
+  background: #174f49;
+  box-shadow: 0 4px 0 rgba(43, 33, 27, 0.2);
+}
+
+.play-shell .grill-slots {
+  position: relative;
+  z-index: 2;
+  gap: 12px;
+  padding: 8px;
+  border: 3px solid #2b211b;
+  border-radius: 12px;
+  background:
+    linear-gradient(90deg, rgba(217, 71, 49, 0.08), transparent 35%),
+    #fffdf6;
+  box-shadow:
+    inset 0 -5px 0 rgba(45, 132, 121, 0.12),
+    0 5px 0 rgba(43, 33, 27, 0.2);
+}
+
+.play-shell .grill-slot {
+  min-height: 86px;
+  border-width: 3px;
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 88% 18%, rgba(255, 226, 122, 0.48), transparent 17%),
+    linear-gradient(90deg, rgba(45, 132, 121, 0.16) 0 10px, transparent 10px),
+    linear-gradient(#fffdf6, #dff4bf);
+  box-shadow:
+    inset 0 -5px 0 rgba(43, 33, 27, 0.1),
+    0 5px 0 rgba(43, 33, 27, 0.24);
+}
+
+.play-shell .grill-slot.active {
+  background:
+    radial-gradient(circle at 88% 18%, rgba(255, 226, 122, 0.62), transparent 18%),
+    linear-gradient(90deg, rgba(217, 71, 49, 0.16) 0 10px, transparent 10px),
+    linear-gradient(#fff8dc, #dff4bf);
+  box-shadow:
+    inset 0 -5px 0 rgba(43, 33, 27, 0.12),
+    0 0 0 4px rgba(255, 226, 122, 0.34),
+    0 5px 0 rgba(43, 33, 27, 0.24);
+}
+
+.play-shell .grill-slot.empty {
+  color: rgba(43, 33, 27, 0.62);
+  background:
+    repeating-linear-gradient(45deg, rgba(45, 132, 121, 0.12) 0 12px, transparent 12px 24px),
+    rgba(255, 253, 246, 0.7);
+}
+
+.play-shell .grill-lights {
+  position: relative;
+  z-index: 2;
+  margin-top: 10px;
+  padding: 12px 14px;
+  border: 3px solid #2b211b;
+  border-radius: 12px;
+  background:
+    linear-gradient(90deg, rgba(255, 253, 246, 0.74), transparent 45%),
+    repeating-linear-gradient(90deg, rgba(43, 33, 27, 0.08) 0 9px, transparent 9px 18px),
+    #d9eff8;
+  box-shadow:
+    inset 0 -5px 0 rgba(45, 132, 121, 0.18),
+    0 5px 0 rgba(43, 33, 27, 0.2);
+}
+
+.play-shell .grill-lights::before {
+  content: 'THERMO LAB';
+  min-width: 90px;
+  color: #174f49;
+  font-size: 12px;
+  font-weight: 1000;
+}
+
+.play-shell .grill-lights span:not(.grill-patty) {
+  width: 22px;
+  height: 22px;
+  border-width: 3px;
+  box-shadow:
+    inset 0 -3px 0 rgba(43, 33, 27, 0.18),
+    0 3px 0 rgba(43, 33, 27, 0.18);
+}
+
+.play-shell .grill-lights .grill-patty {
+  margin-left: auto;
+  min-width: 110px;
+  height: 34px;
+  border-width: 3px;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 226, 122, 0.18) 0 7px, transparent 7px 16px),
+    linear-gradient(#9a573c, #6f3828);
+  box-shadow:
+    inset 0 -5px 0 rgba(43, 33, 27, 0.2),
+    0 4px 0 rgba(43, 33, 27, 0.2);
+}
+
+.play-shell .burger-stack {
+  min-height: 210px;
+  border: 4px solid #2b211b;
+  border-radius: 16px;
+  background:
+    radial-gradient(ellipse at 50% 92%, rgba(43, 33, 27, 0.18), transparent 46%),
+    linear-gradient(90deg, rgba(45, 132, 121, 0.12) 0 2px, transparent 2px 26px),
+    repeating-linear-gradient(0deg, rgba(69, 166, 214, 0.08) 0 3px, transparent 3px 30px),
+    linear-gradient(#fffdf6 0 26%, #e1f5f1 26% 100%);
+  box-shadow:
+    inset 0 -8px 0 rgba(45, 132, 121, 0.12),
+    0 6px 0 rgba(43, 33, 27, 0.22);
+}
+
+.play-shell .burger-stack::after {
+  right: 9%;
+  bottom: 22px;
+  width: 82%;
+  height: 20px;
+  background: rgba(43, 33, 27, 0.16);
+  filter: none;
+}
+
+.play-shell .burger-layer {
+  border-width: 3px;
+  box-shadow:
+    inset 0 -4px 0 rgba(43, 33, 27, 0.16),
+    0 4px 0 rgba(43, 33, 27, 0.18);
+}
+
+.play-shell .cook-meters {
+  margin-top: 10px;
+  border-width: 3px;
+  background:
+    linear-gradient(90deg, rgba(255, 226, 122, 0.18), transparent 42%),
+    #fffdf6;
+  box-shadow:
+    inset 0 -5px 0 rgba(45, 132, 121, 0.1),
+    0 5px 0 rgba(43, 33, 27, 0.18);
+}
+
+.play-shell .meter {
+  height: 14px;
+  border-width: 3px;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(90deg, rgba(45, 132, 121, 0.12) 0 10px, transparent 10px 20px),
+    #fffdf6;
+}
+
+.play-shell .current-step {
+  border-width: 3px;
+  color: #fffdf6;
+  background:
+    radial-gradient(circle at 92% 50%, #ffe27a 0 5px, transparent 6px),
+    #174f49;
+  box-shadow: 0 4px 0 rgba(43, 33, 27, 0.22);
+}
+
+@media (max-width: 760px) {
+  .play-shell .burger-stack {
+    min-height: 150px;
+  }
+
+  .play-shell .grill-lights::before {
+    min-width: 72px;
+    font-size: 10px;
   }
 }

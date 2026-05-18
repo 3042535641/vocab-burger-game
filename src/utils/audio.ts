@@ -3,8 +3,9 @@ const baseUrl = import.meta.env.BASE_URL
 const audioFiles = {
   arrival: `${baseUrl}audio/arrival.wav`,
   boss: `${baseUrl}audio/boss.wav`,
+  bossMusic: `${baseUrl}audio/boss-groove.wav`,
   correct: `${baseUrl}audio/correct.wav`,
-  music: `${baseUrl}audio/bgm.wav`,
+  music: `${baseUrl}audio/kitchen-groove.wav`,
   serve: `${baseUrl}audio/serve.wav`,
   wrong: `${baseUrl}audio/wrong.wav`,
 }
@@ -595,7 +596,7 @@ class GameAudio {
         ? 0.08
         : this.bossActive
           ? 0.06
-          : 0.055 + this.intensity * 0.025
+          : 0.28 + this.intensity * 0.08
       this.music.playbackRate = this.finaleActive
         ? 0.92
         : this.bossActive
@@ -627,7 +628,7 @@ class GameAudio {
     this.startGroove()
 
     if (!this.bossMusic) {
-      this.bossMusic = new Audio(audioFiles.boss)
+      this.bossMusic = new Audio(audioFiles.bossMusic)
       this.bossMusic.loop = true
     }
 
@@ -835,7 +836,7 @@ class GameAudio {
       this.music.volume = 0.2
     }
 
-    this.music.volume = this.leanMode ? 0.07 : 0.045
+    this.music.volume = this.leanMode ? 0.22 : 0.34
     this.music.playbackRate = this.leanMode ? 0.98 : 1.04
     void this.music.play().catch(() => undefined)
     this.startGroove()

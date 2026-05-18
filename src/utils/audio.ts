@@ -18,6 +18,34 @@ type ToneSequenceItem = {
   volume?: number
 }
 
+const kitchenGroove = {
+  adlib: [659, 784, 988, 784, 1175, 988, 1318, 1568],
+  bass: [
+    74, 98, 147, 98, 82, 110, 165, 110, 74, 98, 196, 147, 82, 123, 185,
+    123,
+  ],
+  chant: [1568, 1175, 1760, 1318, 2093, 1568, 2349, 1760],
+  hook: [
+    988, 1318, 1568, 1318, 988, 784, 988, 1175, 1568, 1760, 1568, 1175,
+    988, 784, 659, 784, 1175, 1568, 2093, 1568, 1175, 988, 1175, 1318,
+    1760, 1568, 1318, 1175, 988, 1175, 784, 988,
+  ],
+  lead: [
+    988, 1318, 1568, 1318, 988, 784, 988, 1175, 1568, 1760, 1568, 1175,
+    988, 784, 659, 784,
+  ],
+  riff: [
+    98, 147, 196, 147, 110, 165, 220, 165, 98, 196, 247, 196, 123, 185,
+    247, 147,
+  ],
+} as const
+
+const bossGroove = {
+  alarm: [740, 555, 880, 415],
+  bass: [49, 61, 41, 73, 55, 82, 49, 98, 37, 73, 55, 110],
+  lead: [247, 370, 196, 392, 185, 330, 220, 494, 165, 330, 247, 555],
+} as const
+
 class GameAudio {
   private music?: HTMLAudioElement
   private bossMusic?: HTMLAudioElement
@@ -247,13 +275,7 @@ class GameAudio {
     }
 
     const cycle = step % 32
-    const hook = [
-      988, 1318, 1568, 1318, 988, 784, 988, 1175,
-      1568, 1760, 1568, 1175, 988, 784, 659, 784,
-      1175, 1568, 2093, 1568, 1175, 988, 1175, 1318,
-      1760, 1568, 1318, 1175, 988, 1175, 784, 988,
-    ]
-    const frequency = hook[cycle]
+    const frequency = kitchenGroove.hook[cycle]
 
     this.playDirectTone(
       frequency,
@@ -307,26 +329,17 @@ class GameAudio {
       return
     }
 
-    const normalLead = [988, 1318, 1568, 1318, 988, 784, 988, 1175, 1568, 1760, 1568, 1175, 988, 784, 659, 784]
-    const normalBass = [74, 98, 147, 98, 82, 110, 165, 110, 74, 98, 196, 147, 82, 123, 185, 123]
-    const normalChant = [1568, 1175, 1760, 1318, 2093, 1568, 2349, 1760]
-    const normalAdlib = [659, 784, 988, 784, 1175, 988, 1318, 1568]
-    const kitchenRiff = [98, 147, 196, 147, 110, 165, 220, 165, 98, 196, 247, 196, 123, 185, 247, 147]
-    const bossLead = [247, 370, 196, 392, 185, 330, 220, 494, 165, 330, 247, 555]
-    const bossBass = [49, 61, 41, 73, 55, 82, 49, 98, 37, 73, 55, 110]
-    const bossAlarm = [740, 555, 880, 415]
-
     this.grooveTimer = window.setInterval(() => {
       if (!this.enabled || this.finaleActive) {
         return
       }
 
       const step = this.grooveStep
-      const leadPattern = this.bossActive ? bossLead : normalLead
-      const bassPattern = this.bossActive ? bossBass : normalBass
+      const leadPattern = this.bossActive ? bossGroove.lead : kitchenGroove.lead
+      const bassPattern = this.bossActive ? bossGroove.bass : kitchenGroove.bass
       const lead = leadPattern[step % leadPattern.length]
       const bass = bassPattern[step % bassPattern.length]
-      const riff = kitchenRiff[step % kitchenRiff.length]
+      const riff = kitchenGroove.riff[step % kitchenGroove.riff.length]
       const hype = 1 + this.intensity * 0.9
       const ornamentEvery = this.leanMode ? 4 : 2
       const grooveCycle = step % 16
@@ -374,13 +387,17 @@ class GameAudio {
       }
 
       if (!this.bossActive && step % ornamentEvery === 1) {
-        const chant = normalChant[Math.floor(step / ornamentEvery) % normalChant.length]
+        const chant =
+          kitchenGroove.chant[
+            Math.floor(step / ornamentEvery) % kitchenGroove.chant.length
+          ]
         this.playDirectTone(chant, 0.052, 'square', 0.024 * hype, chant * 1.25)
         this.playDirectTone(chant / 2, 0.04, 'triangle', 0.016 * hype, chant)
       }
 
       if (!this.bossActive && !this.leanMode && (grooveCycle === 3 || grooveCycle === 11)) {
-        const adlib = normalAdlib[Math.floor(step / 4) % normalAdlib.length]
+        const adlib =
+          kitchenGroove.adlib[Math.floor(step / 4) % kitchenGroove.adlib.length]
 
         this.playDirectTone(adlib, 0.04, 'square', 0.02 * hype, adlib * 1.5)
         this.playDirectTone(adlib * 1.5, 0.032, 'triangle', 0.016 * hype, adlib)
@@ -404,14 +421,17 @@ class GameAudio {
       }
 
       if (this.bossActive && step % ornamentEvery === 1) {
-        const alarm = bossAlarm[Math.floor(step / ornamentEvery) % bossAlarm.length]
+        const alarm =
+          bossGroove.alarm[
+            Math.floor(step / ornamentEvery) % bossGroove.alarm.length
+          ]
         this.playDirectTone(92, 0.18, 'sawtooth', 0.034, 43)
         this.playDirectTone(alarm, 0.052, 'square', 0.026, alarm * 1.85)
         this.playDirectTone(185, 0.075, 'sawtooth', 0.026, 82)
       }
 
       this.grooveStep += 1
-    }, this.leanMode ? 560 : 240)
+    }, this.getGrooveInterval())
   }
 
   private stopGroove() {
@@ -422,6 +442,10 @@ class GameAudio {
     window.clearInterval(this.grooveTimer)
     this.grooveTimer = undefined
     this.grooveStep = 0
+  }
+
+  private getGrooveInterval() {
+    return this.leanMode ? 560 : 240
   }
 
   private playFinaleGroove() {

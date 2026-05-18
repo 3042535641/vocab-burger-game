@@ -1751,9 +1751,9 @@
 .play-shell .grill-lights::after {
   content: 'SIZZLE';
   position: absolute;
-  right: 14px;
-  bottom: -13px;
-  padding: 1px 8px;
+  right: 10px;
+  top: -18px;
+  padding: 2px 9px;
   border: 2px solid #2b211b;
   border-radius: 999px;
   background: #ffe27a;
@@ -1761,6 +1761,7 @@
   font-size: 10px;
   font-weight: 1000;
   transform: rotate(2deg);
+  pointer-events: none;
 }
 
 .play-shell .answer-button::before {
@@ -3672,15 +3673,30 @@
 }
 
 .burger-stack::before {
-  content: 'ECG';
-  display: grid;
-  place-items: center;
-  color: #dff4bf;
-  background:
-    linear-gradient(115deg, transparent 0 28%, #dff4bf 28% 32%, transparent 32% 42%, #dff4bf 42% 46%, transparent 46%),
-    #174f49;
-  font-size: 10px;
-  font-weight: 1000;
+  content: '';
+  right: 14px;
+  bottom: 12px;
+  left: auto;
+  z-index: 0;
+  width: 92px;
+  height: 24px;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 0 13%,
+    rgba(45, 132, 121, 0.42) 13% 18%,
+    transparent 18% 30%,
+    rgba(45, 132, 121, 0.42) 30% 36%,
+    transparent 36% 52%,
+    rgba(45, 132, 121, 0.42) 52% 58%,
+    transparent 58%
+  );
+  box-shadow: none;
+  opacity: 0.42;
+  clip-path: polygon(0 62%, 16% 62%, 24% 18%, 34% 78%, 45% 55%, 58% 55%, 66% 18%, 76% 76%, 88% 55%, 100% 55%, 100% 100%, 0 100%);
+  animation: none;
+  pointer-events: none;
 }
 
 .meter {
@@ -7490,5 +7506,161 @@
 
   .burger-stack {
     min-height: 128px;
+  }
+}
+
+/* Final art-direction pass: keep medical neon details out of playable content. */
+.play-shell .shop-scene.compact-scene {
+  min-height: 132px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 14% 16%, rgba(255, 226, 122, 0.34), transparent 13%),
+    radial-gradient(circle at 84% 12%, rgba(69, 166, 214, 0.28), transparent 14%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.44) 0 1px, transparent 1px 100%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.36) 0 1px, transparent 1px 100%),
+    linear-gradient(#d9f4ec 0 53%, #2d8479 53% 58%, #7a4a32 58%);
+  background-size:
+    auto,
+    auto,
+    54px 32px,
+    54px 32px,
+    auto;
+}
+
+.play-shell .shop-scene.compact-scene::before {
+  right: 7%;
+  bottom: 24px;
+  width: 142px;
+  height: 28px;
+  background:
+    radial-gradient(ellipse at 18% 58%, #75c760 0 10px, transparent 11px),
+    radial-gradient(ellipse at 46% 58%, #d94731 0 10px, transparent 11px),
+    radial-gradient(ellipse at 74% 58%, #ffe27a 0 10px, transparent 11px),
+    linear-gradient(90deg, transparent 0 31%, #2b211b 31% 33%, transparent 33% 58%, #2b211b 58% 60%, transparent 60%),
+    #fffdf6;
+  animation: none;
+}
+
+.play-shell .shop-scene.compact-scene::after {
+  content: 'RX BURGER LAB';
+  bottom: 24px;
+  left: 6%;
+  max-width: 220px;
+  color: #fff7e8;
+  background:
+    radial-gradient(circle at 92% 50%, #ffe27a 0 5px, transparent 6px),
+    linear-gradient(90deg, #174f49, #2b211b);
+  animation: none;
+  transform: rotate(-1deg);
+}
+
+.play-shell .shop-scene.compact-scene .shop-sign {
+  top: 14px;
+  z-index: 9;
+  max-width: min(470px, 52vw);
+  background:
+    radial-gradient(circle at 92% 50%, #ffe27a 0 8px, transparent 9px),
+    linear-gradient(90deg, #174f49, #2b211b 50%, #174f49);
+  box-shadow:
+    inset 0 -4px 0 rgba(0, 0, 0, 0.32),
+    0 5px 0 #2b211b,
+    0 0 0 5px rgba(255, 226, 122, 0.18);
+}
+
+.play-shell .shop-scene.compact-scene .awning {
+  top: 58px;
+  z-index: 3;
+  height: 26px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 45%),
+    repeating-linear-gradient(90deg, #174f49 0 36px, #ffe27a 36px 60px, #d94731 60px 84px, #174f49 84px 120px);
+  box-shadow: 0 5px 0 rgba(43, 33, 27, 0.26);
+}
+
+.play-shell .shop-scene.compact-scene .counter-rail {
+  right: 4%;
+  bottom: 5px;
+  left: 4%;
+  z-index: 4;
+  height: 18px;
+  border-width: 2px;
+  background:
+    linear-gradient(90deg, #dff4bf 0 16%, #2d8479 16% 19%, #dff4bf 19% 31%, transparent 31%),
+    #2b211b;
+  box-shadow:
+    inset 0 -3px 0 rgba(0, 0, 0, 0.24),
+    0 3px 0 rgba(43, 33, 27, 0.24);
+}
+
+.play-shell .shop-scene.compact-scene .menu-board,
+.play-shell .shop-scene.compact-scene .kitchen-window,
+.play-shell .shop-scene.compact-scene .ecg-neon,
+.play-shell .shop-scene.compact-scene .sauce-shelf,
+.play-shell .shop-scene.compact-scene .shop-mascot {
+  z-index: 5;
+}
+
+.play-shell .shop-scene.compact-scene .menu-board {
+  top: 18px;
+  left: 5%;
+  transform: rotate(-2deg) scale(0.9);
+}
+
+.play-shell .shop-scene.compact-scene .kitchen-window {
+  top: 78px;
+  right: 18%;
+  width: 160px;
+  height: 34px;
+}
+
+.play-shell .shop-scene.compact-scene .ecg-neon {
+  right: 33%;
+  bottom: 30px;
+  width: 110px;
+  opacity: 0.75;
+}
+
+.play-shell .shop-scene.compact-scene .sauce-shelf {
+  right: 7%;
+  bottom: 25px;
+}
+
+.play-shell .shop-scene.compact-scene .shop-mascot {
+  bottom: 20px;
+}
+
+.play-shell .burger-stack::before {
+  top: auto;
+  right: 14px;
+  bottom: 12px;
+  left: auto;
+  z-index: 0;
+  width: 92px;
+  height: 24px;
+  opacity: 0.34;
+}
+
+.play-shell .burger-stack > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 760px) {
+  .play-shell .shop-scene.compact-scene {
+    min-height: 84px;
+  }
+
+  .play-shell .shop-scene.compact-scene .awning {
+    top: 48px;
+    height: 20px;
+  }
+
+  .play-shell .shop-scene.compact-scene .counter-rail {
+    height: 14px;
+  }
+
+  .play-shell .shop-scene.compact-scene::before,
+  .play-shell .shop-scene.compact-scene::after {
+    display: none;
   }
 }

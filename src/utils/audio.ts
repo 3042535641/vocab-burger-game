@@ -186,6 +186,61 @@ class GameAudio {
     oscillator.stop(now + duration + 0.02)
   }
 
+  private playDirectNoise(duration = 0.04, volume = 0.02, frequency = 1800) {
+    if (!this.enabled || !this.pageVisible) {
+      return
+    }
+
+    const context = this.getAudioContext()
+    const sampleRate = context.sampleRate
+    const buffer = context.createBuffer(1, Math.max(1, Math.floor(sampleRate * duration)), sampleRate)
+    const data = buffer.getChannelData(0)
+
+    for (let index = 0; index < data.length; index += 1) {
+      data[index] = Math.random() * 2 - 1
+    }
+
+    const source = context.createBufferSource()
+    const filter = context.createBiquadFilter()
+    const gain = context.createGain()
+    const now = context.currentTime
+
+    filter.type = 'bandpass'
+    filter.frequency.setValueAtTime(frequency, now)
+    filter.Q.setValueAtTime(4, now)
+    gain.gain.setValueAtTime(volume, now)
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + duration)
+    source.buffer = buffer
+    source.connect(filter)
+    filter.connect(gain)
+    gain.connect(context.destination)
+    source.start(now)
+    source.stop(now + duration + 0.01)
+  }
+
+  private playDirectKitchenBeat(step: number, hype: number) {
+    const cycle = step % 16
+
+    if (cycle === 0 || cycle === 8) {
+      this.playDirectTone(86, 0.1, 'sine', 0.05 * hype, 43)
+      this.playDirectNoise(0.035, 0.018 * hype, 140)
+    }
+
+    if (cycle === 4 || cycle === 12) {
+      this.playDirectNoise(0.07, 0.032 * hype, 950)
+      this.playDirectTone(196, 0.035, 'triangle', 0.018 * hype, 98)
+    }
+
+    if (!this.leanMode && cycle % 2 === 1) {
+      this.playDirectNoise(0.025, 0.013 * hype, cycle % 4 === 1 ? 2800 : 4200)
+    }
+
+    if (!this.leanMode && (cycle === 6 || cycle === 14)) {
+      this.playDirectNoise(0.035, 0.018 * hype, 1800)
+      this.playDirectTone(3136, 0.025, 'square', 0.012 * hype, 2093)
+    }
+  }
+
   private playDirectKitchenChord(root: number, volume = 0.026, duration = 0.105) {
     this.playDirectTone(root, duration, 'triangle', volume, root * 1.01)
     this.playDirectTone(root * 1.25, duration * 0.88, 'square', volume * 0.48, root * 1.26)
@@ -249,6 +304,8 @@ class GameAudio {
       const grooveCycle = step % 16
 
       if (!this.bossActive) {
+        this.playDirectKitchenBeat(step, hype)
+
         this.playDirectTone(
           riff,
           grooveCycle % 2 === 0 ? 0.095 : 0.058,

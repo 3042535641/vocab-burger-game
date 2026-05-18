@@ -382,16 +382,16 @@ const recipeStepPlans = (recipe: BurgerRecipe, isBoss: boolean) => {
   }
 
   const variants: Record<string, RecipeStepPlan[]> = {
-  classic: baseStepPlans(['bun', 'patty', 'flip', 'anatomy', 'physiology', 'order']),
-  green: baseStepPlans(['bun', 'patty', 'flip', 'lettuce', 'vital', 'sauce']),
-  tomato: baseStepPlans(['bun', 'patty', 'flip', 'tomato', 'pathology', 'chronic']),
-  sauce: baseStepPlans(['bun', 'patty', 'flip', 'dosage', 'serve', 'antibiotic']),
-  vascular: baseStepPlans(['bun', 'artery', 'flip', 'vital', 'edema', 'prognosis']),
-  pharma: baseStepPlans(['bun', 'patty', 'flip', 'vaccine', 'dosage', 'antibiotic']),
-  exam: baseStepPlans(['anatomy', 'pathology', 'flip', 'fracture', 'malignant', 'benign']),
-  immune: baseStepPlans(['vaccine', 'patty', 'flip', 'benign', 'chronic', 'antibiotic']),
-  ward: baseStepPlans(['order', 'patty', 'flip', 'diagnosis', 'treatment', 'prognosis']),
-}
+    classic: baseStepPlans(['bun', 'patty', 'flip', 'anatomy', 'physiology', 'order']),
+    green: baseStepPlans(['bun', 'patty', 'flip', 'lettuce', 'vital', 'sauce']),
+    tomato: baseStepPlans(['bun', 'patty', 'flip', 'tomato', 'pathology', 'chronic']),
+    sauce: baseStepPlans(['bun', 'patty', 'flip', 'dosage', 'serve', 'antibiotic']),
+    vascular: baseStepPlans(['bun', 'artery', 'flip', 'vital', 'edema', 'prognosis']),
+    pharma: baseStepPlans(['bun', 'patty', 'flip', 'vaccine', 'dosage', 'antibiotic']),
+    exam: baseStepPlans(['anatomy', 'pathology', 'flip', 'fracture', 'malignant', 'benign']),
+    immune: baseStepPlans(['immunity', 'antibody', 'flip', 'vaccine', 'benign', 'antibiotic']),
+    ward: baseStepPlans(['emergency', 'patty', 'flip', 'diagnosis', 'treatment', 'prognosis']),
+  }
 
   return variants[recipe.id] ?? baseStepPlans(stepWordIds)
 }

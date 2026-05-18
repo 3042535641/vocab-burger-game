@@ -706,6 +706,7 @@ function App() {
             组织肉饼第一面 55%-85%、焦度低于 45 时翻面最香，双面控制好可拿 Sterile Perfect Burger。
           </li>
           <li>普通医学生约 20 秒开始着急，完成 6 份后医学英语教授 Boss 登场。</li>
+          <li>手机端建议先专心看底部题目区，答题推进步骤后再切换顾客和锅位。</li>
         </ol>
         <button
           type="button"
@@ -759,6 +760,11 @@ function App() {
               通关 {records.wins}/{records.rounds}
             </span>
           </div>
+
+          <section className="mobile-brief" aria-label="手机端玩法提示">
+            <strong>手机端速通提示</strong>
+            <span>先看词表，再开局；底部答题区是主操作，双锅够忙但不会乱飞。</span>
+          </section>
 
           {historyPanel}
 

@@ -731,12 +731,23 @@
   border: 2px solid #2b211b;
   border-radius: 8px;
   background:
+    radial-gradient(circle at 12% 16%, rgba(255, 226, 122, 0.42), transparent 12%),
+    radial-gradient(circle at 84% 18%, rgba(69, 166, 214, 0.26), transparent 13%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.26) 0 1px, transparent 1px 100%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px 100%),
     linear-gradient(90deg, rgba(92, 40, 20, 0.18) 0 2px, transparent 2px 100%),
-    linear-gradient(#f7b55d 0 54%, #c56b34 54% 58%, #7a4830 58%);
+    linear-gradient(#ffd58d 0 14%, #f7b55d 14% 54%, #c56b34 54% 58%, #7a4830 58%);
   background-size:
+    auto,
+    auto,
+    54px 34px,
+    54px 34px,
     54px 100%,
     auto;
-  box-shadow: 0 9px 0 #7a4830;
+  box-shadow:
+    inset 0 0 0 5px rgba(255, 226, 122, 0.16),
+    inset 0 -18px 0 rgba(43, 33, 27, 0.12),
+    0 9px 0 #7a4830;
 }
 
 .shop-scene::before {
@@ -744,32 +755,41 @@
   position: absolute;
   right: 9%;
   bottom: 34px;
-  width: 130px;
-  height: 26px;
+  width: 150px;
+  height: 34px;
   border: 2px solid #2b211b;
   border-radius: 8px;
   background:
-    radial-gradient(circle at 20% 50%, #65bd61 0 8px, transparent 9px),
-    radial-gradient(circle at 50% 50%, #e5533d 0 8px, transparent 9px),
-    radial-gradient(circle at 80% 50%, #ffd24d 0 8px, transparent 9px),
+    radial-gradient(ellipse at 18% 58%, #65bd61 0 13px, transparent 14px),
+    radial-gradient(ellipse at 44% 58%, #e5533d 0 13px, transparent 14px),
+    radial-gradient(ellipse at 72% 58%, #ffd24d 0 13px, transparent 14px),
+    linear-gradient(90deg, transparent 0 31%, #2b211b 31% 33%, transparent 33% 58%, #2b211b 58% 60%, transparent 60%),
     #fffdf6;
-  box-shadow: 0 4px 0 #7a4830;
+  box-shadow:
+    inset 0 -5px 0 rgba(43, 33, 27, 0.12),
+    0 4px 0 #7a4830;
   animation: tray-rattle 1.8s steps(2, jump-none) infinite;
 }
 
 .shop-scene::after {
-  content: 'TODAY: WORD BURGER';
+  content: 'MED TERM COMBO  |  ROOT + PATTY + SAUCE';
   position: absolute;
   bottom: 34px;
   left: 8%;
-  padding: 5px 12px;
+  max-width: min(340px, 48%);
+  padding: 6px 14px;
   border: 2px solid #2b211b;
   border-radius: 8px;
   color: #ffe9a9;
-  background: #33201c;
-  box-shadow: 0 4px 0 #000;
+  background:
+    radial-gradient(circle at 95% 50%, #ffd24d 0 6px, transparent 7px),
+    linear-gradient(90deg, #174f49, #33201c);
+  box-shadow:
+    inset 0 -4px 0 rgba(0, 0, 0, 0.22),
+    0 4px 0 #000;
   font-size: 12px;
   font-weight: 1000;
+  line-height: 1.15;
 }
 
 .compact-scene {
@@ -791,11 +811,16 @@
   top: 10px;
   left: 50%;
   padding: 7px 22px;
-  border: 2px solid #2b211b;
+  border: 3px solid #2b211b;
   border-radius: 8px;
   color: #ffe9a9;
-  background: #33201c;
-  box-shadow: 0 4px 0 #000;
+  background:
+    radial-gradient(circle at 92% 50%, #ffd24d 0 8px, transparent 9px),
+    linear-gradient(90deg, #174f49, #33201c 52%, #174f49);
+  box-shadow:
+    inset 0 -4px 0 rgba(0, 0, 0, 0.32),
+    0 4px 0 #000,
+    0 0 0 5px rgba(255, 226, 122, 0.2);
   font-weight: 900;
   letter-spacing: 2px;
   transform: translateX(-50%) rotate(-1deg);
@@ -826,16 +851,20 @@
 
 .awning {
   position: absolute;
-  top: 46px;
+  top: 48px;
   left: 0;
   width: 100%;
-  height: 24px;
+  height: 28px;
   border-block: 2px solid #2b211b;
-  background: repeating-linear-gradient(
-    90deg,
-    #d94731 0 56px,
-    #fff2d0 56px 112px
-  );
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.26), transparent 42%),
+    repeating-linear-gradient(
+      90deg,
+      #d94731 0 42px,
+      #ffe27a 42px 84px,
+      #2b211b 84px 96px
+    );
+  box-shadow: 0 5px 0 rgba(43, 33, 27, 0.24);
 }
 
 .counter-rail {
@@ -843,14 +872,18 @@
   right: 5%;
   bottom: 6px;
   left: 5%;
-  height: 22px;
+  height: 26px;
   border: 2px solid #2b211b;
   border-radius: 8px;
   background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22), transparent 45%),
     radial-gradient(circle at 20% 50%, #ffd24d 0 9px, transparent 10px),
     radial-gradient(circle at 50% 50%, #ffd24d 0 9px, transparent 10px),
     radial-gradient(circle at 80% 50%, #ffd24d 0 9px, transparent 10px),
     #4d3026;
+  box-shadow:
+    inset 0 -5px 0 rgba(0, 0, 0, 0.22),
+    0 4px 0 rgba(43, 33, 27, 0.28);
   animation: counter-glow 2.4s ease-in-out infinite;
 }
 
@@ -1960,44 +1993,53 @@
   position: relative;
   display: grid;
   align-content: center;
-  padding: 10px 12px;
+  padding: 28px 16px 18px;
   border: 2px solid #2b211b;
   border-radius: 8px;
   background:
     radial-gradient(circle at 92% 14%, rgba(255, 210, 77, 0.28), transparent 22%),
+    linear-gradient(90deg, rgba(45, 132, 121, 0.12) 0 8px, transparent 8px),
     #fffdf6;
   text-align: center;
+  box-shadow:
+    inset 0 -5px 0 rgba(45, 132, 121, 0.1),
+    0 4px 0 rgba(43, 33, 27, 0.2);
 }
 
 .question-card::before {
   content: 'ORDER UP';
   position: absolute;
-  top: -11px;
+  top: 7px;
   left: 12px;
-  padding: 2px 8px;
-  border: 2px solid #2b211b;
-  border-radius: 6px;
+  z-index: 2;
+  padding: 3px 10px;
+  border: 3px solid #2b211b;
+  border-radius: 999px;
   color: #fff7e8;
   background: #d94731;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 1000;
-  transform: rotate(-3deg);
+  letter-spacing: 0;
+  transform: rotate(-1deg);
 }
 
 .question-card h2 {
-  margin: 5px 0;
-  font-size: 34px;
+  margin: 6px 0 8px;
+  color: #2b211b;
+  font-size: 38px;
+  line-height: 1;
+  text-shadow:
+    3px 3px 0 #ffe27a,
+    0 0 0 #2b211b;
 }
 
 .question-card p:last-child {
-  display: -webkit-box;
-  overflow: hidden;
+  display: block;
+  overflow: visible;
   color: #2d7d73;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 900;
-  line-height: 1.25;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  line-height: 1.3;
 }
 
 .answer-grid {
@@ -3475,21 +3517,30 @@
 
 .question-card::before {
   content: 'TERM CARD';
-  background: #2d8479;
+  background:
+    radial-gradient(circle at 88% 50%, #ffe27a 0 4px, transparent 5px),
+    linear-gradient(90deg, #174f49, #2d8479);
 }
 
 .quiz-panel {
   background:
+    radial-gradient(circle at 12% 18%, rgba(255, 226, 122, 0.28), transparent 17%),
     linear-gradient(90deg, rgba(255, 255, 255, 0.66), transparent 35%),
     repeating-linear-gradient(0deg, rgba(45, 132, 121, 0.07) 0 2px, transparent 2px 28px),
     #eefaf6;
+  box-shadow:
+    inset 0 0 0 4px rgba(255, 226, 122, 0.18),
+    0 5px 0 rgba(43, 33, 27, 0.22);
 }
 
 .answer-button {
   background:
+    radial-gradient(circle at 88% 18%, rgba(255, 226, 122, 0.42), transparent 16%),
     linear-gradient(90deg, rgba(45, 132, 121, 0.12) 0 7px, transparent 7px),
-    linear-gradient(#fffdf6, #e9f6f2);
-  box-shadow: 0 4px 0 #2d7d73;
+    linear-gradient(#fffdf6 0 55%, #e9f6f2 55% 100%);
+  box-shadow:
+    inset 0 -5px 0 rgba(45, 132, 121, 0.12),
+    0 4px 0 #2d7d73;
 }
 
 .answer-button:hover {
@@ -6145,15 +6196,17 @@
   content: '看中文 → 抢英文';
   position: absolute;
   right: 10px;
-  bottom: -12px;
-  padding: 3px 9px;
+  top: 8px;
+  z-index: 2;
+  padding: 4px 10px;
   border: 3px solid #2b211b;
   border-radius: 999px;
   background: #d94731;
   color: #fff7e8;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 1000;
-  transform: rotate(-2deg);
+  transform: rotate(2deg);
+  box-shadow: 0 3px 0 rgba(43, 33, 27, 0.22);
 }
 
 .play-shell .answer-button {
@@ -6934,14 +6987,14 @@
   .question-card {
     align-content: start;
     min-height: 0;
-    padding: 18px 10px 12px;
+    padding: 32px 10px 14px;
     text-align: center;
   }
 
   .question-card::before {
-    top: -10px;
+    top: 7px;
     left: 10px;
-    padding: 1px 6px;
+    padding: 2px 7px;
     font-size: 10px;
   }
 
@@ -7024,7 +7077,7 @@
   }
 
   .question-card {
-    padding: 17px 8px 10px;
+    padding: 31px 8px 11px;
   }
 
   .question-label,

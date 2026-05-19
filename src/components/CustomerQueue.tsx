@@ -8,16 +8,47 @@ import {
 } from '../utils/gameLogic'
 
 const moodLabels: Record<Mood, string> = {
-  happy: '备考中',
-  waiting: '背词中',
-  worried: '快忘词',
-  angry: '要破防',
+  happy: '淡定背词',
+  waiting: '开始催单',
+  worried: '红温预警',
+  angry: '词根破防',
 }
 
 type CustomerQueueProps = {
   customers: Customer[]
   activeCustomerId?: number
   onSelectCustomer: (id: number) => void
+}
+
+function CustomerFace({
+  avatar,
+  isBoss,
+  mood,
+}: {
+  avatar: Customer['avatar']
+  isBoss: boolean
+  mood: Mood
+}) {
+  return (
+    <span
+      className={`customer-avatar avatar-${avatar} face-${mood} ${
+        isBoss ? 'face-boss' : ''
+      }`}
+      aria-hidden="true"
+    >
+      <span className="face-hair" />
+      <span className="face-brow face-brow-left" />
+      <span className="face-brow face-brow-right" />
+      <span className="face-eye face-eye-left" />
+      <span className="face-eye face-eye-right" />
+      <span className="face-mouth" />
+      <span className="face-sweat" />
+      <span className="face-blush face-blush-left" />
+      <span className="face-blush face-blush-right" />
+      <span className="face-fever" />
+      {isBoss && <span className="face-title">教授</span>}
+    </span>
+  )
 }
 
 function CustomerQueue({
@@ -61,12 +92,11 @@ function CustomerQueue({
               key={customer.id}
               onClick={() => onSelectCustomer(customer.id)}
             >
-              <span
-                className={`customer-avatar avatar-${customer.avatar} face-${mood}`}
-                aria-hidden="true"
-              >
-                {customer.isBoss && <span className="face-text">教授</span>}
-              </span>
+              <CustomerFace
+                avatar={customer.avatar}
+                isBoss={customer.isBoss}
+                mood={mood}
+              />
               <span className="customer-info">
                 <strong>{customer.name}</strong>
                 <span>{customer.recipe.name}</span>
@@ -76,7 +106,10 @@ function CustomerQueue({
                 {urgencyLabel} · {waitedSeconds}s
               </span>
               <span className={`speech-bubble ${mood}`}>{customer.speech}</span>
-              <span className="patience-bar" aria-label={`耐心 ${patienceRatio}%`}>
+              <span
+                className="patience-bar"
+                aria-label={`耐心 ${patienceRatio}%`}
+              >
                 <span style={{ width: `${patienceRatio}%` }} />
               </span>
             </button>

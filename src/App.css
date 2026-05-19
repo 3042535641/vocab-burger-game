@@ -8221,3 +8221,614 @@
     min-height: 132px;
   }
 }
+
+/* Expressive med-student repaint: visible faces instead of tiny dot eyes. */
+.customer-ticket {
+  grid-template-columns: 66px 1fr;
+  gap: 10px;
+  overflow: visible;
+}
+
+.customer-avatar {
+  width: 60px;
+  min-height: 62px;
+  border-width: 3px;
+  border-radius: 22px 22px 14px 14px;
+  background:
+    linear-gradient(180deg, transparent 0 58%, rgba(43, 33, 27, 0.18) 58%),
+    linear-gradient(#ffd9ad 0 63%, #74c8d8 63%);
+  box-shadow:
+    inset 0 -8px 0 rgba(43, 33, 27, 0.16),
+    0 4px 0 rgba(43, 33, 27, 0.26);
+  transform-origin: 50% 85%;
+}
+
+.customer-avatar::after {
+  display: none;
+}
+
+.customer-avatar > span {
+  position: absolute;
+  pointer-events: none;
+}
+
+.face-hair {
+  top: -3px;
+  left: 7px;
+  right: 7px;
+  height: 18px;
+  border: 3px solid #2b211b;
+  border-radius: 15px 15px 8px 8px;
+  background:
+    linear-gradient(90deg, rgba(255, 226, 122, 0.16) 0 26%, transparent 26%),
+    #503021;
+  box-shadow: inset 0 -4px 0 rgba(43, 33, 27, 0.28);
+}
+
+.face-brow {
+  top: 21px;
+  width: 17px;
+  height: 4px;
+  border-radius: 999px;
+  background: #2b211b;
+  transition: transform 120ms ease;
+}
+
+.face-brow-left {
+  left: 12px;
+  transform: rotate(-6deg);
+}
+
+.face-brow-right {
+  right: 12px;
+  transform: rotate(6deg);
+}
+
+.face-eye {
+  top: 29px;
+  width: 12px;
+  height: 13px;
+  border: 3px solid #2b211b;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 58% 35%, #fffdf6 0 2px, transparent 3px),
+    #2b211b;
+}
+
+.face-eye-left {
+  left: 13px;
+}
+
+.face-eye-right {
+  right: 13px;
+}
+
+.face-mouth {
+  left: 50%;
+  bottom: 12px;
+  width: 24px;
+  height: 12px;
+  border: 3px solid #2b211b;
+  border-top: 0;
+  border-radius: 0 0 999px 999px;
+  transform: translateX(-50%);
+  background: #fff3d1;
+}
+
+.face-sweat {
+  top: 18px;
+  right: 3px;
+  width: 10px;
+  height: 15px;
+  border: 2px solid #2b211b;
+  border-radius: 999px 999px 999px 0;
+  background: #45a6d6;
+  opacity: 0;
+  transform: rotate(18deg) scale(0.8);
+}
+
+.face-blush {
+  top: 40px;
+  width: 10px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(217, 71, 49, 0.34);
+  opacity: 0;
+}
+
+.face-blush-left {
+  left: 4px;
+}
+
+.face-blush-right {
+  right: 4px;
+}
+
+.face-fever {
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 18% 72%, rgba(217, 71, 49, 0.28), transparent 20%),
+    radial-gradient(circle at 78% 68%, rgba(217, 71, 49, 0.22), transparent 22%);
+  opacity: 0;
+}
+
+.face-title {
+  right: -7px;
+  bottom: -5px;
+  z-index: 4;
+  padding: 2px 5px;
+  border: 2px solid #2b211b;
+  border-radius: 999px;
+  color: #ffe27a;
+  background: #2b211b;
+  font-size: 10px;
+  font-weight: 1000;
+}
+
+.avatar-star .face-hair {
+  background: #e96b8c;
+}
+
+.avatar-cap .face-hair {
+  top: -1px;
+  background:
+    linear-gradient(90deg, transparent 0 58%, #ffe27a 58% 72%, transparent 72%),
+    #337bd9;
+}
+
+.avatar-bow .face-hair {
+  background:
+    radial-gradient(circle at 18% 48%, #e96b8c 0 8px, transparent 9px),
+    radial-gradient(circle at 82% 48%, #e96b8c 0 8px, transparent 9px),
+    #503021;
+}
+
+.avatar-shade .face-eye {
+  top: 27px;
+  width: 17px;
+  height: 10px;
+  border-radius: 4px;
+  background: #17120f;
+}
+
+.avatar-bun .face-hair {
+  background:
+    radial-gradient(circle at 8px 1px, #8a4a2f 0 8px, transparent 9px),
+    radial-gradient(circle at calc(100% - 8px) 1px, #8a4a2f 0 8px, transparent 9px),
+    #9b5b28;
+}
+
+.face-boss {
+  background:
+    linear-gradient(180deg, transparent 0 60%, rgba(255, 226, 122, 0.2) 60%),
+    linear-gradient(#ffd0a1 0 62%, #2b211b 62%);
+}
+
+.face-boss .face-hair {
+  background: #d94731;
+}
+
+.face-happy .face-blush {
+  opacity: 1;
+}
+
+.face-waiting .face-mouth {
+  width: 20px;
+  height: 5px;
+  border-top: 3px solid #2b211b;
+  border-bottom: 0;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.face-worried {
+  animation: med-face-bounce 720ms steps(2, jump-none) infinite;
+}
+
+.face-worried .face-brow-left {
+  transform: translateY(-2px) rotate(13deg);
+}
+
+.face-worried .face-brow-right {
+  transform: translateY(-2px) rotate(-13deg);
+}
+
+.face-worried .face-eye {
+  width: 15px;
+  height: 16px;
+  background:
+    radial-gradient(circle at 52% 30%, #fffdf6 0 3px, transparent 4px),
+    #2b211b;
+}
+
+.face-worried .face-mouth {
+  width: 20px;
+  height: 16px;
+  border: 3px solid #2b211b;
+  border-radius: 999px;
+  background: #fff3d1;
+}
+
+.face-worried .face-sweat {
+  opacity: 1;
+  animation: sweat-drop 820ms ease-in-out infinite;
+}
+
+.face-angry {
+  animation: med-face-redline 420ms steps(2, jump-none) infinite;
+}
+
+.face-angry .face-brow-left {
+  transform: translateY(2px) rotate(24deg);
+}
+
+.face-angry .face-brow-right {
+  transform: translateY(2px) rotate(-24deg);
+}
+
+.face-angry .face-eye {
+  top: 31px;
+  height: 9px;
+  border-radius: 999px;
+  background: #2b211b;
+}
+
+.face-angry .face-mouth {
+  width: 25px;
+  height: 6px;
+  border-top: 3px solid #2b211b;
+  border-bottom: 0;
+  border-radius: 999px;
+  background: transparent;
+  transform: translateX(-50%) rotate(-5deg);
+}
+
+.face-angry .face-fever,
+.face-boss .face-fever {
+  opacity: 1;
+  animation: fever-flash 520ms steps(2, jump-none) infinite;
+}
+
+@keyframes med-face-bounce {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  50% {
+    transform: translateY(-2px) rotate(-2deg);
+  }
+}
+
+@keyframes med-face-redline {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+  50% {
+    transform: translateX(2px) rotate(2deg);
+  }
+}
+
+@keyframes sweat-drop {
+  0%,
+  100% {
+    transform: translateY(-1px) rotate(18deg) scale(0.82);
+  }
+  50% {
+    transform: translateY(4px) rotate(18deg) scale(1);
+  }
+}
+
+@keyframes fever-flash {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+  50% {
+    opacity: 0.58;
+  }
+}
+
+/* Bigger art pass: med-night-shift burger ER. */
+.play-shell .shop-scene.compact-scene.lab-diner-scene {
+  min-height: 178px;
+  background:
+    radial-gradient(circle at 12% 24%, rgba(255, 226, 122, 0.42), transparent 14%),
+    radial-gradient(circle at 84% 18%, rgba(69, 166, 214, 0.28), transparent 16%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.42) 0 1px, transparent 1px 100%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.36) 0 1px, transparent 1px 100%),
+    linear-gradient(#ccefe7 0 44%, #174f49 44% 50%, #f1c77c 50% 74%, #6f4634 74% 100%);
+  background-size:
+    auto,
+    auto,
+    42px 30px,
+    42px 30px,
+    auto;
+}
+
+.play-shell .shop-scene.compact-scene.lab-diner-scene::before,
+.play-shell .shop-scene.compact-scene.lab-diner-scene::after {
+  display: block !important;
+  content: '' !important;
+}
+
+.play-shell .shop-scene.compact-scene.lab-diner-scene::before {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 38px;
+  left: 0;
+  height: 18px;
+  background:
+    repeating-linear-gradient(90deg, #fffdf6 0 44px, #d94731 44px 64px, #ffe27a 64px 88px, #174f49 88px 132px);
+  box-shadow:
+    0 4px 0 #2b211b,
+    0 -4px 0 #2b211b;
+}
+
+.play-shell .shop-scene.compact-scene.lab-diner-scene::after {
+  position: absolute;
+  z-index: 3;
+  right: 4%;
+  bottom: 2px;
+  left: 4%;
+  height: 34px;
+  border: 4px solid #2b211b;
+  border-radius: 12px 12px 8px 8px;
+  background:
+    linear-gradient(90deg, #dff4bf 0 15%, #2d8479 15% 18%, #dff4bf 18% 31%, transparent 31%),
+    linear-gradient(#2b211b, #17120f);
+}
+
+.lab-diner-back-wall {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.med-poster {
+  position: absolute;
+  top: 18px;
+  padding: 5px 9px;
+  border: 3px solid #2b211b;
+  border-radius: 8px;
+  color: #2b211b;
+  background: #fffdf6;
+  box-shadow: 0 4px 0 rgba(43, 33, 27, 0.22);
+  font-size: 10px;
+  font-weight: 1000;
+}
+
+.poster-left {
+  left: 4%;
+  transform: rotate(-3deg);
+}
+
+.poster-right {
+  right: 5%;
+  transform: rotate(3deg);
+}
+
+.ecg-strip {
+  position: absolute;
+  right: 21%;
+  bottom: 60px;
+  width: 190px;
+  height: 26px;
+  border: 3px solid #2b211b;
+  border-radius: 999px;
+  background:
+    linear-gradient(120deg, transparent 0 27%, #ffe27a 27% 31%, transparent 31% 40%, #ffe27a 40% 45%, transparent 45%),
+    #174f49;
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.lab-diner-operating-light {
+  position: absolute;
+  z-index: 5;
+  top: -14px;
+  left: 50%;
+  display: flex;
+  gap: 12px;
+  transform: translateX(-50%);
+}
+
+.lab-diner-operating-light span {
+  width: 58px;
+  height: 32px;
+  border: 4px solid #2b211b;
+  border-radius: 0 0 999px 999px;
+  background:
+    radial-gradient(circle at 50% 88%, #fffdf6 0 6px, transparent 7px),
+    #ffe27a;
+  box-shadow:
+    0 32px 42px rgba(255, 226, 122, 0.42),
+    inset 0 -5px 0 rgba(43, 33, 27, 0.18);
+}
+
+.lab-diner-sign {
+  top: 32px;
+  min-width: min(500px, 54vw);
+  background:
+    radial-gradient(circle at 7% 50%, #ffe27a 0 8px, transparent 9px),
+    radial-gradient(circle at 93% 50%, #ffe27a 0 8px, transparent 9px),
+    linear-gradient(90deg, #d94731 0 12%, #174f49 12% 88%, #45a6d6 88%);
+  animation: sign-wobble 2.4s steps(2, jump-none) infinite;
+}
+
+.lab-diner-sign strong {
+  font-size: clamp(20px, 3.4vw, 38px);
+}
+
+.lab-diner-rx-menu {
+  top: 58px;
+  left: 5%;
+  z-index: 6;
+}
+
+.lab-diner-window {
+  right: 20%;
+  bottom: 58px;
+}
+
+.lab-diner-shelf {
+  right: 6%;
+  bottom: 56px;
+}
+
+.lab-diner-counter {
+  display: none;
+}
+
+.lab-diner-runner {
+  z-index: 7;
+  bottom: 37px;
+  width: 104px;
+  height: 42px;
+  animation: runner-bop 1.1s ease-in-out infinite;
+}
+
+.runner-eye {
+  position: absolute;
+  top: 12px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #2b211b;
+}
+
+.runner-eye-left {
+  left: 34px;
+}
+
+.runner-eye-right {
+  right: 34px;
+}
+
+.runner-mouth {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  width: 26px;
+  height: 8px;
+  border: 3px solid #2b211b;
+  border-top: 0;
+  border-radius: 0 0 999px 999px;
+  transform: translateX(-50%);
+}
+
+.lab-diner-pill-rain span {
+  position: absolute;
+  z-index: 8;
+  width: 24px;
+  height: 12px;
+  border: 3px solid #2b211b;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #fffdf6 0 50%, #d94731 50%);
+  box-shadow: 0 3px 0 rgba(43, 33, 27, 0.2);
+}
+
+.lab-diner-pill-rain span:nth-child(1) {
+  top: 70px;
+  left: 24%;
+  transform: rotate(-18deg);
+}
+
+.lab-diner-pill-rain span:nth-child(2) {
+  top: 22px;
+  right: 28%;
+  background: linear-gradient(90deg, #75c760 0 50%, #fffdf6 50%);
+  transform: rotate(14deg);
+}
+
+.lab-diner-pill-rain span:nth-child(3) {
+  right: 13%;
+  bottom: 88px;
+  background: linear-gradient(90deg, #45a6d6 0 50%, #ffe27a 50%);
+  transform: rotate(-9deg);
+}
+
+@keyframes sign-wobble {
+  0%,
+  100% {
+    transform: translateX(-50%) rotate(-1deg);
+  }
+  50% {
+    transform: translateX(-50%) rotate(1deg);
+  }
+}
+
+@keyframes runner-bop {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0) rotate(1deg);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-3px) rotate(-1deg);
+  }
+}
+
+@media (max-width: 760px) {
+  .customer-ticket {
+    grid-template-columns: 58px 1fr;
+  }
+
+  .customer-avatar {
+    width: 52px;
+    min-height: 56px;
+  }
+
+  .face-eye {
+    width: 10px;
+    height: 11px;
+  }
+
+  .play-shell .shop-scene.compact-scene.lab-diner-scene {
+    min-height: 128px;
+  }
+
+  .lab-diner-sign {
+    top: 24px;
+    min-width: min(270px, 76vw);
+  }
+
+  .lab-diner-sign span {
+    font-size: 8px;
+  }
+
+  .lab-diner-sign strong {
+    font-size: clamp(17px, 6vw, 23px);
+  }
+
+  .lab-diner-operating-light span {
+    width: 44px;
+    height: 25px;
+  }
+
+  .med-poster,
+  .lab-diner-rx-menu,
+  .lab-diner-window,
+  .lab-diner-shelf,
+  .ecg-strip {
+    display: none;
+  }
+
+  .lab-diner-runner {
+    bottom: 30px;
+    width: 82px;
+    height: 34px;
+  }
+
+  .lab-diner-pill-rain span:nth-child(1) {
+    left: 8%;
+  }
+
+  .lab-diner-pill-rain span:nth-child(2) {
+    right: 8%;
+  }
+
+  .lab-diner-pill-rain span:nth-child(3) {
+    display: none;
+  }
+}

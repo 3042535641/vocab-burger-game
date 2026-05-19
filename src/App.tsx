@@ -612,6 +612,33 @@ function App() {
     })
   }
 
+  const previewMusic = () => {
+    setSettings((currentSettings) => {
+      const nextSettings = currentSettings.musicEnabled
+        ? currentSettings
+        : {
+            ...currentSettings,
+            musicEnabled: true,
+          }
+
+      gameAudio.setEnabled(true)
+
+      if (gameStatus === 'playing' && bossSpawned && !bossDefeated) {
+        gameAudio.startBossMusic()
+      } else {
+        gameAudio.startMusic()
+      }
+
+      gameAudio.playServe(false)
+
+      if (!currentSettings.musicEnabled) {
+        saveSettings(nextSettings)
+      }
+
+      return nextSettings
+    })
+  }
+
   const togglePerformanceMode = () => {
     setSettings((currentSettings) => {
       const nextSettings = {
@@ -820,6 +847,9 @@ function App() {
             <button type="button" className="small-action" onClick={openWordManager}>
               管理词库
             </button>
+            <button type="button" className="small-action" onClick={previewMusic}>
+              试听新曲
+            </button>
           </div>
         </section>
         {showTutorial && tutorial}
@@ -897,6 +927,9 @@ function App() {
           </span>
           <button type="button" className="small-action" onClick={toggleMusic}>
             {musicEnabled ? '音乐开' : '音乐关'}
+          </button>
+          <button type="button" className="small-action" onClick={previewMusic}>
+            试听
           </button>
           <button
             type="button"

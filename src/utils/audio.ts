@@ -1,13 +1,16 @@
 const baseUrl = import.meta.env.BASE_URL
+const audioVersion = '20260519-lab-diner-groove'
+const versionedAudio = (fileName: string) =>
+  `${baseUrl}audio/${fileName}?v=${audioVersion}`
 
 const audioFiles = {
-  arrival: `${baseUrl}audio/arrival.wav`,
-  boss: `${baseUrl}audio/boss.wav`,
-  bossMusic: `${baseUrl}audio/boss-groove.wav`,
-  correct: `${baseUrl}audio/correct.wav`,
-  music: `${baseUrl}audio/kitchen-groove.wav`,
-  serve: `${baseUrl}audio/serve.wav`,
-  wrong: `${baseUrl}audio/wrong.wav`,
+  arrival: versionedAudio('arrival.wav'),
+  boss: versionedAudio('boss.wav'),
+  bossMusic: versionedAudio('boss-groove.wav'),
+  correct: versionedAudio('correct.wav'),
+  music: versionedAudio('kitchen-groove.wav'),
+  serve: versionedAudio('serve.wav'),
+  wrong: versionedAudio('wrong.wav'),
 }
 
 type ToneSequenceItem = {

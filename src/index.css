@@ -8,12 +8,20 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
-  min-width: 320px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   min-height: 100svh;
   margin: 0;
   overflow-x: hidden;
@@ -67,8 +75,17 @@ p {
 
 #root {
   width: 100%;
+  max-width: 100%;
   min-height: 100svh;
   overflow-x: hidden;
+}
+
+@supports (overflow: clip) {
+  html,
+  body,
+  #root {
+    overflow-x: clip;
+  }
 }
 
 @media (max-width: 720px) {

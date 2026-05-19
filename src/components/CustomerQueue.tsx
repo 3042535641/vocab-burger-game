@@ -14,13 +14,6 @@ const moodLabels: Record<Mood, string> = {
   angry: '要破防',
 }
 
-const moodFaces: Record<Mood, string> = {
-  happy: '^_^',
-  waiting: '-_-',
-  worried: 'o_o',
-  angry: '>_<',
-}
-
 type CustomerQueueProps = {
   customers: Customer[]
   activeCustomerId?: number
@@ -72,9 +65,7 @@ function CustomerQueue({
                 className={`customer-avatar avatar-${customer.avatar} face-${mood}`}
                 aria-hidden="true"
               >
-                <span className="face-text">
-                  {customer.isBoss ? '教授' : moodFaces[mood]}
-                </span>
+                {customer.isBoss && <span className="face-text">教授</span>}
               </span>
               <span className="customer-info">
                 <strong>{customer.name}</strong>

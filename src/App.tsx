@@ -79,6 +79,7 @@ function App() {
   const [finalizedRound, setFinalizedRound] = useState(false)
   const [victoryLine, setVictoryLine] = useState('')
   const [missedWords, setMissedWords] = useState<WordEntry[]>([])
+  const [musicPreviewing, setMusicPreviewing] = useState(false)
   const { clearImpact, impact, impactText, triggerImpact } = useTimedImpact()
   const finaleTimerRef = useRef<number | undefined>(undefined)
   const answerHandlerRef = useRef<(answer: string) => void>(() => undefined)
@@ -379,6 +380,7 @@ function App() {
     const firstCustomer = createCustomer(1, false, wordPool)
 
     window.clearTimeout(finaleTimerRef.current)
+    window.scrollTo({ left: 0, top: 0, behavior: 'instant' })
     clearImpact()
     setView('game')
 
@@ -406,6 +408,7 @@ function App() {
 
   const endGame = () => {
     window.clearTimeout(finaleTimerRef.current)
+    window.scrollTo({ left: 0, top: 0, behavior: 'instant' })
     clearImpact()
     gameAudio.stopMusic()
     setGameStatus('ended')
@@ -593,6 +596,7 @@ function App() {
       if (currentSettings.musicEnabled) {
         gameAudio.setEnabled(false)
         gameAudio.stopMusic()
+        setMusicPreviewing(false)
         saveSettings(nextSettings)
         return nextSettings
       }
@@ -613,6 +617,12 @@ function App() {
   }
 
   const previewMusic = () => {
+    if (musicPreviewing) {
+      gameAudio.stopMusic()
+      setMusicPreviewing(false)
+      return
+    }
+
     setSettings((currentSettings) => {
       const nextSettings = currentSettings.musicEnabled
         ? currentSettings
@@ -630,6 +640,7 @@ function App() {
       }
 
       gameAudio.playServe(false)
+      setMusicPreviewing(true)
 
       if (!currentSettings.musicEnabled) {
         saveSettings(nextSettings)
@@ -653,6 +664,7 @@ function App() {
 
   const openWordManager = () => {
     gameAudio.stopMusic()
+    setMusicPreviewing(false)
     setView('words')
   }
 
@@ -848,7 +860,7 @@ function App() {
               管理词库
             </button>
             <button type="button" className="small-action" onClick={previewMusic}>
-              试听新曲
+              {musicPreviewing ? '停止试听' : '试听新曲'}
             </button>
           </div>
         </section>
@@ -929,7 +941,7 @@ function App() {
             {musicEnabled ? '音乐开' : '音乐关'}
           </button>
           <button type="button" className="small-action" onClick={previewMusic}>
-            试听
+            {musicPreviewing ? '停止' : '试听'}
           </button>
           <button
             type="button"

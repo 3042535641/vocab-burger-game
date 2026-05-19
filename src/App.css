@@ -7140,7 +7140,7 @@
 @media (max-width: 760px) {
   .game-shell {
     width: 100%;
-    max-width: 100vw;
+    max-width: 100%;
     overflow-x: clip;
   }
 
@@ -7156,7 +7156,7 @@
   .shop-layout,
   .quiz-panel {
     width: 100%;
-    max-width: calc(100vw - 12px);
+    max-width: 100%;
   }
 
   .stats {
@@ -8135,5 +8135,89 @@
   .play-shell .grill-lights::before {
     min-width: 72px;
     font-size: 10px;
+  }
+}
+
+/* Layout safety pass: never cut the station when the art gets taller. */
+.play-shell {
+  grid-template-rows: auto auto auto auto auto auto;
+  height: auto;
+  min-height: 100svh;
+  overflow: visible;
+}
+
+.play-shell .burger-station {
+  overflow: visible;
+  padding: 12px;
+}
+
+.play-shell .burger-station::after {
+  display: none;
+}
+
+.play-shell .burger-station .section-heading {
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+}
+
+.play-shell .burger-station .section-heading h2 {
+  font-size: clamp(26px, 3.2vw, 42px);
+  line-height: 1;
+}
+
+.play-shell .burger-station .section-heading span {
+  font-size: clamp(15px, 2vw, 26px);
+}
+
+.play-shell .grill-slots {
+  gap: 8px;
+  padding: 7px;
+}
+
+.play-shell .grill-slot {
+  min-height: 70px;
+  padding: 9px 10px;
+}
+
+.play-shell .grill-lights {
+  margin-top: 8px;
+  padding: 9px 12px;
+}
+
+.play-shell .grill-lights span:not(.grill-patty) {
+  width: 18px;
+  height: 18px;
+}
+
+.play-shell .burger-stack {
+  min-height: 166px;
+  padding: 12px 14px 16px;
+}
+
+.play-shell .cook-meters {
+  margin-top: 8px;
+  padding: 8px;
+}
+
+.play-shell .current-step {
+  margin-top: 8px;
+  padding: 7px 10px;
+}
+
+@media (max-width: 760px) {
+  .play-shell .burger-station .section-heading {
+    align-items: flex-start;
+  }
+
+  .play-shell .burger-station .section-heading span {
+    font-size: 14px;
+  }
+
+  .play-shell .grill-slot {
+    min-height: 62px;
+  }
+
+  .play-shell .burger-stack {
+    min-height: 132px;
   }
 }

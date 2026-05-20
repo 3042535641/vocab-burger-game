@@ -13587,3 +13587,894 @@
     white-space: normal;
   }
 }
+
+/* Final VN diner pass: burger shop first, medical English as stylish props. */
+.game-shell.play-shell {
+  width: min(1480px, 100%);
+  padding: 12px 18px 24px;
+  gap: 12px;
+  color: #241d2f;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 246, 0.92), rgba(255, 248, 232, 0.8)),
+    url('/vocab-burger-game/art/vn-med-stage.svg') center top / cover fixed no-repeat;
+}
+
+.play-shell::before {
+  background:
+    radial-gradient(circle at 18% 16%, rgba(255, 226, 122, 0.35), transparent 24%),
+    radial-gradient(circle at 84% 12%, rgba(255, 124, 178, 0.22), transparent 25%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 244, 217, 0.28));
+}
+
+.play-shell .panel,
+.play-shell .banner,
+.play-shell .rush-meter,
+.play-shell .quiz-panel,
+.play-shell .burger-station,
+.play-shell .order-ticket,
+.play-shell .customer-line {
+  border: 5px solid #2c2438;
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 248, 232, 0.8)),
+    #fffdf7;
+  box-shadow:
+    0 10px 0 rgba(44, 36, 56, 0.9),
+    0 18px 30px rgba(44, 36, 56, 0.18),
+    inset 0 0 0 4px rgba(255, 255, 255, 0.7);
+}
+
+.play-shell .game-header {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.55fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+  padding: 10px;
+  border: 5px solid #2c2438;
+  border-radius: 16px;
+  background:
+    linear-gradient(90deg, rgba(20, 90, 82, 0.92), rgba(28, 119, 110, 0.86)),
+    #145a52;
+  box-shadow:
+    0 8px 0 #2c2438,
+    0 15px 28px rgba(44, 36, 56, 0.22);
+}
+
+.play-shell .title-lockup {
+  position: relative;
+  padding: 8px 12px 10px 18px;
+  border: 4px solid #2c2438;
+  border-radius: 12px;
+  color: #fffdf7;
+  background:
+    radial-gradient(circle at 94% 22%, #ffe27a 0 10px, transparent 11px),
+    linear-gradient(90deg, #2c2438, #3e2f54);
+  box-shadow: inset 0 0 0 3px rgba(255, 253, 246, 0.12);
+}
+
+.play-shell .title-lockup::before {
+  content: 'OPEN';
+  position: absolute;
+  right: 12px;
+  bottom: -13px;
+  padding: 2px 8px;
+  border: 3px solid #2c2438;
+  border-radius: 999px;
+  color: #2c2438;
+  background: #ffe27a;
+  font-size: 12px;
+  font-weight: 1000;
+  transform: rotate(3deg);
+}
+
+.play-shell .title-lockup h1 {
+  color: #fffdf7;
+  text-shadow:
+    3px 3px 0 #2c2438,
+    5px 5px 0 #ff7cb2;
+}
+
+.play-shell .title-lockup .eyebrow {
+  color: #ffe27a;
+}
+
+.play-shell .stats {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(92px, 1fr));
+  gap: 8px;
+}
+
+.play-shell .stats span,
+.play-shell .stats button {
+  min-height: 46px;
+  border: 4px solid #2c2438;
+  border-radius: 10px;
+  color: #2c2438;
+  background:
+    linear-gradient(180deg, #fffdf7, #fff1a8);
+  box-shadow: 0 4px 0 rgba(44, 36, 56, 0.75);
+  font-size: 13px;
+  font-weight: 1000;
+}
+
+.play-shell .shop-scene.compact-scene.lab-diner-scene {
+  min-height: 118px;
+  border: 5px solid #2c2438;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 246, 0.16), rgba(255, 253, 246, 0.02)),
+    linear-gradient(90deg, rgba(20, 90, 82, 0.74), rgba(255, 226, 122, 0.28)),
+    url('/vocab-burger-game/art/vn-med-stage.svg') center 42% / cover no-repeat;
+  box-shadow:
+    0 8px 0 #2c2438,
+    0 18px 28px rgba(44, 36, 56, 0.18);
+}
+
+.play-shell .shop-scene.compact-scene.lab-diner-scene::before,
+.play-shell .shop-scene.compact-scene.lab-diner-scene::after {
+  display: none;
+}
+
+.lab-diner-sign {
+  top: 20px;
+  min-width: min(520px, 56vw);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 6% 50%, #ffe27a 0 10px, transparent 11px),
+    radial-gradient(circle at 94% 50%, #ff7cb2 0 10px, transparent 11px),
+    #145a52;
+  box-shadow:
+    0 7px 0 #2c2438,
+    0 0 0 5px rgba(255, 226, 122, 0.32);
+}
+
+.lab-diner-sign strong {
+  color: #fffdf7;
+  text-shadow: 3px 3px 0 #2c2438;
+}
+
+.lab-diner-sign span {
+  color: #ffe27a;
+}
+
+.play-shell .banner,
+.play-shell .rush-meter {
+  padding: 10px 14px;
+  border-radius: 12px;
+}
+
+.play-shell .banner {
+  color: #2c2438;
+  background:
+    linear-gradient(90deg, rgba(255, 226, 122, 0.72), rgba(255, 253, 246, 0.92)),
+    #fff1a8;
+}
+
+.play-shell .rush-meter {
+  display: grid;
+  grid-template-columns: auto minmax(120px, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  color: #fffdf7;
+  background:
+    linear-gradient(90deg, #145a52, #2c2438);
+}
+
+.play-shell .rush-meter .rush-track {
+  grid-column: 1 / -1;
+}
+
+.play-shell .shop-layout {
+  display: grid;
+  grid-template-columns: minmax(390px, 0.96fr) minmax(470px, 1.12fr) minmax(250px, 0.72fr);
+  grid-template-areas: 'character station ticket';
+  gap: 14px;
+  align-items: start;
+}
+
+.play-shell .customer-line {
+  grid-area: character;
+}
+
+.play-shell .burger-station {
+  grid-area: station;
+}
+
+.play-shell .order-ticket {
+  grid-area: ticket;
+}
+
+.play-shell .character-stage-panel {
+  padding: 12px;
+}
+
+.play-shell .character-stage-panel .compact-heading {
+  margin-bottom: 10px;
+}
+
+.play-shell .character-stage-panel .compact-heading h2,
+.play-shell .burger-station .section-heading h2,
+.play-shell .order-ticket .section-heading h2,
+.play-shell .question-card h2 {
+  color: #2c2438;
+  text-shadow:
+    3px 3px 0 #ffe27a,
+    5px 5px 0 rgba(255, 124, 178, 0.45);
+}
+
+.play-shell .character-stage {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  min-height: clamp(500px, 58vh, 640px);
+  padding: 16px 18px 0;
+  overflow: visible;
+  border: 4px solid #2c2438;
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 246, 0.78), rgba(255, 248, 232, 0.4)),
+    url('/vocab-burger-game/art/vn-med-stage.svg') 36% 40% / 215% auto no-repeat,
+    #f8fffb;
+  box-shadow:
+    inset 0 0 0 5px rgba(255, 253, 246, 0.62),
+    0 8px 0 rgba(44, 36, 56, 0.8);
+}
+
+.play-shell .character-stage::before {
+  content: 'MED VOCAB BURGER HERO';
+  top: 12px;
+  left: 12px;
+  z-index: 9;
+  border-radius: 999px;
+  background: #ffe27a;
+}
+
+.play-shell .character-stage::after {
+  height: 74px;
+  border-radius: 0 0 8px 8px;
+  opacity: 0.7;
+}
+
+.play-shell .character-portrait-wrap {
+  display: grid;
+  justify-items: center;
+  width: 100%;
+  padding-top: 22px;
+}
+
+.play-shell .portrait-stage {
+  width: min(370px, 92%);
+  height: clamp(405px, 51vh, 525px);
+  min-height: 405px;
+  margin: 0 auto;
+  border-radius: 16px;
+  box-shadow:
+    10px 10px 0 rgba(44, 36, 56, 0.78),
+    0 0 0 6px rgba(255, 226, 122, 0.18),
+    inset 0 0 0 5px rgba(255, 253, 246, 0.6);
+}
+
+.play-shell .vn-face {
+  background:
+    radial-gradient(circle at 18% 68%, rgba(255, 124, 178, 0.45), transparent 13%),
+    radial-gradient(circle at 82% 68%, rgba(255, 124, 178, 0.38), transparent 13%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.24) 0 14%, transparent 14%),
+    var(--skin-main);
+}
+
+.play-shell .character-dialogue {
+  position: relative;
+  z-index: 12;
+  width: min(100%, 430px);
+  max-height: none;
+  margin: -78px 0 22px;
+  padding: 16px 18px;
+  overflow: visible;
+  border: 5px solid #2c2438;
+  border-radius: 12px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.9), rgba(255, 253, 246, 0.98)),
+    #fffdf7;
+  box-shadow:
+    8px 8px 0 rgba(44, 36, 56, 0.85),
+    inset 0 0 0 4px rgba(255, 226, 122, 0.22);
+}
+
+.play-shell .character-dialogue small {
+  color: #1c776e;
+  font-size: 12px;
+}
+
+.play-shell .character-dialogue strong {
+  display: block;
+  font-size: clamp(27px, 2.7vw, 40px);
+  line-height: 1.06;
+  overflow: visible;
+  white-space: normal;
+}
+
+.play-shell .character-dialogue p {
+  display: block;
+  font-size: clamp(14px, 1.35vw, 18px);
+  line-height: 1.36;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+}
+
+.play-shell .character-dialogue em {
+  width: 100%;
+  font-size: 12px;
+}
+
+.play-shell .character-mood {
+  z-index: 13;
+  right: 22px;
+  bottom: 128px;
+  border-width: 4px;
+  font-size: 13px;
+}
+
+.play-shell .stage-patience {
+  z-index: 14;
+  height: 10px;
+  border: 3px solid #2c2438;
+  background: #fffdf7;
+}
+
+.play-shell .queue-chips {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(82px, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.play-shell .queue-chip {
+  min-height: 46px;
+  border: 4px solid #2c2438;
+  border-radius: 10px;
+  background: #fffdf7;
+  box-shadow: 0 4px 0 rgba(44, 36, 56, 0.76);
+}
+
+.play-shell .burger-station {
+  padding: 14px;
+}
+
+.play-shell .burger-station .section-heading,
+.play-shell .order-ticket .section-heading {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  padding-bottom: 10px;
+}
+
+.play-shell .burger-station .section-heading h2 {
+  width: 100%;
+  font-size: clamp(30px, 3vw, 48px);
+  white-space: nowrap;
+}
+
+.play-shell .burger-station .section-heading span {
+  justify-self: start;
+  width: auto;
+  max-width: 100%;
+  color: #fffdf7;
+  background:
+    radial-gradient(circle at 94% 50%, #ffe27a 0 6px, transparent 7px),
+    #145a52;
+}
+
+.play-shell .grill-slots {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  background:
+    linear-gradient(180deg, rgba(255, 253, 246, 0.9), rgba(223, 247, 241, 0.7)),
+    #f8fffb;
+}
+
+.play-shell .grill-slot {
+  min-height: 92px;
+  border-radius: 14px;
+}
+
+.play-shell .grill-lights {
+  border-radius: 14px;
+  background:
+    linear-gradient(90deg, rgba(255, 253, 246, 0.82), transparent 48%),
+    repeating-linear-gradient(90deg, rgba(44, 36, 56, 0.08) 0 10px, transparent 10px 20px),
+    #d9eff8;
+}
+
+.play-shell .burger-stack {
+  min-height: clamp(210px, 26vh, 300px);
+  border-radius: 18px;
+  background:
+    radial-gradient(ellipse at 50% 92%, rgba(44, 36, 56, 0.2), transparent 46%),
+    linear-gradient(90deg, rgba(87, 220, 202, 0.14) 0 2px, transparent 2px 26px),
+    repeating-linear-gradient(0deg, rgba(87, 220, 202, 0.1) 0 3px, transparent 3px 34px),
+    linear-gradient(#fffdf7 0 24%, #e9faf6 24% 100%);
+}
+
+.play-shell .order-ticket {
+  max-height: clamp(430px, 66vh, 650px);
+  padding: 14px;
+}
+
+.play-shell .ticket-meta {
+  border: 4px solid #2c2438;
+  border-radius: 10px;
+  background: #fff8e8;
+  box-shadow: 0 5px 0 rgba(44, 36, 56, 0.28);
+}
+
+.play-shell .recipe-list li {
+  min-height: 54px;
+  border-width: 4px;
+  border-radius: 9px;
+}
+
+.play-shell .quiz-panel {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.8fr) minmax(520px, 1.2fr);
+  grid-template-areas:
+    'question answers'
+    'question footer';
+  gap: 12px 16px;
+  align-items: stretch;
+  padding: 14px;
+  background:
+    linear-gradient(90deg, rgba(255, 253, 246, 0.95), rgba(248, 255, 251, 0.92)),
+    #fffdf7;
+}
+
+.play-shell .question-card {
+  grid-area: question;
+  min-height: 0;
+  margin: 0;
+  border: 5px solid #2c2438;
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(217, 255, 247, 0.82), rgba(255, 253, 246, 0.95)),
+    #f8fffb;
+}
+
+.play-shell .question-card h2 {
+  font-size: clamp(42px, 4.4vw, 70px);
+}
+
+.play-shell .answer-grid {
+  grid-area: answers;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.play-shell .answer-button {
+  min-height: 86px;
+  border: 5px solid #2c2438;
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, #fffdf7, #f8fffb);
+  box-shadow:
+    0 7px 0 rgba(44, 36, 56, 0.86),
+    inset 0 0 0 4px rgba(87, 220, 202, 0.1);
+  font-size: clamp(22px, 2vw, 34px);
+}
+
+.play-shell .answer-button::before {
+  content: 'ORDER';
+  top: 7px;
+  left: 9px;
+  border-radius: 999px;
+  color: #2c2438;
+  background: #ffe27a;
+}
+
+.play-shell .quiz-footer {
+  grid-area: footer;
+  align-self: end;
+  min-height: 56px;
+}
+
+@media (max-width: 1180px) {
+  .play-shell .game-header {
+    grid-template-columns: 1fr;
+  }
+
+  .play-shell .stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .play-shell .shop-layout {
+    grid-template-columns: minmax(360px, 0.9fr) minmax(420px, 1.1fr);
+    grid-template-areas:
+      'character station'
+      'ticket station';
+  }
+
+  .play-shell .order-ticket {
+    max-height: none;
+  }
+
+  .play-shell .quiz-panel {
+    grid-template-columns: minmax(280px, 0.8fr) minmax(420px, 1.2fr);
+  }
+
+  .play-shell .answer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .game-shell.play-shell {
+    padding: 8px 10px 22px;
+    background-attachment: scroll;
+  }
+
+  .play-shell .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .play-shell .shop-scene.compact-scene.lab-diner-scene {
+    min-height: 92px;
+  }
+
+  .play-shell .shop-layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'character'
+      'station'
+      'ticket';
+  }
+
+  .play-shell .quiz-panel {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'question'
+      'answers'
+      'footer';
+  }
+
+  .play-shell .question-card h2 {
+    font-size: clamp(36px, 10vw, 58px);
+  }
+}
+
+@media (max-width: 520px) {
+  .game-shell.play-shell {
+    gap: 9px;
+    padding: 6px 8px 18px;
+  }
+
+  .play-shell .game-header {
+    padding: 8px;
+    border-width: 4px;
+  }
+
+  .play-shell .title-lockup {
+    padding: 7px 9px;
+  }
+
+  .play-shell .title-lockup h1 {
+    font-size: clamp(30px, 12vw, 42px);
+  }
+
+  .play-shell .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .play-shell .stats span,
+  .play-shell .stats button {
+    min-height: 42px;
+    padding: 6px;
+    border-width: 3px;
+    font-size: 12px;
+  }
+
+  .play-shell .shop-scene.compact-scene.lab-diner-scene {
+    min-height: 74px;
+  }
+
+  .lab-diner-sign {
+    min-width: min(270px, 82vw);
+    padding: 5px 12px;
+  }
+
+  .lab-diner-sign strong {
+    font-size: 22px;
+  }
+
+  .play-shell .banner,
+  .play-shell .rush-meter {
+    padding: 9px;
+    border-width: 4px;
+  }
+
+  .play-shell .rush-meter {
+    grid-template-columns: 1fr auto;
+  }
+
+  .play-shell .rush-meter em {
+    grid-column: 1 / -1;
+  }
+
+  .play-shell .character-stage {
+    min-height: 0;
+    padding: 10px 10px 0;
+    background:
+      linear-gradient(180deg, rgba(255, 253, 246, 0.76), rgba(255, 248, 232, 0.34)),
+      url('/vocab-burger-game/art/vn-med-stage.svg') 38% 42% / auto 460px no-repeat,
+      #f8fffb;
+  }
+
+  .play-shell .portrait-stage {
+    width: min(244px, 78vw);
+    height: 318px;
+    min-height: 318px;
+  }
+
+  .play-shell .character-dialogue {
+    width: 100%;
+    margin: -56px 0 18px;
+    padding: 12px;
+  }
+
+  .play-shell .character-dialogue strong {
+    font-size: clamp(22px, 7.6vw, 30px);
+  }
+
+  .play-shell .burger-station,
+  .play-shell .order-ticket,
+  .play-shell .quiz-panel {
+    padding: 10px;
+    border-width: 4px;
+  }
+
+  .play-shell .burger-station .section-heading h2 {
+    font-size: clamp(30px, 10vw, 42px);
+  }
+
+  .play-shell .grill-slots {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .play-shell .grill-slot {
+    min-height: 76px;
+    padding: 8px;
+  }
+
+  .play-shell .burger-stack {
+    min-height: 200px;
+  }
+
+  .play-shell .answer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .play-shell .answer-button {
+    min-height: 64px;
+    border-width: 4px;
+    font-size: clamp(20px, 6vw, 28px);
+  }
+
+  .play-shell .order-ticket {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* Density tuning: keep the VN polish without turning the game into a long poster. */
+@media (min-width: 901px) {
+  .game-shell.play-shell {
+    padding-bottom: 238px;
+  }
+
+  .play-shell .game-header {
+    grid-template-columns: minmax(250px, 0.42fr) minmax(0, 1fr);
+    padding: 8px;
+  }
+
+  .play-shell .title-lockup {
+    padding: 7px 10px 8px 14px;
+  }
+
+  .play-shell .title-lockup h1 {
+    font-size: clamp(28px, 3.2vw, 46px);
+  }
+
+  .play-shell .stats {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .play-shell .stats span,
+  .play-shell .stats button {
+    min-height: 38px;
+    padding: 5px 8px;
+  }
+
+  .play-shell .shop-scene.compact-scene.lab-diner-scene {
+    min-height: 84px;
+  }
+
+  .lab-diner-sign {
+    top: 12px;
+    min-width: min(450px, 50vw);
+    padding: 5px 18px;
+  }
+
+  .lab-diner-sign strong {
+    font-size: clamp(22px, 3vw, 36px);
+  }
+
+  .play-shell .banner,
+  .play-shell .rush-meter {
+    padding: 8px 12px;
+  }
+
+  .play-shell .character-stage {
+    min-height: clamp(420px, 46vh, 540px);
+    padding-top: 12px;
+  }
+
+  .play-shell .portrait-stage {
+    width: min(320px, 88%);
+    height: clamp(340px, 40vh, 440px);
+    min-height: 340px;
+  }
+
+  .play-shell .character-dialogue {
+    margin-top: -64px;
+    padding: 14px 16px;
+  }
+
+  .play-shell .character-dialogue strong {
+    font-size: clamp(25px, 2.4vw, 36px);
+  }
+
+  .play-shell .burger-station .section-heading h2 {
+    font-size: clamp(28px, 2.6vw, 42px);
+  }
+
+  .play-shell .grill-slot {
+    min-height: 76px;
+  }
+
+  .play-shell .grill-lights {
+    padding: 8px 12px;
+  }
+
+  .play-shell .burger-stack {
+    min-height: clamp(168px, 19vh, 230px);
+  }
+
+  .play-shell .cook-meters {
+    padding: 8px;
+  }
+
+  .play-shell .current-step {
+    padding: 7px 10px;
+  }
+
+  .play-shell .order-ticket {
+    max-height: clamp(390px, 56vh, 560px);
+  }
+
+  .play-shell .quiz-panel {
+    position: fixed;
+    z-index: 40;
+    right: max(18px, calc((100vw - 1480px) / 2 + 18px));
+    bottom: 12px;
+    left: max(18px, calc((100vw - 1480px) / 2 + 18px));
+    width: auto;
+    max-width: calc(1480px - 36px);
+    margin: 0 auto;
+    padding: 12px;
+  }
+
+  .play-shell .answer-button {
+    min-height: 70px;
+  }
+}
+
+@media (max-width: 520px) {
+  .play-shell .game-header {
+    gap: 7px;
+  }
+
+  .play-shell .title-lockup {
+    display: grid;
+    min-height: 58px;
+    align-content: center;
+  }
+
+  .play-shell .title-lockup .eyebrow {
+    display: none;
+  }
+
+  .play-shell .title-lockup h1 {
+    font-size: clamp(28px, 10vw, 36px);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .play-shell .stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .play-shell .stats span,
+  .play-shell .stats button {
+    min-height: 34px;
+    padding: 4px 5px;
+    font-size: 10px;
+    line-height: 1.08;
+  }
+
+  .play-shell .shop-scene.compact-scene.lab-diner-scene {
+    min-height: 64px;
+  }
+
+  .game-shell.play-shell {
+    padding-bottom: 324px;
+  }
+
+  .play-shell .quiz-panel {
+    position: fixed;
+    z-index: 45;
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+    width: auto;
+    max-height: min(286px, calc(100svh - 16px));
+    padding: 8px;
+    overflow-y: auto;
+    border-width: 4px;
+  }
+
+  .play-shell .question-card {
+    display: grid;
+    gap: 4px;
+    padding: 9px;
+    border-width: 4px;
+  }
+
+  .play-shell .question-card::before,
+  .play-shell .question-card::after {
+    display: none !important;
+  }
+
+  .play-shell .question-card .question-label {
+    position: relative;
+    z-index: 3;
+    font-size: 12px;
+  }
+
+  .play-shell .question-card h2 {
+    position: relative;
+    z-index: 3;
+    font-size: clamp(30px, 10vw, 42px);
+    line-height: 1.05;
+  }
+
+  .play-shell .question-card .question-hint {
+    position: relative;
+    z-index: 3;
+    font-size: 12px;
+    line-height: 1.25;
+  }
+
+  .play-shell .answer-grid {
+    gap: 8px;
+  }
+
+  .play-shell .answer-button {
+    min-height: 50px;
+    font-size: clamp(18px, 5.6vw, 24px);
+  }
+
+  .play-shell .quiz-footer {
+    min-height: 40px;
+  }
+}

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Medical English visual novel burger diner background">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fffb"/>
+      <stop offset=".45" stop-color="#dff7f1"/>
+      <stop offset="1" stop-color="#fff2c8"/>
+    </linearGradient>
+    <linearGradient id="counter" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffdf7"/>
+      <stop offset=".55" stop-color="#f3dfc6"/>
+      <stop offset="1" stop-color="#b77a55"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="10" flood-color="#2c2438" flood-opacity=".18"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#wall)"/>
+  <path d="M0 0h1600v900H0z" fill="none"/>
+  <g opacity=".42">
+    <path d="M0 106h1600M0 196h1600M0 286h1600M0 376h1600M0 466h1600M0 556h1600M0 646h1600M0 736h1600" stroke="#66b7aa" stroke-width="4"/>
+    <path d="M90 0v900M210 0v900M330 0v900M450 0v900M570 0v900M690 0v900M810 0v900M930 0v900M1050 0v900M1170 0v900M1290 0v900M1410 0v900M1530 0v900" stroke="#66b7aa" stroke-width="3"/>
+  </g>
+  <g filter="url(#softShadow)">
+    <rect x="105" y="70" width="415" height="192" rx="18" fill="#fffdf7" stroke="#2c2438" stroke-width="8"/>
+    <rect x="132" y="98" width="360" height="136" rx="8" fill="#18172c"/>
+    <path d="M154 170h58l18-46 30 88 28-65 18 23h152" fill="none" stroke="#57dcca" stroke-width="10" stroke-linejoin="round"/>
+    <text x="154" y="126" font-family="Arial, sans-serif" font-weight="900" font-size="30" fill="#fff1a8">ECG VOCAB MONITOR</text>
+  </g>
+  <g filter="url(#softShadow)">
+    <rect x="590" y="48" width="420" height="150" rx="26" fill="#145a52" stroke="#2c2438" stroke-width="8"/>
+    <rect x="616" y="74" width="368" height="98" rx="18" fill="#1c776e"/>
+    <circle cx="650" cy="123" r="17" fill="#ffe27a" stroke="#2c2438" stroke-width="7"/>
+    <circle cx="952" cy="123" r="17" fill="#ff7cb2" stroke="#2c2438" stroke-width="7"/>
+    <text x="686" y="118" font-family="Arial, sans-serif" font-weight="900" font-size="38" fill="#fffdf7" letter-spacing="3">MED VOCAB</text>
+    <text x="688" y="158" font-family="Arial, sans-serif" font-weight="900" font-size="30" fill="#fff1a8" letter-spacing="2">BURGER DINER</text>
+  </g>
+  <g filter="url(#softShadow)">
+    <rect x="1090" y="70" width="360" height="242" rx="22" fill="#fff8e8" stroke="#2c2438" stroke-width="8"/>
+    <rect x="1125" y="112" width="290" height="42" rx="10" fill="#57dcca" stroke="#2c2438" stroke-width="6"/>
+    <rect x="1125" y="174" width="120" height="86" rx="12" fill="#fff1a8" stroke="#2c2438" stroke-width="6"/>
+    <rect x="1264" y="174" width="151" height="86" rx="12" fill="#ffd7eb" stroke="#2c2438" stroke-width="6"/>
+    <text x="1148" y="142" font-family="Arial, sans-serif" font-weight="900" font-size="26" fill="#2c2438">ROOT / SUFFIX</text>
+    <text x="1154" y="225" font-family="Arial, sans-serif" font-weight="900" font-size="30" fill="#2c2438">Rx</text>
+    <text x="1292" y="225" font-family="Arial, sans-serif" font-weight="900" font-size="28" fill="#2c2438">-ITIS</text>
+  </g>
+  <g opacity=".92" filter="url(#softShadow)">
+    <rect x="70" y="595" width="1460" height="230" rx="34" fill="url(#counter)" stroke="#2c2438" stroke-width="10"/>
+    <rect x="115" y="635" width="1370" height="58" rx="22" fill="#fffdf7" stroke="#2c2438" stroke-width="8"/>
+    <path d="M128 662h1344" stroke="#57dcca" stroke-width="10" stroke-dasharray="56 34"/>
+    <rect x="238" y="720" width="210" height="68" rx="18" fill="#145a52" stroke="#2c2438" stroke-width="8"/>
+    <rect x="504" y="720" width="210" height="68" rx="18" fill="#fff1a8" stroke="#2c2438" stroke-width="8"/>
+    <rect x="770" y="720" width="210" height="68" rx="18" fill="#ff7cb2" stroke="#2c2438" stroke-width="8"/>
+    <rect x="1036" y="720" width="210" height="68" rx="18" fill="#d9fff7" stroke="#2c2438" stroke-width="8"/>
+  </g>
+  <g opacity=".45">
+    <circle cx="104" cy="430" r="58" fill="#ff7cb2"/>
+    <circle cx="1440" cy="430" r="70" fill="#57dcca"/>
+    <circle cx="1320" cy="164" r="42" fill="#ffe27a"/>
+  </g>
+</svg>

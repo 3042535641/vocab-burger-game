@@ -24,14 +24,16 @@ function CustomerFace({
   avatar,
   isBoss,
   mood,
+  stage = false,
 }: {
   avatar: Customer['avatar']
   isBoss: boolean
   mood: Mood
+  stage?: boolean
 }) {
   return (
     <span
-      className={`customer-avatar avatar-${avatar} face-${mood} ${
+      className={`customer-avatar ${stage ? 'stage-avatar' : ''} avatar-${avatar} face-${mood} ${
         isBoss ? 'face-boss' : ''
       }`}
       aria-hidden="true"
@@ -56,66 +58,96 @@ function CustomerQueue({
   activeCustomerId,
   onSelectCustomer,
 }: CustomerQueueProps) {
-  if (customers.length === 0) {
+  const activeCustomer =
+    customers.find((customer) => customer.id === activeCustomerId) ?? customers[0]
+
+  if (!activeCustomer) {
     return (
-      <section className="panel customer-line">
-        <h2>医学生队伍</h2>
-        <p className="muted">暂时没有医学生排队，准备迎接下一位背词人。</p>
+      <section className="panel customer-line character-stage-panel empty">
+        <div className="section-heading">
+          <h2>医学生候场</h2>
+          <span>0/{maxCustomers}</span>
+        </div>
+        <div className="character-stage empty-stage">
+          <div className="character-dialogue">
+            <small>MEDICAL ENGLISH LIVE</small>
+            <strong>暂时无人点单</strong>
+            <p>术语台词本已就位，下一位医学生正在赶来。</p>
+          </div>
+        </div>
       </section>
     )
   }
 
+  const mood = getCustomerMood(activeCustomer)
+  const patienceRatio = Math.max(
+    0,
+    Math.round((activeCustomer.patience / activeCustomer.maxPatience) * 100),
+  )
+  const waitedSeconds = getWaitedSeconds(activeCustomer)
+  const urgencyLabel = getUrgencyLabel(activeCustomer)
+
   return (
-    <section className="panel customer-line" aria-label="医学生队伍">
-      <div className="section-heading">
-        <h2>医学生队伍</h2>
+    <section
+      className={`panel customer-line character-stage-panel mood-${mood} ${
+        activeCustomer.isBoss ? 'boss-stage' : ''
+      }`}
+      aria-label="当前医学生角色舞台"
+    >
+      <div className="section-heading compact-heading">
+        <h2>{activeCustomer.isBoss ? '教授压场' : '今日主角'}</h2>
         <span>
           {customers.length}/{maxCustomers}
         </span>
       </div>
-      <div className="customer-list">
-        {customers.map((customer) => {
-          const mood = getCustomerMood(customer)
-          const patienceRatio = Math.max(
-            0,
-            Math.round((customer.patience / customer.maxPatience) * 100),
-          )
-          const waitedSeconds = getWaitedSeconds(customer)
-          const urgencyLabel = getUrgencyLabel(customer)
 
-          return (
-            <button
-              type="button"
-              className={`customer-ticket ${mood} ${
-                customer.id === activeCustomerId ? 'active' : ''
-              } ${customer.isBoss ? 'boss-ticket' : ''}`}
-              key={customer.id}
-              onClick={() => onSelectCustomer(customer.id)}
-            >
-              <CustomerFace
-                avatar={customer.avatar}
-                isBoss={customer.isBoss}
-                mood={mood}
-              />
-              <span className="customer-info">
-                <strong>{customer.name}</strong>
-                <span>{customer.recipe.name}</span>
-                <span>情绪：{moodLabels[mood]}</span>
-              </span>
-              <span className={`urgency-badge ${mood}`}>
-                {urgencyLabel} · {waitedSeconds}s
-              </span>
-              <span className={`speech-bubble ${mood}`}>{customer.speech}</span>
-              <span
-                className="patience-bar"
-                aria-label={`耐心 ${patienceRatio}%`}
-              >
-                <span style={{ width: `${patienceRatio}%` }} />
-              </span>
-            </button>
-          )
-        })}
+      <div className="character-stage">
+        <div className="character-portrait-wrap">
+          <CustomerFace
+            avatar={activeCustomer.avatar}
+            isBoss={activeCustomer.isBoss}
+            mood={mood}
+            stage
+          />
+          <span className={`character-mood mood-${mood}`}>
+            {moodLabels[mood]}
+          </span>
+        </div>
+
+        <div className="character-dialogue">
+          <small>{activeCustomer.isBoss ? 'PROFESSOR BOSS' : 'MED STUDENT'}</small>
+          <strong>{activeCustomer.name}</strong>
+          <p>{activeCustomer.speech}</p>
+          <em>
+            {urgencyLabel} · 等待 {waitedSeconds}s · {activeCustomer.recipe.name}
+          </em>
+        </div>
+
+        <div className="stage-patience" aria-label={`耐心 ${patienceRatio}%`}>
+          <span style={{ width: `${patienceRatio}%` }} />
+        </div>
       </div>
+
+      {customers.length > 1 && (
+        <div className="queue-chips" aria-label="切换排队医学生">
+          {customers.map((customer) => {
+            const chipMood = getCustomerMood(customer)
+            return (
+              <button
+                type="button"
+                className={`queue-chip ${chipMood} ${
+                  customer.id === activeCustomer.id ? 'active' : ''
+                }`}
+                key={customer.id}
+                onClick={() => onSelectCustomer(customer.id)}
+              >
+                <span>{customer.isBoss ? 'BOSS' : customer.name.slice(0, 2)}</span>
+                <small>{getWaitedSeconds(customer)}s</small>
+              </button>
+            )
+          })}
+        </div>
+      )}
     </section>
   )
 }

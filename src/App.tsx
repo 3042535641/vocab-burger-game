@@ -793,6 +793,26 @@ function App() {
             </div>
           </div>
 
+          <section className="start-character-stage" aria-label="开场角色预告">
+            <div className="start-pixel-bust" aria-hidden="true">
+              <span className="start-bust-hair" />
+              <span className="start-bust-face" />
+              <span className="start-bust-eye eye-left" />
+              <span className="start-bust-eye eye-right" />
+              <span className="start-bust-mouth" />
+              <span className="start-bust-coat" />
+              <span className="start-bust-id">MED</span>
+            </div>
+            <div className="start-dialogue">
+              <small>MEDICAL ENGLISH NIGHT SHIFT</small>
+              <strong>“中文概念给我，英文术语我来抢答。”</strong>
+              <p>
+                本局先预习术语，再进入像素汉堡急诊室。顾客会吐槽，教授会破防，
+                但医学英语词根不能糊。
+              </p>
+            </div>
+          </section>
+
           <div className="record-strip" aria-label="历史记录">
             <span>最高分 {records.highScore}</span>
             <span>最佳 Combo {records.bestCombo}</span>

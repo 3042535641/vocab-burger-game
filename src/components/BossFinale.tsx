@@ -1,46 +1,41 @@
 function BossFinale() {
   return (
-    <div className="boss-finale-scene medical-finale" aria-live="assertive">
-      <div className="medical-finale-lights" aria-hidden="true" />
-      <div className="medical-finale-board" aria-hidden="true">
-        <span>PREFIX</span>
-        <span>DIAGNOSIS</span>
-        <span>RED HOT</span>
+    <div className="boss-finale-scene pixel-boss-finale" aria-live="assertive">
+      <div className="pixel-finale-backdrop" aria-hidden="true" />
+      <div className="pixel-finale-monitor" aria-hidden="true">
+        <span>TERM CHECK</span>
+        <span>DIAGNOSIS OK</span>
+        <span>BURGER PASS</span>
       </div>
-      <div className="medical-finale-stage" aria-hidden="true">
-        <div className="medical-impact-ring ring-one" />
-        <div className="medical-impact-ring ring-two" />
-        <div className="medical-impact-ring ring-three" />
-        <div className="medical-impact-ring ring-four" />
-        <div className="medical-word-card card-root">词根暴击</div>
-        <div className="medical-word-card card-term">术语盖章</div>
-        <div className="medical-word-card card-sterile">STERILE</div>
-        <div className="medical-word-card card-itis">-ITIS!</div>
-        <div className="medical-word-card card-anti">ANTI-</div>
-        <div className="medical-word-card card-bonk">BONK!</div>
-        <div className="medical-callout callout-left">查房沉默</div>
-        <div className="medical-callout callout-right">词汇会诊通过</div>
-        <div className="medical-finale-professor">
-          <span className="professor-hair" />
-          <span className="professor-glasses" />
-          <span className="professor-glasses shard-left" />
-          <span className="professor-glasses shard-right" />
-          <span className="professor-eye professor-eye-left" />
-          <span className="professor-eye professor-eye-right" />
-          <span className="professor-brow professor-brow-left" />
-          <span className="professor-brow professor-brow-right" />
-          <span className="professor-mouth" />
-          <span className="professor-coat" />
-          <span className="professor-tie" />
-          <span className="professor-sweat sweat-one" />
-          <span className="professor-sweat sweat-two" />
-          <span className="professor-sweat sweat-three" />
-          <span className="professor-vein" />
+      <div className="pixel-finale-stage" aria-hidden="true">
+        <div className="pixel-professor-bust">
+          <span className="pixel-prof-hair" />
+          <span className="pixel-prof-face" />
+          <span className="pixel-prof-eye eye-left" />
+          <span className="pixel-prof-eye eye-right" />
+          <span className="pixel-prof-pupil pupil-left" />
+          <span className="pixel-prof-pupil pupil-right" />
+          <span className="pixel-prof-brow brow-left" />
+          <span className="pixel-prof-brow brow-right" />
+          <span className="pixel-prof-mouth" />
+          <span className="pixel-prof-jaw" />
+          <span className="pixel-prof-glasses" />
+          <span className="pixel-prof-coat" />
+          <span className="pixel-prof-sweat sweat-left" />
+          <span className="pixel-prof-sweat sweat-right" />
+          <span className="pixel-prof-alert">!</span>
+          <span className="pixel-prof-note note-left">STAT!</span>
+          <span className="pixel-prof-note note-right">BONK</span>
         </div>
-        <div className="medical-burger-bonk" />
-        <div className="medical-ecg-line" />
-        <div className="medical-finale-caption">MEDICAL VOCAB OVERDOSE</div>
-        <div className="medical-finale-subcaption">教授表情管理：抢救中</div>
+        <div className="pixel-finale-dialogue">
+          <small>FINAL ROUND CONSULTATION</small>
+          <strong>教授瞳孔地震：术语抢救成功</strong>
+          <p>词根、诊断、火候全部合格。医学英语夜班汉堡店宣布下课！</p>
+        </div>
+        <div className="pixel-term-card card-a">ROOT</div>
+        <div className="pixel-term-card card-b">-ITIS</div>
+        <div className="pixel-term-card card-c">Rx PASS</div>
+        <div className="pixel-burger-stamp">BONK</div>
       </div>
     </div>
   )

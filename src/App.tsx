@@ -54,6 +54,7 @@ import {
   saveRecords,
   saveSettings,
 } from './utils/storage'
+import { getPortraitHref } from './utils/portraits'
 import { getUniqueWordsByEnglish, normalizeEnglish } from './utils/wordHelpers'
 import './App.css'
 
@@ -794,14 +795,10 @@ function App() {
           </div>
 
           <section className="start-character-stage" aria-label="开场角色预告">
-            <div className="start-pixel-bust" aria-hidden="true">
-              <span className="start-bust-hair" />
-              <span className="start-bust-face" />
-              <span className="start-bust-eye eye-left" />
-              <span className="start-bust-eye eye-right" />
-              <span className="start-bust-mouth" />
-              <span className="start-bust-coat" />
-              <span className="start-bust-id">MED</span>
+            <div className="start-pixel-bust start-portrait-bust" aria-hidden="true">
+              <svg className="start-portrait-art" viewBox="0 0 260 360">
+                <use href={getPortraitHref('star')} />
+              </svg>
             </div>
             <div className="start-dialogue">
               <small>MEDICAL ENGLISH NIGHT SHIFT</small>

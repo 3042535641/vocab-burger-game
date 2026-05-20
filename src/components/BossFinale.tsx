@@ -1,3 +1,5 @@
+import { getPortraitHref } from '../utils/portraits'
+
 function BossFinale() {
   return (
     <div className="boss-finale-scene pixel-boss-finale" aria-live="assertive">
@@ -9,6 +11,9 @@ function BossFinale() {
       </div>
       <div className="pixel-finale-stage" aria-hidden="true">
         <div className="pixel-professor-bust">
+          <svg className="finale-prof-art" viewBox="0 0 260 360" aria-hidden="true">
+            <use href={getPortraitHref('boss', true)} />
+          </svg>
           <span className="pixel-prof-hair" />
           <span className="pixel-prof-face" />
           <span className="pixel-prof-eye eye-left" />

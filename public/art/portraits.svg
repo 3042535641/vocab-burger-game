@@ -1,0 +1,181 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <g id="portrait-shadow">
+      <ellipse cx="132" cy="344" rx="82" ry="11" fill="#2c2438" opacity=".22"/>
+    </g>
+    <g id="coat-base">
+      <path d="M46 345V235h171v110z" fill="#2f2946"/>
+      <path d="M62 345l29-96h82l29 96z" fill="#fffdf7"/>
+      <path d="M96 250l28 50-36 45H58z" fill="#d9fff7"/>
+      <path d="M165 250l-28 50 36 45h31z" fill="#d9fff7"/>
+      <path d="M116 252h31v93h-31z" fill="#30304e"/>
+      <path d="M126 259h11v86h-11z" fill="#ff7cb2"/>
+      <path d="M72 281h46v22H72z" fill="#57dcca"/>
+      <path d="M145 281h46v22h-46z" fill="#fff1a8"/>
+      <path d="M87 313h28v11H87z" fill="#2c2438"/>
+      <path d="M148 313h28v11h-28z" fill="#2c2438"/>
+    </g>
+    <g id="face-east-asian">
+      <path d="M67 82h130v149l-26 37H97l-30-38z" fill="#f3b98e" stroke="#2c2438" stroke-width="6"/>
+      <path d="M83 96h98v128l-20 31h-58l-20-32z" fill="#ffe0bf"/>
+      <path d="M92 151h34v24H92z" fill="#2c2438"/>
+      <path d="M139 151h34v24h-34z" fill="#2c2438"/>
+      <path d="M96 154h26v17H96z" fill="#fff8ff"/>
+      <path d="M143 154h26v17h-26z" fill="#fff8ff"/>
+      <path d="M103 153h13v24h-13z" fill="#2d3158"/>
+      <path d="M150 153h13v24h-13z" fill="#2d3158"/>
+      <path d="M108 154h7v9h-7z" fill="#57dcca"/>
+      <path d="M155 154h7v9h-7z" fill="#57dcca"/>
+      <path d="M100 174h16v4h-16z" fill="#ff7cb2"/>
+      <path d="M147 174h16v4h-16z" fill="#ff7cb2"/>
+      <path d="M88 137h40v7H88z" fill="#2c2438"/>
+      <path d="M138 137h40v7h-40z" fill="#2c2438"/>
+      <path d="M129 181h10v20h-10z" fill="#e8aa82"/>
+      <path d="M113 214h40v9h-40z" fill="#945a65"/>
+      <path d="M95 190h24v12H95z" fill="#ff8bbd" opacity=".78"/>
+      <path d="M148 190h24v12h-24z" fill="#ff8bbd" opacity=".78"/>
+      <path d="M82 122h10v82H82z" fill="#f7c09b" opacity=".45"/>
+      <path d="M176 122h8v82h-8z" fill="#f7c09b" opacity=".4"/>
+    </g>
+    <g id="medical-ui">
+      <path d="M27 37h57v24H27z" fill="#fff1a8" stroke="#2c2438" stroke-width="6"/>
+      <path d="M178 44h46v24h-46z" fill="#d9fff7" stroke="#2c2438" stroke-width="6"/>
+      <path d="M188 37h12v38h-12z" fill="#57dcca"/>
+      <path d="M166 305h54v24h-54z" fill="#fff1a8" stroke="#2c2438" stroke-width="5"/>
+      <text x="174" y="322" font-family="Arial, sans-serif" font-size="15" font-weight="900" fill="#2c2438">MED</text>
+    </g>
+  </defs>
+
+  <symbol id="portrait-star" viewBox="0 0 260 360">
+    <use href="#portrait-shadow"/>
+    <path d="M28 329V62h205v267z" fill="#eafff9" stroke="#2c2438" stroke-width="8"/>
+    <path d="M36 80h187v20H36zm0 154h187v18H36z" fill="#ff7cb2" opacity=".28"/>
+    <use href="#coat-base"/>
+    <use href="#face-east-asian"/>
+    <path d="M55 83h151v56H55z" fill="#2d2144"/>
+    <path d="M74 54h113v48H74z" fill="#3b285e"/>
+    <path d="M70 54h62L84 232H54V96z" fill="#2d2144"/>
+    <path d="M166 54h35v178h-45V96z" fill="#2d2144"/>
+    <path d="M75 74h115v33H75z" fill="#76509a"/>
+    <path d="M112 71l-54 67h38l57-67z" fill="#9c62be"/>
+    <path d="M169 96l-52 64h44l36-43V96z" fill="#9c62be"/>
+    <path d="M54 225h42v72c0 23-12 39-29 39-8 0-13-3-13-3z" fill="#74488e"/>
+    <path d="M184 217h38v109h-38z" fill="#74488e"/>
+    <use href="#medical-ui"/>
+  </symbol>
+
+  <symbol id="portrait-round" viewBox="0 0 260 360">
+    <use href="#portrait-shadow"/>
+    <path d="M30 329V64h200v265z" fill="#f5fffb" stroke="#2c2438" stroke-width="8"/>
+    <path d="M37 79h186v19H37zm0 147h186v18H37z" fill="#57dcca" opacity=".26"/>
+    <use href="#coat-base"/>
+    <use href="#face-east-asian"/>
+    <path d="M62 98c2-45 26-69 72-69 45 0 68 26 68 69v34H62z" fill="#33415d"/>
+    <path d="M76 54h112v55H76z" fill="#556a8f"/>
+    <path d="M59 102h34v143H59z" fill="#33415d"/>
+    <path d="M177 101h31v142h-31z" fill="#33415d"/>
+    <path d="M78 72h61l-38 54H70z" fill="#7da0d0"/>
+    <rect x="78" y="148" width="43" height="35" fill="none" stroke="#2c2438" stroke-width="6"/>
+    <rect x="142" y="148" width="43" height="35" fill="none" stroke="#2c2438" stroke-width="6"/>
+    <rect x="121" y="163" width="21" height="5" fill="#2c2438"/>
+    <use href="#medical-ui"/>
+  </symbol>
+
+  <symbol id="portrait-cap" viewBox="0 0 260 360">
+    <use href="#portrait-shadow"/>
+    <path d="M31 329V64h198v265z" fill="#f5fffb" stroke="#2c2438" stroke-width="8"/>
+    <path d="M37 76h186v22H37zm0 153h186v17H37z" fill="#ffe27a" opacity=".3"/>
+    <use href="#coat-base"/>
+    <use href="#face-east-asian"/>
+    <path d="M58 76h148v51H58z" fill="#3c7bdd"/>
+    <path d="M70 48h126v43H70z" fill="#57dcca"/>
+    <path d="M64 68h132v18H64z" fill="#fff1a8"/>
+    <path d="M59 112h32v116H59z" fill="#2b5dff"/>
+    <path d="M174 112h32v116h-32z" fill="#2b5dff"/>
+    <path d="M89 70h82v16H89z" fill="#3c7bdd"/>
+    <path d="M106 211h52v10h-52z" fill="#ffffff"/>
+    <use href="#medical-ui"/>
+  </symbol>
+
+  <symbol id="portrait-bow" viewBox="0 0 260 360">
+    <use href="#portrait-shadow"/>
+    <path d="M28 329V62h205v267z" fill="#fff8fb" stroke="#2c2438" stroke-width="8"/>
+    <path d="M36 80h187v20H36zm0 154h187v18H36z" fill="#57dcca" opacity=".24"/>
+    <use href="#coat-base"/>
+    <use href="#face-east-asian"/>
+    <path d="M58 82h148v60H58z" fill="#503021"/>
+    <path d="M76 45h112v56H76z" fill="#7a4d8c"/>
+    <path d="M52 95h42v190H52z" fill="#503021"/>
+    <path d="M174 95h39v184h-39z" fill="#503021"/>
+    <path d="M62 52l34 20-34 22z" fill="#ff7cb2" stroke="#2c2438" stroke-width="5"/>
+    <path d="M126 52L92 72l34 22z" fill="#ff7cb2" stroke="#2c2438" stroke-width="5"/>
+    <rect x="88" y="63" width="15" height="18" fill="#fff1a8"/>
+    <path d="M112 214h41v11h-41z" fill="#945a65"/>
+    <use href="#medical-ui"/>
+  </symbol>
+
+  <symbol id="portrait-shade" viewBox="0 0 260 360">
+    <use href="#portrait-shadow"/>
+    <path d="M31 329V64h198v265z" fill="#effffc" stroke="#2c2438" stroke-width="8"/>
+    <path d="M37 80h186v19H37zm0 148h186v18H37z" fill="#ff7cb2" opacity=".22"/>
+    <use href="#coat-base"/>
+    <use href="#face-east-asian"/>
+    <path d="M61 91h144v49H61z" fill="#20384d"/>
+    <path d="M76 48h112v54H76z" fill="#3c5f60"/>
+    <path d="M61 106h35v139H61z" fill="#20384d"/>
+    <path d="M175 106h31v138h-31z" fill="#20384d"/>
+    <rect x="77" y="149" width="44" height="26" fill="#151526"/>
+    <rect x="143" y="149" width="44" height="26" fill="#151526"/>
+    <rect x="121" y="159" width="22" height="5" fill="#151526"/>
+    <rect x="101" y="151" width="10" height="9" fill="#57dcca"/>
+    <rect x="168" y="151" width="10" height="9" fill="#57dcca"/>
+    <path d="M110 215h45v8h-45z" fill="#945a65"/>
+    <use href="#medical-ui"/>
+  </symbol>
+
+  <symbol id="portrait-bun" viewBox="0 0 260 360">
+    <use href="#portrait-shadow"/>
+    <path d="M30 329V64h200v265z" fill="#fffdf7" stroke="#2c2438" stroke-width="8"/>
+    <path d="M38 79h184v19H38zm0 150h184v18H38z" fill="#57dcca" opacity=".25"/>
+    <use href="#coat-base"/>
+    <use href="#face-east-asian"/>
+    <circle cx="67" cy="80" r="31" fill="#8c5a3a" stroke="#2c2438" stroke-width="6"/>
+    <circle cx="193" cy="80" r="31" fill="#8c5a3a" stroke="#2c2438" stroke-width="6"/>
+    <path d="M58 91h148v53H58z" fill="#6b4939"/>
+    <path d="M75 48h114v56H75z" fill="#8c5a3a"/>
+    <path d="M59 110h34v132H59z" fill="#6b4939"/>
+    <path d="M174 110h32v132h-32z" fill="#6b4939"/>
+    <path d="M82 64h100v15H82z" fill="#fff1a8"/>
+    <path d="M111 214h42v8h-42z" fill="#945a65"/>
+    <use href="#medical-ui"/>
+  </symbol>
+
+  <symbol id="portrait-boss" viewBox="0 0 260 360">
+    <use href="#portrait-shadow"/>
+    <path d="M28 329V56h205v273z" fill="#fff8fb" stroke="#2c2438" stroke-width="8"/>
+    <path d="M36 76h187v19H36zm0 154h187v18H36z" fill="#ff7cb2" opacity=".25"/>
+    <path d="M42 345V231h179v114z" fill="#2e2a52"/>
+    <path d="M60 345l32-103h81l31 103z" fill="#fffdf7"/>
+    <path d="M112 252h39v93h-39z" fill="#30253d"/>
+    <path d="M125 258h13v87h-13z" fill="#ff7cb2"/>
+    <path d="M69 87h126v144l-25 36H98l-29-37z" fill="#ffd4a8"/>
+    <path d="M84 98h96v123l-19 31h-59l-18-32z" fill="#ffe0bf"/>
+    <path d="M51 84c5-43 31-63 82-63 48 0 75 21 78 63v54H51z" fill="#dfe8f3"/>
+    <path d="M68 49h130v57H68z" fill="#ffffff"/>
+    <path d="M54 101h39v126H54z" fill="#dfe8f3"/>
+    <path d="M175 101h39v126h-39z" fill="#dfe8f3"/>
+    <rect x="79" y="148" width="43" height="32" fill="#fffdf7" stroke="#2c2438" stroke-width="6"/>
+    <rect x="143" y="148" width="43" height="32" fill="#fffdf7" stroke="#2c2438" stroke-width="6"/>
+    <rect x="122" y="162" width="21" height="5" fill="#2c2438"/>
+    <rect x="94" y="155" width="15" height="25" fill="#2e2a52"/>
+    <rect x="157" y="155" width="15" height="25" fill="#2e2a52"/>
+    <rect x="101" y="156" width="7" height="8" fill="#ff7cb2"/>
+    <rect x="164" y="156" width="7" height="8" fill="#57dcca"/>
+    <path d="M88 136h36v7H88z" fill="#2e2a52"/>
+    <path d="M140 136h36v7h-36z" fill="#2e2a52"/>
+    <path d="M106 211h52v15h-52z" fill="#2e2a52"/>
+    <path d="M95 191h22v12H95z" fill="#ff8bbd" opacity=".55"/>
+    <path d="M151 191h22v12h-22z" fill="#ff8bbd" opacity=".55"/>
+    <use href="#medical-ui"/>
+  </symbol>
+</svg>

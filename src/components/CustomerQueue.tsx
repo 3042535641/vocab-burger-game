@@ -6,6 +6,7 @@ import {
   getUrgencyLabel,
   getWaitedSeconds,
 } from '../utils/gameLogic'
+import { getPortraitHref } from '../utils/portraits'
 
 const moodLabels: Record<Mood, string> = {
   happy: '淡定背词',
@@ -20,36 +21,65 @@ type CustomerQueueProps = {
   onSelectCustomer: (id: number) => void
 }
 
-function CustomerFace({
+const expressionLabels: Record<Mood, string> = {
+  happy: '背词稳住',
+  waiting: '开始催单',
+  worried: '瞳孔地震',
+  angry: '红温查词',
+}
+
+function CustomerPortrait({
   avatar,
   isBoss,
   mood,
-  stage = false,
 }: {
   avatar: Customer['avatar']
   isBoss: boolean
   mood: Mood
-  stage?: boolean
 }) {
   return (
-    <span
-      className={`customer-avatar ${stage ? 'stage-avatar' : ''} avatar-${avatar} face-${mood} ${
-        isBoss ? 'face-boss' : ''
-      }`}
-      aria-hidden="true"
-    >
-      <span className="face-hair" />
-      <span className="face-brow face-brow-left" />
-      <span className="face-brow face-brow-right" />
-      <span className="face-eye face-eye-left" />
-      <span className="face-eye face-eye-right" />
-      <span className="face-mouth" />
-      <span className="face-sweat" />
-      <span className="face-blush face-blush-left" />
-      <span className="face-blush face-blush-right" />
-      <span className="face-fever" />
-      {isBoss && <span className="face-title">教授</span>}
-    </span>
+    <div className={`portrait-stage portrait-${avatar} mood-${mood}`}>
+      <svg className="portrait-art" viewBox="0 0 260 360" aria-hidden="true">
+        <use href={getPortraitHref(avatar, isBoss)} />
+      </svg>
+      <span className="vn-bust" aria-hidden="true">
+        <span className="vn-hair-back" />
+        <span className="vn-shoulders" />
+        <span className="vn-neck" />
+        <span className="vn-face">
+          <span className="vn-ear ear-left" />
+          <span className="vn-ear ear-right" />
+          <span className="vn-bang bang-left" />
+          <span className="vn-bang bang-mid" />
+          <span className="vn-bang bang-right" />
+          <span className="vn-brow brow-left" />
+          <span className="vn-brow brow-right" />
+          <span className="vn-eye eye-left">
+            <span />
+          </span>
+          <span className="vn-eye eye-right">
+            <span />
+          </span>
+          <span className="vn-nose" />
+          <span className="vn-mouth" />
+          <span className="vn-blush blush-left" />
+          <span className="vn-blush blush-right" />
+          <span className="vn-sweat" />
+          <span className="vn-vein" />
+        </span>
+        <span className="vn-accessory" />
+      </span>
+      <span className="portrait-face-mask" />
+      <span className="portrait-brow-pop brow-left" />
+      <span className="portrait-brow-pop brow-right" />
+      <span className="portrait-eye-pop eye-left" />
+      <span className="portrait-eye-pop eye-right" />
+      <span className="portrait-mouth-pop" />
+      <span className="portrait-sweat-drop" />
+      <span className="portrait-vein" />
+      <span className="portrait-med-chip">MED</span>
+      <span className="portrait-expression">{expressionLabels[mood]}</span>
+    </div>
   )
 }
 
@@ -103,11 +133,10 @@ function CustomerQueue({
 
       <div className="character-stage">
         <div className="character-portrait-wrap">
-          <CustomerFace
+          <CustomerPortrait
             avatar={activeCustomer.avatar}
             isBoss={activeCustomer.isBoss}
             mood={mood}
-            stage
           />
           <span className={`character-mood mood-${mood}`}>
             {moodLabels[mood]}

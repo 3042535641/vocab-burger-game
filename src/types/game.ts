@@ -1,6 +1,11 @@
 import type { WordEntry } from '../data/words'
 
-export type GameStatus = 'idle' | 'playing' | 'ended'
+export type GameStatus =
+  | 'idle'
+  | 'playing'
+  | 'customerHandoff'
+  | 'bossFinale'
+  | 'ended'
 
 export type Mood = 'happy' | 'waiting' | 'worried' | 'angry'
 

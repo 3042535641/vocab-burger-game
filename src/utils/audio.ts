@@ -1,5 +1,5 @@
 const baseUrl = import.meta.env.BASE_URL
-const audioVersion = '20260521-pixel-vn-groove'
+const audioVersion = '20260521-v2-blues-rap'
 const versionedAudio = (fileName: string) =>
   `${baseUrl}audio/${fileName}?v=${audioVersion}`
 
@@ -525,7 +525,7 @@ class GameAudio {
   }
 
   private getGrooveInterval() {
-    return this.leanMode ? 640 : 280
+    return this.leanMode ? 720 : 360
   }
 
   private getDirectVoiceLimit() {
@@ -929,8 +929,8 @@ class GameAudio {
       this.music.volume = 0.2
     }
 
-    this.music.volume = this.leanMode ? 0.24 : 0.46
-    this.music.playbackRate = this.leanMode ? 1 : 1.08
+    this.music.volume = this.leanMode ? 0.24 : 0.5
+    this.music.playbackRate = this.leanMode ? 0.96 : 0.98
     void this.music.play().catch(() => undefined)
     this.startGroove()
   }

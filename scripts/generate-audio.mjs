@@ -95,31 +95,31 @@ function writeWav(samples) {
 }
 
 function renderKitchenGroove() {
-  const bpm = 126
+  const bpm = 104
   const beats = 64
   const seconds = (60 / bpm) * beats
   const totalSamples = Math.floor(seconds * sampleRate)
   const samples = new Float32Array(totalSamples)
-  const bass = ['D2', 'F2', 'A2', 'F2', 'E2', 'G2', 'B2', 'G2']
+  const bass = ['E2', 'E2', 'G2', 'A2', 'B1', 'D2', 'E2', 'G2', 'A2', 'G2', 'E2', 'D2', 'B1', 'D2', 'E2', 'E2']
   const melody = [
-    'A4',
-    'C5',
-    'D5',
-    'C5',
-    'A4',
+    'E4',
     'G4',
     'A4',
+    'B4',
+    'D5',
+    'B4',
+    'A4',
+    'G4',
+    'E4',
+    'B4',
+    'D5',
+    'E5',
+    'G5',
     'E5',
     'D5',
-    'F5',
-    'E5',
-    'C5',
-    'A4',
-    'G4',
-    'F4',
-    'G4',
+    'B4',
   ]
-  const chordRoots = ['D4', 'F4', 'G4', 'A4']
+  const chordRoots = ['E3', 'G3', 'A3', 'B3']
 
   for (let index = 0; index < totalSamples; index += 1) {
     const time = index / sampleRate
@@ -129,46 +129,74 @@ function renderKitchenGroove() {
     const sixteenth = Math.floor(beat * 4)
     const sixteenthPhase = (beat * 4) % 1
     const phrase = beat / beats
-    const swing = sixteenth % 2 === 1 ? 0.035 : 0
+    const bar = Math.floor(beat / 4)
+    const sectionLift = bar % 8 >= 4 ? 1.12 : 1
+    const lateHat = sixteenth % 2 === 1 ? 0.78 : 1
     let value = 0
 
     const bassFrequency = noteToFrequency(bass[sixteenth % bass.length])
-    value += saw(time * bassFrequency * (1 + swing)) * envelope(sixteenthPhase, 0.02, 0.42) * 0.22
-    value += Math.sin(time * tau * bassFrequency * 0.5) * envelope(beatPhase, 0.01, 0.24) * 0.11
+    if (sixteenth % 2 === 0 || sixteenth % 16 === 11 || sixteenth % 16 === 15) {
+      value += saw(time * bassFrequency) * envelope(sixteenthPhase, 0.012, 0.42) * 0.28
+      value += pulse(time * bassFrequency * 2, 0.36) * envelope(sixteenthPhase, 0.008, 0.26) * 0.06
+      value += Math.sin(time * tau * bassFrequency * 0.5) * envelope(beatPhase, 0.008, 0.24) * 0.16
+    }
 
-    if (sixteenth % 2 === 0) {
+    if (
+      sixteenth % 8 === 0 ||
+      sixteenth % 8 === 3 ||
+      sixteenth % 8 === 5 ||
+      sixteenth % 16 === 14
+    ) {
       const melodyFrequency = noteToFrequency(melody[Math.floor(sixteenth / 2) % melody.length])
-      value += triangle(time * melodyFrequency) * envelope((beat * 2) % 1, 0.015, 0.32) * 0.18
-      value += pulse(time * melodyFrequency * 2, 0.35) * envelope((beat * 2) % 1, 0.01, 0.22) * 0.055
+      const bend = melodyFrequency * (sixteenth % 16 === 14 ? 1.18 : 0.985)
+      value += triangle(time * melodyFrequency) * envelope(sixteenthPhase, 0.012, 0.32) * 0.17 * sectionLift
+      value += pulse(time * bend * 2, 0.34) * envelope(sixteenthPhase, 0.008, 0.24) * 0.055
     }
 
-    if (sixteenth % 8 === 2 || sixteenth % 8 === 6) {
+    if (sixteenth % 8 === 2 || sixteenth % 8 === 6 || sixteenth % 16 === 12) {
       const chord = noteToFrequency(chordRoots[Math.floor(sixteenth / 8) % chordRoots.length])
-      value += triangle(time * chord) * envelope(sixteenthPhase, 0.02, 0.55) * 0.07
-      value += triangle(time * chord * 1.25) * envelope(sixteenthPhase, 0.02, 0.55) * 0.052
-      value += pulse(time * chord * 1.5, 0.42) * envelope(sixteenthPhase, 0.02, 0.55) * 0.044
+      value += triangle(time * chord) * envelope(sixteenthPhase, 0.016, 0.52) * 0.085
+      value += triangle(time * chord * 1.2) * envelope(sixteenthPhase, 0.016, 0.52) * 0.055
+      value += pulse(time * chord * 1.5, 0.42) * envelope(sixteenthPhase, 0.016, 0.5) * 0.038
     }
 
-    if (beatIndex % 4 === 0 && beatPhase < 0.16) {
-      value += Math.sin(time * tau * (96 - beatPhase * 260)) * envelope(beatPhase / 0.16, 0.02, 0.58) * 0.42
+    if (beatIndex % 4 === 0 && beatPhase < 0.18) {
+      value += Math.sin(time * tau * (92 - beatPhase * 220)) * envelope(beatPhase / 0.18, 0.01, 0.5) * 0.5
+      value += saw(time * 46) * envelope(beatPhase / 0.18, 0.01, 0.42) * 0.1
     }
 
-    if (beatIndex % 4 === 2 && beatPhase < 0.22) {
-      value += noise(index) * envelope(beatPhase / 0.22, 0.01, 0.4) * 0.24
-      value += Math.sin(time * tau * 188) * envelope(beatPhase / 0.22, 0.01, 0.45) * 0.12
+    if (beatIndex % 4 === 2 && beatPhase < 0.2) {
+      value += noise(index) * envelope(beatPhase / 0.2, 0.008, 0.34) * 0.24
+      value += Math.sin(time * tau * 164) * envelope(beatPhase / 0.2, 0.008, 0.42) * 0.13
     }
 
-    if (sixteenth % 2 === 1 && sixteenthPhase < 0.32) {
-      value += noise(index) * envelope(sixteenthPhase / 0.32, 0.01, 0.48) * 0.065
+    if (sixteenth % 2 === 1 && sixteenthPhase < 0.34) {
+      value += noise(index) * envelope(sixteenthPhase / 0.34, 0.01, 0.52) * 0.065 * lateHat
     }
 
-    if (sixteenth % 16 === 15 && sixteenthPhase < 0.5) {
-      value += pulse(time * 2400, 0.4) * envelope(sixteenthPhase / 0.5, 0.02, 0.36) * 0.1
+    if (sixteenth % 4 === 3 && sixteenthPhase < 0.34) {
+      value += pulse(time * 1460, 0.42) * envelope(sixteenthPhase / 0.34, 0.01, 0.3) * 0.045
     }
 
-    const fadeIn = Math.min(1, phrase * 64)
-    const fadeOut = Math.min(1, (1 - phrase) * 64)
-    samples[index] = clamp(value * Math.min(fadeIn, fadeOut, 1) * 0.78)
+    if (sixteenth % 16 === 7 || sixteenth % 16 === 15) {
+      const talkBox = 620 + sixteenthPhase * 420
+      value += pulse(time * talkBox, 0.45) * envelope(sixteenthPhase, 0.02, 0.34) * 0.075
+      value += triangle(time * talkBox * 1.5) * envelope(sixteenthPhase, 0.02, 0.34) * 0.042
+    }
+
+    if (sixteenth % 16 === 15 && sixteenthPhase < 0.55) {
+      value += pulse(time * 2200, 0.4) * envelope(sixteenthPhase / 0.55, 0.02, 0.34) * 0.105
+      value += noise(index) * envelope(sixteenthPhase / 0.55, 0.01, 0.38) * 0.07
+    }
+
+    if (bar % 8 >= 6 && sixteenth % 4 === 1) {
+      const stab = noteToFrequency(melody[(sixteenth + bar) % melody.length]) * 1.5
+      value += pulse(time * stab, 0.36) * envelope(sixteenthPhase, 0.012, 0.22) * 0.055
+      value += triangle(time * (stab / 2)) * envelope(sixteenthPhase, 0.012, 0.28) * 0.035
+    }
+
+    const edgeFade = Math.min(1, index / 720, (totalSamples - index - 1) / 720)
+    samples[index] = clamp(Math.tanh(value * 1.12) * edgeFade * 0.86)
   }
 
   return samples

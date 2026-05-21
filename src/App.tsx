@@ -58,6 +58,8 @@ import {
 import { getPixelPortraitSrc } from './utils/portraits'
 import { getUniqueWordsByEnglish, normalizeEnglish } from './utils/wordHelpers'
 import './App.css'
+import './final-polish.css'
+import './play-v2.css'
 
 function App() {
   const [gameStatus, setGameStatus] = useState<GameStatus>('idle')
@@ -81,9 +83,10 @@ function App() {
   const [finalizedRound, setFinalizedRound] = useState(false)
   const [victoryLine, setVictoryLine] = useState('')
   const [missedWords, setMissedWords] = useState<WordEntry[]>([])
-  const [musicPreviewing, setMusicPreviewing] = useState(false)
+  const [handoffCustomer, setHandoffCustomer] = useState<Customer>()
   const { clearImpact, impact, impactText, triggerImpact } = useTimedImpact()
   const finaleTimerRef = useRef<number | undefined>(undefined)
+  const handoffTimerRef = useRef<number | undefined>(undefined)
   const answerHandlerRef = useRef<(answer: string) => void>(() => undefined)
   const musicEnabled = settings.musicEnabled
   const performanceMode = settings.performanceMode
@@ -132,6 +135,7 @@ function App() {
   useEffect(() => {
     return () => {
       window.clearTimeout(finaleTimerRef.current)
+      window.clearTimeout(handoffTimerRef.current)
       gameAudio.stopMusic()
     }
   }, [])
@@ -382,6 +386,7 @@ function App() {
     const firstCustomer = createCustomer(1, false, wordPool)
 
     window.clearTimeout(finaleTimerRef.current)
+    window.clearTimeout(handoffTimerRef.current)
     window.scrollTo({ left: 0, top: 0, behavior: 'instant' })
     clearImpact()
     setView('game')
@@ -404,18 +409,21 @@ function App() {
     setFinalizedRound(false)
     setVictoryLine('')
     setMissedWords([])
+    setHandoffCustomer(undefined)
     setFeedback(null)
     setBanner('第一位医学生来了，完成 6 份普通订单后教授 Boss 登场')
   }
 
   const endGame = () => {
     window.clearTimeout(finaleTimerRef.current)
+    window.clearTimeout(handoffTimerRef.current)
     window.scrollTo({ left: 0, top: 0, behavior: 'instant' })
     clearImpact()
     gameAudio.stopMusic()
     setGameStatus('ended')
     setCustomers([])
     setActiveCustomerId(undefined)
+    setHandoffCustomer(undefined)
     setBanner('今日营业结束')
   }
 
@@ -423,7 +431,9 @@ function App() {
     const boss = createCustomer(id, true, wordPool)
 
     gameAudio.stopNormalMusic()
+    setGameStatus('playing')
     setBossSpawned(true)
+    setHandoffCustomer(undefined)
     setNextCustomerId(id + 1)
     setCustomers([boss])
     setActiveCustomerId(boss.id)
@@ -442,17 +452,21 @@ function App() {
   const finishBurger = (customer: Customer, nextCombo: number) => {
     const { gainedScore, perfectBonus } = scoreBurger(customer)
     const nextServedCount = customer.isBoss ? servedCount : servedCount + 1
+    const remainingCustomers = customers.filter((item) => item.id !== customer.id)
+    const completedCustomer: Customer = {
+      ...customer,
+      stepIndex: customer.steps.length,
+      pattySide: 'done',
+      speech: customer.isBoss
+        ? '教授的眼镜飞了：这份医学术语汉堡竟然全都讲通了！'
+        : perfectBonus > 0
+          ? '好吃到词根都发光了，今天的 terminology 直接记进长期记忆。'
+          : '这口汉堡可以，至少 diagnosis 没有拼成 dialogue。',
+    }
 
     setScore((currentScore) => currentScore + gainedScore)
-    setCustomers((currentCustomers) => {
-      const nextCustomers = currentCustomers.filter((item) => item.id !== customer.id)
-      setActiveCustomerId((currentActiveId) =>
-        currentActiveId === customer.id || !currentActiveId
-          ? nextCustomers[0]?.id
-          : currentActiveId,
-      )
-      return nextCustomers
-    })
+    setCustomers(remainingCustomers)
+    setActiveCustomerId(remainingCustomers[0]?.id)
     setFeedback({
       kind: perfectBonus ? 'correct' : 'info',
       message: perfectBonus
@@ -465,9 +479,12 @@ function App() {
     if (customer.isBoss) {
       const line = pickLine(bossVictoryLines, score + nextCombo)
       window.clearTimeout(finaleTimerRef.current)
+      window.clearTimeout(handoffTimerRef.current)
       setBossDefeated(true)
+      setHandoffCustomer(undefined)
       setVictoryLine(line)
       setBanner(line)
+      setGameStatus('bossFinale')
       gameAudio.playVictory()
       triggerImpact('victory', '教授破防！')
       finaleTimerRef.current = window.setTimeout(() => {
@@ -480,20 +497,43 @@ function App() {
     }
 
     setServedCount(nextServedCount)
-
-    if (nextServedCount >= targetRegularServed) {
-      spawnBoss(nextCustomerId)
-      return
-    }
-
+    setHandoffCustomer(completedCustomer)
+    setGameStatus('customerHandoff')
     setBanner(
       nextCombo >= 5
-        ? '连续答对 5 题，获得医学英语锦旗！'
-        : `已完成 ${nextServedCount}/${targetRegularServed}，继续营业`,
+        ? '连续答对 5 题，课堂锦旗进度拉满！'
+        : `已完成 ${nextServedCount}/${targetRegularServed}，下一位医学生准备翻卡进场。`,
     )
+
+    window.clearTimeout(handoffTimerRef.current)
+    handoffTimerRef.current = window.setTimeout(() => {
+      setHandoffCustomer(undefined)
+
+      if (nextServedCount >= targetRegularServed) {
+        spawnBoss(nextCustomerId)
+        return
+      }
+
+      if (remainingCustomers.length === 0) {
+        const fallbackCustomer = createCustomer(nextCustomerId, false, wordPool)
+        setCustomers([fallbackCustomer])
+        setActiveCustomerId(fallbackCustomer.id)
+        setNextCustomerId(nextCustomerId + 1)
+        setBanner('下一位医学生翻卡进场，术语台继续营业。')
+        gameAudio.playArrival()
+      }
+
+      setGameStatus('playing')
+      handoffTimerRef.current = undefined
+    }, performanceMode ? 900 : 1500)
+    return
   }
 
   const handleAnswerInternal = (answer: string) => {
+    if (gameStatus !== 'playing') {
+      return
+    }
+
     if (!activeCustomer || !activeQuestion) {
       return
     }
@@ -598,7 +638,6 @@ function App() {
       if (currentSettings.musicEnabled) {
         gameAudio.setEnabled(false)
         gameAudio.stopMusic()
-        setMusicPreviewing(false)
         saveSettings(nextSettings)
         return nextSettings
       }
@@ -618,55 +657,8 @@ function App() {
     })
   }
 
-  const previewMusic = () => {
-    if (musicPreviewing) {
-      gameAudio.stopMusic()
-      setMusicPreviewing(false)
-      return
-    }
-
-    setSettings((currentSettings) => {
-      const nextSettings = currentSettings.musicEnabled
-        ? currentSettings
-        : {
-            ...currentSettings,
-            musicEnabled: true,
-          }
-
-      gameAudio.setEnabled(true)
-
-      if (gameStatus === 'playing' && bossSpawned && !bossDefeated) {
-        gameAudio.startBossMusic()
-      } else {
-        gameAudio.startMusic()
-      }
-
-      gameAudio.playServe(false)
-      setMusicPreviewing(true)
-
-      if (!currentSettings.musicEnabled) {
-        saveSettings(nextSettings)
-      }
-
-      return nextSettings
-    })
-  }
-
-  const togglePerformanceMode = () => {
-    setSettings((currentSettings) => {
-      const nextSettings = {
-        ...currentSettings,
-        performanceMode: !currentSettings.performanceMode,
-      }
-
-      saveSettings(nextSettings)
-      return nextSettings
-    })
-  }
-
   const openWordManager = () => {
     gameAudio.stopMusic()
-    setMusicPreviewing(false)
     setView('words')
   }
 
@@ -883,8 +875,8 @@ function App() {
             <button type="button" className="small-action" onClick={openWordManager}>
               管理词库
             </button>
-            <button type="button" className="small-action" onClick={previewMusic}>
-              {musicPreviewing ? '停止试听' : '试听新曲'}
+            <button type="button" className="small-action" onClick={toggleMusic}>
+              {musicEnabled ? '音乐开' : '音乐关'}
             </button>
           </div>
         </section>
@@ -943,13 +935,13 @@ function App() {
         combo >= 3 ? 'combo-hot' : ''
       } ${bossSpawned && !bossDefeated ? 'boss-mode' : ''} ${
         performanceMode ? 'performance-mode' : ''
-      }`}
+      } status-${gameStatus}`}
     >
       <div className="landscape-hint" role="status" aria-live="polite">
         <strong>手机横屏体验更完整</strong>
         <span>请把手机横过来，角色立绘、术语制作台、订单小票和答题区会像游戏机界面一样展开。</span>
       </div>
-      {impact === 'victory' && <BossFinale />}
+      {(gameStatus === 'bossFinale' || impact === 'victory') && <BossFinale />}
       {impactText && impact !== 'victory' && (
         <div className={`hit-text hit-${impact}`}>{impactText}</div>
       )}
@@ -967,16 +959,6 @@ function App() {
           </span>
           <button type="button" className="small-action" onClick={toggleMusic}>
             {musicEnabled ? '音乐开' : '音乐关'}
-          </button>
-          <button type="button" className="small-action" onClick={previewMusic}>
-            {musicPreviewing ? '停止' : '试听'}
-          </button>
-          <button
-            type="button"
-            className="small-action"
-            onClick={togglePerformanceMode}
-          >
-            {performanceMode ? '性能模式' : '特效开'}
           </button>
           <button
             type="button"
@@ -1017,24 +999,25 @@ function App() {
         <CustomerQueue
           customers={customers}
           activeCustomerId={activeCustomer?.id}
+          handoffCustomer={handoffCustomer}
           onSelectCustomer={setActiveCustomerId}
         />
         <BurgerStation
-          customer={activeCustomer}
+          customer={handoffCustomer ?? activeCustomer}
           customers={customers}
           activeCustomerId={activeCustomer?.id}
           onSelectCustomer={setActiveCustomerId}
         />
         <OrderTicket
-          customer={activeCustomer}
+          customer={handoffCustomer ?? activeCustomer}
           servedCount={servedCount}
           targetServed={targetRegularServed}
           bossSpawned={bossSpawned}
         />
         <QuizPanel
-          hasCustomer={Boolean(activeCustomer)}
-          question={activeQuestion}
-          stationText={activeStep?.stationText}
+          hasCustomer={gameStatus === 'playing' && Boolean(activeCustomer)}
+          question={gameStatus === 'playing' ? activeQuestion : undefined}
+          stationText={gameStatus === 'playing' ? activeStep?.stationText : undefined}
           feedback={feedback}
           combo={combo}
           onAnswer={handleAnswer}

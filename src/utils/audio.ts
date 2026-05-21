@@ -1,5 +1,5 @@
 const baseUrl = import.meta.env.BASE_URL
-const audioVersion = '20260519-lab-diner-groove'
+const audioVersion = '20260521-vn-burger-electro-rock'
 const versionedAudio = (fileName: string) =>
   `${baseUrl}audio/${fileName}?v=${audioVersion}`
 
@@ -63,6 +63,7 @@ class GameAudio {
   private oneShotPools = new Map<string, HTMLAudioElement[]>()
   private grooveTimer?: number
   private grooveStep = 0
+  private directVoicesThisStep = 0
   private pageVisible = true
 
   private getAudioContext() {
@@ -197,6 +198,12 @@ class GameAudio {
       return
     }
 
+    if (this.directVoicesThisStep >= this.getDirectVoiceLimit()) {
+      return
+    }
+
+    this.directVoicesThisStep += 1
+
     const context = this.getAudioContext()
     const oscillator = context.createOscillator()
     const gain = context.createGain()
@@ -222,6 +229,12 @@ class GameAudio {
     if (!this.enabled || !this.pageVisible) {
       return
     }
+
+    if (this.directVoicesThisStep >= this.getDirectVoiceLimit()) {
+      return
+    }
+
+    this.directVoicesThisStep += 1
 
     const context = this.getAudioContext()
     const sampleRate = context.sampleRate
@@ -254,22 +267,24 @@ class GameAudio {
     const cycle = step % 16
 
     if (cycle === 0 || cycle === 8) {
-      this.playDirectTone(74, 0.12, 'sine', 0.07 * hype, 37)
-      this.playDirectNoise(0.04, 0.026 * hype, 140)
+      this.playDirectTone(61, 0.16, 'sine', 0.085 * hype, 31)
+      this.playDirectTone(122, 0.08, 'sawtooth', 0.034 * hype, 61)
+      this.playDirectNoise(0.045, 0.03 * hype, 120)
     }
 
     if (cycle === 4 || cycle === 12) {
-      this.playDirectNoise(0.085, 0.048 * hype, 980)
-      this.playDirectTone(196, 0.04, 'triangle', 0.026 * hype, 98)
+      this.playDirectNoise(0.09, 0.058 * hype, 1220)
+      this.playDirectTone(220, 0.05, 'triangle', 0.03 * hype, 110)
+      this.playDirectTone(880, 0.035, 'square', 0.018 * hype, 1320)
     }
 
-    if (!this.leanMode && cycle % 2 === 1) {
-      this.playDirectNoise(0.026, 0.019 * hype, cycle % 4 === 1 ? 2800 : 4200)
+    if (!this.leanMode && (cycle === 2 || cycle === 5 || cycle === 10 || cycle === 13)) {
+      this.playDirectNoise(0.028, 0.024 * hype, cycle % 4 === 1 ? 3100 : 4600)
     }
 
     if (!this.leanMode && (cycle === 6 || cycle === 14)) {
-      this.playDirectNoise(0.035, 0.018 * hype, 1800)
-      this.playDirectTone(3136, 0.025, 'square', 0.012 * hype, 2093)
+      this.playDirectNoise(0.04, 0.024 * hype, 1900)
+      this.playDirectTone(3136, 0.03, 'square', 0.018 * hype, 2093)
     }
   }
 
@@ -279,6 +294,11 @@ class GameAudio {
     }
 
     const cycle = step % 32
+
+    if (cycle % 2 === 1 && ![7, 15, 23, 31].includes(cycle)) {
+      return
+    }
+
     const frequency = kitchenGroove.hook[cycle]
 
     this.playDirectTone(
@@ -299,6 +319,26 @@ class GameAudio {
     this.playDirectTone(root, duration, 'triangle', volume, root * 1.01)
     this.playDirectTone(root * 1.25, duration * 0.88, 'square', volume * 0.48, root * 1.26)
     this.playDirectTone(root * 1.5, duration * 0.74, 'triangle', volume * 0.58, root * 1.48)
+  }
+
+  private playDirectRockChug(step: number, hype: number) {
+    if (this.leanMode) {
+      return
+    }
+
+    const cycle = step % 16
+    const roots = [61, 61, 82, 98, 61, 123, 98, 82]
+    const root = roots[Math.floor(cycle / 2) % roots.length]
+
+    if ([0, 3, 6, 7, 10, 14].includes(cycle)) {
+      this.playDirectTone(root, 0.09, 'sawtooth', 0.05 * hype, root * 0.52)
+      this.playDirectTone(root * 2, 0.06, 'square', 0.022 * hype, root * 1.5)
+    }
+
+    if (cycle === 7 || cycle === 15) {
+      this.playDirectTone(1976, 0.038, 'square', 0.022 * hype, 2960)
+      this.playDirectTone(247, 0.08, 'sawtooth', 0.028 * hype, 123)
+    }
   }
 
   private playToneSequence(items: ToneSequenceItem[]) {
@@ -339,6 +379,7 @@ class GameAudio {
       }
 
       const step = this.grooveStep
+      this.directVoicesThisStep = 0
       const leadPattern = this.bossActive ? bossGroove.lead : kitchenGroove.lead
       const bassPattern = this.bossActive ? bossGroove.bass : kitchenGroove.bass
       const lead = leadPattern[step % leadPattern.length]
@@ -351,12 +392,13 @@ class GameAudio {
       if (!this.bossActive) {
         this.playDirectKitchenBeat(step, hype)
         this.playDirectKitchenHook(step, hype)
+        this.playDirectRockChug(step, hype)
 
         this.playDirectTone(
           riff,
           grooveCycle % 2 === 0 ? 0.095 : 0.058,
           grooveCycle % 4 === 0 ? 'sawtooth' : 'triangle',
-          (grooveCycle % 4 === 0 ? 0.052 : 0.034) * hype,
+          (grooveCycle % 4 === 0 ? 0.06 : 0.038) * hype,
           grooveCycle % 4 === 0 ? riff * 0.74 : riff * 1.5,
         )
 
@@ -449,23 +491,32 @@ class GameAudio {
   }
 
   private getGrooveInterval() {
-    return this.leanMode ? 560 : 240
+    return this.leanMode ? 640 : 280
+  }
+
+  private getDirectVoiceLimit() {
+    if (this.leanMode) {
+      return 4
+    }
+
+    return this.bossActive ? 6 : 7
   }
 
   private playFinaleGroove() {
-    const bassPattern = [98, 49, 123, 61, 196, 73, 247, 49]
-    const chantPattern = [784, 1175, 988, 1568, 1175, 2093, 1568, 2349]
-    const sirenPattern = [392, 784, 523, 1175, 659, 1568, 784, 2093]
-    const slamDelays = [0, 360, 720, 1320, 2200, 3300, 4720, 6400, 8120]
+    const bassPattern = [73, 49, 98, 61, 123, 49, 147, 61]
+    const chantPattern = [784, 988, 1175, 1568, 988, 1760, 1318, 2349]
+    const sirenPattern = [392, 784, 523, 1175, 659, 1568, 880, 2093]
+    const slamDelays = [0, 280, 560, 980, 1540, 2420, 3380, 4860, 6500, 8120]
 
     slamDelays.forEach((delay, index) => {
       const heavy = index === 0 || index % 3 === 0
 
-      this.playOneShot(audioFiles.serve, heavy ? 0.88 : 0.48, heavy ? 0.82 : 0.94, delay)
-      this.playOneShot(audioFiles.wrong, heavy ? 0.22 : 0.12, 0.66, delay + 28)
-      this.playTone(73, heavy ? 0.26 : 0.15, 'sawtooth', heavy ? 0.074 : 0.045, delay)
-      this.playTone(146, 0.08, 'square', 0.04, delay + 42)
-      this.playTone(880, 0.045, 'square', 0.022, delay + 112)
+      this.playOneShot(audioFiles.serve, heavy ? 0.95 : 0.52, heavy ? 0.78 : 0.96, delay)
+      this.playOneShot(audioFiles.wrong, heavy ? 0.26 : 0.14, 0.62, delay + 28)
+      this.playTone(55, heavy ? 0.3 : 0.18, 'sawtooth', heavy ? 0.086 : 0.052, delay)
+      this.playTone(110, 0.09, 'square', 0.045, delay + 42)
+      this.playTone(880, 0.05, 'square', 0.026, delay + 112)
+      this.playTone(1760, 0.035, 'triangle', 0.018, delay + 152)
     })
 
     for (let index = 0; index < (this.leanMode ? 14 : 24); index += 1) {
@@ -476,13 +527,8 @@ class GameAudio {
       const strongBeat = index % 4 === 0
       const offBeat = index % 4 === 2
 
-      this.playTone(
-        bass,
-        strongBeat ? 0.19 : 0.1,
-        'sawtooth',
-        strongBeat ? 0.056 : 0.034,
-        delay,
-      )
+      this.playTone(bass, strongBeat ? 0.22 : 0.11, 'sawtooth', strongBeat ? 0.064 : 0.038, delay)
+      this.playTone(bass * 2, 0.07, 'square', strongBeat ? 0.028 : 0.018, delay + 38)
 
       this.playTone(
         chant,
@@ -599,7 +645,7 @@ class GameAudio {
         ? 0.08
         : this.bossActive
           ? 0.06
-          : 0.28 + this.intensity * 0.08
+          : (this.leanMode ? 0.24 : 0.38) + this.intensity * 0.12
       this.music.playbackRate = this.finaleActive
         ? 0.92
         : this.bossActive
@@ -635,8 +681,8 @@ class GameAudio {
       this.bossMusic.loop = true
     }
 
-    this.bossMusic.volume = this.leanMode ? 0.42 : 0.6
-    this.bossMusic.playbackRate = 0.7
+    this.bossMusic.volume = this.leanMode ? 0.46 : 0.72
+    this.bossMusic.playbackRate = 0.76
     void this.bossMusic.play().catch(() => undefined)
 
     if (this.music) {
@@ -839,8 +885,8 @@ class GameAudio {
       this.music.volume = 0.2
     }
 
-    this.music.volume = this.leanMode ? 0.22 : 0.34
-    this.music.playbackRate = this.leanMode ? 0.98 : 1.04
+    this.music.volume = this.leanMode ? 0.24 : 0.46
+    this.music.playbackRate = this.leanMode ? 1 : 1.08
     void this.music.play().catch(() => undefined)
     this.startGroove()
   }

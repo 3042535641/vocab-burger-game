@@ -1,0 +1,233 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skinSoft" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff2dc"/>
+      <stop offset=".58" stop-color="#ffd8bd"/>
+      <stop offset="1" stop-color="#f0ac92"/>
+    </linearGradient>
+    <linearGradient id="skinWarm" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff0ce"/>
+      <stop offset=".62" stop-color="#ffd0a7"/>
+      <stop offset="1" stop-color="#e99a83"/>
+    </linearGradient>
+    <linearGradient id="lensPink" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff4ff"/>
+      <stop offset=".55" stop-color="#ff9ccc"/>
+      <stop offset="1" stop-color="#61405f"/>
+    </linearGradient>
+    <linearGradient id="lensCyan" x1="0" x2="1">
+      <stop offset="0" stop-color="#eaffff"/>
+      <stop offset=".55" stop-color="#67efe3"/>
+      <stop offset="1" stop-color="#263f6b"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="6" dy="8" stdDeviation="0" flood-color="#2c2438" flood-opacity=".45"/>
+      <feDropShadow dx="0" dy="14" stdDeviation="10" flood-color="#2c2438" flood-opacity=".22"/>
+    </filter>
+    <g id="cardBack">
+      <rect x="20" y="20" width="220" height="318" rx="18" fill="#fffdf7" stroke="#2c2438" stroke-width="7"/>
+      <path d="M28 53h204v36H28zm0 226h204v33H28z" fill="#d9fff7"/>
+      <path d="M28 53h204v8H28zm0 248h204v8H28z" fill="#ff8fc3" opacity=".55"/>
+      <path d="M38 44h74v24H38z" fill="#fff1a8" stroke="#2c2438" stroke-width="5"/>
+      <text x="51" y="61" font-family="Arial, sans-serif" font-size="13" font-weight="900" fill="#30253d">MED</text>
+    </g>
+    <g id="labCoat">
+      <path d="M48 350v-96c0-21 20-38 46-38h72c27 0 48 17 48 38v96z" fill="#2d2848"/>
+      <path d="M70 350l27-112h68l27 112z" fill="#fffdf7"/>
+      <path d="M94 242l33 53-34 55H62z" fill="#d9fff7"/>
+      <path d="M166 242l-33 53 34 55h33z" fill="#eef7ff"/>
+      <path d="M122 245h18v105h-18z" fill="#2c2438"/>
+      <path d="M128 252h7v98h-7z" fill="#ff7cb2"/>
+      <path d="M78 298h42v16H78z" fill="#57dcca"/>
+      <path d="M144 298h42v16h-42z" fill="#fff1a8"/>
+      <path d="M83 325h31v9H83zm64 0h31v9h-31z" fill="#2c2438"/>
+    </g>
+    <g id="animeEyesBlue">
+      <path d="M87 146c13-18 34-18 44 0-10 14-34 15-44 0z" fill="#fffdf7" stroke="#2c2438" stroke-width="5"/>
+      <path d="M142 146c13-18 34-18 44 0-10 14-34 15-44 0z" fill="#fffdf7" stroke="#2c2438" stroke-width="5"/>
+      <ellipse cx="111" cy="148" rx="8" ry="13" fill="url(#lensCyan)"/>
+      <ellipse cx="166" cy="148" rx="8" ry="13" fill="url(#lensCyan)"/>
+      <circle cx="114" cy="142" r="3" fill="#fffdf7"/>
+      <circle cx="169" cy="142" r="3" fill="#fffdf7"/>
+      <path d="M82 132c14-10 33-12 51-2m6 0c17-9 36-7 52 2" fill="none" stroke="#2c2438" stroke-width="6" stroke-linecap="round"/>
+    </g>
+    <g id="animeEyesPink">
+      <path d="M87 145c13-19 34-19 45 0-10 16-35 17-45 0z" fill="#fffdf7" stroke="#2c2438" stroke-width="5"/>
+      <path d="M142 145c13-19 34-19 45 0-10 16-35 17-45 0z" fill="#fffdf7" stroke="#2c2438" stroke-width="5"/>
+      <ellipse cx="111" cy="147" rx="8" ry="14" fill="url(#lensPink)"/>
+      <ellipse cx="166" cy="147" rx="8" ry="14" fill="url(#lensPink)"/>
+      <circle cx="114" cy="141" r="3" fill="#fffdf7"/>
+      <circle cx="169" cy="141" r="3" fill="#fffdf7"/>
+      <path d="M82 132c13-13 35-14 52-3m8 0c18-11 39-9 52 3" fill="none" stroke="#2c2438" stroke-width="6" stroke-linecap="round"/>
+    </g>
+    <g id="faceBase">
+      <path d="M72 86c9-31 31-47 62-47s54 16 63 47v89c0 20-8 41-21 56l-18 20H105l-19-20c-13-15-21-36-21-56V91z" fill="#d58d7d" stroke="#2c2438" stroke-width="7"/>
+      <path d="M79 91c8-26 28-40 55-40s47 14 55 40v81c0 19-7 37-18 50l-15 18h-46l-16-18c-11-13-18-31-18-50z" fill="url(#skinSoft)"/>
+      <path d="M102 193c9 6 25 8 39 1" fill="none" stroke="#955c67" stroke-width="6" stroke-linecap="round"/>
+      <path d="M132 163l-7 24h14" fill="none" stroke="#d8907a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <ellipse cx="98" cy="181" rx="15" ry="8" fill="#ff8fc3" opacity=".55"/>
+      <ellipse cx="171" cy="181" rx="15" ry="8" fill="#ff8fc3" opacity=".5"/>
+    </g>
+    <g id="stethoscope">
+      <path d="M83 248c0 35 12 50 36 50s37-16 37-49" fill="none" stroke="#2c2438" stroke-width="6" stroke-linecap="round"/>
+      <path d="M85 248v-20m70 20v-20" fill="none" stroke="#57dcca" stroke-width="7" stroke-linecap="round"/>
+      <circle cx="169" cy="300" r="11" fill="#57dcca" stroke="#2c2438" stroke-width="5"/>
+    </g>
+  </defs>
+
+  <symbol id="portrait-star" viewBox="0 0 260 360">
+    <g filter="url(#softShadow)">
+      <use href="#cardBack"/>
+      <path d="M42 318h176v21H42z" fill="#ffb5d8"/>
+      <path d="M48 56c16-31 50-43 91-39 41 5 73 26 78 62v166H43V85z" fill="#2d2144"/>
+      <path d="M70 37c51-30 104-7 133 40v79c-15-47-41-73-89-79-31-3-51 6-69 24 1-31 8-50 25-64z" fill="#453060"/>
+      <path d="M44 95h50v196c0 32-14 50-33 50-10 0-17-4-17-4z" fill="#2d2144"/>
+      <path d="M176 94h45v240h-45z" fill="#33234b"/>
+      <path d="M78 71h122l-61 78h-44l47-58H74z" fill="#9b64c5"/>
+      <path d="M137 88l-55 95h42l75-95z" fill="#8050ad"/>
+      <use href="#labCoat"/>
+      <use href="#faceBase"/>
+      <use href="#animeEyesPink"/>
+      <path d="M68 82c28-19 70-26 123 1v33c-45-19-85-16-123 0z" fill="#2d2144"/>
+      <path d="M83 61l18 21-27 5z" fill="#ffe27a" stroke="#2c2438" stroke-width="5"/>
+      <path d="M182 78l16 9-16 10-8 18-10-18-18-10 18-9 10-18z" fill="#ff7cb2" stroke="#2c2438" stroke-width="4"/>
+      <use href="#stethoscope"/>
+    </g>
+  </symbol>
+
+  <symbol id="portrait-round" viewBox="0 0 260 360">
+    <g filter="url(#softShadow)">
+      <use href="#cardBack"/>
+      <path d="M41 319h180v20H41z" fill="#9de8ff"/>
+      <path d="M53 88c6-45 38-70 82-70s76 28 82 70v153H53z" fill="#293650"/>
+      <path d="M72 50c28-27 89-26 118 6v62H72z" fill="#54698e"/>
+      <path d="M54 115h38v172H54zm124 0h38v172h-38z" fill="#293650"/>
+      <path d="M72 76h103l-47 62H83z" fill="#7da0d0"/>
+      <use href="#labCoat"/>
+      <use href="#faceBase"/>
+      <use href="#animeEyesBlue"/>
+      <rect x="82" y="139" width="51" height="36" rx="6" fill="none" stroke="#2c2438" stroke-width="5"/>
+      <rect x="139" y="139" width="51" height="36" rx="6" fill="none" stroke="#2c2438" stroke-width="5"/>
+      <path d="M133 157h7" stroke="#2c2438" stroke-width="5"/>
+      <path d="M74 91c37-21 86-22 121 0v32c-38-17-80-17-121 0z" fill="#293650"/>
+      <path d="M63 60h50v16H63z" fill="#d9fff7" stroke="#2c2438" stroke-width="4"/>
+      <text x="68" y="72" font-family="Arial, sans-serif" font-size="11" font-weight="900" fill="#2c2438">ECG</text>
+      <use href="#stethoscope"/>
+    </g>
+  </symbol>
+
+  <symbol id="portrait-cap" viewBox="0 0 260 360">
+    <g filter="url(#softShadow)">
+      <use href="#cardBack"/>
+      <path d="M39 318h182v21H39z" fill="#80f5e6"/>
+      <path d="M55 95h156v150H55z" fill="#1f56d4"/>
+      <path d="M73 42h126v56H73z" fill="#57dcca" stroke="#2c2438" stroke-width="7"/>
+      <path d="M58 75h159v34H58z" fill="#3479ff" stroke="#2c2438" stroke-width="6"/>
+      <path d="M89 62h88v12H89z" fill="#fff1a8"/>
+      <path d="M72 111h35v165H72zm95 0h36v165h-36z" fill="#233a69"/>
+      <use href="#labCoat"/>
+      <use href="#faceBase"/>
+      <use href="#animeEyesBlue"/>
+      <path d="M74 98c42-14 91-12 124 4v30c-37-13-79-12-124 1z" fill="#2640a5"/>
+      <path d="M72 178h128v24H72z" fill="#1a2b44" opacity=".8"/>
+      <path d="M78 181h116" stroke="#57dcca" stroke-width="5" stroke-dasharray="18 8"/>
+      <path d="M43 243h53v30H43z" fill="#d9fff7" stroke="#2c2438" stroke-width="5"/>
+      <text x="52" y="264" font-family="Arial, sans-serif" font-size="15" font-weight="900" fill="#2c2438">SCAN</text>
+    </g>
+  </symbol>
+
+  <symbol id="portrait-bow" viewBox="0 0 260 360">
+    <g filter="url(#softShadow)">
+      <use href="#cardBack"/>
+      <path d="M40 318h180v21H40z" fill="#ffd5e8"/>
+      <path d="M50 84c7-42 39-65 83-65s74 26 78 66v176H50z" fill="#4d2b25"/>
+      <path d="M63 103h40v189H63zm100 0h43v189h-43z" fill="#5d352c"/>
+      <path d="M68 50h70l-64 88H45c2-39 9-68 23-88z" fill="#744c80"/>
+      <path d="M134 48h63v86h-41z" fill="#9b5bb5"/>
+      <path d="M37 56l44 28-44 29z" fill="#ff7cb2" stroke="#2c2438" stroke-width="6"/>
+      <path d="M134 56L90 84l44 29z" fill="#ff7cb2" stroke="#2c2438" stroke-width="6"/>
+      <rect x="79" y="72" width="18" height="24" fill="#fff1a8" stroke="#2c2438" stroke-width="4"/>
+      <use href="#labCoat"/>
+      <use href="#faceBase"/>
+      <use href="#animeEyesPink"/>
+      <path d="M74 86c37-18 83-17 121 3v35c-38-15-79-14-121 0z" fill="#4d2b25"/>
+      <path d="M157 238c17 20 29 42 31 67" fill="none" stroke="#ff7cb2" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="190" cy="310" r="11" fill="#ff7cb2" stroke="#2c2438" stroke-width="5"/>
+      <path d="M46 247h51v31H46z" fill="#fff1a8" stroke="#2c2438" stroke-width="5"/>
+      <text x="55" y="268" font-family="Arial, sans-serif" font-size="13" font-weight="900" fill="#2c2438">NURSE</text>
+    </g>
+  </symbol>
+
+  <symbol id="portrait-shade" viewBox="0 0 260 360">
+    <g filter="url(#softShadow)">
+      <use href="#cardBack"/>
+      <path d="M40 318h180v21H40z" fill="#c7f5d6"/>
+      <path d="M58 79c14-40 48-61 92-57 36 3 61 25 66 57v173H58z" fill="#20384d"/>
+      <path d="M76 43h112v55H76z" fill="#3c5f60"/>
+      <path d="M58 104h38v182H58zm116 0h38v182h-38z" fill="#20384d"/>
+      <path d="M81 67h110l-35 54H96z" fill="#5d8f93"/>
+      <use href="#labCoat"/>
+      <use href="#faceBase"/>
+      <path d="M75 91c38-18 82-17 122 0v38c-42-14-83-14-122 0z" fill="#20384d"/>
+      <rect x="79" y="141" width="55" height="33" rx="6" fill="#111224" stroke="#2c2438" stroke-width="5"/>
+      <rect x="140" y="141" width="55" height="33" rx="6" fill="#111224" stroke="#2c2438" stroke-width="5"/>
+      <path d="M134 157h8" stroke="#2c2438" stroke-width="5"/>
+      <path d="M92 148h31m31 0h31" stroke="#57dcca" stroke-width="4" opacity=".8"/>
+      <path d="M105 197c14 8 36 8 51 0" fill="none" stroke="#855260" stroke-width="6" stroke-linecap="round"/>
+      <path d="M47 245h47v30H47z" fill="#d9fff7" stroke="#2c2438" stroke-width="5"/>
+      <text x="56" y="266" font-family="Arial, sans-serif" font-size="14" font-weight="900" fill="#2c2438">Rx</text>
+      <path d="M175 230l27-12 8 18-27 12z" fill="#fff1a8" stroke="#2c2438" stroke-width="5"/>
+    </g>
+  </symbol>
+
+  <symbol id="portrait-bun" viewBox="0 0 260 360">
+    <g filter="url(#softShadow)">
+      <use href="#cardBack"/>
+      <path d="M39 318h181v21H39z" fill="#fff1a8"/>
+      <circle cx="61" cy="80" r="32" fill="#8c5a3a" stroke="#2c2438" stroke-width="7"/>
+      <circle cx="198" cy="80" r="32" fill="#8c5a3a" stroke="#2c2438" stroke-width="7"/>
+      <path d="M58 87c14-42 46-64 84-62 39 2 68 25 75 62v172H58z" fill="#6b4939"/>
+      <path d="M75 47h113v62H75z" fill="#9f6a42"/>
+      <path d="M58 108h39v184H58zm112 0h39v184h-39z" fill="#6b4939"/>
+      <path d="M86 66h93v14H86z" fill="#fff1a8"/>
+      <use href="#labCoat"/>
+      <use href="#faceBase"/>
+      <use href="#animeEyesBlue"/>
+      <path d="M74 92c39-17 82-17 124 0v35c-39-14-80-14-124 1z" fill="#6b4939"/>
+      <path d="M45 242h52v32H45z" fill="#fff1a8" stroke="#2c2438" stroke-width="5"/>
+      <text x="53" y="263" font-family="Arial, sans-serif" font-size="14" font-weight="900" fill="#2c2438">LAB</text>
+      <path d="M181 222l22 12-32 61-22-12z" fill="#57dcca" stroke="#2c2438" stroke-width="5"/>
+      <circle cx="158" cy="292" r="10" fill="#ff7cb2" stroke="#2c2438" stroke-width="4"/>
+    </g>
+  </symbol>
+
+  <symbol id="portrait-boss" viewBox="0 0 260 360">
+    <g filter="url(#softShadow)">
+      <rect x="18" y="16" width="224" height="322" rx="18" fill="#fff8fb" stroke="#2c2438" stroke-width="8"/>
+      <path d="M28 48h204v36H28zm0 231h204v33H28z" fill="#ffe7f2"/>
+      <path d="M48 350v-98c0-24 21-41 51-41h67c30 0 51 17 51 41v98z" fill="#29243d"/>
+      <path d="M66 350l28-115h78l28 115z" fill="#fffdf7"/>
+      <path d="M121 241h23v109h-23z" fill="#30253d"/>
+      <path d="M129 249h8v101h-8z" fill="#ff5a9f"/>
+      <path d="M49 86c7-46 39-70 85-70s77 25 84 70v170H49z" fill="#dfe8f3"/>
+      <path d="M66 45h137v70H66z" fill="#fffdf7"/>
+      <path d="M49 104h42v167H49zm124 0h42v167h-42z" fill="#dfe8f3"/>
+      <path d="M72 82c10-30 32-45 62-45s52 15 62 45v91c0 22-8 43-22 58l-18 19h-47l-18-19c-13-15-21-36-21-58z" fill="#d28d7d" stroke="#2c2438" stroke-width="7"/>
+      <path d="M80 86c9-25 28-38 54-38s45 13 54 38v82c0 20-7 38-18 51l-15 18h-42l-16-18c-11-13-17-31-17-51z" fill="url(#skinWarm)"/>
+      <rect x="78" y="138" width="54" height="36" rx="6" fill="#fffdf7" stroke="#2c2438" stroke-width="6"/>
+      <rect x="140" y="138" width="54" height="36" rx="6" fill="#fffdf7" stroke="#2c2438" stroke-width="6"/>
+      <path d="M132 156h8" stroke="#2c2438" stroke-width="6"/>
+      <ellipse cx="106" cy="155" rx="7" ry="14" fill="#30253d"/>
+      <ellipse cx="166" cy="155" rx="7" ry="14" fill="#30253d"/>
+      <circle cx="109" cy="148" r="3" fill="#ff7cb2"/>
+      <circle cx="169" cy="148" r="3" fill="#57dcca"/>
+      <path d="M82 126c15-13 36-15 53-4m7 0c18-11 39-9 53 4" stroke="#30253d" stroke-width="7" stroke-linecap="round"/>
+      <path d="M105 200c13 18 42 18 56 0" fill="none" stroke="#30253d" stroke-width="7" stroke-linecap="round"/>
+      <path d="M96 184h22m39 0h22" stroke="#ff8fc3" stroke-width="8" opacity=".55"/>
+      <path d="M43 242h54v32H43z" fill="#fff1a8" stroke="#2c2438" stroke-width="5"/>
+      <text x="53" y="263" font-family="Arial, sans-serif" font-size="14" font-weight="900" fill="#2c2438">TERM</text>
+      <path d="M175 231h44v27h-44z" fill="#d9fff7" stroke="#2c2438" stroke-width="5"/>
+      <text x="184" y="250" font-family="Arial, sans-serif" font-size="13" font-weight="900" fill="#2c2438">QUIZ</text>
+    </g>
+  </symbol>
+</svg>

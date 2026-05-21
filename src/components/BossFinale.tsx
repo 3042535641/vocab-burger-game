@@ -41,6 +41,17 @@ function BossFinale() {
         <div className="pixel-term-card card-b">-ITIS</div>
         <div className="pixel-term-card card-c">Rx PASS</div>
         <div className="pixel-burger-stamp">BONK</div>
+        <div className="finale-expression-bursts" aria-hidden="true">
+          <span className="burst-a">ROOT!</span>
+          <span className="burst-b">BUN!</span>
+          <span className="burst-c">PASS!</span>
+        </div>
+        <div className="finale-burger-bonk" aria-hidden="true">
+          <span className="bonk-bun top" />
+          <span className="bonk-cheese" />
+          <span className="bonk-patty" />
+          <span className="bonk-bun bottom" />
+        </div>
       </div>
     </div>
   )

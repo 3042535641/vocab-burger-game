@@ -1020,16 +1020,16 @@ function App() {
           targetServed={targetRegularServed}
           bossSpawned={bossSpawned}
         />
+        <QuizPanel
+          hasCustomer={Boolean(activeCustomer)}
+          question={activeQuestion}
+          stationText={activeStep?.stationText}
+          feedback={feedback}
+          combo={combo}
+          onAnswer={handleAnswer}
+        />
       </div>
 
-      <QuizPanel
-        hasCustomer={Boolean(activeCustomer)}
-        question={activeQuestion}
-        stationText={activeStep?.stationText}
-        feedback={feedback}
-        combo={combo}
-        onAnswer={handleAnswer}
-      />
       {showTutorial && tutorial}
     </main>
   )

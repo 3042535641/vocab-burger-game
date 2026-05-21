@@ -15488,3 +15488,412 @@
     transition-duration: 1ms !important;
   }
 }
+
+/* Desktop service layout: three columns, readable ticket, prominent quiz. */
+@media (min-width: 981px) {
+  .game-shell.play-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      'header header'
+      'scene scene'
+      'banner rush'
+      'layout layout';
+    align-items: start;
+    width: min(1540px, 100%);
+    height: 100svh;
+    min-height: 620px;
+    padding: 8px 14px 16px;
+    gap: 8px 10px;
+    overflow: hidden;
+  }
+
+  .play-shell .game-header {
+    grid-area: header;
+    grid-template-columns: minmax(260px, 0.26fr) minmax(0, 1fr);
+    align-items: stretch;
+    min-height: 0;
+    padding: 7px;
+  }
+
+  .play-shell .title-lockup {
+    min-height: 52px;
+    padding: 5px 10px;
+  }
+
+  .play-shell .title-lockup h1 {
+    font-size: clamp(24px, 2.35vw, 36px);
+    white-space: nowrap;
+  }
+
+  .play-shell .title-lockup::before {
+    right: 8px;
+    bottom: -10px;
+    font-size: 10px;
+  }
+
+  .play-shell .stats {
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .play-shell .stats span,
+  .play-shell .stats button {
+    min-height: 42px;
+    padding: 5px 6px;
+    border-width: 3px;
+    font-size: 11px;
+    line-height: 1.08;
+  }
+
+  .play-shell .shop-scene.compact-scene.lab-diner-scene {
+    grid-area: scene;
+    min-height: 54px;
+  }
+
+  .play-shell .lab-diner-sign {
+    top: 7px;
+    min-width: min(330px, 36vw);
+  }
+
+  .play-shell .lab-diner-sign strong {
+    font-size: clamp(18px, 2vw, 27px);
+  }
+
+  .play-shell > .banner {
+    grid-area: banner;
+  }
+
+  .play-shell > .rush-meter {
+    grid-area: rush;
+  }
+
+  .play-shell .banner,
+  .play-shell .rush-meter {
+    min-height: 44px;
+    padding: 7px 12px;
+    border-width: 4px;
+    font-size: 15px;
+  }
+
+  .play-shell .rush-meter {
+    position: relative;
+    grid-template-columns: auto minmax(90px, 1fr) auto;
+    padding-bottom: 17px;
+  }
+
+  .play-shell .rush-meter .rush-track {
+    position: absolute;
+    right: 12px;
+    bottom: 6px;
+    left: 12px;
+    height: 10px;
+  }
+
+  .play-shell .rush-meter span,
+  .play-shell .rush-meter em,
+  .play-shell .rush-meter strong {
+    font-size: 14px;
+  }
+
+  .play-shell .shop-layout {
+    grid-area: layout;
+    grid-template-columns: minmax(320px, 0.84fr) minmax(430px, 1fr) minmax(410px, 0.98fr);
+    grid-template-rows: 292px minmax(0, 1fr);
+    grid-template-areas:
+      'character station ticket'
+      'character station quiz';
+    height: clamp(560px, calc(100svh - 250px), 628px);
+    min-height: 0;
+    gap: 12px;
+    align-self: start;
+    align-items: stretch;
+  }
+
+  .play-shell .character-stage-panel,
+  .play-shell .burger-station,
+  .play-shell .order-ticket,
+  .play-shell .quiz-panel {
+    border-width: 4px;
+    box-shadow:
+      0 7px 0 rgba(44, 36, 56, 0.9),
+      0 12px 20px rgba(44, 36, 56, 0.14),
+      inset 0 0 0 3px rgba(255, 255, 255, 0.62);
+  }
+
+  .play-shell .character-stage-panel,
+  .play-shell .burger-station {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .play-shell .character-stage-panel .compact-heading {
+    margin-bottom: 6px;
+  }
+
+  .play-shell .character-stage-panel .compact-heading h2,
+  .play-shell .burger-station .section-heading h2,
+  .play-shell .order-ticket .section-heading h2 {
+    font-size: clamp(24px, 2.1vw, 34px);
+  }
+
+  .play-shell .character-stage {
+    height: calc(100% - 48px);
+    min-height: 0;
+    padding: 8px 10px 0;
+  }
+
+  .play-shell .portrait-stage {
+    width: min(258px, 86%);
+    height: clamp(232px, 29vh, 318px);
+    min-height: 232px;
+  }
+
+  .play-shell .character-dialogue {
+    margin-top: -38px;
+    padding: 10px 11px;
+  }
+
+  .play-shell .character-dialogue strong {
+    font-size: clamp(20px, 1.8vw, 27px);
+  }
+
+  .play-shell .character-dialogue p {
+    font-size: 12px;
+    line-height: 1.26;
+  }
+
+  .play-shell .stage-patience {
+    height: 8px;
+  }
+
+  .play-shell .queue-chips {
+    margin-top: 7px;
+  }
+
+  .play-shell .burger-station {
+    grid-template-rows: auto auto auto minmax(118px, 1fr) auto auto;
+    gap: 7px;
+    padding: 10px;
+  }
+
+  .play-shell .burger-station .section-heading {
+    display: grid;
+    grid-template-columns: minmax(0, auto) minmax(170px, 1fr);
+    gap: 8px;
+    align-items: center;
+    padding-bottom: 4px;
+  }
+
+  .play-shell .burger-station .section-heading span {
+    justify-self: end;
+    width: auto;
+    padding: 5px 9px;
+    font-size: 15px;
+    white-space: nowrap;
+  }
+
+  .play-shell .grill-slot {
+    min-height: 62px;
+    padding: 7px;
+  }
+
+  .play-shell .grill-slot strong,
+  .play-shell .grill-slot span,
+  .play-shell .grill-slot small {
+    line-height: 1.15;
+  }
+
+  .play-shell .grill-lights {
+    min-height: 42px;
+  }
+
+  .play-shell .burger-stack {
+    min-height: 126px;
+  }
+
+  .play-shell .burger-layer {
+    min-height: 28px;
+  }
+
+  .play-shell .cook-meters {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: 7px;
+    gap: 6px;
+  }
+
+  .play-shell .cook-meters > div {
+    min-width: 0;
+  }
+
+  .play-shell .cook-meters .meter {
+    height: 12px;
+  }
+
+  .play-shell .flip-window {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .play-shell .current-step {
+    padding: 6px 9px;
+    font-size: 14px;
+  }
+
+  .play-shell .order-ticket {
+    grid-area: ticket;
+    height: 100%;
+    min-height: 292px;
+    max-height: none;
+    overflow-y: auto;
+    padding: 14px;
+  }
+
+  .play-shell .order-ticket .section-heading {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    background: rgba(255, 253, 246, 0.96);
+  }
+
+  .play-shell .ticket-meta {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    padding: 7px;
+    font-size: 12px;
+  }
+
+  .play-shell .recipe-list li {
+    min-height: 44px;
+    padding: 7px 9px;
+    font-size: 14px;
+  }
+
+  .play-shell .quiz-panel {
+    position: static;
+    z-index: auto;
+    grid-area: quiz;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'question'
+      'answers'
+      'footer';
+    inset: auto;
+    width: auto;
+    max-width: none;
+    height: 100%;
+    min-height: 286px;
+    margin: 0;
+    padding: 11px;
+    overflow: hidden;
+  }
+
+  .play-shell .question-card {
+    min-height: 104px;
+    padding: 10px 12px;
+  }
+
+  .play-shell .question-card .question-label {
+    font-size: 12px;
+  }
+
+  .play-shell .question-card h2 {
+    font-size: clamp(36px, 3.2vw, 52px);
+    line-height: 1;
+  }
+
+  .play-shell .question-card .question-hint {
+    font-size: 12px;
+  }
+
+  .play-shell .answer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: minmax(60px, 1fr);
+    gap: 8px;
+  }
+
+  .play-shell .answer-button {
+    min-height: 60px;
+    padding: 16px 9px 9px;
+    font-size: clamp(21px, 1.9vw, 30px);
+  }
+
+  .play-shell .quiz-footer {
+    min-height: 40px;
+  }
+
+  .play-shell .combo {
+    padding: 7px 9px;
+  }
+}
+
+@media (min-width: 981px) and (max-height: 760px) {
+  .play-shell .shop-scene.compact-scene.lab-diner-scene {
+    min-height: 44px;
+  }
+
+  .play-shell .banner,
+  .play-shell .rush-meter {
+    min-height: 38px;
+    padding-block: 5px;
+  }
+
+  .play-shell .shop-layout {
+    grid-template-rows: 252px minmax(0, 1fr);
+    height: clamp(500px, calc(100svh - 230px), 552px);
+  }
+
+  .play-shell .order-ticket {
+    min-height: 252px;
+  }
+
+  .play-shell .quiz-panel {
+    min-height: 238px;
+  }
+
+  .play-shell .portrait-stage {
+    height: clamp(210px, 27vh, 280px);
+    min-height: 210px;
+  }
+
+  .play-shell .burger-stack {
+    min-height: 104px;
+  }
+}
+
+@media (min-width: 981px) and (max-width: 1260px) {
+  .play-shell .shop-layout {
+    grid-template-columns: minmax(250px, 0.78fr) minmax(338px, 1fr) minmax(330px, 0.96fr);
+  }
+
+  .play-shell .character-dialogue strong {
+    font-size: clamp(18px, 1.7vw, 24px);
+  }
+
+  .play-shell .order-ticket .section-heading h2 {
+    font-size: clamp(24px, 2.2vw, 32px);
+  }
+
+  .play-shell .answer-button {
+    font-size: clamp(19px, 1.8vw, 28px);
+  }
+}
+
+@media (max-width: 980px) {
+  .play-shell .shop-layout {
+    height: auto;
+    grid-template-areas:
+      'character'
+      'station'
+      'ticket'
+      'quiz';
+  }
+
+  .play-shell .quiz-panel {
+    grid-area: quiz;
+  }
+}

@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import type { Customer } from '../types/game'
 
-const grillSlotIndexes = [0, 1]
+const grillSlotIndexes = [0]
 
 type BurgerStationProps = {
   customer?: Customer

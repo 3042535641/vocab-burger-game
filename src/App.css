@@ -15897,3 +15897,2759 @@
     grid-area: quiz;
   }
 }
+
+/* Pixel character asset pass: real sprite sheets replace CSS-built faces. */
+.play-shell .portrait-stage.pixel-portrait {
+  position: relative;
+  width: min(336px, 92%);
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 5px solid #2c2438;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 14% 12%, rgba(255, 226, 122, 0.28), transparent 18%),
+    linear-gradient(180deg, #18283c, #0e1a28);
+  box-shadow:
+    8px 8px 0 rgba(44, 36, 56, 0.82),
+    0 0 0 5px rgba(87, 220, 202, 0.22),
+    inset 0 0 0 4px rgba(255, 253, 246, 0.26);
+  image-rendering: pixelated;
+}
+
+.play-shell .portrait-stage.pixel-portrait::before {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  border-radius: 3px;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 246, 0.08), transparent 24%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.08) 0 1px,
+      transparent 1px 4px
+    );
+  box-shadow: inset 0 0 0 3px rgba(255, 253, 246, 0.18);
+  pointer-events: none;
+}
+
+.play-shell .portrait-stage.pixel-portrait::after {
+  content: '';
+  position: absolute;
+  right: 6%;
+  bottom: 4%;
+  left: 6%;
+  z-index: 2;
+  height: 15px;
+  border-radius: 50%;
+  background: rgba(13, 22, 35, 0.34);
+  pointer-events: none;
+}
+
+.pixel-portrait-sheet,
+.pixel-portrait-scanline,
+.start-pixel-sheet,
+.finale-pixel-sheet,
+.finale-pixel-scanline {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.pixel-portrait-sheet,
+.start-pixel-sheet,
+.finale-pixel-sheet {
+  z-index: 1;
+  background-image: var(--portrait-src);
+  background-repeat: no-repeat;
+  background-position: 0% 0%;
+  background-size: 200% 200%;
+  image-rendering: pixelated;
+  transform: translateZ(0);
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-waiting .pixel-portrait-sheet {
+  background-position: 100% 0%;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-worried .pixel-portrait-sheet {
+  background-position: 0% 100%;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-angry .pixel-portrait-sheet {
+  background-position: 100% 100%;
+}
+
+.pixel-portrait-scanline,
+.finale-pixel-scanline {
+  z-index: 4;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(6, 12, 20, 0.12) 0 1px,
+      transparent 1px 5px
+    );
+  mix-blend-mode: multiply;
+  opacity: 0.42;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-worried,
+.play-shell .portrait-stage.pixel-portrait.mood-angry {
+  animation: pixel-portrait-shake 360ms steps(2, jump-none) infinite;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-angry .pixel-portrait-sheet {
+  filter: saturate(1.12) contrast(1.04);
+}
+
+.play-shell .portrait-stage.pixel-portrait .portrait-character-tag {
+  top: 8px;
+  left: 8px;
+  z-index: 7;
+  max-width: calc(100% - 76px);
+  padding: 4px 7px;
+  border: 3px solid #2c2438;
+  border-radius: 3px;
+  color: #fffdf7;
+  background: #145a52;
+  box-shadow: 3px 3px 0 rgba(44, 36, 56, 0.7);
+  font-size: 9px;
+  line-height: 1;
+}
+
+.play-shell .portrait-stage.pixel-portrait .portrait-reaction-mark {
+  top: 14px;
+  right: 12px;
+  z-index: 7;
+  width: 44px;
+  height: 44px;
+}
+
+.play-shell .portrait-stage.pixel-portrait .portrait-reaction-mark::before {
+  border-radius: 2px;
+  color: #2c2438;
+  background: #ffe27a;
+  font-size: 24px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-worried .portrait-reaction-mark::before {
+  content: '?!';
+  background: #57dcca;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-angry .portrait-reaction-mark::before {
+  content: 'HOT';
+  color: #fffdf7;
+  background: #ff4f74;
+  font-size: 16px;
+}
+
+.play-shell .portrait-stage.pixel-portrait .portrait-expression {
+  z-index: 7;
+  right: 10px;
+  bottom: 9px;
+  border-radius: 3px;
+  color: #2c2438;
+  background: #fff1a8;
+  box-shadow: 3px 3px 0 rgba(44, 36, 56, 0.7);
+}
+
+.pixel-start-bust {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 5px solid #2c2438;
+  border-radius: 8px;
+  background: #10243b;
+  box-shadow:
+    8px 8px 0 rgba(44, 36, 56, 0.68),
+    0 0 0 5px rgba(87, 220, 202, 0.18);
+  image-rendering: pixelated;
+}
+
+.pixel-start-bust::after {
+  content: 'MED STUDENT CUSTOMER';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 3;
+  padding: 4px 7px;
+  border: 3px solid #2c2438;
+  border-radius: 3px;
+  color: #2c2438;
+  background: #fff1a8;
+  font-size: 10px;
+  font-weight: 1000;
+}
+
+.start-pixel-sheet {
+  background-image: var(--start-portrait-src);
+}
+
+.play-shell .pixel-professor-bust.pixel-professor-asset {
+  width: min(520px, 50vw);
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #071f24;
+  image-rendering: pixelated;
+}
+
+.play-shell .pixel-professor-bust.pixel-professor-asset .finale-pixel-sheet {
+  background-image: var(--boss-final-src);
+  animation: boss-pixel-breakdown 10s steps(1, end) both;
+}
+
+.play-shell .pixel-professor-bust.pixel-professor-asset .pixel-prof-alert,
+.play-shell .pixel-professor-bust.pixel-professor-asset .pixel-prof-note {
+  z-index: 8;
+}
+
+.play-shell.performance-mode .portrait-stage.pixel-portrait,
+.play-shell.performance-mode .portrait-stage.pixel-portrait.mood-worried,
+.play-shell.performance-mode .portrait-stage.pixel-portrait.mood-angry {
+  animation: none;
+}
+
+@keyframes pixel-portrait-shake {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(3px, -2px, 0);
+  }
+}
+
+@keyframes boss-pixel-breakdown {
+  0%,
+  22% {
+    background-position: 0% 0%;
+  }
+
+  23%,
+  42% {
+    background-position: 100% 0%;
+  }
+
+  43%,
+  68% {
+    background-position: 0% 100%;
+  }
+
+  69%,
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .play-shell .portrait-stage.pixel-portrait {
+    width: min(272px, 82vw);
+  }
+}
+
+/* VN pixel stage pass: make the left side read like character art, not a queue box. */
+.landscape-hint {
+  display: none;
+}
+
+@media (min-width: 981px) {
+  .play-shell .shop-layout {
+    grid-template-columns:
+      minmax(410px, 0.94fr)
+      minmax(440px, 1fr)
+      minmax(400px, 0.96fr);
+    gap: 14px;
+  }
+
+  .play-shell .character-stage-panel {
+    position: relative;
+    display: block;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .play-shell .character-stage-panel::after {
+    display: none;
+  }
+
+  .play-shell .character-stage-panel .compact-heading {
+    position: absolute;
+    z-index: 22;
+    top: -9px;
+    right: 16px;
+    left: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  .play-shell .character-stage-panel .compact-heading h2 {
+    width: auto;
+    max-width: calc(100% - 88px);
+    padding: 6px 12px;
+    border: 4px solid #2c2438;
+    border-radius: 7px;
+    color: #fffdf7;
+    background: #145a52;
+    box-shadow: 5px 5px 0 rgba(44, 36, 56, 0.72);
+    font-size: clamp(18px, 1.45vw, 25px);
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+
+  .play-shell .character-stage-panel .compact-heading span {
+    min-width: 58px;
+    padding: 6px 9px;
+    border: 4px solid #2c2438;
+    border-radius: 6px;
+    color: #2c2438;
+    background: #dff7ee;
+    box-shadow: 4px 4px 0 rgba(44, 36, 56, 0.5);
+    font-size: 22px;
+    font-weight: 1000;
+    text-align: center;
+  }
+
+  .play-shell .character-stage {
+    position: relative;
+    display: block;
+    height: 100% !important;
+    min-height: 100% !important;
+    padding: 0;
+    overflow: hidden;
+    border: 5px solid #2c2438;
+    border-radius: 16px;
+    background:
+      linear-gradient(180deg, rgba(255, 253, 246, 0.96), rgba(221, 250, 242, 0.94)),
+      repeating-linear-gradient(0deg, transparent 0 27px, rgba(87, 220, 202, 0.16) 27px 31px),
+      linear-gradient(135deg, #163f52, #3c2a58 58%, #0b1a24);
+    box-shadow:
+      0 10px 0 rgba(44, 36, 56, 0.82),
+      0 18px 28px rgba(44, 36, 56, 0.16),
+      inset 0 0 0 5px rgba(255, 241, 168, 0.34);
+  }
+
+  .play-shell .character-stage::before {
+    content: 'MED VOCAB BURGER HERO';
+    position: absolute;
+    z-index: 3;
+    top: 26px;
+    left: 16px;
+    padding: 4px 10px;
+    border: 3px solid #2c2438;
+    border-radius: 999px;
+    color: #2c2438;
+    background: #ffe27a;
+    box-shadow: 4px 4px 0 rgba(44, 36, 56, 0.58);
+    font-size: 12px;
+    font-weight: 1000;
+  }
+
+  .play-shell .character-stage::after {
+    content: '';
+    position: absolute;
+    right: -28%;
+    bottom: -24%;
+    z-index: 0;
+    width: 74%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: rgba(87, 220, 202, 0.22);
+    pointer-events: none;
+  }
+
+  .play-shell .character-portrait-wrap {
+    position: absolute;
+    inset: 48px 0 92px;
+    z-index: 2;
+    display: grid;
+    place-items: end center;
+    padding: 0 14px;
+  }
+
+  .play-shell .portrait-stage.pixel-portrait {
+    width: min(100%, 500px);
+    max-width: calc(100% - 8px);
+    border: 0;
+    border-radius: 13px;
+    background: transparent;
+    box-shadow: none;
+    transform: translateZ(0);
+    animation: vn-pixel-idle 3.4s steps(2, jump-none) infinite;
+  }
+
+  .play-shell .portrait-stage.pixel-portrait::before {
+    border-radius: 13px;
+    box-shadow:
+      inset 0 0 0 4px rgba(255, 253, 246, 0.28),
+      inset 0 -40px 0 rgba(16, 36, 59, 0.1);
+  }
+
+  .play-shell .portrait-stage.pixel-portrait::after {
+    right: 8%;
+    bottom: 2%;
+    left: 8%;
+    height: 20px;
+    background: rgba(12, 20, 32, 0.3);
+  }
+
+  .play-shell .portrait-stage.pixel-portrait.mood-worried,
+  .play-shell .portrait-stage.pixel-portrait.mood-angry {
+    animation:
+      vn-pixel-idle 3.4s steps(2, jump-none) infinite,
+      pixel-portrait-shake 360ms steps(2, jump-none) infinite;
+  }
+
+  .play-shell .portrait-stage.pixel-portrait .portrait-character-tag {
+    top: 12px;
+    left: 12px;
+    font-size: 10px;
+  }
+
+  .play-shell .portrait-stage.pixel-portrait .portrait-expression {
+    right: 14px;
+    bottom: 14px;
+    padding: 6px 9px;
+    font-size: 12px;
+  }
+
+  .play-shell .character-mood {
+    position: absolute;
+    z-index: 18;
+    left: 22px;
+    bottom: 116px;
+    max-width: 42%;
+    padding: 6px 10px;
+    border: 3px solid #2c2438;
+    border-radius: 5px;
+    color: #fffdf7;
+    background: #d94731;
+    box-shadow: 4px 4px 0 rgba(44, 36, 56, 0.62);
+    font-size: 12px;
+    font-weight: 1000;
+  }
+
+  .play-shell .character-dialogue {
+    position: absolute;
+    right: 16px;
+    bottom: 28px;
+    left: 16px;
+    z-index: 20;
+    display: grid;
+    gap: 5px;
+    margin: 0;
+    padding: 13px 15px 14px;
+    border: 5px solid #2c2438;
+    border-radius: 4px;
+    background: rgba(255, 253, 246, 0.92);
+    box-shadow:
+      8px 8px 0 rgba(44, 36, 56, 0.68),
+      inset 0 0 0 4px rgba(255, 241, 168, 0.38);
+    backdrop-filter: none;
+  }
+
+  .play-shell .character-dialogue::before {
+    top: -14px;
+    left: 42px;
+    width: 24px;
+    height: 24px;
+    border-width: 5px 0 0 5px;
+    background: inherit;
+  }
+
+  .play-shell .character-dialogue small {
+    color: #168475;
+    font-size: 12px;
+  }
+
+  .play-shell .character-dialogue strong {
+    display: block;
+    max-width: 100%;
+    overflow: visible;
+    color: #30253d;
+    font-size: clamp(23px, 2.1vw, 34px);
+    line-height: 1.06;
+  }
+
+  .play-shell .character-dialogue p {
+    display: block;
+    max-width: 100%;
+    max-height: none;
+    overflow: visible;
+    font-size: clamp(13px, 1.08vw, 16px);
+    line-height: 1.36;
+  }
+
+  .play-shell .character-dialogue em {
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .play-shell .stage-patience {
+    position: absolute;
+    right: 16px;
+    bottom: 10px;
+    left: 16px;
+    z-index: 21;
+    height: 10px;
+    border-width: 3px;
+  }
+
+  .play-shell .queue-chips {
+    position: absolute;
+    top: 52px;
+    right: 14px;
+    left: 14px;
+    z-index: 21;
+    display: flex;
+    gap: 7px;
+    margin: 0;
+    overflow-x: auto;
+    padding: 0 2px 4px;
+  }
+
+  .play-shell .queue-chip {
+    flex: 0 0 auto;
+    min-width: 72px;
+    border-width: 3px;
+    background: rgba(255, 253, 246, 0.9);
+  }
+}
+
+@media (max-width: 980px) and (orientation: landscape) {
+  .game-shell.play-shell {
+    width: 100%;
+    min-height: 100svh;
+    padding: 6px 8px 10px;
+    overflow: auto;
+  }
+
+  .play-shell .game-header {
+    grid-template-columns: minmax(180px, 0.42fr) minmax(0, 1fr);
+    padding: 6px;
+  }
+
+  .play-shell .title-lockup h1 {
+    font-size: clamp(23px, 4vw, 34px);
+  }
+
+  .play-shell .stats {
+    grid-template-columns: repeat(5, minmax(74px, 1fr));
+  }
+
+  .play-shell .shop-scene.compact-scene.lab-diner-scene {
+    min-height: 42px;
+  }
+
+  .play-shell .shop-layout {
+    grid-template-columns: minmax(260px, 0.82fr) minmax(360px, 1fr) minmax(320px, 0.92fr);
+    grid-template-rows: minmax(210px, 0.92fr) minmax(230px, 1fr);
+    grid-template-areas:
+      'character station ticket'
+      'character station quiz';
+    gap: 9px;
+    height: auto;
+    min-height: calc(100svh - 160px);
+  }
+
+  .play-shell .character-stage-panel,
+  .play-shell .burger-station,
+  .play-shell .order-ticket,
+  .play-shell .quiz-panel {
+    min-height: 0;
+  }
+
+  .play-shell .character-stage {
+    min-height: 100%;
+  }
+
+  .play-shell .portrait-stage.pixel-portrait {
+    width: min(260px, 88%);
+  }
+
+  .play-shell .character-dialogue {
+    margin-top: -38px;
+    padding: 9px 10px;
+  }
+
+  .play-shell .character-dialogue strong {
+    font-size: clamp(19px, 3.6vw, 26px);
+  }
+
+  .play-shell .character-dialogue p {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 760px) and (orientation: portrait) {
+  .game-shell.play-shell {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+  }
+
+  .play-shell > :not(.landscape-hint) {
+    opacity: 0.16;
+    pointer-events: none;
+  }
+
+  .play-shell .landscape-hint {
+    display: grid;
+    position: fixed;
+    inset: 18px;
+    z-index: 160;
+    place-content: center;
+    gap: 12px;
+    padding: 24px;
+    border: 6px solid #2c2438;
+    border-radius: 16px;
+    color: #2c2438;
+    background:
+      radial-gradient(circle at 84% 18%, rgba(255, 79, 116, 0.22), transparent 24%),
+      radial-gradient(circle at 14% 82%, rgba(87, 220, 202, 0.24), transparent 24%),
+      linear-gradient(180deg, #fffdf6, #dff7ee);
+    box-shadow:
+      0 10px 0 rgba(44, 36, 56, 0.88),
+      0 18px 40px rgba(44, 36, 56, 0.24),
+      inset 0 0 0 5px rgba(255, 226, 122, 0.44);
+    text-align: center;
+  }
+
+  .play-shell .landscape-hint::before {
+    content: '↻';
+    display: grid;
+    place-items: center;
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 4px;
+    border: 5px solid #2c2438;
+    border-radius: 50%;
+    color: #fffdf7;
+    background: #145a52;
+    box-shadow: 5px 5px 0 rgba(44, 36, 56, 0.62);
+    font-size: 42px;
+    line-height: 1;
+  }
+
+  .play-shell .landscape-hint strong {
+    font-size: clamp(30px, 9vw, 48px);
+    line-height: 1.05;
+  }
+
+  .play-shell .landscape-hint span {
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 1.5;
+  }
+}
+
+@keyframes vn-pixel-idle {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -5px, 0);
+  }
+}
+
+/* Character consistency fix: generated sheets can drift, so never show the off-model frame. */
+.play-shell .portrait-stage.pixel-portrait.portrait-bun.mood-worried .pixel-portrait-sheet {
+  background-position: 100% 0%;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-happy .portrait-reaction-mark,
+.play-shell .portrait-stage.pixel-portrait.mood-waiting .portrait-reaction-mark,
+.play-shell .portrait-stage.pixel-portrait.mood-worried .portrait-reaction-mark,
+.play-shell .portrait-stage.pixel-portrait.mood-angry .portrait-reaction-mark {
+  opacity: 1;
+  transform: translateZ(0);
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-happy .portrait-reaction-mark::before {
+  content: 'OK';
+  color: #2c2438;
+  background: #ffe27a;
+  font-size: 17px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-waiting .portrait-reaction-mark::before {
+  content: '催';
+  color: #2c2438;
+  background: #fffdf6;
+  font-size: 23px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-worried .portrait-reaction-mark::before {
+  content: '汗!';
+  color: #2c2438;
+  background: #57dcca;
+  font-size: 18px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-angry .portrait-reaction-mark::before {
+  content: '怒';
+  color: #fffdf7;
+  background: #ff4f74;
+  font-size: 23px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-happy .pixel-portrait-sheet {
+  filter: saturate(1.04) contrast(1.02);
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-waiting .pixel-portrait-sheet {
+  filter: saturate(1.08) contrast(1.04);
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-worried .pixel-portrait-sheet {
+  filter: saturate(0.94) contrast(1.07) hue-rotate(5deg);
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-angry .pixel-portrait-sheet {
+  filter: saturate(1.2) contrast(1.08);
+}
+
+.play-shell .portrait-stage.pixel-portrait .portrait-role-badge,
+.play-shell .portrait-stage.pixel-portrait .portrait-mood-effect {
+  position: absolute;
+  pointer-events: none;
+}
+
+.play-shell .portrait-stage.pixel-portrait .portrait-role-badge {
+  z-index: 7;
+  left: 12px;
+  bottom: 12px;
+  max-width: 48%;
+  padding: 5px 8px;
+  border: 3px solid #2c2438;
+  border-radius: 5px;
+  color: #fffdf7;
+  background: #30253d;
+  box-shadow: 3px 3px 0 rgba(44, 36, 56, 0.58);
+  font-size: 11px;
+  font-weight: 1000;
+  line-height: 1.05;
+}
+
+.play-shell .portrait-stage.pixel-portrait .portrait-mood-effect {
+  inset: 0;
+  z-index: 6;
+  opacity: 0;
+  transform: translateZ(0);
+}
+
+.play-shell .portrait-stage.pixel-portrait .portrait-mood-effect::before,
+.play-shell .portrait-stage.pixel-portrait .portrait-mood-effect::after {
+  content: '';
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border: 3px solid #2c2438;
+  color: #2c2438;
+  font-weight: 1000;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-waiting .portrait-mood-effect,
+.play-shell .portrait-stage.pixel-portrait.mood-worried .portrait-mood-effect,
+.play-shell .portrait-stage.pixel-portrait.mood-angry .portrait-mood-effect {
+  opacity: 1;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-waiting .portrait-mood-effect::before {
+  right: 13%;
+  top: 24%;
+  width: 42px;
+  height: 22px;
+  border-radius: 999px;
+  background: #fffdf6;
+  box-shadow: 4px 4px 0 rgba(44, 36, 56, 0.5);
+  animation: portrait-pop-card 860ms steps(2, jump-none) infinite;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-worried .portrait-mood-effect::before {
+  right: 10%;
+  top: 20%;
+  width: 28px;
+  height: 44px;
+  border-radius: 60% 60% 70% 70%;
+  background: #57dcca;
+  box-shadow: 5px 5px 0 rgba(44, 36, 56, 0.46);
+  transform: rotate(12deg);
+  animation: portrait-sweat-drop 720ms steps(2, jump-none) infinite;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-angry .portrait-mood-effect::before {
+  right: 8%;
+  top: 18%;
+  width: 60px;
+  height: 54px;
+  border-radius: 10px;
+  color: #fffdf7;
+  background: #ff4f74;
+  box-shadow: 5px 5px 0 rgba(44, 36, 56, 0.58);
+  animation: portrait-pop-card 520ms steps(2, jump-none) infinite;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-angry .portrait-mood-effect::after {
+  inset: 0;
+  border: 0;
+  background:
+    radial-gradient(circle at 48% 40%, rgba(255, 79, 116, 0.18), transparent 26%),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 79, 116, 0.18) 0 8px,
+      transparent 8px 18px
+    );
+  mix-blend-mode: multiply;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-star .portrait-role-badge {
+  background: #5e3d92;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-cap .portrait-role-badge {
+  background: #1f5260;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-bow .portrait-role-badge {
+  background: #5e7954;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-shade .portrait-role-badge {
+  background: #d94761;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-bun .portrait-role-badge {
+  background: #2b5374;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-round .portrait-role-badge {
+  background: #6c4b32;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-boss .portrait-role-badge {
+  background: #0c4b48;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-star.mood-waiting .portrait-reaction-mark::before {
+  content: 'ROOT';
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-star.mood-worried .portrait-reaction-mark::before {
+  content: '词根?';
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-star.mood-angry .portrait-reaction-mark::before {
+  content: 'PREFIX!';
+  font-size: 12px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-cap.mood-waiting .portrait-reaction-mark::before {
+  content: 'BONE';
+  font-size: 14px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-cap.mood-worried .portrait-reaction-mark::before {
+  content: '颅内?';
+  font-size: 13px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-cap.mood-angry .portrait-reaction-mark::before {
+  content: '解剖!';
+  font-size: 13px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-bow.mood-waiting .portrait-reaction-mark::before {
+  content: 'SHIFT';
+  font-size: 12px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-bow.mood-worried .portrait-reaction-mark::before {
+  content: '交班?';
+  font-size: 13px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-bow.mood-angry .portrait-reaction-mark::before {
+  content: 'NURSE!';
+  font-size: 12px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-shade.mood-waiting .portrait-reaction-mark::before {
+  content: 'Rx';
+  font-size: 22px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-shade.mood-worried .portrait-reaction-mark::before {
+  content: '剂量?';
+  font-size: 13px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-shade.mood-angry .portrait-reaction-mark::before {
+  content: 'ADR!';
+  font-size: 15px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-bun.mood-waiting .portrait-reaction-mark::before {
+  content: 'LAB';
+  font-size: 16px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-bun.mood-worried .portrait-reaction-mark::before {
+  content: '数据?';
+  font-size: 13px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-bun.mood-angry .portrait-reaction-mark::before {
+  content: 'REPORT!';
+  font-size: 11px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-round.mood-waiting .portrait-reaction-mark::before {
+  content: '07';
+  font-size: 22px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-round.mood-worried .portrait-reaction-mark::before {
+  content: '早八?';
+  font-size: 13px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-round.mood-angry .portrait-reaction-mark::before {
+  content: 'CAFFEINE!';
+  font-size: 10px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-boss.mood-waiting .portrait-reaction-mark::before {
+  content: '查房';
+  font-size: 14px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-boss.mood-worried .portrait-reaction-mark::before {
+  content: '失控?';
+  font-size: 13px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-boss.mood-angry .portrait-reaction-mark::before {
+  content: 'BOSS!';
+  font-size: 13px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-star .portrait-mood-effect::before {
+  content: 'ABC';
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-cap .portrait-mood-effect::before {
+  content: '骨';
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-bow .portrait-mood-effect::before {
+  content: '铃';
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-shade .portrait-mood-effect::before {
+  content: 'Rx';
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-bun .portrait-mood-effect::before {
+  content: 'LAB';
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-round .portrait-mood-effect::before {
+  content: '07';
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-boss .portrait-mood-effect::before {
+  content: '!';
+}
+
+@keyframes portrait-pop-card {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-4deg);
+  }
+
+  50% {
+    transform: translate3d(3px, -4px, 0) rotate(4deg);
+  }
+}
+
+@keyframes portrait-sweat-drop {
+  0%,
+  100% {
+    transform: translate3d(0, -2px, 0) rotate(12deg);
+  }
+
+  50% {
+    transform: translate3d(0, 5px, 0) rotate(12deg);
+  }
+}
+
+@media (min-width: 981px) and (max-height: 760px) {
+  .play-shell .shop-layout {
+    grid-template-rows: 218px minmax(280px, 1fr);
+    height: clamp(500px, calc(100svh - 210px), 540px);
+  }
+
+  .play-shell .order-ticket {
+    min-height: 218px;
+    overflow: auto;
+  }
+
+  .play-shell .quiz-panel {
+    min-height: 280px;
+  }
+}
+
+/* Final stability reset: keep the game readable and stop generated portrait drift. */
+.play-shell .portrait-stage.pixel-portrait .pixel-portrait-sheet,
+.play-shell .portrait-stage.pixel-portrait.mood-happy .pixel-portrait-sheet,
+.play-shell .portrait-stage.pixel-portrait.mood-waiting .pixel-portrait-sheet,
+.play-shell .portrait-stage.pixel-portrait.mood-worried .pixel-portrait-sheet,
+.play-shell .portrait-stage.pixel-portrait.mood-angry .pixel-portrait-sheet {
+  background-position: 0% 0% !important;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-waiting .pixel-portrait-sheet {
+  transform: translate3d(0, -3px, 0) scale(1.01);
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-worried .pixel-portrait-sheet {
+  transform: translate3d(-2px, 0, 0) scale(1.015);
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-angry .pixel-portrait-sheet {
+  transform: translate3d(1px, -2px, 0) scale(1.025);
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-star.mood-angry .pixel-portrait-sheet,
+.play-shell .portrait-stage.pixel-portrait.portrait-star.mood-worried .pixel-portrait-sheet,
+.play-shell .portrait-stage.pixel-portrait.portrait-bun.mood-angry .pixel-portrait-sheet,
+.play-shell .portrait-stage.pixel-portrait.portrait-bun.mood-worried .pixel-portrait-sheet {
+  background-position: 0% 0% !important;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-star .portrait-mood-effect::after {
+  content: 'ABC';
+  right: 14%;
+  bottom: 26%;
+  width: 52px;
+  height: 30px;
+  border-radius: 5px;
+  background: #fff1a8;
+  transform: rotate(-8deg);
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-cap .portrait-mood-effect::after {
+  content: 'SKULL';
+  left: 12%;
+  top: 34%;
+  width: 62px;
+  height: 30px;
+  border-radius: 999px;
+  background: #dff7ee;
+  transform: rotate(8deg);
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-bow .portrait-mood-effect::after {
+  content: 'TICK';
+  right: 13%;
+  bottom: 30%;
+  width: 56px;
+  height: 30px;
+  border-radius: 999px;
+  background: #ffe27a;
+  transform: rotate(7deg);
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-shade .portrait-mood-effect::after {
+  content: 'Rx';
+  left: 13%;
+  top: 30%;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ff9ab8;
+  transform: rotate(-12deg);
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-bun .portrait-mood-effect::after {
+  content: 'LAB';
+  right: 15%;
+  bottom: 28%;
+  width: 52px;
+  height: 32px;
+  border-radius: 5px;
+  background: #57dcca;
+  transform: rotate(9deg);
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-round .portrait-mood-effect::after {
+  content: 'COFFEE';
+  left: 10%;
+  bottom: 28%;
+  width: 64px;
+  height: 28px;
+  border-radius: 999px;
+  background: #f3b04d;
+  transform: rotate(-6deg);
+}
+
+@media (min-width: 981px) {
+  .game-shell.play-shell {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    grid-template-areas:
+      'header header'
+      'scene scene'
+      'banner rush'
+      'layout layout' !important;
+    align-items: start !important;
+    width: min(1560px, 100%) !important;
+    height: auto !important;
+    min-height: 100svh !important;
+    padding: 10px 16px 18px !important;
+    gap: 8px 12px !important;
+    overflow: visible !important;
+  }
+
+  .play-shell .game-header {
+    grid-area: header !important;
+    grid-template-columns: minmax(280px, 0.34fr) minmax(0, 1fr) !important;
+    min-height: 76px !important;
+    max-height: 92px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .title-lockup {
+    min-height: 62px !important;
+  }
+
+  .play-shell .stats {
+    grid-template-columns: repeat(5, minmax(92px, 1fr)) !important;
+    grid-auto-rows: minmax(32px, 1fr) !important;
+    align-content: stretch !important;
+  }
+
+  .play-shell .stats span,
+  .play-shell .stats button {
+    min-height: 32px !important;
+    max-height: 38px !important;
+    padding: 4px 6px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .play-shell .shop-scene.compact-scene.lab-diner-scene {
+    grid-area: scene !important;
+    height: 74px !important;
+    min-height: 74px !important;
+    max-height: 74px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell > .banner {
+    grid-area: banner !important;
+  }
+
+  .play-shell > .rush-meter {
+    grid-area: rush !important;
+  }
+
+  .play-shell .banner,
+  .play-shell .rush-meter {
+    min-height: 44px !important;
+    max-height: 56px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .shop-layout {
+    grid-area: layout !important;
+    display: grid !important;
+    grid-template-columns:
+      minmax(360px, 0.86fr)
+      minmax(460px, 1fr)
+      minmax(420px, 0.96fr) !important;
+    grid-template-rows: minmax(286px, 0.92fr) minmax(300px, 1fr) !important;
+    grid-template-areas:
+      'character station ticket'
+      'character station quiz' !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+    height: clamp(600px, calc(100svh - 232px), 760px) !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  .play-shell .character-stage-panel,
+  .play-shell .burger-station,
+  .play-shell .order-ticket,
+  .play-shell .quiz-panel {
+    position: relative !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .character-stage-panel {
+    grid-area: character !important;
+    display: block !important;
+  }
+
+  .play-shell .burger-station {
+    grid-area: station !important;
+  }
+
+  .play-shell .order-ticket {
+    grid-area: ticket !important;
+    overflow: auto !important;
+  }
+
+  .play-shell .quiz-panel {
+    grid-area: quiz !important;
+  }
+
+  .play-shell .character-stage {
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  .play-shell .character-portrait-wrap {
+    inset: 54px 14px 154px !important;
+    padding: 0 !important;
+  }
+
+  .play-shell .portrait-stage.pixel-portrait {
+    width: min(340px, 92%) !important;
+    max-width: 92% !important;
+    animation: vn-pixel-idle 3.4s steps(2, jump-none) infinite !important;
+  }
+
+  .play-shell .character-dialogue {
+    right: 16px !important;
+    bottom: 30px !important;
+    left: 16px !important;
+    max-height: 142px !important;
+    padding: 12px 14px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .character-dialogue strong {
+    font-size: clamp(21px, 1.75vw, 30px) !important;
+  }
+
+  .play-shell .character-dialogue p {
+    display: block !important;
+    max-height: 44px !important;
+    overflow: hidden !important;
+    font-size: 13px !important;
+    line-height: 1.32 !important;
+  }
+
+  .play-shell .stage-patience {
+    bottom: 10px !important;
+  }
+
+  .play-shell .question-card {
+    min-height: 96px !important;
+    padding: 9px 10px !important;
+  }
+
+  .play-shell .answer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: minmax(52px, 1fr) !important;
+  }
+
+  .play-shell .quiz-panel {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      'question'
+      'answers'
+      'footer' !important;
+    grid-template-rows: minmax(96px, auto) minmax(112px, 1fr) minmax(34px, auto) !important;
+    gap: 5px !important;
+    padding: 10px !important;
+  }
+
+  .play-shell .quiz-footer {
+    position: relative !important;
+    z-index: 1 !important;
+    min-height: 34px !important;
+    pointer-events: none !important;
+  }
+
+  .play-shell .combo,
+  .play-shell .feedback {
+    min-height: 34px !important;
+    padding: 5px 8px !important;
+  }
+
+  .play-shell .answer-button {
+    min-height: 52px !important;
+    padding: 14px 9px 8px !important;
+  }
+
+  .play-shell .shop-scene.compact-scene.lab-diner-scene::before,
+  .play-shell .shop-scene.compact-scene.lab-diner-scene::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .play-shell .lab-diner-operating-light,
+  .play-shell .lab-diner-rx-menu,
+  .play-shell .lab-diner-window,
+  .play-shell .lab-diner-shelf,
+  .play-shell .lab-diner-runner,
+  .play-shell .lab-diner-pill-rain {
+    display: none !important;
+  }
+
+  .play-shell .lab-diner-back-wall {
+    inset: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .lab-diner-sign {
+    top: 50% !important;
+    left: 50% !important;
+    min-width: min(420px, 42vw) !important;
+    padding: 6px 18px !important;
+    transform: translate3d(-50%, -50%, 0) rotate(-1deg) !important;
+  }
+
+  .play-shell .lab-diner-sign strong {
+    font-size: clamp(20px, 2.5vw, 34px) !important;
+    line-height: 1 !important;
+  }
+
+  .play-shell .lab-diner-sign span {
+    font-size: 10px !important;
+  }
+}
+
+@media (min-width: 981px) and (max-height: 780px) {
+  .game-shell.play-shell {
+    padding-top: 8px !important;
+    gap: 7px 10px !important;
+  }
+
+  .play-shell .game-header {
+    min-height: 68px !important;
+    max-height: 78px !important;
+  }
+
+  .play-shell .shop-scene.compact-scene.lab-diner-scene {
+    height: 56px !important;
+    min-height: 56px !important;
+    max-height: 56px !important;
+  }
+
+  .play-shell .shop-layout {
+    grid-template-rows: minmax(252px, 0.9fr) minmax(270px, 1fr) !important;
+    height: clamp(530px, calc(100svh - 210px), 620px) !important;
+  }
+
+  .play-shell .portrait-stage.pixel-portrait {
+    width: min(284px, 86%) !important;
+  }
+
+  .play-shell .character-dialogue {
+    max-height: 120px !important;
+  }
+}
+
+/* Clean playable layout: vocab quiz first, one large grill, character art as stage. */
+@media (min-width: 981px) {
+  .game-shell.play-shell {
+    grid-template-areas:
+      'header header'
+      'banner rush'
+      'layout layout' !important;
+    grid-template-rows: 62px 48px minmax(0, 1fr) !important;
+    height: 100svh !important;
+    min-height: 640px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .shop-scene.compact-scene.lab-diner-scene {
+    display: none !important;
+  }
+
+  .play-shell .game-header {
+    min-height: 62px !important;
+    max-height: 62px !important;
+    padding: 6px !important;
+  }
+
+  .play-shell .title-lockup {
+    min-height: 50px !important;
+    padding: 5px 10px !important;
+  }
+
+  .play-shell .title-lockup .eyebrow {
+    font-size: 10px !important;
+  }
+
+  .play-shell .title-lockup h1 {
+    font-size: clamp(22px, 2vw, 32px) !important;
+  }
+
+  .play-shell .stats {
+    grid-template-columns: repeat(4, minmax(110px, 1fr)) !important;
+    grid-auto-rows: 50px !important;
+  }
+
+  .play-shell .stats button {
+    display: none !important;
+  }
+
+  .play-shell .stats span,
+  .play-shell .stats .rank-badge {
+    min-height: 50px !important;
+    max-height: 50px !important;
+    font-size: 15px !important;
+  }
+
+  .play-shell .banner,
+  .play-shell .rush-meter {
+    min-height: 48px !important;
+    max-height: 48px !important;
+  }
+
+  .play-shell .shop-layout {
+    grid-template-columns:
+      minmax(340px, 0.78fr)
+      minmax(500px, 1.18fr)
+      minmax(360px, 0.86fr) !important;
+    grid-template-rows: minmax(290px, 0.9fr) minmax(310px, 1.1fr) !important;
+    height: calc(100svh - 148px) !important;
+    min-height: 492px !important;
+  }
+
+  .play-shell .character-stage-panel .compact-heading,
+  .play-shell .character-stage::before,
+  .play-shell .shop-layout::before,
+  .play-shell .portrait-stage.pixel-portrait .portrait-character-tag {
+    display: none !important;
+  }
+
+  .play-shell .character-portrait-wrap {
+    inset: 8px -20px 112px !important;
+    place-items: start center !important;
+  }
+
+  .play-shell .portrait-stage.pixel-portrait {
+    width: min(470px, 124%) !important;
+    max-width: 124% !important;
+  }
+
+  .play-shell .character-mood {
+    left: 18px !important;
+    bottom: 118px !important;
+  }
+
+  .play-shell .character-dialogue {
+    right: 16px !important;
+    bottom: 28px !important;
+    left: 16px !important;
+    max-height: 104px !important;
+  }
+
+  .play-shell .character-dialogue strong {
+    font-size: clamp(22px, 1.9vw, 34px) !important;
+  }
+
+  .play-shell .character-dialogue p {
+    max-height: 34px !important;
+  }
+
+  .play-shell .burger-station {
+    grid-template-rows: auto auto 54px minmax(170px, 1fr) auto auto !important;
+    gap: 8px !important;
+    padding: 12px !important;
+  }
+
+  .play-shell .grill-slots {
+    grid-template-columns: 1fr !important;
+  }
+
+  .play-shell .grill-slot {
+    min-height: 76px !important;
+    padding: 10px 14px !important;
+  }
+
+  .play-shell .grill-lights {
+    min-height: 54px !important;
+  }
+
+  .play-shell .burger-stack {
+    min-height: 184px !important;
+  }
+
+  .play-shell .burger-layer {
+    max-width: min(430px, 84%) !important;
+  }
+
+  .play-shell .quiz-panel {
+    grid-template-rows: minmax(112px, auto) minmax(150px, 1fr) minmax(68px, auto) !important;
+    gap: 8px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .question-card {
+    min-height: 112px !important;
+    padding: 12px 14px !important;
+  }
+
+  .play-shell .question-card h2 {
+    font-size: clamp(46px, 4.2vw, 72px) !important;
+  }
+
+  .play-shell .answer-grid {
+    position: relative !important;
+    z-index: 3 !important;
+    grid-auto-rows: minmax(70px, 1fr) !important;
+    min-height: 150px !important;
+  }
+
+  .play-shell .answer-button {
+    min-height: 70px !important;
+  }
+
+  .play-shell .quiz-footer {
+    position: relative !important;
+    z-index: 2 !important;
+    display: grid !important;
+    grid-template-columns: minmax(150px, 0.6fr) minmax(0, 1fr) !important;
+    gap: 8px !important;
+    min-height: 58px !important;
+    pointer-events: none !important;
+  }
+
+  .play-shell .combo,
+  .play-shell .feedback {
+    min-height: 58px !important;
+  }
+}
+
+@media (min-width: 981px) and (max-height: 760px) {
+  .game-shell.play-shell {
+    grid-template-rows: 58px 44px minmax(0, 1fr) !important;
+  }
+
+  .play-shell .game-header {
+    min-height: 58px !important;
+    max-height: 58px !important;
+  }
+
+  .play-shell .shop-layout {
+    grid-template-rows: minmax(252px, 0.86fr) minmax(278px, 1.14fr) !important;
+    height: calc(100svh - 134px) !important;
+  }
+
+  .play-shell .portrait-stage.pixel-portrait {
+    width: min(360px, 100%) !important;
+  }
+
+  .play-shell .burger-stack {
+    min-height: 150px !important;
+  }
+
+  .play-shell .quiz-panel {
+    grid-template-rows: minmax(98px, auto) minmax(126px, 1fr) minmax(52px, auto) !important;
+  }
+
+  .play-shell .answer-grid {
+    grid-auto-rows: minmax(60px, 1fr) !important;
+    min-height: 126px !important;
+  }
+
+  .play-shell .answer-button {
+    min-height: 60px !important;
+  }
+}
+
+/* Final desktop cleanup: keep the game readable after the VN-art pass. */
+@media (min-width: 981px) {
+  .play-shell .quiz-panel {
+    grid-template-areas:
+      'question'
+      'answers'
+      'footer' !important;
+    grid-template-rows: minmax(98px, 104px) minmax(126px, 128px) 50px !important;
+    gap: 7px !important;
+    padding: 8px !important;
+    align-content: start !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .question-card {
+    min-height: 98px !important;
+    max-height: 104px !important;
+    padding: 8px 12px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .question-card .question-label {
+    margin: 0 0 2px !important;
+    font-size: clamp(12px, 0.95vw, 16px) !important;
+    line-height: 1.15 !important;
+  }
+
+  .play-shell .question-card h2 {
+    margin: 0 !important;
+    font-size: clamp(40px, 3.7vw, 58px) !important;
+    line-height: 0.96 !important;
+  }
+
+  .play-shell .question-card .question-hint {
+    margin-top: 4px !important;
+    font-size: clamp(11px, 0.92vw, 14px) !important;
+    line-height: 1.15 !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .answer-grid {
+    min-height: 126px !important;
+    height: 126px !important;
+    grid-auto-rows: 59px !important;
+    gap: 8px !important;
+    align-content: start !important;
+    overflow: visible !important;
+  }
+
+  .play-shell .answer-button {
+    min-height: 59px !important;
+    height: 59px !important;
+    padding: 13px 9px 8px !important;
+    transform: translateZ(0) !important;
+    transition:
+      transform 110ms ease,
+      background-color 110ms ease,
+      border-color 110ms ease !important;
+    will-change: transform;
+  }
+
+  .play-shell .answer-button:hover {
+    transform: translate3d(0, -2px, 0) !important;
+  }
+
+  .play-shell .quiz-footer {
+    min-height: 50px !important;
+    height: 50px !important;
+    display: grid !important;
+    grid-template-columns: minmax(120px, 0.45fr) minmax(0, 1fr) !important;
+    gap: 8px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .combo,
+  .play-shell .feedback {
+    min-height: 50px !important;
+    height: 50px !important;
+    padding: 5px 8px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .character-portrait-wrap {
+    inset: -4px -26px 116px !important;
+  }
+
+  .play-shell .portrait-stage.pixel-portrait {
+    width: min(500px, 132%) !important;
+    max-width: 132% !important;
+  }
+}
+
+/* Restore expression-difference frames while keeping generated assets clipped. */
+.play-shell .portrait-stage.pixel-portrait .pixel-portrait-sheet {
+  background-size: 200% 200% !important;
+  background-position: 0% 0% !important;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-happy .pixel-portrait-sheet {
+  background-position: 100% 100% !important;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-waiting .pixel-portrait-sheet {
+  background-position: 0% 0% !important;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-worried .pixel-portrait-sheet {
+  background-position: 100% 0% !important;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-angry .pixel-portrait-sheet {
+  background-position: 0% 100% !important;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-bun.mood-angry .pixel-portrait-sheet {
+  background-position: 100% 0% !important;
+}
+
+.play-shell .portrait-stage.pixel-portrait.mood-worried .portrait-reaction-mark::before,
+.play-shell .portrait-stage.pixel-portrait.mood-angry .portrait-reaction-mark::before {
+  animation: vn-reaction-pop 620ms steps(2, jump-none) infinite;
+}
+
+@keyframes vn-reaction-pop {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(2px, -3px, 0) scale(1.08);
+  }
+}
+
+/* Premium clean pass: fewer boxes, larger portrait stage, stable quiz hit targets. */
+.character-stage-panel .compact-heading {
+  display: none !important;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-frame-mode .pixel-portrait-sheet {
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-frame-mode.mood-happy .pixel-portrait-sheet,
+.play-shell .portrait-stage.pixel-portrait.portrait-frame-mode.mood-waiting .pixel-portrait-sheet,
+.play-shell .portrait-stage.pixel-portrait.portrait-frame-mode.mood-worried .pixel-portrait-sheet,
+.play-shell .portrait-stage.pixel-portrait.portrait-frame-mode.mood-angry .pixel-portrait-sheet {
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-frame-mode {
+  background: #dff8f2 !important;
+  image-rendering: auto !important;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-frame-mode .portrait-role-badge {
+  top: 14px;
+  left: 14px;
+  z-index: 8;
+  max-width: calc(100% - 120px);
+  padding: 7px 11px;
+  border: 3px solid #2c2438;
+  border-radius: 6px;
+  color: #fffdf7;
+  background: #155e55;
+  box-shadow: 4px 4px 0 rgba(44, 36, 56, 0.62);
+  font-size: clamp(10px, 0.95vw, 13px);
+  line-height: 1;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-frame-mode .portrait-expression {
+  right: 14px;
+  bottom: 14px;
+  z-index: 8;
+  max-width: 55%;
+  padding: 8px 10px;
+  border: 3px solid #2c2438;
+  border-radius: 6px;
+  color: #2c2438;
+  background: #fff1a8;
+  box-shadow: 4px 4px 0 rgba(44, 36, 56, 0.66);
+  font-size: clamp(12px, 1.05vw, 15px);
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-frame-mode.mood-waiting {
+  animation: portrait-breath 2.2s steps(2, jump-none) infinite !important;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-frame-mode.mood-worried {
+  animation: portrait-nervous 520ms steps(2, jump-none) infinite !important;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-frame-mode.mood-angry {
+  animation: portrait-freakout 300ms steps(2, jump-none) infinite !important;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-frame-mode.mood-worried::before,
+.play-shell .portrait-stage.pixel-portrait.portrait-frame-mode.mood-angry::before {
+  background:
+    linear-gradient(180deg, rgba(255, 253, 246, 0.08), transparent 24%),
+    radial-gradient(circle at 70% 18%, rgba(255, 79, 116, 0.16), transparent 20%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.08) 0 1px,
+      transparent 1px 4px
+    ) !important;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-frame-mode .portrait-reaction-mark {
+  z-index: 9;
+  transform: rotate(5deg);
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-frame-mode.mood-angry .portrait-reaction-mark {
+  width: 58px;
+  height: 46px;
+}
+
+.play-shell .portrait-stage.pixel-portrait.portrait-frame-mode.mood-angry .portrait-reaction-mark::before {
+  content: '!!!' !important;
+  font-size: 21px !important;
+  letter-spacing: 1px;
+}
+
+@keyframes portrait-breath {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(0, -4px, 0) scale(1.01);
+  }
+}
+
+@keyframes portrait-nervous {
+  0%,
+  100% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(3px, -2px, 0);
+  }
+}
+
+@keyframes portrait-freakout {
+  0%,
+  100% {
+    transform: translate3d(-4px, 0, 0) rotate(-0.6deg) scale(1.015);
+  }
+
+  50% {
+    transform: translate3d(4px, -3px, 0) rotate(0.8deg) scale(1.025);
+  }
+}
+
+@media (min-width: 981px) {
+  .game-shell.play-shell {
+    width: min(1500px, 100%) !important;
+    grid-template-rows: 54px 38px minmax(0, 1fr) !important;
+    gap: 8px !important;
+    padding: 8px 14px 12px !important;
+    background:
+      linear-gradient(90deg, rgba(87, 220, 202, 0.08), transparent 24%, rgba(255, 226, 122, 0.12)),
+      linear-gradient(180deg, rgba(255, 253, 246, 0.96), rgba(234, 248, 241, 0.95)) !important;
+  }
+
+  .play-shell .game-header {
+    min-height: 54px !important;
+    max-height: 54px !important;
+    grid-template-columns: minmax(260px, 0.28fr) minmax(0, 1fr) !important;
+    padding: 5px !important;
+    border-width: 4px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 7px 0 rgba(44, 36, 56, 0.9) !important;
+  }
+
+  .play-shell .title-lockup {
+    min-height: 42px !important;
+    padding: 4px 10px !important;
+    border-radius: 8px !important;
+  }
+
+  .play-shell .title-lockup h1 {
+    display: none !important;
+  }
+
+  .play-shell .title-lockup::after {
+    content: '医学英语汉堡店';
+    display: block;
+    margin-top: 3px;
+    color: #fffdf7;
+    font-size: clamp(18px, 1.65vw, 25px);
+    font-weight: 1000;
+    line-height: 1;
+    text-shadow: 2px 2px 0 #ff7ac0;
+    white-space: nowrap;
+  }
+
+  .play-shell .stats {
+    grid-template-columns: repeat(4, minmax(90px, 1fr)) !important;
+    grid-auto-rows: 42px !important;
+    gap: 8px !important;
+  }
+
+  .play-shell .stats span,
+  .play-shell .stats .rank-badge {
+    min-height: 42px !important;
+    max-height: 42px !important;
+    border-width: 3px !important;
+    border-radius: 8px !important;
+    font-size: clamp(13px, 1.05vw, 16px) !important;
+    box-shadow: 3px 3px 0 rgba(44, 36, 56, 0.58) !important;
+  }
+
+  .play-shell .banner,
+  .play-shell .rush-meter {
+    min-height: 38px !important;
+    max-height: 38px !important;
+    padding: 5px 12px !important;
+    border-width: 3px !important;
+    border-radius: 8px !important;
+    box-shadow: 3px 3px 0 rgba(44, 36, 56, 0.58) !important;
+    font-size: clamp(13px, 1vw, 15px) !important;
+  }
+
+  .play-shell .rush-meter {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .play-shell .rush-meter em {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .play-shell .shop-layout {
+    grid-template-columns:
+      minmax(340px, 0.98fr)
+      minmax(440px, 1.05fr)
+      minmax(360px, 0.92fr) !important;
+    grid-template-rows: minmax(300px, 1.02fr) minmax(270px, 0.9fr) !important;
+    gap: 12px !important;
+    height: calc(100svh - 116px) !important;
+    min-height: 500px !important;
+  }
+
+  .play-shell .character-stage-panel {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  .play-shell .character-stage {
+    height: 100% !important;
+    border: 5px solid #2c2438 !important;
+    border-radius: 14px !important;
+    background:
+      linear-gradient(180deg, rgba(255, 253, 246, 0.62), rgba(221, 248, 241, 0.82)),
+      repeating-linear-gradient(0deg, rgba(87, 220, 202, 0.12) 0 2px, transparent 2px 20px) !important;
+    box-shadow: 7px 7px 0 rgba(44, 36, 56, 0.82) !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .character-stage::after {
+    content: '' !important;
+    position: absolute !important;
+    right: 10px !important;
+    bottom: 104px !important;
+    left: 10px !important;
+    height: 18px !important;
+    border-radius: 50% !important;
+    background: rgba(44, 36, 56, 0.2) !important;
+    filter: blur(7px);
+  }
+
+  .play-shell .character-portrait-wrap {
+    inset: 6px -18px 96px !important;
+    display: grid !important;
+    place-items: start center !important;
+    overflow: visible !important;
+  }
+
+  .play-shell .portrait-stage.pixel-portrait.portrait-frame-mode {
+    width: min(540px, 122%) !important;
+    max-width: 122% !important;
+    border-radius: 12px !important;
+    border-width: 4px !important;
+    box-shadow:
+      8px 8px 0 rgba(44, 36, 56, 0.7),
+      0 0 0 5px rgba(87, 220, 202, 0.18) !important;
+  }
+
+  .play-shell .portrait-stage.pixel-portrait.portrait-frame-mode .portrait-role-badge {
+    display: none !important;
+  }
+
+  .play-shell .character-dialogue {
+    left: 16px !important;
+    right: 16px !important;
+    bottom: 18px !important;
+    max-height: 100px !important;
+    padding: 10px 12px !important;
+    border-width: 4px !important;
+    border-radius: 8px !important;
+    background: rgba(255, 253, 246, 0.96) !important;
+    box-shadow: 5px 5px 0 rgba(44, 36, 56, 0.72) !important;
+  }
+
+  .play-shell .character-dialogue small {
+    font-size: 11px !important;
+  }
+
+  .play-shell .character-dialogue strong {
+    font-size: clamp(22px, 1.9vw, 31px) !important;
+    line-height: 1.05 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .play-shell .character-dialogue p {
+    max-height: 36px !important;
+    margin: 3px 0 4px !important;
+    font-size: clamp(12px, 1vw, 14px) !important;
+    line-height: 1.25 !important;
+  }
+
+  .play-shell .character-dialogue em {
+    display: block !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 11px !important;
+  }
+
+  .play-shell .stage-patience {
+    right: 18px !important;
+    bottom: 8px !important;
+    left: 18px !important;
+    height: 9px !important;
+  }
+
+  .play-shell .character-mood {
+    left: 18px !important;
+    bottom: 114px !important;
+    z-index: 12 !important;
+  }
+
+  .play-shell .burger-station,
+  .play-shell .order-ticket,
+  .play-shell .quiz-panel {
+    border-width: 5px !important;
+    border-radius: 14px !important;
+    box-shadow: 6px 6px 0 rgba(44, 36, 56, 0.74) !important;
+  }
+
+  .play-shell .burger-station {
+    grid-template-rows: 48px 76px 52px minmax(210px, 1fr) 74px 42px !important;
+    gap: 9px !important;
+    padding: 12px !important;
+  }
+
+  .play-shell .burger-station .section-heading {
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  .play-shell .grill-slot {
+    min-height: 72px !important;
+    border-radius: 10px !important;
+  }
+
+  .play-shell .burger-stack {
+    min-height: 210px !important;
+    border-radius: 12px !important;
+  }
+
+  .play-shell .cook-meters {
+    padding: 8px 10px !important;
+    border-radius: 9px !important;
+  }
+
+  .play-shell .current-step {
+    min-height: 38px !important;
+    padding: 8px 10px !important;
+    border-radius: 7px !important;
+  }
+
+  .play-shell .order-ticket {
+    padding: 12px !important;
+  }
+
+  .play-shell .recipe-list {
+    gap: 8px !important;
+  }
+
+  .play-shell .recipe-list li {
+    min-height: 42px !important;
+    padding: 8px 10px !important;
+  }
+
+  .play-shell .quiz-panel {
+    grid-template-rows: 98px 126px 48px !important;
+    gap: 7px !important;
+    padding: 8px !important;
+  }
+
+  .play-shell .question-card {
+    min-height: 98px !important;
+    max-height: 98px !important;
+    border-width: 4px !important;
+    border-radius: 10px !important;
+  }
+
+  .play-shell .question-card::before,
+  .play-shell .question-card::after {
+    transform: scale(0.86) !important;
+    transform-origin: top left !important;
+  }
+
+  .play-shell .answer-grid {
+    height: 126px !important;
+    grid-auto-rows: 59px !important;
+    gap: 8px !important;
+  }
+
+  .play-shell .answer-button {
+    height: 59px !important;
+    min-height: 59px !important;
+    border-width: 4px !important;
+    border-radius: 8px !important;
+    box-shadow: 4px 4px 0 rgba(44, 36, 56, 0.58) !important;
+  }
+
+  .play-shell .quiz-footer {
+    height: 48px !important;
+    min-height: 48px !important;
+    grid-template-columns: 132px minmax(0, 1fr) !important;
+  }
+
+  .play-shell .combo,
+  .play-shell .feedback {
+    height: 48px !important;
+    min-height: 48px !important;
+    border-width: 3px !important;
+    border-radius: 8px !important;
+  }
+
+  .queue-chips {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    z-index: 20 !important;
+    max-width: 48% !important;
+    gap: 5px !important;
+  }
+
+  .queue-chip {
+    min-height: 30px !important;
+    padding: 4px 7px !important;
+    border-width: 2px !important;
+    border-radius: 999px !important;
+    font-size: 11px !important;
+    box-shadow: 2px 2px 0 rgba(44, 36, 56, 0.55) !important;
+  }
+}
+
+@media (min-width: 981px) and (max-height: 760px) {
+  .game-shell.play-shell {
+    grid-template-rows: 50px 34px minmax(0, 1fr) !important;
+    padding-top: 6px !important;
+  }
+
+  .play-shell .game-header {
+    min-height: 50px !important;
+    max-height: 50px !important;
+  }
+
+  .play-shell .banner,
+  .play-shell .rush-meter {
+    min-height: 34px !important;
+    max-height: 34px !important;
+  }
+
+  .play-shell .shop-layout {
+    height: calc(100svh - 102px) !important;
+    grid-template-rows: minmax(276px, 1fr) minmax(246px, 0.9fr) !important;
+  }
+
+  .play-shell .portrait-stage.pixel-portrait.portrait-frame-mode {
+    width: min(480px, 118%) !important;
+  }
+
+  .play-shell .character-dialogue {
+    max-height: 88px !important;
+  }
+
+  .play-shell .character-dialogue p {
+    max-height: 28px !important;
+  }
+
+  .play-shell .burger-station {
+    grid-template-rows: 42px 70px 44px minmax(170px, 1fr) 66px 36px !important;
+  }
+
+  .play-shell .burger-stack {
+    min-height: 170px !important;
+  }
+}
+
+/* Boss finale: make it read as a character breakdown, not a poster card. */
+.play-shell .boss-finale-scene.pixel-boss-finale {
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255, 226, 122, 0.32), transparent 22%),
+    linear-gradient(135deg, rgba(44, 36, 56, 0.96), rgba(20, 94, 85, 0.92)) !important;
+}
+
+.play-shell .pixel-finale-stage {
+  grid-template-columns: minmax(360px, 0.9fr) minmax(380px, 0.78fr) !important;
+  gap: clamp(18px, 3vw, 44px) !important;
+}
+
+.play-shell .pixel-professor-bust.pixel-professor-asset {
+  width: min(650px, 55vw) !important;
+  border: 7px solid #fff1a8 !important;
+  box-shadow:
+    14px 14px 0 rgba(0, 0, 0, 0.32),
+    0 0 0 8px rgba(255, 79, 116, 0.28) !important;
+  animation: boss-finale-bust-snap 10s steps(2, jump-none) both !important;
+}
+
+.play-shell .pixel-professor-bust.pixel-professor-asset .finale-pixel-sheet {
+  animation: boss-pixel-breakdown 10s steps(1, end) both !important;
+}
+
+.play-shell .pixel-finale-dialogue {
+  align-self: center !important;
+  max-width: 480px !important;
+  border: 6px solid #2c2438 !important;
+  border-radius: 10px !important;
+  background: rgba(255, 253, 246, 0.96) !important;
+  box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.34) !important;
+  transform: rotate(-1deg) !important;
+  animation: finale-dialogue-bonk 10s steps(2, jump-none) both !important;
+}
+
+.play-shell .pixel-finale-dialogue strong {
+  font-size: clamp(30px, 4vw, 58px) !important;
+  line-height: 1.02 !important;
+}
+
+.play-shell .pixel-prof-alert {
+  animation: finale-alert-pop 780ms steps(2, jump-none) infinite !important;
+}
+
+.play-shell .pixel-burger-stamp {
+  animation: finale-burger-stamp 8.8s cubic-bezier(0.18, 1, 0.2, 1) 1.9s both !important;
+}
+
+.play-shell .finale-burger-bonk {
+  animation: finale-burger-drop 7.6s cubic-bezier(0.18, 1, 0.2, 1) 1.8s both !important;
+}
+
+@keyframes boss-finale-bust-snap {
+  0%,
+  15% {
+    transform: translate3d(0, 0, 0) rotate(-1deg) scale(0.96);
+  }
+
+  24%,
+  42% {
+    transform: translate3d(8px, -4px, 0) rotate(1.4deg) scale(1.02);
+  }
+
+  52%,
+  72% {
+    transform: translate3d(-10px, 6px, 0) rotate(-2deg) scale(1.05);
+  }
+
+  82%,
+  100% {
+    transform: translate3d(0, -10px, 0) rotate(0.6deg) scale(1.08);
+  }
+}
+
+@keyframes finale-dialogue-bonk {
+  0%,
+  22% {
+    transform: rotate(-1deg) scale(0.92);
+    opacity: 0;
+  }
+
+  30%,
+  68% {
+    transform: rotate(-1deg) scale(1);
+    opacity: 1;
+  }
+
+  76%,
+  100% {
+    transform: rotate(1deg) scale(1.04);
+    opacity: 1;
+  }
+}
+
+@keyframes finale-alert-pop {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(4px, -8px, 0) scale(1.2);
+  }
+}
+
+/* Last-mile viewport fit: no clipped header or quiz footer on 1280x720 projectors. */
+@media (min-width: 981px) {
+  .play-shell .title-lockup {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    padding: 4px 10px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .title-lockup .eyebrow {
+    margin: 0 !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+  }
+
+  .play-shell .title-lockup::after {
+    margin-top: 3px !important;
+    font-size: clamp(14px, 1.25vw, 19px) !important;
+    line-height: 1 !important;
+  }
+}
+
+@media (min-width: 981px) and (max-height: 760px) {
+  .play-shell .shop-layout {
+    height: calc(100svh - 124px) !important;
+    grid-template-rows: minmax(268px, 1fr) minmax(230px, 0.86fr) !important;
+  }
+
+  .play-shell .quiz-panel {
+    grid-template-rows: 86px 112px 38px !important;
+    gap: 6px !important;
+    padding: 7px !important;
+  }
+
+  .play-shell .question-card {
+    min-height: 86px !important;
+    max-height: 86px !important;
+    padding: 7px 10px !important;
+  }
+
+  .play-shell .question-card .question-label {
+    font-size: 11px !important;
+    line-height: 1.05 !important;
+  }
+
+  .play-shell .question-card h2 {
+    font-size: clamp(34px, 3.2vw, 46px) !important;
+  }
+
+  .play-shell .question-card .question-hint {
+    margin-top: 2px !important;
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+    -webkit-line-clamp: 1 !important;
+  }
+
+  .play-shell .answer-grid {
+    height: 112px !important;
+    min-height: 112px !important;
+    grid-auto-rows: 52px !important;
+    gap: 7px !important;
+  }
+
+  .play-shell .answer-button {
+    height: 52px !important;
+    min-height: 52px !important;
+    padding: 10px 8px 6px !important;
+    font-size: clamp(19px, 1.9vw, 28px) !important;
+  }
+
+  .play-shell .quiz-footer {
+    height: 38px !important;
+    min-height: 38px !important;
+    grid-template-columns: 118px minmax(0, 1fr) !important;
+    gap: 6px !important;
+  }
+
+  .play-shell .combo,
+  .play-shell .feedback {
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 4px 7px !important;
+    font-size: 14px !important;
+  }
+
+  .play-shell .combo-meter {
+    height: 5px !important;
+    margin-top: 3px !important;
+  }
+}
+
+/* Phone play mode: force a readable landscape cockpit instead of a tall scroll stack. */
+@media (max-width: 980px) and (orientation: portrait) {
+  .game-shell.play-shell {
+    height: 100svh !important;
+    min-height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell > :not(.landscape-hint) {
+    display: none !important;
+  }
+
+  .play-shell .landscape-hint {
+    display: grid !important;
+  }
+}
+
+@media (max-width: 980px) and (orientation: landscape) {
+  .game-shell.play-shell {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    grid-template-areas:
+      'header header'
+      'banner rush'
+      'layout layout' !important;
+    grid-template-rows: 42px 30px minmax(0, 1fr) !important;
+    gap: 6px !important;
+    width: 100% !important;
+    height: 100svh !important;
+    min-height: 0 !important;
+    padding: 6px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .landscape-hint,
+  .play-shell .shop-scene.compact-scene.lab-diner-scene,
+  .play-shell .order-ticket,
+  .play-shell .stats button,
+  .play-shell .title-lockup h1,
+  .play-shell .character-stage-panel .compact-heading,
+  .play-shell .character-stage::before,
+  .play-shell .shop-layout::before,
+  .play-shell .portrait-stage.pixel-portrait .portrait-character-tag,
+  .play-shell .portrait-stage.pixel-portrait .portrait-role-badge {
+    display: none !important;
+  }
+
+  .play-shell .game-header {
+    grid-area: header !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
+    grid-template-columns: 190px minmax(0, 1fr) !important;
+    padding: 4px !important;
+    border-width: 3px !important;
+    border-radius: 9px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .title-lockup {
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    padding: 2px 8px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .title-lockup .eyebrow {
+    display: none !important;
+  }
+
+  .play-shell .title-lockup::after {
+    content: '医学英语汉堡店';
+    display: block;
+    color: #fffdf7;
+    font-size: 16px;
+    font-weight: 1000;
+    line-height: 1.1;
+    text-shadow: 2px 2px 0 #ff7ac0;
+    white-space: nowrap;
+  }
+
+  .play-shell .stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-auto-rows: 30px !important;
+    gap: 5px !important;
+  }
+
+  .play-shell .stats span,
+  .play-shell .stats .rank-badge {
+    min-height: 30px !important;
+    max-height: 30px !important;
+    padding: 3px 5px !important;
+    border-width: 2px !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+  }
+
+  .play-shell .banner {
+    grid-area: banner !important;
+  }
+
+  .play-shell .rush-meter {
+    grid-area: rush !important;
+  }
+
+  .play-shell .banner,
+  .play-shell .rush-meter {
+    min-height: 30px !important;
+    max-height: 30px !important;
+    padding: 4px 8px !important;
+    border-width: 2px !important;
+    border-radius: 7px !important;
+    font-size: 11px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .rush-meter {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto !important;
+    gap: 5px !important;
+    align-items: center !important;
+  }
+
+  .play-shell .rush-meter em,
+  .play-shell .rush-meter span {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .play-shell .shop-layout {
+    grid-area: layout !important;
+    display: grid !important;
+    grid-template-columns: minmax(190px, 0.85fr) minmax(250px, 1.08fr) minmax(270px, 1.12fr) !important;
+    grid-template-areas: 'character station quiz' !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    gap: 7px !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .character-stage-panel,
+  .play-shell .burger-station,
+  .play-shell .quiz-panel {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    border-width: 3px !important;
+    border-radius: 10px !important;
+    box-shadow: 3px 3px 0 rgba(44, 36, 56, 0.62) !important;
+  }
+
+  .play-shell .character-stage-panel {
+    grid-area: character !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  .play-shell .character-stage {
+    height: 100% !important;
+    border: 3px solid #2c2438 !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .character-portrait-wrap {
+    inset: 4px -12px 64px !important;
+    display: grid !important;
+    place-items: start center !important;
+  }
+
+  .play-shell .portrait-stage.pixel-portrait.portrait-frame-mode {
+    width: min(300px, 128%) !important;
+    max-width: 128% !important;
+    border-width: 3px !important;
+    border-radius: 8px !important;
+  }
+
+  .play-shell .character-dialogue {
+    left: 8px !important;
+    right: 8px !important;
+    bottom: 10px !important;
+    max-height: 62px !important;
+    padding: 6px 8px !important;
+    border-width: 3px !important;
+    border-radius: 7px !important;
+  }
+
+  .play-shell .character-dialogue small,
+  .play-shell .character-dialogue em,
+  .play-shell .character-mood,
+  .play-shell .stage-patience {
+    display: none !important;
+  }
+
+  .play-shell .character-dialogue strong {
+    font-size: 18px !important;
+    line-height: 1.05 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .play-shell .character-dialogue p {
+    max-height: 32px !important;
+    margin: 3px 0 0 !important;
+    font-size: 11px !important;
+    line-height: 1.25 !important;
+  }
+
+  .play-shell .burger-station {
+    grid-area: station !important;
+    grid-template-rows: 34px 50px 34px minmax(76px, 1fr) 44px 28px !important;
+    gap: 5px !important;
+    padding: 6px !important;
+  }
+
+  .play-shell .burger-station .section-heading {
+    margin: 0 !important;
+  }
+
+  .play-shell .burger-station .section-heading h2 {
+    font-size: 24px !important;
+  }
+
+  .play-shell .burger-station .section-heading span {
+    font-size: 13px !important;
+  }
+
+  .play-shell .grill-slot {
+    min-height: 48px !important;
+    padding: 6px 8px !important;
+  }
+
+  .play-shell .grill-lights {
+    min-height: 34px !important;
+  }
+
+  .play-shell .burger-stack {
+    min-height: 76px !important;
+  }
+
+  .play-shell .burger-layer {
+    height: 20px !important;
+    font-size: 12px !important;
+  }
+
+  .play-shell .cook-meters {
+    min-height: 44px !important;
+    padding: 5px 6px !important;
+    gap: 5px !important;
+  }
+
+  .play-shell .flip-window {
+    display: none !important;
+  }
+
+  .play-shell .current-step {
+    min-height: 28px !important;
+    padding: 5px 6px !important;
+    font-size: 12px !important;
+  }
+
+  .play-shell .quiz-panel {
+    grid-area: quiz !important;
+    display: grid !important;
+    grid-template-rows: 76px 112px 34px !important;
+    gap: 5px !important;
+    padding: 6px !important;
+  }
+
+  .play-shell .question-card {
+    min-height: 76px !important;
+    max-height: 76px !important;
+    padding: 6px 8px !important;
+    border-width: 3px !important;
+    border-radius: 8px !important;
+  }
+
+  .play-shell .question-card::before,
+  .play-shell .question-card::after {
+    display: none !important;
+  }
+
+  .play-shell .question-card .question-label {
+    font-size: 10px !important;
+    line-height: 1 !important;
+  }
+
+  .play-shell .question-card h2 {
+    font-size: clamp(30px, 5vw, 42px) !important;
+    line-height: 0.96 !important;
+  }
+
+  .play-shell .question-card .question-hint {
+    margin-top: 2px !important;
+    font-size: 10px !important;
+    line-height: 1.05 !important;
+    -webkit-line-clamp: 1 !important;
+  }
+
+  .play-shell .answer-grid {
+    height: 112px !important;
+    min-height: 112px !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: 52px !important;
+    gap: 7px !important;
+  }
+
+  .play-shell .answer-button {
+    height: 52px !important;
+    min-height: 52px !important;
+    padding: 9px 6px 5px !important;
+    border-width: 3px !important;
+    border-radius: 7px !important;
+    font-size: clamp(20px, 4vw, 30px) !important;
+  }
+
+  .play-shell .quiz-footer {
+    height: 34px !important;
+    min-height: 34px !important;
+    grid-template-columns: 96px minmax(0, 1fr) !important;
+    gap: 5px !important;
+  }
+
+  .play-shell .combo,
+  .play-shell .feedback {
+    height: 34px !important;
+    min-height: 34px !important;
+    padding: 3px 6px !important;
+    border-width: 2px !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+  }
+
+  .play-shell .combo-meter {
+    display: none !important;
+  }
+}

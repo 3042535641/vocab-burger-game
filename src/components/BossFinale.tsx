@@ -1,6 +1,11 @@
-import { getPortraitHref } from '../utils/portraits'
+import type { CSSProperties } from 'react'
+import { getPixelPortraitSrc } from '../utils/portraits'
 
 function BossFinale() {
+  const bossPortraitStyle = {
+    '--boss-final-src': `url("${getPixelPortraitSrc('boss', true)}")`,
+  } as CSSProperties
+
   return (
     <div className="boss-finale-scene pixel-boss-finale" aria-live="assertive">
       <div className="pixel-finale-backdrop" aria-hidden="true" />
@@ -10,24 +15,9 @@ function BossFinale() {
         <span>BURGER PASS</span>
       </div>
       <div className="pixel-finale-stage" aria-hidden="true">
-        <div className="pixel-professor-bust">
-          <svg className="finale-prof-art" viewBox="0 0 260 360" aria-hidden="true">
-            <use href={getPortraitHref('boss', true)} />
-          </svg>
-          <span className="pixel-prof-hair" />
-          <span className="pixel-prof-face" />
-          <span className="pixel-prof-eye eye-left" />
-          <span className="pixel-prof-eye eye-right" />
-          <span className="pixel-prof-pupil pupil-left" />
-          <span className="pixel-prof-pupil pupil-right" />
-          <span className="pixel-prof-brow brow-left" />
-          <span className="pixel-prof-brow brow-right" />
-          <span className="pixel-prof-mouth" />
-          <span className="pixel-prof-jaw" />
-          <span className="pixel-prof-glasses" />
-          <span className="pixel-prof-coat" />
-          <span className="pixel-prof-sweat sweat-left" />
-          <span className="pixel-prof-sweat sweat-right" />
+        <div className="pixel-professor-bust pixel-professor-asset" style={bossPortraitStyle}>
+          <span className="finale-pixel-sheet" />
+          <span className="finale-pixel-scanline" />
           <span className="pixel-prof-alert">!</span>
           <span className="pixel-prof-note note-left">STAT!</span>
           <span className="pixel-prof-note note-right">BONK</span>

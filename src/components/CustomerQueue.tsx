@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, type CSSProperties } from 'react'
 import { maxCustomers } from '../constants/game'
 import type { Customer, Mood } from '../types/game'
 import {
@@ -6,7 +6,7 @@ import {
   getUrgencyLabel,
   getWaitedSeconds,
 } from '../utils/gameLogic'
-import { getPortraitHref } from '../utils/portraits'
+import { getPixelPortraitFrameSrc } from '../utils/portraits'
 
 const moodLabels: Record<Mood, string> = {
   happy: '淡定背词',
@@ -28,6 +28,61 @@ const expressionLabels: Record<Mood, string> = {
   angry: '红温查词',
 }
 
+const avatarLabels: Record<string, string> = {
+  boss: '教授威压',
+  bow: '护理时钟',
+  bun: '实验报告',
+  cap: '解剖图谱',
+  round: '早八续命',
+  shade: '药理红温',
+  star: '词根女王',
+}
+
+const avatarMoodLabels: Record<string, Record<Mood, string>> = {
+  boss: {
+    happy: '金丝眼镜冷笑',
+    waiting: '查房压迫感',
+    worried: '教案开始冒汗',
+    angry: '教授颜艺崩坏',
+  },
+  bow: {
+    happy: '护理表格全对',
+    waiting: '秒表开始滴答',
+    worried: '交班前瞳孔震',
+    angry: '护理铃暴走',
+  },
+  bun: {
+    happy: '实验报告稳住',
+    waiting: '数据开始发抖',
+    worried: '护目镜起雾',
+    angry: '离心机红温',
+  },
+  cap: {
+    happy: '解剖图谱冷静',
+    waiting: '骨骼卡片乱飞',
+    worried: '颅骨知识过载',
+    angry: '肋骨式吐槽',
+  },
+  round: {
+    happy: '早八灵魂回归',
+    waiting: '咖啡因续命',
+    worried: '晨会脑内报警',
+    angry: '早八破防',
+  },
+  shade: {
+    happy: '药理剂量刚好',
+    waiting: '药片开始弹跳',
+    worried: '副作用预警',
+    angry: '药理火山爆发',
+  },
+  star: {
+    happy: '词根女王微笑',
+    waiting: '小票准备开麦',
+    worried: '发夹警报闪烁',
+    angry: '词缀怒斩错题',
+  },
+}
+
 function CustomerPortrait({
   avatar,
   isBoss,
@@ -37,48 +92,28 @@ function CustomerPortrait({
   isBoss: boolean
   mood: Mood
 }) {
+  const avatarKey = isBoss ? 'boss' : avatar ?? 'round'
+  const avatarLabel = avatarLabels[avatarKey] ?? avatarLabels.round
+  const expressionLabel =
+    avatarMoodLabels[avatarKey]?.[mood] ?? expressionLabels[mood]
+  const portraitStyle = {
+    '--portrait-src': `url("${getPixelPortraitFrameSrc(avatar, isBoss, mood)}")`,
+  } as CSSProperties
+
   return (
-    <div className={`portrait-stage portrait-${avatar} mood-${mood}`}>
-      <svg className="portrait-art" viewBox="0 0 260 360" aria-hidden="true">
-        <use href={getPortraitHref(avatar, isBoss)} />
-      </svg>
-      <span className="vn-bust" aria-hidden="true">
-        <span className="vn-hair-back" />
-        <span className="vn-shoulders" />
-        <span className="vn-neck" />
-        <span className="vn-face">
-          <span className="vn-ear ear-left" />
-          <span className="vn-ear ear-right" />
-          <span className="vn-bang bang-left" />
-          <span className="vn-bang bang-mid" />
-          <span className="vn-bang bang-right" />
-          <span className="vn-brow brow-left" />
-          <span className="vn-brow brow-right" />
-          <span className="vn-eye eye-left">
-            <span />
-          </span>
-          <span className="vn-eye eye-right">
-            <span />
-          </span>
-          <span className="vn-nose" />
-          <span className="vn-mouth" />
-          <span className="vn-blush blush-left" />
-          <span className="vn-blush blush-right" />
-          <span className="vn-sweat" />
-          <span className="vn-vein" />
-        </span>
-        <span className="vn-accessory" />
+    <div
+      className={`portrait-stage pixel-portrait portrait-frame-mode portrait-${avatar} mood-${mood}`}
+      style={portraitStyle}
+    >
+      <span className="pixel-portrait-sheet" aria-hidden="true" />
+      <span className="pixel-portrait-scanline" aria-hidden="true" />
+      <span className="portrait-character-tag">
+        {isBoss ? 'PROFESSOR CUSTOMER' : 'MED STUDENT CUSTOMER'}
       </span>
-      <span className="portrait-face-mask" />
-      <span className="portrait-brow-pop brow-left" />
-      <span className="portrait-brow-pop brow-right" />
-      <span className="portrait-eye-pop eye-left" />
-      <span className="portrait-eye-pop eye-right" />
-      <span className="portrait-mouth-pop" />
-      <span className="portrait-sweat-drop" />
-      <span className="portrait-vein" />
-      <span className="portrait-med-chip">MED</span>
-      <span className="portrait-expression">{expressionLabels[mood]}</span>
+      <span className="portrait-role-badge">{avatarLabel}</span>
+      <span className="portrait-reaction-mark" aria-hidden="true" />
+      <span className="portrait-mood-effect" aria-hidden="true" />
+      <span className="portrait-expression">{expressionLabel}</span>
     </div>
   )
 }

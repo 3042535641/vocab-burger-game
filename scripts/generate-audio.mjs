@@ -220,8 +220,60 @@ function renderBossGroove() {
   return samples
 }
 
+function renderFinaleGroove() {
+  const bpm = 132
+  const beats = 24
+  const seconds = (60 / bpm) * beats
+  const totalSamples = Math.floor(seconds * sampleRate)
+  const samples = new Float32Array(totalSamples)
+  const bass = ['D2', 'A1', 'F2', 'C2', 'G2', 'D2', 'A2', 'E2']
+  const fanfare = ['D4', 'F4', 'A4', 'C5', 'D5', 'A4', 'F5', 'D5']
+
+  for (let index = 0; index < totalSamples; index += 1) {
+    const time = index / sampleRate
+    const beat = (time * bpm) / 60
+    const beatIndex = Math.floor(beat)
+    const beatPhase = beat % 1
+    const sixteenth = Math.floor(beat * 4)
+    const sixteenthPhase = (beat * 4) % 1
+    const progress = index / totalSamples
+    let value = 0
+
+    const slamFrequency = noteToFrequency(bass[sixteenth % bass.length])
+    value += saw(time * slamFrequency) * envelope(sixteenthPhase, 0.012, 0.38) * 0.26
+    value += Math.sin(time * tau * slamFrequency * 0.5) * envelope(beatPhase, 0.01, 0.28) * 0.22
+
+    if (beatIndex % 2 === 0 && beatPhase < 0.2) {
+      value += Math.sin(time * tau * (112 - beatPhase * 310)) * envelope(beatPhase / 0.2, 0.015, 0.42) * 0.56
+      value += noise(index) * envelope(beatPhase / 0.2, 0.01, 0.36) * 0.14
+    }
+
+    if (sixteenth % 2 === 1 && sixteenthPhase < 0.26) {
+      value += noise(index) * envelope(sixteenthPhase / 0.26, 0.01, 0.36) * 0.105
+    }
+
+    if (sixteenth % 4 === 3) {
+      const leadFrequency = noteToFrequency(fanfare[Math.floor(sixteenth / 4) % fanfare.length])
+      value += pulse(time * leadFrequency, 0.44) * envelope(sixteenthPhase, 0.012, 0.3) * 0.16
+      value += triangle(time * leadFrequency * 1.5) * envelope(sixteenthPhase, 0.012, 0.3) * 0.08
+    }
+
+    if (sixteenth % 16 === 14 || sixteenth % 16 === 15) {
+      const rise = 880 + sixteenthPhase * 3200
+      value += pulse(time * rise, 0.5) * envelope(sixteenthPhase, 0.02, 0.22) * 0.1
+    }
+
+    const fadeIn = Math.min(1, progress * 24)
+    const fadeOut = Math.min(1, (1 - progress) * 24)
+    samples[index] = clamp(value * Math.min(fadeIn, fadeOut, 1) * 0.82)
+  }
+
+  return samples
+}
+
 await mkdir(audioDir, { recursive: true })
 await writeFile(join(audioDir, 'kitchen-groove.wav'), writeWav(renderKitchenGroove()))
 await writeFile(join(audioDir, 'boss-groove.wav'), writeWav(renderBossGroove()))
+await writeFile(join(audioDir, 'finale-groove.wav'), writeWav(renderFinaleGroove()))
 
-console.log('Generated kitchen-groove.wav and boss-groove.wav')
+console.log('Generated kitchen-groove.wav, boss-groove.wav and finale-groove.wav')

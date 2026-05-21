@@ -1,5 +1,5 @@
 const baseUrl = import.meta.env.BASE_URL
-const audioVersion = '20260521-vn-burger-electro-rock'
+const audioVersion = '20260521-pixel-vn-groove'
 const versionedAudio = (fileName: string) =>
   `${baseUrl}audio/${fileName}?v=${audioVersion}`
 
@@ -8,6 +8,7 @@ const audioFiles = {
   boss: versionedAudio('boss.wav'),
   bossMusic: versionedAudio('boss-groove.wav'),
   correct: versionedAudio('correct.wav'),
+  finaleMusic: versionedAudio('finale-groove.wav'),
   music: versionedAudio('kitchen-groove.wav'),
   serve: versionedAudio('serve.wav'),
   wrong: versionedAudio('wrong.wav'),
@@ -53,6 +54,7 @@ const bossGroove = {
 class GameAudio {
   private music?: HTMLAudioElement
   private bossMusic?: HTMLAudioElement
+  private finaleMusic?: HTMLAudioElement
   private audioContext?: AudioContext
   private enabled = true
   private intensity = 0
@@ -490,6 +492,38 @@ class GameAudio {
     this.grooveStep = 0
   }
 
+  private startFinaleMusic() {
+    if (!this.enabled || !this.pageVisible) {
+      return
+    }
+
+    if (!this.finaleMusic) {
+      this.finaleMusic = new Audio(audioFiles.finaleMusic)
+      this.finaleMusic.loop = false
+      this.finaleMusic.preload = 'auto'
+    }
+
+    this.finaleMusic.pause()
+    this.finaleMusic.currentTime = 0
+    this.finaleMusic.volume = this.leanMode ? 0.46 : 0.78
+    this.finaleMusic.playbackRate = this.leanMode ? 0.96 : 1
+    void this.finaleMusic.play().catch(() => undefined)
+  }
+
+  private stopFinaleMusic(resetActive = true) {
+    if (resetActive) {
+      this.finaleActive = false
+    }
+
+    if (!this.finaleMusic) {
+      return
+    }
+
+    this.finaleMusic.pause()
+    this.finaleMusic.currentTime = 0
+    this.finaleMusic.playbackRate = 1
+  }
+
   private getGrooveInterval() {
     return this.leanMode ? 640 : 280
   }
@@ -609,6 +643,7 @@ class GameAudio {
       this.stopGroove()
       this.music?.pause()
       this.bossMusic?.pause()
+      this.finaleMusic?.pause()
 
       if (this.audioContext?.state === 'running') {
         void this.audioContext.suspend()
@@ -617,12 +652,17 @@ class GameAudio {
       return
     }
 
-    if (!this.enabled || this.finaleActive) {
+    if (!this.enabled) {
       return
     }
 
     if (this.audioContext?.state === 'suspended') {
       void this.audioContext.resume()
+    }
+
+    if (this.finaleActive && this.finaleMusic) {
+      void this.finaleMusic.play().catch(() => undefined)
+      return
     }
 
     if (this.bossActive && this.bossMusic) {
@@ -672,6 +712,7 @@ class GameAudio {
     }
 
     this.finaleActive = false
+    this.stopFinaleMusic()
     this.bossActive = true
     this.stopNormalMusic()
     this.startGroove()
@@ -850,7 +891,9 @@ class GameAudio {
     this.stopNormalMusic()
     this.stopBossMusic()
     this.stopGroove()
+    this.stopFinaleMusic(false)
     this.setIntensity(0)
+    this.startFinaleMusic()
     this.playOneShot(audioFiles.serve, 0.96, 0.86)
     this.playOneShot(audioFiles.correct, 0.72, 1.28, 120)
     this.playOneShot(audioFiles.boss, 0.52, 1.22, 260)
@@ -876,6 +919,7 @@ class GameAudio {
     }
 
     this.finaleActive = false
+    this.stopFinaleMusic()
     this.stopBossMusic()
     this.bossActive = false
 
@@ -892,7 +936,7 @@ class GameAudio {
   }
 
   stopMusic() {
-    this.finaleActive = false
+    this.stopFinaleMusic()
     this.clearScheduledEffects()
     this.stopBossMusic()
 

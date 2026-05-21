@@ -1,4 +1,5 @@
 import {
+  type CSSProperties,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -54,7 +55,7 @@ import {
   saveRecords,
   saveSettings,
 } from './utils/storage'
-import { getPortraitHref } from './utils/portraits'
+import { getPixelPortraitSrc } from './utils/portraits'
 import { getUniqueWordsByEnglish, normalizeEnglish } from './utils/wordHelpers'
 import './App.css'
 
@@ -795,10 +796,16 @@ function App() {
           </div>
 
           <section className="start-character-stage" aria-label="开场角色预告">
-            <div className="start-pixel-bust start-portrait-bust" aria-hidden="true">
-              <svg className="start-portrait-art" viewBox="0 0 260 360">
-                <use href={getPortraitHref('star')} />
-              </svg>
+            <div
+              className="start-pixel-bust start-portrait-bust pixel-start-bust"
+              style={
+                {
+                  '--start-portrait-src': `url("${getPixelPortraitSrc('star')}")`,
+                } as CSSProperties
+              }
+              aria-hidden="true"
+            >
+              <span className="start-pixel-sheet" />
             </div>
             <div className="start-dialogue">
               <small>MEDICAL ENGLISH NIGHT SHIFT</small>
@@ -938,6 +945,10 @@ function App() {
         performanceMode ? 'performance-mode' : ''
       }`}
     >
+      <div className="landscape-hint" role="status" aria-live="polite">
+        <strong>手机横屏体验更完整</strong>
+        <span>请把手机横过来，角色立绘、术语制作台、订单小票和答题区会像游戏机界面一样展开。</span>
+      </div>
       {impact === 'victory' && <BossFinale />}
       {impactText && impact !== 'victory' && (
         <div className={`hit-text hit-${impact}`}>{impactText}</div>

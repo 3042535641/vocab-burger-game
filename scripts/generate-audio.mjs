@@ -95,7 +95,7 @@ function writeWav(samples) {
 }
 
 function renderKitchenGroove() {
-  const bpm = 104
+  const bpm = 106
   const beats = 64
   const seconds = (60 / bpm) * beats
   const totalSamples = Math.floor(seconds * sampleRate)
@@ -142,23 +142,27 @@ function renderKitchenGroove() {
     }
 
     if (
-      sixteenth % 8 === 0 ||
+      sixteenth % 4 === 0 ||
       sixteenth % 8 === 3 ||
       sixteenth % 8 === 5 ||
       sixteenth % 16 === 14
     ) {
       const melodyFrequency = noteToFrequency(melody[Math.floor(sixteenth / 2) % melody.length])
       const bend = melodyFrequency * (sixteenth % 16 === 14 ? 1.18 : 0.985)
-      value += triangle(time * melodyFrequency) * envelope(sixteenthPhase, 0.012, 0.32) * 0.17 * sectionLift
-      value += pulse(time * bend * 2, 0.34) * envelope(sixteenthPhase, 0.008, 0.24) * 0.055
+      value += triangle(time * melodyFrequency) * envelope(sixteenthPhase, 0.012, 0.42) * 0.2 * sectionLift
+      value += pulse(time * bend * 2, 0.34) * envelope(sixteenthPhase, 0.008, 0.3) * 0.068
     }
 
-    if (sixteenth % 8 === 2 || sixteenth % 8 === 6 || sixteenth % 16 === 12) {
+    if (sixteenth % 4 === 2 || sixteenth % 16 === 12) {
       const chord = noteToFrequency(chordRoots[Math.floor(sixteenth / 8) % chordRoots.length])
-      value += triangle(time * chord) * envelope(sixteenthPhase, 0.016, 0.52) * 0.085
-      value += triangle(time * chord * 1.2) * envelope(sixteenthPhase, 0.016, 0.52) * 0.055
-      value += pulse(time * chord * 1.5, 0.42) * envelope(sixteenthPhase, 0.016, 0.5) * 0.038
+      value += triangle(time * chord) * envelope(sixteenthPhase, 0.016, 0.62) * 0.11
+      value += triangle(time * chord * 1.25) * envelope(sixteenthPhase, 0.016, 0.58) * 0.07
+      value += pulse(time * chord * 1.5, 0.42) * envelope(sixteenthPhase, 0.016, 0.54) * 0.05
     }
+
+    const padRoot = noteToFrequency(chordRoots[bar % chordRoots.length])
+    value += triangle(time * padRoot) * 0.018
+    value += triangle(time * padRoot * 1.25) * 0.012
 
     if (beatIndex % 4 === 0 && beatPhase < 0.18) {
       value += Math.sin(time * tau * (92 - beatPhase * 220)) * envelope(beatPhase / 0.18, 0.01, 0.5) * 0.5
@@ -195,8 +199,8 @@ function renderKitchenGroove() {
       value += triangle(time * (stab / 2)) * envelope(sixteenthPhase, 0.012, 0.28) * 0.035
     }
 
-    const edgeFade = Math.min(1, index / 720, (totalSamples - index - 1) / 720)
-    samples[index] = clamp(Math.tanh(value * 1.12) * edgeFade * 0.86)
+    const edgeFade = Math.min(1, index / 180, (totalSamples - index - 1) / 180)
+    samples[index] = clamp(Math.tanh(value * 1.16) * edgeFade * 0.9)
   }
 
   return samples

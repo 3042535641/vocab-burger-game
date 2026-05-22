@@ -1,5 +1,5 @@
 const baseUrl = import.meta.env.BASE_URL
-const audioVersion = '20260521-v2-blues-rap'
+const audioVersion = '20260522-emergency-groove'
 const versionedAudio = (fileName: string) =>
   `${baseUrl}audio/${fileName}?v=${audioVersion}`
 

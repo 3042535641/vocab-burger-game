@@ -1900,3 +1900,247 @@
     transform: translate3d(0, 22px, 0) rotate(5deg) scale(1.1);
   }
 }
+
+/* Emergency desktop fix: one centered plate, no legacy burger drift. */
+@media (min-width: 981px) {
+  .play-shell .burger-station {
+    grid-template-rows: auto minmax(64px, auto) 58px minmax(240px, 1fr) auto auto !important;
+  }
+
+  .play-shell .burger-stack {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0 !important;
+    min-height: 260px !important;
+    padding: 26px 28px 30px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .burger-stack::before,
+  .play-shell .burger-stack::after {
+    pointer-events: none !important;
+  }
+
+  .play-shell .burger-stack > .empty-plate,
+  .play-shell .burger-station .burger-stack > .burger-layer {
+    position: relative !important;
+    inset: auto !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    grid-column: auto !important;
+    align-self: center !important;
+    justify-self: center !important;
+    box-sizing: border-box !important;
+    transform: none !important;
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+  }
+
+  .play-shell .burger-stack > .empty-plate {
+    width: min(74%, 420px) !important;
+    min-width: 260px !important;
+    max-width: 420px !important;
+    height: 44px !important;
+    margin-top: auto !important;
+    margin-bottom: 0 !important;
+  }
+
+  .play-shell .burger-station .burger-stack > .burger-layer {
+    width: min(86%, 440px) !important;
+    min-width: min(330px, 86%) !important;
+    max-width: 440px !important;
+    inline-size: min(86%, 440px) !important;
+    min-inline-size: min(330px, 86%) !important;
+    max-inline-size: 440px !important;
+    margin-top: -6px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .play-shell .burger-layer.bottom-bun,
+  .play-shell .burger-layer.top-bun {
+    width: min(92%, 470px) !important;
+    inline-size: min(92%, 470px) !important;
+  }
+}
+
+/* Emergency finale fix: make the boss breakdown read as animated face acting. */
+.play-shell .boss-finale-scene.pixel-boss-finale {
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255, 226, 122, 0.5), transparent 24%),
+    repeating-linear-gradient(105deg, rgba(255, 112, 79, 0.3) 0 16px, rgba(255, 122, 183, 0.12) 16px 31px),
+    linear-gradient(135deg, #161123, #125f58 48%, #2a163b) !important;
+}
+
+.play-shell .boss-finale-scene .finale-impact-flash {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 20 !important;
+  pointer-events: none !important;
+  background: #fffaf0 !important;
+  opacity: 0 !important;
+  animation: emergency-finale-flash 10s steps(1, end) both !important;
+}
+
+.play-shell .boss-finale-scene .pixel-finale-stage {
+  display: block !important;
+  width: min(1120px, 94vw) !important;
+  height: min(640px, 86vh) !important;
+  border-radius: 18px !important;
+  animation: emergency-finale-stage 10s cubic-bezier(0.2, 1, 0.2, 1) both !important;
+}
+
+.play-shell .boss-finale-scene .pixel-professor-bust.pixel-professor-asset {
+  left: clamp(24px, 5vw, 82px) !important;
+  bottom: clamp(18px, 5vh, 42px) !important;
+  width: min(64vh, 560px) !important;
+  max-width: 52vw !important;
+  aspect-ratio: 4 / 5 !important;
+  animation: emergency-boss-acting 10s steps(2, jump-none) both !important;
+}
+
+.play-shell .boss-finale-scene .boss-face-frame {
+  object-fit: cover !important;
+  object-position: center 18% !important;
+  border-radius: 18px !important;
+}
+
+.play-shell .boss-finale-scene .face-waiting {
+  animation: emergency-face-waiting 10s steps(1, end) both !important;
+}
+
+.play-shell .boss-finale-scene .face-worried {
+  animation: emergency-face-worried 10s steps(1, end) both !important;
+}
+
+.play-shell .boss-finale-scene .face-angry {
+  animation: emergency-face-angry 10s steps(1, end) both !important;
+}
+
+.play-shell .boss-finale-scene .face-defeated {
+  animation: emergency-face-defeated 10s steps(1, end) both !important;
+}
+
+.play-shell .boss-finale-scene .pixel-term-card {
+  animation-duration: 10s !important;
+}
+
+.play-shell .boss-finale-scene .card-a {
+  right: 30% !important;
+  top: 14% !important;
+  animation-name: emergency-card-a !important;
+}
+
+.play-shell .boss-finale-scene .card-b {
+  right: 12% !important;
+  top: 36% !important;
+  animation-name: emergency-card-b !important;
+}
+
+.play-shell .boss-finale-scene .card-c {
+  right: 28% !important;
+  bottom: 22% !important;
+  animation-name: emergency-card-c !important;
+}
+
+.play-shell .boss-finale-scene .pixel-burger-stamp {
+  right: clamp(38px, 7vw, 110px) !important;
+  bottom: clamp(90px, 15vh, 150px) !important;
+  animation-name: emergency-burger-stamp !important;
+}
+
+.play-shell .boss-finale-scene .finale-burger-bonk {
+  right: clamp(110px, 16vw, 210px) !important;
+  top: clamp(88px, 13vh, 130px) !important;
+  animation-name: emergency-burger-drop !important;
+}
+
+.play-shell .boss-finale-scene .finale-subtitle {
+  right: clamp(28px, 5vw, 74px) !important;
+  bottom: clamp(18px, 4vh, 34px) !important;
+  animation-name: emergency-subtitle !important;
+}
+
+@keyframes emergency-finale-flash {
+  0%, 17%, 31%, 53%, 74%, 100% { opacity: 0; }
+  16%, 30%, 52%, 73% { opacity: 0.78; }
+}
+
+@keyframes emergency-finale-stage {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  16% { transform: translate3d(-16px, 8px, 0) rotate(-1deg); }
+  30% { transform: translate3d(18px, -10px, 0) rotate(1.4deg); }
+  52% { transform: translate3d(-24px, 6px, 0) rotate(-1.8deg); }
+  73% { transform: translate3d(0, 16px, 0) scale(1.03); }
+}
+
+@keyframes emergency-boss-acting {
+  0%, 15% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  16%, 29% { transform: translate3d(20px, -18px, 0) scale(1.1) rotate(-2deg); }
+  30%, 51% { transform: translate3d(-24px, 10px, 0) scale(1.18) rotate(2deg); }
+  52%, 72% { transform: translate3d(34px, -8px, 0) scale(1.24) rotate(-3deg); }
+  73%, 100% { transform: translate3d(0, 32px, 0) scale(1.06) rotate(0deg); }
+}
+
+@keyframes emergency-face-waiting {
+  0%, 15% { opacity: 1; }
+  16%, 100% { opacity: 0; }
+}
+
+@keyframes emergency-face-worried {
+  0%, 15% { opacity: 0; }
+  16%, 29% { opacity: 1; }
+  30%, 100% { opacity: 0; }
+}
+
+@keyframes emergency-face-angry {
+  0%, 29% { opacity: 0; }
+  30%, 72% { opacity: 1; }
+  73%, 100% { opacity: 0; }
+}
+
+@keyframes emergency-face-defeated {
+  0%, 72% { opacity: 0; }
+  73%, 100% { opacity: 1; }
+}
+
+@keyframes emergency-card-a {
+  0%, 10% { opacity: 0; transform: translate3d(260px, -220px, 0) rotate(24deg) scale(1.45); }
+  16%, 66% { opacity: 1; transform: translate3d(0, 0, 0) rotate(-7deg) scale(1); }
+  100% { opacity: 0; transform: translate3d(-110px, 160px, 0) rotate(-18deg) scale(0.8); }
+}
+
+@keyframes emergency-card-b {
+  0%, 25% { opacity: 0; transform: translate3d(300px, 10px, 0) rotate(-20deg) scale(1.5); }
+  31%, 70% { opacity: 1; transform: translate3d(0, 0, 0) rotate(8deg) scale(1); }
+  100% { opacity: 0; transform: translate3d(-170px, 80px, 0) rotate(16deg) scale(0.82); }
+}
+
+@keyframes emergency-card-c {
+  0%, 45% { opacity: 0; transform: translate3d(220px, 180px, 0) rotate(18deg) scale(1.48); }
+  53%, 84% { opacity: 1; transform: translate3d(0, 0, 0) rotate(-5deg) scale(1); }
+  100% { opacity: 0; transform: translate3d(-120px, -60px, 0) rotate(-12deg) scale(0.84); }
+}
+
+@keyframes emergency-burger-stamp {
+  0%, 58% { opacity: 0; transform: translate3d(0, -260px, 0) rotate(-15deg) scale(1.6); }
+  65%, 100% { opacity: 1; transform: translate3d(0, 0, 0) rotate(-4deg) scale(1); }
+  73% { transform: translate3d(0, 26px, 0) rotate(3deg) scale(1.18); }
+}
+
+@keyframes emergency-burger-drop {
+  0%, 38% { opacity: 0; transform: translate3d(0, -260px, 0) rotate(14deg) scale(1.35); }
+  48%, 100% { opacity: 1; transform: translate3d(0, 0, 0) rotate(-7deg) scale(1); }
+  72% { transform: translate3d(0, 30px, 0) rotate(5deg) scale(1.14); }
+}
+
+@keyframes emergency-subtitle {
+  0%, 74% { opacity: 0; transform: translate3d(0, 32px, 0); }
+  80%, 100% { opacity: 1; transform: translate3d(0, 0, 0); }
+}

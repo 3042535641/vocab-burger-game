@@ -673,7 +673,6 @@ class GameAudio {
 
     if (this.music) {
       void this.music.play().catch(() => undefined)
-      this.startGroove()
     }
   }
 
@@ -922,6 +921,7 @@ class GameAudio {
     this.stopFinaleMusic()
     this.stopBossMusic()
     this.bossActive = false
+    this.stopGroove()
 
     if (!this.music) {
       this.music = new Audio(audioFiles.music)
@@ -932,7 +932,6 @@ class GameAudio {
     this.music.volume = this.leanMode ? 0.24 : 0.5
     this.music.playbackRate = this.leanMode ? 0.96 : 0.98
     void this.music.play().catch(() => undefined)
-    this.startGroove()
   }
 
   stopMusic() {

@@ -14,6 +14,7 @@ dist-ssr
 .edge-cdp/
 .edge-qa/
 qa-*.png
+public/art/vn-stage/**/*.png
 
 # Editor directories and files
 .vscode/*

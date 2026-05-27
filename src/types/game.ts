@@ -9,6 +9,41 @@ export type GameStatus =
 
 export type Mood = 'happy' | 'waiting' | 'worried' | 'angry'
 
+export type PortraitFrameKey =
+  | 'normal'
+  | 'waiting'
+  | 'worried'
+  | 'angry'
+  | 'satisfied'
+
+export type BossFinaleFrameKey =
+  | 'entrance'
+  | 'stern'
+  | 'shocked'
+  | 'breakdown'
+  | 'bonked'
+  | 'defeated'
+
+export type CharacterProfile = {
+  avatar: string
+  name: string
+  title: string
+  accentColor: string
+  queuePose: PortraitFrameKey
+  portraitFrames: Record<PortraitFrameKey, string>
+  linesByMood: Record<Mood, string>
+  handoffLine: string
+}
+
+export type BossFinaleBeat = {
+  id: string
+  startMs: number
+  endMs: number
+  frame: BossFinaleFrameKey
+  impact: 'hold' | 'shock' | 'breakdown' | 'bonk' | 'finish'
+  callout?: string
+}
+
 export type PattySide = 'first' | 'second' | 'done' | null
 
 export type BurgerStep = {

@@ -5,6 +5,7 @@ import {
   targetRegularServed,
 } from '../constants/game'
 import { words, type WordEntry } from '../data/words'
+import { customerRoster } from '../data/characters'
 import type {
   AnswerQuestion,
   BurgerRecipe,
@@ -19,16 +20,7 @@ type RecipeStepPlan = {
   wordId: string
 }
 
-export const customerProfiles = [
-  { name: '早八医学生小明', avatar: 'round' },
-  { name: '背词王安娜', avatar: 'star' },
-  { name: '解剖图谱 Leo', avatar: 'cap' },
-  { name: '护理技能糖糖', avatar: 'bow' },
-  { name: '药理课阿杰', avatar: 'shade' },
-  { name: '实验报告 Mia', avatar: 'bun' },
-  { name: '病历翻译小周', avatar: 'cap' },
-  { name: '词根急救队 Nana', avatar: 'star' },
-]
+export const customerProfiles = customerRoster
 
 const recipes: BurgerRecipe[] = [
   { id: 'classic', name: '细胞词根打底堡', tag: 'cell + tissue 稳住基本盘' },
@@ -453,7 +445,7 @@ export const createCustomer = (
 ): Customer => {
   const isBoss = forceBoss
   const maxPatience = isBoss ? bossPatience : basePatience
-  const profile = customerProfiles[id % customerProfiles.length]
+  const profile = customerProfiles[(id - 1) % customerProfiles.length]
   const recipe = pickRecipe(id, isBoss)
 
   return {

@@ -1,0 +1,1337 @@
+/*
+ * Final visual-novel gameplay surface.
+ * This file intentionally owns the active play layout so legacy presentation
+ * rules in App.css no longer decide geometry.
+ */
+
+/* Opening preview: use the same tall illustration language as the live stage. */
+.start-screen .start-character-stage {
+  grid-template-columns: minmax(230px, 0.36fr) minmax(0, 1fr) !important;
+  align-items: stretch !important;
+  min-height: 356px !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-color: #173947 !important;
+  border-radius: 10px !important;
+  background:
+    linear-gradient(90deg, rgba(6, 20, 30, 0.1), rgba(6, 20, 30, 0.72)),
+    url('/vocab-burger-game/art/vn-stage/diner-background.webp') center / cover !important;
+  box-shadow: 6px 7px 0 rgba(25, 25, 37, 0.5) !important;
+}
+
+.start-screen .pixel-start-bust {
+  min-height: 356px !important;
+  aspect-ratio: 3 / 4 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.start-screen .start-pixel-sheet {
+  background-image: var(--start-portrait-src) !important;
+  background-position: center top !important;
+  background-size: cover !important;
+}
+
+.start-screen .start-dialogue {
+  display: grid !important;
+  align-content: center !important;
+  gap: 13px !important;
+  padding: 28px 34px !important;
+  background: rgba(8, 22, 33, 0.86) !important;
+  color: #fff5dc !important;
+}
+
+.start-screen .start-dialogue small {
+  color: #75e5cf !important;
+  font-weight: 900 !important;
+}
+
+.start-screen .start-dialogue strong {
+  color: #fff5dc !important;
+  font-size: clamp(25px, 2.1vw, 34px) !important;
+  line-height: 1.25 !important;
+}
+
+.start-screen .start-dialogue p {
+  color: #d3efe8 !important;
+  line-height: 1.55 !important;
+}
+
+.game-shell.play-shell {
+  --vn-ink: #171628;
+  --vn-deep: #091c29;
+  --vn-teal: #125d60;
+  --vn-mint: #75e5cf;
+  --vn-cream: #fff5dc;
+  --vn-gold: #ffc75e;
+  --vn-coral: #ff6555;
+  --vn-pink: #ff76aa;
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: 60px 44px 34px 34px minmax(0, 1fr) !important;
+  grid-template-areas:
+    'header'
+    'scene'
+    'banner'
+    'rush'
+    'layout' !important;
+  gap: 8px !important;
+  height: 100svh !important;
+  min-height: 650px !important;
+  box-sizing: border-box !important;
+  padding: 10px 12px 12px !important;
+  overflow: hidden !important;
+  color: var(--vn-ink) !important;
+  background:
+    linear-gradient(90deg, rgba(5, 19, 29, 0.84), rgba(5, 19, 29, 0.5)),
+    url('/vocab-burger-game/art/vn-stage/diner-background.webp') center / cover fixed,
+    #091c29 !important;
+}
+
+.game-shell.play-shell::after {
+  content: '' !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.025) 0 1px,
+    transparent 1px 4px
+  ) !important;
+  opacity: 0.7 !important;
+}
+
+.play-shell > * {
+  position: relative;
+  z-index: 1;
+}
+
+.play-shell .landscape-hint {
+  display: none !important;
+}
+
+.play-shell .game-header {
+  grid-area: header !important;
+  display: grid !important;
+  grid-template-columns: minmax(300px, 398px) minmax(0, 1fr) !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  height: 60px !important;
+  min-height: 60px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.play-shell .title-lockup {
+  position: relative !important;
+  display: grid !important;
+  align-content: center !important;
+  gap: 2px !important;
+  padding: 8px 18px !important;
+  border: 3px solid rgba(117, 229, 207, 0.45) !important;
+  border-radius: 10px !important;
+  background: rgba(9, 28, 41, 0.85) !important;
+  box-shadow: inset 0 0 0 2px rgba(255, 199, 94, 0.12) !important;
+  height: 60px !important;
+  min-height: 60px !important;
+  max-height: none !important;
+  box-sizing: border-box !important;
+}
+
+.play-shell .title-lockup::after {
+  content: 'OPEN' !important;
+  position: absolute !important;
+  right: 14px !important;
+  bottom: -10px !important;
+  padding: 3px 9px !important;
+  border: 2px solid var(--vn-ink) !important;
+  border-radius: 999px !important;
+  background: var(--vn-gold) !important;
+  color: var(--vn-ink) !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+}
+
+.play-shell .eyebrow {
+  margin: 0 !important;
+  color: var(--vn-gold) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+}
+
+.play-shell .title-lockup h1 {
+  display: block !important;
+  margin: 0 !important;
+  color: #fff7e7 !important;
+  font-size: clamp(29px, 2.1vw, 38px) !important;
+  font-weight: 1000 !important;
+  line-height: 1 !important;
+  text-shadow: 3px 3px 0 rgba(255, 101, 85, 0.52) !important;
+  letter-spacing: 0 !important;
+}
+
+.play-shell .stats {
+  display: grid !important;
+  grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  gap: 7px !important;
+  height: 60px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.play-shell .stats > span,
+.play-shell .stats > button {
+  display: grid !important;
+  place-items: center !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  padding: 4px 6px !important;
+  border: 2px solid rgba(117, 229, 207, 0.34) !important;
+  border-radius: 8px !important;
+  background: rgba(9, 28, 41, 0.86) !important;
+  color: #fff1ce !important;
+  box-shadow: none !important;
+  font-size: clamp(12px, 0.92vw, 15px) !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+  text-align: center !important;
+}
+
+.play-shell .stats > button {
+  cursor: pointer !important;
+  transition: transform 120ms ease, border-color 120ms ease !important;
+}
+
+.play-shell .stats > button:hover {
+  transform: translateY(-2px) !important;
+  border-color: var(--vn-gold) !important;
+}
+
+.play-shell .stats .rank-badge {
+  color: var(--vn-coral) !important;
+}
+
+.play-shell .shop-scene.lab-diner-scene {
+  grid-area: scene !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 2px solid rgba(117, 229, 207, 0.34) !important;
+  border-radius: 9px !important;
+  background:
+    linear-gradient(90deg, rgba(9, 28, 41, 0.34), rgba(9, 28, 41, 0.72)),
+    url('/vocab-burger-game/art/vn-stage/diner-background.webp') center 39% / cover !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.play-shell .lab-diner-scene > *:not(.lab-diner-sign) {
+  display: none !important;
+}
+
+.play-shell .lab-diner-sign {
+  position: absolute !important;
+  inset: 5px auto auto 50% !important;
+  display: grid !important;
+  width: min(440px, 42vw) !important;
+  height: 34px !important;
+  place-items: center !important;
+  transform: translateX(-50%) !important;
+  border: 2px solid rgba(117, 229, 207, 0.7) !important;
+  border-radius: 7px !important;
+  background: rgba(9, 28, 41, 0.88) !important;
+  box-shadow: 0 0 18px rgba(117, 229, 207, 0.24) !important;
+}
+
+.play-shell .lab-diner-sign span {
+  font-size: 9px !important;
+  color: var(--vn-gold) !important;
+  line-height: 1 !important;
+}
+
+.play-shell .lab-diner-sign strong {
+  font-size: clamp(17px, 1.55vw, 25px) !important;
+  color: #effff8 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+}
+
+.play-shell .banner {
+  grid-area: banner !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 100% !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 0 16px !important;
+  box-sizing: border-box !important;
+  border: 2px solid rgba(255, 199, 94, 0.6) !important;
+  border-radius: 8px !important;
+  background: rgba(9, 28, 41, 0.86) !important;
+  color: var(--vn-gold) !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+  box-shadow: none !important;
+}
+
+.play-shell .rush-meter {
+  grid-area: rush !important;
+  display: grid !important;
+  grid-template-columns: auto auto 48px !important;
+  grid-template-rows: 18px 10px !important;
+  align-items: center !important;
+  gap: 5px 12px !important;
+  width: 100% !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 4px 12px !important;
+  box-sizing: border-box !important;
+  border: 2px solid rgba(117, 229, 207, 0.32) !important;
+  border-radius: 8px !important;
+  background: rgba(9, 28, 41, 0.82) !important;
+  color: var(--vn-mint) !important;
+  box-shadow: none !important;
+}
+
+.play-shell .rush-meter span,
+.play-shell .rush-meter em,
+.play-shell .rush-meter strong {
+  position: static !important;
+  color: inherit !important;
+  font-size: 12px !important;
+  font-style: normal !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  transform: none !important;
+}
+
+.play-shell .rush-meter strong {
+  justify-self: end !important;
+  color: var(--vn-gold) !important;
+}
+
+.play-shell .rush-track {
+  grid-column: 1 / -1 !important;
+  position: relative !important;
+  width: 100% !important;
+  height: 8px !important;
+  overflow: hidden !important;
+  border-radius: 999px !important;
+  background: rgba(255, 245, 220, 0.16) !important;
+}
+
+.play-shell .rush-track span {
+  display: block !important;
+  height: 100% !important;
+  background: linear-gradient(90deg, var(--vn-mint), var(--vn-gold), var(--vn-coral)) !important;
+}
+
+.play-shell .shop-layout {
+  grid-area: layout !important;
+  display: grid !important;
+  grid-template-columns: minmax(350px, 36fr) minmax(300px, 30fr) minmax(350px, 34fr) !important;
+  grid-template-rows: minmax(266px, 42%) minmax(382px, 58%) !important;
+  grid-template-areas:
+    'character station ticket'
+    'character station quiz' !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.play-shell .shop-layout::before,
+.play-shell .shop-layout::after {
+  display: none !important;
+}
+
+.play-shell .shop-layout > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Character stage */
+.play-shell .character-stage-panel.vn-character-stage {
+  --character-accent: var(--vn-mint);
+  grid-area: character !important;
+  position: relative !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background:
+    linear-gradient(180deg, rgba(9, 28, 41, 0.04) 0%, rgba(9, 28, 41, 0.8) 83%),
+    url('/vocab-burger-game/art/vn-stage/diner-background.webp') left center / auto 100% !important;
+  box-shadow: inset 0 0 0 1px rgba(117, 229, 207, 0.18) !important;
+}
+
+.play-shell .vn-main-portrait {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 2 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center top !important;
+  animation: vn-portrait-enter 240ms ease-out both !important;
+}
+
+.play-shell .mood-waiting .vn-main-portrait {
+  animation: vn-portrait-breathe 2.8s ease-in-out infinite !important;
+}
+
+.play-shell .mood-worried .vn-main-portrait {
+  animation: vn-portrait-alert 760ms steps(2, end) infinite !important;
+}
+
+.play-shell .mood-angry .vn-main-portrait,
+.play-shell .boss-stage.mood-angry .vn-main-portrait {
+  animation: vn-portrait-rage 420ms steps(2, end) infinite !important;
+}
+
+.play-shell .handoff-satisfied .vn-main-portrait {
+  animation: vn-portrait-exit 1.2s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+}
+
+.play-shell .vn-queue-stack {
+  position: absolute !important;
+  top: 14px !important;
+  right: 12px !important;
+  z-index: 4 !important;
+  display: grid !important;
+  gap: 9px !important;
+  width: 126px !important;
+}
+
+.play-shell .vn-queue-card {
+  --queue-accent: var(--vn-mint);
+  position: relative !important;
+  display: block !important;
+  width: 126px !important;
+  height: 170px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 2px solid var(--queue-accent) !important;
+  border-radius: 8px !important;
+  background: rgba(9, 28, 41, 0.9) !important;
+  box-shadow: 0 7px 20px rgba(0, 0, 0, 0.28) !important;
+  cursor: pointer !important;
+  transform-origin: right top !important;
+  transition: transform 130ms ease, opacity 130ms ease !important;
+}
+
+.play-shell .vn-queue-card.queue-1 {
+  opacity: 0.82 !important;
+  transform: translateX(0) scale(0.92) !important;
+}
+
+.play-shell .vn-queue-card.queue-2 {
+  margin-top: -92px !important;
+  opacity: 0.58 !important;
+  transform: translateX(20px) scale(0.84) !important;
+}
+
+.play-shell .vn-queue-card:hover {
+  opacity: 1 !important;
+  transform: translateX(-6px) scale(0.96) !important;
+}
+
+.play-shell .vn-queue-card img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center top !important;
+  opacity: 0.72 !important;
+}
+
+.play-shell .vn-queue-card span,
+.play-shell .vn-queue-card small {
+  position: absolute !important;
+  z-index: 1 !important;
+  left: 5px !important;
+  right: 5px !important;
+  color: #fff5dc !important;
+  font-weight: 800 !important;
+  text-shadow: 1px 1px #091c29 !important;
+}
+
+.play-shell .vn-queue-card span {
+  bottom: 22px !important;
+  font-size: 10px !important;
+}
+
+.play-shell .vn-queue-card small {
+  bottom: 6px !important;
+  color: var(--vn-gold) !important;
+  font-size: 11px !important;
+}
+
+.play-shell .vn-mood-tag {
+  position: absolute !important;
+  top: 16px !important;
+  left: 16px !important;
+  z-index: 5 !important;
+  padding: 6px 12px !important;
+  border: 2px solid var(--character-accent) !important;
+  border-radius: 999px !important;
+  background: rgba(9, 28, 41, 0.82) !important;
+  color: #fff5dc !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+}
+
+.play-shell .vn-dialogue {
+  position: absolute !important;
+  right: 14px !important;
+  bottom: 20px !important;
+  left: 14px !important;
+  z-index: 6 !important;
+  display: grid !important;
+  gap: 5px !important;
+  padding: 13px 15px 14px !important;
+  border-left: 4px solid var(--character-accent) !important;
+  border-radius: 4px 10px 10px 4px !important;
+  background: rgba(8, 22, 33, 0.9) !important;
+  color: #fff5dc !important;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.34) !important;
+}
+
+.play-shell .vn-dialogue small {
+  color: var(--character-accent) !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+}
+
+.play-shell .vn-dialogue strong {
+  color: #fffaf0 !important;
+  font-size: clamp(24px, 2vw, 31px) !important;
+  line-height: 1 !important;
+}
+
+.play-shell .vn-dialogue p {
+  min-height: 32px !important;
+  margin: 0 !important;
+  color: #fff5dc !important;
+  font-size: clamp(13px, 1.05vw, 16px) !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+}
+
+.play-shell .vn-dialogue em {
+  padding-top: 6px !important;
+  border-top: 1px solid rgba(117, 229, 207, 0.22) !important;
+  color: #b8fff0 !important;
+  font-size: 12px !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+}
+
+.play-shell .vn-patience {
+  position: absolute !important;
+  right: 14px !important;
+  bottom: 8px !important;
+  left: 14px !important;
+  z-index: 7 !important;
+  height: 5px !important;
+  overflow: hidden !important;
+  border-radius: 999px !important;
+  background: rgba(255, 245, 220, 0.2) !important;
+}
+
+.play-shell .vn-patience span {
+  display: block !important;
+  height: 100% !important;
+  border-radius: inherit !important;
+  background: linear-gradient(90deg, var(--vn-coral), var(--vn-gold), var(--character-accent)) !important;
+}
+
+/* Single-pan station */
+.play-shell .panel.burger-station {
+  grid-area: station !important;
+  display: grid !important;
+  grid-template-rows: auto 62px 45px minmax(210px, 1fr) auto 45px !important;
+  gap: 8px !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 12px !important;
+  overflow: hidden !important;
+  border: 2px solid rgba(117, 229, 207, 0.35) !important;
+  border-radius: 10px !important;
+  background: rgba(250, 249, 239, 0.97) !important;
+  color: var(--vn-ink) !important;
+  box-shadow: none !important;
+}
+
+.play-shell .section-heading {
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: space-between !important;
+  gap: 9px !important;
+  margin: 0 !important;
+}
+
+.play-shell .burger-station .section-heading h2,
+.play-shell .order-ticket .section-heading h2 {
+  margin: 0 !important;
+  color: var(--vn-ink) !important;
+  font-size: clamp(22px, 1.8vw, 29px) !important;
+  line-height: 1 !important;
+  text-shadow: none !important;
+}
+
+.play-shell .section-heading span {
+  color: var(--vn-gold) !important;
+  font-size: clamp(11px, 0.9vw, 14px) !important;
+  font-weight: 800 !important;
+}
+
+.play-shell .grill-slots {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  min-height: 0 !important;
+}
+
+.play-shell .grill-slot {
+  display: grid !important;
+  grid-template-columns: auto 1fr auto !important;
+  align-items: center !important;
+  gap: 10px !important;
+  height: 62px !important;
+  min-height: 62px !important;
+  padding: 8px 10px !important;
+  border: 1px solid rgba(117, 229, 207, 0.27) !important;
+  border-radius: 7px !important;
+  background: #e4f7ec !important;
+  color: var(--vn-ink) !important;
+  text-align: left !important;
+}
+
+.play-shell .grill-slot strong {
+  color: var(--vn-teal) !important;
+}
+
+.play-shell .grill-slot span {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.play-shell .grill-slot small {
+  color: #8a4e19 !important;
+}
+
+.play-shell .grill-lights {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  height: 45px !important;
+  min-height: 45px !important;
+  padding: 0 12px !important;
+  border-radius: 7px !important;
+  background: linear-gradient(90deg, #e3f2f2, #fff0c9) !important;
+}
+
+.play-shell .grill-lights::before {
+  content: 'THERMO LAB' !important;
+  margin-right: 8px !important;
+  color: var(--vn-teal) !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+}
+
+.play-shell .grill-lights > span:not(.grill-patty) {
+  width: 14px !important;
+  height: 14px !important;
+  border-radius: 50% !important;
+  background: var(--vn-coral) !important;
+}
+
+.play-shell .grill-lights > span:nth-child(2) {
+  background: var(--vn-gold) !important;
+}
+
+.play-shell .grill-patty {
+  margin-left: auto !important;
+  padding: 5px 12px !important;
+  border-radius: 999px !important;
+  background: #8e4d37 !important;
+  color: #fff5dc !important;
+  font-weight: 800 !important;
+}
+
+.play-shell .burger-stack {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  min-height: 0 !important;
+  padding: 22px 20px 20px !important;
+  border: 1px solid rgba(117, 229, 207, 0.18) !important;
+  border-radius: 9px !important;
+  background:
+    radial-gradient(ellipse at 50% 88%, rgba(18, 93, 96, 0.11), transparent 46%),
+    linear-gradient(180deg, #fffdf7, #eef8f4) !important;
+  overflow: hidden !important;
+}
+
+.play-shell .burger-stack::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: auto !important;
+  top: calc(50% + 41px) !important;
+  left: 50% !important;
+  width: min(76%, 330px) !important;
+  height: 14px !important;
+  border-radius: 50% !important;
+  background: rgba(0, 0, 0, 0.34) !important;
+  transform: translateX(-50%) !important;
+}
+
+.play-shell .burger-stack > .burger-layer,
+.play-shell .burger-stack > .empty-plate {
+  position: relative !important;
+  z-index: 1 !important;
+  inset: auto !important;
+  display: grid !important;
+  place-items: center !important;
+  box-sizing: border-box !important;
+  width: min(86%, 350px) !important;
+  min-width: 0 !important;
+  max-width: 350px !important;
+  margin: -4px auto 0 !important;
+  padding: 5px 14px !important;
+  transform: none !important;
+  border: 2px solid #1b192a !important;
+  border-radius: 999px !important;
+  color: #211a22 !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.25) !important;
+}
+
+.play-shell .burger-stack > .empty-plate {
+  height: 33px !important;
+  margin-top: auto !important;
+  background: #f9f5e9 !important;
+  color: #766c68 !important;
+}
+
+.play-shell .burger-layer.bottom-bun,
+.play-shell .burger-layer.top-bun {
+  min-height: 34px !important;
+  width: min(92%, 376px) !important;
+  background: linear-gradient(#ffd171, #eb993a) !important;
+}
+
+.play-shell .burger-layer.patty {
+  min-height: 28px !important;
+  background: repeating-linear-gradient(90deg, #87462e 0 14px, #a9663c 14px 27px) !important;
+  color: #fff5dc !important;
+}
+
+.play-shell .burger-layer.lettuce {
+  min-height: 23px !important;
+  background: #79d264 !important;
+}
+
+.play-shell .burger-layer.tomato {
+  min-height: 22px !important;
+  background: #fb6354 !important;
+}
+
+.play-shell .burger-layer.sauce {
+  min-height: 20px !important;
+  background: #ffdf78 !important;
+}
+
+.play-shell .cook-meters {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 7px !important;
+  color: #fff5dc !important;
+}
+
+.play-shell .cook-meters > div {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+
+.play-shell .cook-meters > div > span {
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+
+.play-shell .meter {
+  height: 7px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 245, 220, 0.18) !important;
+  overflow: hidden !important;
+}
+
+.play-shell .meter span {
+  display: block !important;
+  height: 100% !important;
+  background: var(--vn-gold) !important;
+}
+
+.play-shell .burn-meter span {
+  background: var(--vn-coral) !important;
+}
+
+.play-shell .flip-window {
+  grid-column: 1 / -1 !important;
+  margin: 2px 0 0 !important;
+  padding: 6px !important;
+  border-radius: 6px !important;
+  background: rgba(255, 199, 94, 0.1) !important;
+  color: var(--vn-gold) !important;
+  font-size: 11px !important;
+  text-align: center !important;
+}
+
+.play-shell .flip-window.ready {
+  background: rgba(117, 229, 207, 0.18) !important;
+  color: var(--vn-mint) !important;
+}
+
+.play-shell .current-step {
+  display: grid !important;
+  place-items: center !important;
+  height: 45px !important;
+  margin: 0 !important;
+  border-radius: 7px !important;
+  background: var(--vn-teal) !important;
+  color: #fff5dc !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+}
+
+/* Ticket and quiz */
+.play-shell .panel.order-ticket,
+.play-shell .panel.quiz-panel {
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 12px !important;
+  overflow: hidden !important;
+  border: 2px solid rgba(117, 229, 207, 0.35) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 253, 247, 0.97) !important;
+  box-shadow: none !important;
+  color: var(--vn-ink) !important;
+}
+
+.play-shell .order-ticket {
+  grid-area: ticket !important;
+  display: grid !important;
+  grid-template-rows: auto auto minmax(0, 1fr) !important;
+  gap: 9px !important;
+}
+
+.play-shell .ticket-meta {
+  display: grid !important;
+  gap: 3px !important;
+  padding: 8px 10px !important;
+  border-radius: 7px !important;
+  background: #e4f7ef !important;
+}
+
+.play-shell .ticket-meta strong {
+  color: var(--vn-ink) !important;
+  font-size: 14px !important;
+}
+
+.play-shell .ticket-meta span {
+  color: var(--vn-mint) !important;
+  font-size: 11px !important;
+}
+
+.play-shell .recipe-list {
+  display: grid !important;
+  align-content: start !important;
+  gap: 6px !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  overflow-y: auto !important;
+}
+
+.play-shell .recipe-list li {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 7px !important;
+  padding: 7px 9px !important;
+  border: 1px solid rgba(18, 93, 96, 0.22) !important;
+  border-radius: 6px !important;
+  background: #fff8e8 !important;
+  color: var(--vn-ink) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+.play-shell .recipe-list li.current {
+  border-color: var(--vn-gold) !important;
+  background: #fff0bd !important;
+}
+
+.play-shell .recipe-list li.done {
+  border-color: rgba(117, 229, 207, 0.32) !important;
+  color: var(--vn-mint) !important;
+}
+
+.play-shell .recipe-list small {
+  color: var(--vn-mint) !important;
+  font-size: 11px !important;
+}
+
+.play-shell .quiz-panel {
+  grid-area: quiz !important;
+  display: grid !important;
+  grid-template-rows: auto auto auto !important;
+  align-content: start !important;
+  gap: 8px !important;
+}
+
+.play-shell .quiz-panel::after {
+  display: none !important;
+}
+
+.play-shell .question-card {
+  position: relative !important;
+  display: grid !important;
+  gap: 3px !important;
+  min-height: 140px !important;
+  max-height: none !important;
+  padding: 10px 13px !important;
+  border: 1px solid rgba(117, 229, 207, 0.3) !important;
+  border-radius: 8px !important;
+  background: #dff7f1 !important;
+  color: var(--vn-ink) !important;
+  overflow: visible !important;
+}
+
+.play-shell .question-card::before,
+.play-shell .question-card::after {
+  display: none !important;
+}
+
+.play-shell .question-label {
+  margin: 0 !important;
+  color: #a23f48 !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+
+.play-shell .question-card h2 {
+  margin: 0 !important;
+  color: var(--vn-ink) !important;
+  font-size: clamp(32px, 2.7vw, 46px) !important;
+  line-height: 1.05 !important;
+  text-shadow: none !important;
+}
+
+.play-shell .question-hint {
+  margin: 0 !important;
+  color: #237d77 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+}
+
+.play-shell .answer-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-auto-rows: minmax(56px, 1fr) !important;
+  gap: 8px !important;
+  min-height: 0 !important;
+}
+
+.play-shell .answer-button {
+  display: grid !important;
+  place-items: center !important;
+  min-width: 0 !important;
+  min-height: 56px !important;
+  padding: 8px !important;
+  border: 2px solid rgba(117, 229, 207, 0.32) !important;
+  border-radius: 7px !important;
+  background: #fffaf0 !important;
+  color: var(--vn-ink) !important;
+  font-size: clamp(19px, 1.6vw, 27px) !important;
+  font-weight: 800 !important;
+  word-break: break-word !important;
+  transition: transform 110ms ease, background 110ms ease, border-color 110ms ease !important;
+  box-shadow: none !important;
+}
+
+.play-shell .answer-button:hover {
+  transform: translateY(-2px) !important;
+  border-color: var(--vn-gold) !important;
+  background: rgba(255, 199, 94, 0.13) !important;
+}
+
+.play-shell .quiz-footer {
+  display: grid !important;
+  grid-template-columns: 108px minmax(0, 1fr) !important;
+  gap: 7px !important;
+}
+
+.play-shell .combo,
+.play-shell .feedback {
+  display: grid !important;
+  place-items: center !important;
+  min-height: 42px !important;
+  padding: 5px 8px !important;
+  border-radius: 7px !important;
+  background: #e2f1ff !important;
+  color: var(--vn-teal) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+}
+
+.play-shell .combo-meter {
+  display: none !important;
+}
+
+.play-shell .feedback.correct {
+  background: #dbf4c6 !important;
+  color: #126947 !important;
+}
+
+.play-shell .feedback.wrong {
+  background: #ffe0db !important;
+  color: #982b25 !important;
+}
+
+/* Boss finale timeline */
+.play-shell .boss-finale-scene.vn-finale {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 1000 !important;
+  display: grid !important;
+  place-items: center !important;
+  background:
+    radial-gradient(circle at 46% 45%, rgba(255, 199, 94, 0.22), transparent 30%),
+    linear-gradient(130deg, rgba(5, 12, 24, 0.98), rgba(10, 55, 63, 0.97)) !important;
+  overflow: hidden !important;
+}
+
+.play-shell .vn-finale-speedlines {
+  position: absolute !important;
+  inset: -20% !important;
+  background: repeating-conic-gradient(from 0deg at 50% 48%, rgba(117, 229, 207, 0.15) 0 3deg, transparent 3deg 8deg) !important;
+  opacity: 0 !important;
+  transform: scale(1.3) !important;
+}
+
+.play-shell .finale-shock .vn-finale-speedlines,
+.play-shell .finale-breakdown .vn-finale-speedlines,
+.play-shell .finale-bonk .vn-finale-speedlines {
+  opacity: 1 !important;
+  animation: finale-speedlines 600ms ease-out infinite alternate !important;
+}
+
+.play-shell .vn-finale-flash {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 5 !important;
+  pointer-events: none !important;
+  background: #fff5dc !important;
+  opacity: 0 !important;
+}
+
+.play-shell .finale-shock .vn-finale-flash,
+.play-shell .finale-bonk .vn-finale-flash {
+  animation: finale-flash 220ms steps(2, end) 1 !important;
+}
+
+.play-shell .vn-finale-stage {
+  position: relative !important;
+  width: min(1120px, 92vw) !important;
+  height: min(690px, 88vh) !important;
+  overflow: hidden !important;
+  border: 3px solid rgba(117, 229, 207, 0.42) !important;
+  border-radius: 12px !important;
+  background:
+    linear-gradient(90deg, rgba(9, 28, 41, 0.35), rgba(9, 28, 41, 0.72)),
+    url('/vocab-burger-game/art/vn-stage/diner-background.webp') center / cover !important;
+  box-shadow: 0 20px 54px rgba(0, 0, 0, 0.55) !important;
+}
+
+.play-shell .vn-boss-frame {
+  position: absolute !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  display: block !important;
+  height: 100% !important;
+  width: 48% !important;
+  max-width: none !important;
+  object-fit: cover !important;
+  object-position: center 12% !important;
+  animation: finale-frame-in 170ms ease-out both !important;
+}
+
+.play-shell .finale-shock .vn-boss-frame {
+  animation: finale-shock 260ms steps(2, end) 2 !important;
+}
+
+.play-shell .finale-breakdown .vn-boss-frame {
+  animation: finale-breakdown 430ms steps(2, end) infinite !important;
+}
+
+.play-shell .finale-bonk .vn-boss-frame {
+  object-position: center 18% !important;
+  animation: finale-bonk 560ms cubic-bezier(0.2, 1, 0.2, 1) both !important;
+}
+
+.play-shell .vn-finale-callout {
+  position: absolute !important;
+  top: 20% !important;
+  right: 7% !important;
+  z-index: 4 !important;
+  padding: 12px 18px !important;
+  border: 4px solid var(--vn-ink) !important;
+  background: var(--vn-gold) !important;
+  color: var(--vn-ink) !important;
+  font-size: clamp(30px, 4vw, 62px) !important;
+  font-weight: 1000 !important;
+  line-height: 1 !important;
+  transform: rotate(-5deg) !important;
+  animation: finale-callout 300ms cubic-bezier(0.16, 1, 0.3, 1) both !important;
+}
+
+.play-shell .finale-breakdown .vn-finale-callout {
+  background: var(--vn-coral) !important;
+  color: #fff5dc !important;
+}
+
+.play-shell .vn-bonk-mark {
+  position: absolute !important;
+  right: 14% !important;
+  bottom: 33% !important;
+  z-index: 4 !important;
+  color: var(--vn-gold) !important;
+  font-size: clamp(55px, 7vw, 108px) !important;
+  font-weight: 1000 !important;
+  text-shadow: 5px 6px var(--vn-coral) !important;
+  transform: rotate(-8deg) !important;
+  animation: finale-callout 260ms cubic-bezier(0.16, 1, 0.3, 1) both !important;
+}
+
+.play-shell .vn-finale-result {
+  position: absolute !important;
+  right: 7% !important;
+  bottom: 18% !important;
+  z-index: 4 !important;
+  display: grid !important;
+  gap: 10px !important;
+  padding: 20px 28px !important;
+  border: 3px solid var(--vn-gold) !important;
+  background: rgba(9, 28, 41, 0.94) !important;
+  color: #fff5dc !important;
+  animation: finale-result 400ms ease-out both !important;
+}
+
+.play-shell .vn-finale-result strong {
+  color: var(--vn-gold) !important;
+  font-size: clamp(34px, 4vw, 60px) !important;
+}
+
+.play-shell .vn-finale-result span {
+  color: var(--vn-mint) !important;
+  font-size: clamp(15px, 1.5vw, 22px) !important;
+  font-weight: 800 !important;
+}
+
+@keyframes vn-portrait-enter {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes vn-portrait-breathe {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+@keyframes vn-portrait-alert {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-3px); }
+}
+
+@keyframes vn-portrait-rage {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+
+@keyframes vn-portrait-exit {
+  0% { opacity: 1; transform: translateX(0) scale(1); }
+  65% { opacity: 1; transform: translateX(0) scale(1.025); }
+  100% { opacity: 0.35; transform: translateX(-20px) scale(0.98); }
+}
+
+@keyframes finale-frame-in {
+  from { opacity: 0; transform: translateX(-20px) scale(1.03); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes finale-speedlines {
+  from { transform: scale(1.24) rotate(0deg); }
+  to { transform: scale(1.42) rotate(3deg); }
+}
+
+@keyframes finale-flash {
+  0% { opacity: 0; }
+  35% { opacity: 0.85; }
+  100% { opacity: 0; }
+}
+
+@keyframes finale-shock {
+  0%, 100% { transform: translateX(0) scale(1); }
+  50% { transform: translateX(10px) scale(1.035); }
+}
+
+@keyframes finale-breakdown {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(7px, -3px) rotate(0.8deg); }
+}
+
+@keyframes finale-bonk {
+  0% { transform: translateY(-10px) rotate(0deg); }
+  45% { transform: translateY(22px) rotate(5deg); }
+  100% { transform: translateY(8px) rotate(2deg); }
+}
+
+@keyframes finale-callout {
+  from { opacity: 0; transform: scale(1.8) rotate(-10deg); }
+  to { opacity: 1; transform: scale(1) rotate(-5deg); }
+}
+
+@keyframes finale-result {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.play-shell.performance-mode .vn-main-portrait,
+.play-shell.performance-mode .vn-finale-speedlines {
+  animation: none !important;
+}
+
+@media (max-width: 1260px) and (min-width: 981px) {
+  .play-shell .shop-layout {
+    grid-template-columns: minmax(300px, 35fr) minmax(276px, 30fr) minmax(318px, 35fr) !important;
+  }
+
+  .play-shell .vn-queue-stack {
+    width: 106px !important;
+  }
+
+  .play-shell .vn-queue-card {
+    width: 106px !important;
+    height: 144px !important;
+  }
+}
+
+@media (max-width: 980px) and (orientation: landscape) {
+  .game-shell.play-shell {
+    grid-template-rows: 48px 30px minmax(0, 1fr) !important;
+    padding: 6px !important;
+  }
+
+  .play-shell .shop-scene,
+  .play-shell .banner,
+  .play-shell .rush-meter {
+    display: none !important;
+  }
+
+  .play-shell .game-header {
+    height: 48px !important;
+    min-height: 48px !important;
+  }
+
+  .play-shell .title-lockup {
+    padding: 4px 9px !important;
+  }
+
+  .play-shell .title-lockup h1 {
+    font-size: 20px !important;
+  }
+
+  .play-shell .stats {
+    height: 48px !important;
+  }
+
+  .play-shell .shop-layout {
+    grid-template-columns: 34% 31% 35% !important;
+    grid-template-rows: 40% 60% !important;
+    grid-row: 3 !important;
+    gap: 5px !important;
+  }
+
+  .play-shell .vn-dialogue {
+    padding: 7px !important;
+  }
+
+  .play-shell .vn-dialogue strong {
+    font-size: 17px !important;
+  }
+
+  .play-shell .vn-dialogue p {
+    font-size: 10px !important;
+  }
+
+  .play-shell .vn-queue-stack {
+    display: none !important;
+  }
+}
+
+@media (max-width: 760px) and (orientation: portrait) {
+  .game-shell.play-shell {
+    display: grid !important;
+    place-items: center !important;
+    min-height: 100svh !important;
+    background: var(--vn-deep) !important;
+  }
+
+  .play-shell > :not(.landscape-hint) {
+    display: none !important;
+  }
+
+  .play-shell .landscape-hint {
+    display: grid !important;
+    gap: 12px !important;
+    width: min(86vw, 360px) !important;
+    padding: 24px !important;
+    border: 2px solid var(--vn-mint) !important;
+    border-radius: 10px !important;
+    background: rgba(9, 28, 41, 0.95) !important;
+    color: #fff5dc !important;
+    text-align: center !important;
+  }
+}

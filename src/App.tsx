@@ -58,8 +58,7 @@ import {
 import { getPixelPortraitSrc } from './utils/portraits'
 import { getUniqueWordsByEnglish, normalizeEnglish } from './utils/wordHelpers'
 import './App.css'
-import './final-polish.css'
-import './play-v2.css'
+import './vn-game.css'
 
 function App() {
   const [gameStatus, setGameStatus] = useState<GameStatus>('idle')

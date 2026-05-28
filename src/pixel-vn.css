@@ -2224,3 +2224,396 @@
     font-size: 11px !important;
   }
 }
+
+/* Desktop VN cleanup pass: keep the current pixel-vn-v3 art, but stop cropping Boss and reduce visual seams. */
+@media (min-width: 981px) {
+  .game-shell.play-shell {
+    --diner-bg: url('/vocab-burger-game/art/pixel-vn-v3/scenes/shop-background.webp');
+    grid-template-rows: 56px 28px 30px minmax(0, 1fr) !important;
+    gap: 7px !important;
+    background:
+      linear-gradient(90deg, rgba(239, 255, 247, 0.44), rgba(255, 244, 213, 0.28)),
+      linear-gradient(180deg, rgba(7, 25, 34, 0.06), rgba(7, 25, 34, 0.02)),
+      var(--diner-bg) center 48% / cover fixed,
+      #e7f6ed !important;
+  }
+
+  .play-shell .game-header {
+    grid-template-columns: minmax(330px, 360px) minmax(0, 1fr) !important;
+    height: 56px !important;
+    min-height: 56px !important;
+  }
+
+  .play-shell .title-lockup,
+  .play-shell .stats,
+  .play-shell .stats > span,
+  .play-shell .stats > button {
+    height: 56px !important;
+    min-height: 56px !important;
+  }
+
+  .play-shell .title-lockup {
+    background: linear-gradient(90deg, rgba(16, 83, 79, 0.92), rgba(35, 42, 78, 0.88)) !important;
+  }
+
+  .play-shell .title-lockup h1 {
+    width: 240px !important;
+    min-width: 240px !important;
+    max-width: 240px !important;
+    inline-size: 240px !important;
+    font-size: clamp(21px, 1.55vw, 26px) !important;
+  }
+
+  .play-shell .stats {
+    grid-template-columns: repeat(8, minmax(74px, 1fr)) !important;
+  }
+
+  .play-shell .banner {
+    height: 28px !important;
+    min-height: 28px !important;
+    background: rgba(255, 250, 226, 0.86) !important;
+    color: #153b3f !important;
+  }
+
+  .play-shell .rush-meter {
+    height: 30px !important;
+    min-height: 30px !important;
+    background: rgba(239, 255, 247, 0.72) !important;
+    color: #173e43 !important;
+  }
+
+  .play-shell .shop-layout {
+    grid-template-columns: minmax(390px, 35fr) minmax(315px, 28fr) minmax(430px, 37fr) !important;
+    grid-template-rows: minmax(0, 39fr) minmax(0, 61fr) !important;
+    gap: 9px !important;
+  }
+
+  .play-shell .character-stage-panel.vn-character-stage,
+  .play-shell .panel.burger-station,
+  .play-shell .panel.order-ticket,
+  .play-shell .panel.quiz-panel {
+    border-color: rgba(24, 49, 59, 0.34) !important;
+    background-color: rgba(255, 254, 241, 0.88) !important;
+    box-shadow: 0 12px 24px rgba(18, 44, 48, 0.16) !important;
+  }
+
+  .play-shell .character-stage-panel.vn-character-stage {
+    background:
+      linear-gradient(90deg, rgba(255, 253, 233, 0.08), rgba(232, 255, 248, 0.24)),
+      linear-gradient(180deg, rgba(7, 25, 34, 0.02), rgba(7, 25, 34, 0.08)),
+      var(--diner-bg) center / cover !important;
+  }
+
+  .play-shell .vn-main-portrait {
+    object-fit: contain !important;
+    object-position: center bottom !important;
+  }
+
+  .play-shell .mood-worried .vn-main-portrait {
+    animation: vn-expression-punch 900ms steps(2, end) infinite !important;
+  }
+
+  .play-shell .mood-angry .vn-main-portrait {
+    animation: vn-expression-rage 520ms steps(2, end) infinite !important;
+  }
+
+  .play-shell .vn-dialogue {
+    border: 2px solid rgba(255, 245, 220, 0.2) !important;
+    border-left: 6px solid var(--character-accent) !important;
+    background:
+      linear-gradient(90deg, rgba(6, 25, 34, 0.9), rgba(8, 38, 45, 0.76)) !important;
+  }
+
+  .play-shell .mood-worried .vn-dialogue,
+  .play-shell .mood-angry .vn-dialogue {
+    transform-origin: left bottom !important;
+    animation: vn-dialogue-hit 640ms cubic-bezier(0.18, 1.2, 0.2, 1) both !important;
+  }
+
+  .play-shell .mood-worried .vn-dialogue::before,
+  .play-shell .mood-angry .vn-dialogue::before {
+    position: absolute !important;
+    top: -18px !important;
+    right: 14px !important;
+    padding: 5px 10px !important;
+    border: 2px solid #1b192a !important;
+    border-radius: 999px !important;
+    background: #ffe68a !important;
+    color: #1b192a !important;
+    font-size: 12px !important;
+    font-weight: 1000 !important;
+    line-height: 1 !important;
+    transform: rotate(-4deg) !important;
+  }
+
+  .play-shell .mood-worried .vn-dialogue::before {
+    content: '医学吐槽' !important;
+  }
+
+  .play-shell .mood-angry .vn-dialogue::before {
+    content: '红温发作' !important;
+    background: #ff7566 !important;
+    color: #fffaf0 !important;
+  }
+
+  .play-shell .vn-dialogue p {
+    color: #fff7d0 !important;
+    font-size: clamp(14px, 1.03vw, 17px) !important;
+  }
+
+  .play-shell .panel.quiz-panel {
+    align-content: start !important;
+    gap: 8px !important;
+    padding: 10px !important;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 246, 0.96), rgba(230, 252, 247, 0.92)) !important;
+  }
+
+  .play-shell .answer-grid {
+    gap: 8px !important;
+  }
+
+  .play-shell .answer-button {
+    min-height: 48px !important;
+  }
+
+  .play-shell .quiz-footer {
+    min-height: 34px !important;
+    margin-top: 0 !important;
+  }
+
+  .play-shell .combo-meter {
+    min-height: 34px !important;
+  }
+
+  .play-shell .panel.burger-station {
+    grid-template-rows: auto 54px 34px minmax(170px, 1fr) auto 38px !important;
+    background:
+      linear-gradient(180deg, rgba(255, 254, 241, 0.98), rgba(225, 250, 244, 0.96)) !important;
+  }
+
+  .play-shell .burger-stack {
+    background:
+      radial-gradient(ellipse at 50% 80%, rgba(69, 137, 128, 0.1), transparent 35%),
+      linear-gradient(180deg, rgba(255, 253, 238, 0.96), rgba(236, 254, 248, 0.95)) !important;
+  }
+
+  .play-shell.boss-mode .shop-layout {
+    grid-template-columns: minmax(560px, 56fr) minmax(420px, 44fr) !important;
+    grid-template-rows: minmax(0, 40fr) minmax(0, 60fr) !important;
+    grid-template-areas:
+      'character ticket'
+      'station quiz' !important;
+  }
+
+  .play-shell.boss-mode .character-stage-panel.vn-character-stage {
+    background:
+      linear-gradient(90deg, rgba(255, 247, 214, 0.08), rgba(7, 25, 34, 0.18)),
+      url('/vocab-burger-game/art/pixel-vn-v3/boss/entrance.webp') center / cover !important;
+  }
+
+  .play-shell.boss-mode .boss-stage .vn-main-portrait {
+    object-fit: contain !important;
+    object-position: center bottom !important;
+    width: 100% !important;
+    height: 100% !important;
+    opacity: 0.98 !important;
+  }
+
+  .play-shell.boss-mode .boss-stage .vn-dialogue {
+    right: 20px !important;
+    bottom: 18px !important;
+    left: 20px !important;
+    max-width: 680px !important;
+  }
+
+  .play-shell.boss-mode .panel.burger-station {
+    grid-template-rows: auto 44px 30px minmax(128px, 1fr) auto 34px !important;
+    gap: 5px !important;
+    padding: 8px !important;
+  }
+
+  .play-shell.boss-mode .grill-slot {
+    height: 44px !important;
+    min-height: 44px !important;
+  }
+
+  .play-shell.boss-mode .grill-lights {
+    height: 30px !important;
+    min-height: 30px !important;
+  }
+
+  .play-shell.boss-mode .burger-stack {
+    --platter-bottom: 24px !important;
+    min-height: 128px !important;
+  }
+
+  .play-shell.boss-mode .burger-build {
+    bottom: calc(var(--platter-bottom) + 9px) !important;
+    min-height: 90px !important;
+  }
+
+  .play-shell.boss-mode .cook-meters {
+    gap: 5px !important;
+  }
+
+  .play-shell.boss-mode .flip-window {
+    display: none !important;
+  }
+
+  .play-shell.boss-mode .current-step {
+    height: 30px !important;
+    font-size: 12px !important;
+  }
+}
+
+.play-shell .boss-finale-scene.vn-finale {
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255, 199, 94, 0.22), transparent 32%),
+    linear-gradient(180deg, rgba(6, 18, 28, 0.92), rgba(13, 47, 50, 0.96)) !important;
+}
+
+.play-shell .boss-finale-scene.vn-finale .vn-finale-stage {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background:
+    linear-gradient(90deg, rgba(6, 18, 28, 0.18), rgba(6, 18, 28, 0.36)),
+    url('/vocab-burger-game/art/pixel-vn-v3/scenes/shop-background.webp') center / cover !important;
+  box-shadow: none !important;
+}
+
+.play-shell .boss-finale-scene.vn-finale .vn-boss-storyboard {
+  object-fit: contain !important;
+  object-position: center !important;
+  background: rgba(7, 24, 32, 0.68) !important;
+}
+
+.play-shell .boss-finale-scene.vn-finale .vn-finale-callout {
+  top: 12% !important;
+  right: 8% !important;
+  padding: 10px 18px !important;
+  border-radius: 999px !important;
+}
+
+.play-shell .boss-finale-scene.vn-finale .vn-finale-result {
+  right: 50% !important;
+  bottom: 8% !important;
+  min-width: min(520px, 82vw) !important;
+  text-align: center !important;
+  transform: translateX(50%) !important;
+}
+
+.start-screen {
+  background:
+    linear-gradient(90deg, rgba(240, 255, 247, 0.5), rgba(255, 241, 217, 0.34)),
+    url('/vocab-burger-game/art/pixel-vn-v3/scenes/shop-background.webp') center / cover fixed,
+    #ebf7ee !important;
+}
+
+.start-screen .start-dashboard,
+.start-screen .result-panel {
+  border-color: rgba(27, 54, 61, 0.42) !important;
+  background: rgba(255, 255, 241, 0.86) !important;
+  box-shadow: 0 18px 44px rgba(30, 54, 59, 0.18) !important;
+}
+
+.start-screen .start-character-stage {
+  background:
+    linear-gradient(90deg, rgba(8, 28, 38, 0.08), rgba(8, 28, 38, 0.58)),
+    url('/vocab-burger-game/art/pixel-vn-v3/scenes/shop-background.webp') center / cover !important;
+}
+
+.start-screen .start-dialogue {
+  background: rgba(8, 28, 38, 0.72) !important;
+}
+
+.tutorial-backdrop {
+  background: rgba(6, 18, 28, 0.46) !important;
+}
+
+.tutorial-panel {
+  width: min(860px, calc(100vw - 40px)) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 244, 0.96), rgba(230, 255, 247, 0.94)) !important;
+}
+
+.tutorial-panel ol {
+  display: none !important;
+}
+
+.tutorial-steps {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  margin: 18px 0 !important;
+}
+
+.tutorial-steps article {
+  display: grid !important;
+  gap: 9px !important;
+  padding: 16px !important;
+  border: 3px solid #263043 !important;
+  border-radius: 10px !important;
+  background: #fff8df !important;
+  box-shadow: 0 5px 0 rgba(38, 48, 67, 0.18) !important;
+}
+
+.tutorial-steps strong {
+  color: #0d6f68 !important;
+  font-size: 19px !important;
+}
+
+.tutorial-steps span {
+  color: #2b2635 !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  line-height: 1.45 !important;
+}
+
+.pixel-result .result-panel {
+  display: grid !important;
+  grid-template-columns: minmax(360px, 0.9fr) minmax(460px, 1.1fr) !important;
+  align-items: start !important;
+  column-gap: 34px !important;
+}
+
+.pixel-result .result-visual {
+  grid-row: 1 / span 8 !important;
+  align-self: stretch !important;
+  min-height: min(650px, 72vh) !important;
+}
+
+.pixel-result .result-visual img {
+  object-fit: contain !important;
+  background: rgba(8, 28, 38, 0.42) !important;
+}
+
+@keyframes vn-expression-punch {
+  0%,
+  100% { transform: translateX(0) translateY(0) scale(1); }
+  50% { transform: translateX(-8px) translateY(-2px) scale(1.04); }
+}
+
+@keyframes vn-expression-rage {
+  0%,
+  100% { transform: translateX(0) scale(1.03); }
+  33% { transform: translateX(-7px) scale(1.07); }
+  66% { transform: translateX(7px) scale(1.07); }
+}
+
+@keyframes vn-dialogue-hit {
+  0% { opacity: 0.74; transform: translateY(8px) scale(0.98); }
+  46% { opacity: 1; transform: translateY(-3px) scale(1.015); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 980px) {
+  .tutorial-steps,
+  .pixel-result .result-panel {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -1,7 +1,7 @@
 import { bossFinaleFrames, characterProfiles } from '../data/characters'
 import type { BossFinaleFrameKey, CharacterProfile, Mood, PortraitFrameKey } from '../types/game'
 
-const artVersion = '20260527-pixel-vn-v3'
+const artVersion = '20260528-pixel-vn-v3-boss-layout'
 const assetUrl = (path: string) =>
   `${import.meta.env.BASE_URL}${path}?v=${artVersion}`
 

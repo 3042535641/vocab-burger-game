@@ -847,16 +847,20 @@ function App() {
       <section className="panel tutorial-panel">
         <p className="eyebrow">医学英语规则速览</p>
         <h2 id="tutorial-title">开店前先看三条</h2>
-        <ol>
-          <li>
-            看中文医学概念选英文术语，答对才会推进汉堡步骤；答错会扣分、扣耐心，还可能把组织肉饼煎焦。
-          </li>
-          <li>
-            组织肉饼第一面 55%-85%、焦度低于 45 时翻面最香，双面控制好可拿 Sterile Perfect Burger。
-          </li>
-          <li>普通医学生约 20 秒开始着急，完成 6 份后医学英语教授 Boss 登场。</li>
-          <li>手机端建议先专心看底部题目区，答题推进步骤后再切换顾客和锅位。</li>
-        </ol>
+        <div className="tutorial-steps">
+          <article>
+            <strong>1. 抢答术语</strong>
+            <span>看中文医学概念，选择正确英文术语。</span>
+          </article>
+          <article>
+            <strong>2. 制作汉堡</strong>
+            <span>答对推进动作；肉饼第一面 55%-85%、焦度低于 45 时翻面最香。</span>
+          </article>
+          <article>
+            <strong>3. 顾客红温</strong>
+            <span>医学生约 20 秒开始着急，完成 6 份后教授 Boss 登场。</span>
+          </article>
+        </div>
         <button
           type="button"
           className="primary-action"

@@ -2752,3 +2752,546 @@
   100% { transform: translateX(0) scale(0.92); }
   50% { transform: translateX(-4px) scale(0.95); }
 }
+
+/* Desktop layout v3: one clean geometry layer for classroom projection. */
+@media (min-width: 981px) {
+  .game-shell.play-shell {
+    --diner-bg: url('/vocab-burger-game/art/pixel-vn-v3/scenes/shop-background.webp');
+    grid-template-rows: 50px 24px minmax(0, 1fr) !important;
+    grid-template-areas:
+      'header'
+      'status'
+      'layout' !important;
+    gap: 7px !important;
+    min-height: 680px !important;
+    padding: 8px 12px 12px !important;
+    background:
+      linear-gradient(90deg, rgba(238, 255, 248, 0.45), rgba(255, 244, 220, 0.28)),
+      var(--diner-bg) center 48% / cover fixed,
+      #e9f5ec !important;
+  }
+
+  .play-shell .game-header {
+    grid-area: header !important;
+    grid-template-columns: minmax(280px, 322px) minmax(0, 1fr) !important;
+    gap: 8px !important;
+    height: 50px !important;
+    min-height: 50px !important;
+  }
+
+  .play-shell .title-lockup,
+  .play-shell .stats,
+  .play-shell .stats > span,
+  .play-shell .stats > button {
+    height: 50px !important;
+    min-height: 50px !important;
+  }
+
+  .play-shell .title-lockup {
+    padding: 6px 12px !important;
+    border-width: 2px !important;
+    background: rgba(8, 36, 44, 0.88) !important;
+  }
+
+  .play-shell .title-lockup h1 {
+    width: 216px !important;
+    min-width: 216px !important;
+    max-width: 216px !important;
+    inline-size: 216px !important;
+    font-size: clamp(21px, 1.42vw, 26px) !important;
+  }
+
+  .play-shell .title-lockup::after {
+    right: 8px !important;
+    bottom: 4px !important;
+    font-size: 9px !important;
+  }
+
+  .play-shell .stats {
+    grid-template-columns: repeat(8, minmax(60px, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  .play-shell .stats > span,
+  .play-shell .stats > button {
+    padding: 3px 6px !important;
+    border-width: 2px !important;
+    font-size: clamp(11px, 0.78vw, 13px) !important;
+  }
+
+  .play-shell .banner,
+  .play-shell .rush-meter {
+    grid-area: status !important;
+    height: 24px !important;
+    min-height: 24px !important;
+    border-radius: 8px !important;
+  }
+
+  .play-shell .banner {
+    z-index: 1 !important;
+    display: grid !important;
+    place-items: center !important;
+    padding: 0 152px !important;
+    border: 2px solid rgba(255, 199, 94, 0.56) !important;
+    background: rgba(255, 249, 224, 0.86) !important;
+    color: #173e43 !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+  }
+
+  .play-shell .rush-meter {
+    z-index: 2 !important;
+    display: grid !important;
+    grid-template-columns: minmax(120px, auto) minmax(0, 1fr) 44px !important;
+    grid-template-rows: 18px 4px !important;
+    gap: 0 10px !important;
+    padding: 2px 10px !important;
+    border: 0 !important;
+    background: transparent !important;
+    pointer-events: none !important;
+  }
+
+  .play-shell .rush-meter span,
+  .play-shell .rush-meter strong {
+    font-size: 11px !important;
+    line-height: 1 !important;
+  }
+
+  .play-shell .rush-meter em {
+    display: none !important;
+  }
+
+  .play-shell .rush-track {
+    grid-column: 1 / -1 !important;
+    height: 4px !important;
+    align-self: end !important;
+    background: rgba(9, 28, 41, 0.16) !important;
+  }
+
+  .play-shell .shop-layout {
+    grid-template-columns: minmax(390px, 38fr) minmax(300px, 28fr) minmax(380px, 34fr) !important;
+    grid-template-rows: minmax(0, 43fr) minmax(0, 57fr) !important;
+    grid-template-areas:
+      'character station ticket'
+      'character station quiz' !important;
+    gap: 10px !important;
+  }
+
+  .play-shell .character-stage-panel.vn-character-stage {
+    border: 0 !important;
+    border-radius: 12px !important;
+    background:
+      linear-gradient(180deg, rgba(241, 255, 247, 0.03), rgba(5, 18, 27, 0.18)),
+      var(--diner-bg) center / cover !important;
+    box-shadow: inset 0 0 0 2px rgba(117, 229, 207, 0.26) !important;
+  }
+
+  .play-shell .vn-main-portrait {
+    object-fit: contain !important;
+    object-position: center bottom !important;
+    filter: saturate(1.02) contrast(0.98) brightness(1.04) !important;
+  }
+
+  .play-shell .vn-main-portrait[src*='/characters/bun/'] {
+    filter: saturate(0.9) contrast(0.9) brightness(1.1) !important;
+  }
+
+  .play-shell .vn-queue-stack {
+    top: 50% !important;
+    right: 12px !important;
+    width: 112px !important;
+    gap: 6px !important;
+    transform: translateY(-50%) !important;
+  }
+
+  .play-shell .vn-queue-card {
+    width: 112px !important;
+    height: 128px !important;
+    border-width: 2px !important;
+    border-radius: 10px !important;
+    background:
+      linear-gradient(180deg, rgba(4, 21, 31, 0.1), rgba(4, 21, 31, 0.72)) !important;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.26) !important;
+  }
+
+  .play-shell .vn-queue-card.queue-1 {
+    opacity: 0.9 !important;
+    transform: translateX(0) scale(0.92) !important;
+  }
+
+  .play-shell .vn-queue-card.queue-2 {
+    margin-top: -70px !important;
+    opacity: 0.54 !important;
+    transform: translateX(18px) scale(0.82) !important;
+  }
+
+  .play-shell .vn-queue-card img {
+    opacity: 0.9 !important;
+    object-position: center 18% !important;
+  }
+
+  .play-shell .vn-queue-card span {
+    bottom: 22px !important;
+    font-size: 10px !important;
+  }
+
+  .play-shell .vn-queue-card small {
+    bottom: 6px !important;
+    font-size: 12px !important;
+  }
+
+  .play-shell .vn-dialogue {
+    right: 16px !important;
+    bottom: 18px !important;
+    left: 16px !important;
+    padding: 14px 16px 15px !important;
+    background:
+      linear-gradient(90deg, rgba(5, 20, 29, 0.92), rgba(8, 36, 44, 0.78)) !important;
+  }
+
+  .play-shell .panel.burger-station,
+  .play-shell .panel.order-ticket,
+  .play-shell .panel.quiz-panel {
+    border-color: rgba(24, 67, 72, 0.32) !important;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 244, 0.94), rgba(228, 252, 245, 0.9)) !important;
+    box-shadow: 0 10px 26px rgba(20, 50, 54, 0.16) !important;
+  }
+
+  .play-shell .panel.burger-station {
+    grid-template-rows: auto 56px 34px minmax(190px, 1fr) auto 36px !important;
+    gap: 7px !important;
+    padding: 10px !important;
+  }
+
+  .play-shell .grill-slot {
+    height: 56px !important;
+    min-height: 56px !important;
+  }
+
+  .play-shell .grill-lights {
+    height: 34px !important;
+    min-height: 34px !important;
+  }
+
+  .play-shell .burger-stack {
+    background:
+      radial-gradient(ellipse at 50% 78%, rgba(44, 104, 98, 0.14), transparent 28%),
+      linear-gradient(180deg, rgba(255, 254, 241, 0.98), rgba(224, 248, 242, 0.96)) !important;
+  }
+
+  .play-shell .assembly-counter {
+    display: none !important;
+  }
+
+  .play-shell .assembly-platter {
+    bottom: 28px !important;
+    width: min(80%, 330px) !important;
+    height: 20px !important;
+    box-shadow: 0 5px 0 rgba(15, 49, 52, 0.18) !important;
+  }
+
+  .play-shell .burger-build {
+    right: 0 !important;
+    bottom: 44px !important;
+    left: 0 !important;
+    min-height: 126px !important;
+  }
+
+  .play-shell .panel.quiz-panel {
+    position: relative !important;
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    align-content: stretch !important;
+    gap: 9px !important;
+    padding: 10px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .question-card {
+    min-height: 118px !important;
+    padding: 10px 13px !important;
+  }
+
+  .play-shell .question-card h2 {
+    font-size: clamp(34px, 3.1vw, 54px) !important;
+  }
+
+  .play-shell .answer-grid {
+    height: 100% !important;
+    grid-template-rows: repeat(2, minmax(58px, 1fr)) !important;
+    grid-auto-rows: minmax(58px, 1fr) !important;
+    min-height: 0 !important;
+    padding-bottom: 42px !important;
+  }
+
+  .play-shell .answer-button {
+    height: 100% !important;
+    min-height: 58px !important;
+    font-size: clamp(22px, 1.85vw, 31px) !important;
+  }
+
+  .play-shell .quiz-footer {
+    position: absolute !important;
+    right: 10px !important;
+    bottom: 10px !important;
+    left: auto !important;
+    z-index: 5 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    width: min(72%, 420px) !important;
+    min-height: 0 !important;
+    pointer-events: none !important;
+  }
+
+  .play-shell .combo,
+  .play-shell .feedback {
+    min-height: 30px !important;
+    padding: 5px 10px !important;
+    border: 2px solid rgba(9, 28, 41, 0.72) !important;
+    background: rgba(226, 241, 255, 0.9) !important;
+    box-shadow: 0 4px 0 rgba(9, 28, 41, 0.18) !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+  }
+
+  .play-shell .feedback {
+    max-width: min(310px, 100%) !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .play-shell.boss-mode .shop-layout {
+    grid-template-columns: minmax(560px, 46fr) minmax(320px, 20fr) minmax(390px, 34fr) !important;
+    grid-template-rows: minmax(0, 48fr) minmax(0, 52fr) !important;
+    grid-template-areas:
+      'character character ticket'
+      'station station quiz' !important;
+  }
+
+  .play-shell.boss-mode .character-stage-panel.vn-character-stage {
+    background:
+      linear-gradient(90deg, rgba(7, 20, 31, 0.05), rgba(7, 20, 31, 0.4)),
+      var(--diner-bg) center / cover !important;
+  }
+
+  .play-shell.boss-mode .boss-stage .vn-main-portrait {
+    width: 58% !important;
+    height: 100% !important;
+    left: 0 !important;
+    right: auto !important;
+    object-fit: contain !important;
+    object-position: left bottom !important;
+    background: transparent !important;
+  }
+
+  .play-shell.boss-mode .boss-stage .vn-dialogue {
+    left: 38% !important;
+    right: 24px !important;
+    bottom: 22px !important;
+    max-width: none !important;
+  }
+
+  .play-shell.boss-mode .boss-stage .vn-queue-stack {
+    display: none !important;
+  }
+}
+
+/* Start and result screens: single card over one diner backdrop. */
+@media (min-width: 981px) {
+  .start-screen {
+    min-height: 100svh !important;
+    padding: 24px !important;
+    background:
+      linear-gradient(90deg, rgba(237, 255, 247, 0.56), rgba(255, 244, 219, 0.42)),
+      url('/vocab-burger-game/art/pixel-vn-v3/scenes/shop-background.webp') center / cover fixed,
+      #e9f5ec !important;
+  }
+
+  .start-screen:not(.pixel-result) .start-dashboard {
+    display: grid !important;
+    grid-template-columns: minmax(360px, 0.88fr) minmax(440px, 1.12fr) !important;
+    grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+    gap: 14px 22px !important;
+    width: min(1360px, calc(100vw - 48px)) !important;
+    height: min(860px, calc(100svh - 48px)) !important;
+    max-width: none !important;
+    overflow: hidden !important;
+    background: rgba(255, 255, 242, 0.88) !important;
+  }
+
+  .start-screen:not(.pixel-result) .intro-hero {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    min-height: 0 !important;
+  }
+
+  .start-screen:not(.pixel-result) .start-character-stage {
+    grid-column: 1 !important;
+    grid-row: 1 / 5 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+  }
+
+  .start-screen:not(.pixel-result) .record-strip {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+  }
+
+  .start-screen:not(.pixel-result) .word-preview {
+    grid-column: 2 !important;
+    grid-row: 3 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .start-screen:not(.pixel-result) .preview-grid {
+    max-height: 100% !important;
+    overflow-y: auto !important;
+  }
+
+  .start-screen:not(.pixel-result) .start-actions {
+    grid-column: 2 !important;
+    grid-row: 4 !important;
+  }
+
+  .start-screen:not(.pixel-result) .history-panel,
+  .start-screen:not(.pixel-result) .mobile-brief,
+  .start-screen:not(.pixel-result) .recipe-preview,
+  .start-screen:not(.pixel-result) .start-mascot {
+    display: none !important;
+  }
+
+  .start-screen:not(.pixel-result) .intro-hero h1 {
+    font-size: clamp(42px, 4vw, 76px) !important;
+  }
+
+  .pixel-result .result-panel {
+    display: grid !important;
+    grid-template-columns: minmax(380px, 0.9fr) minmax(520px, 1.1fr) !important;
+    grid-auto-rows: min-content !important;
+    align-content: start !important;
+    gap: 12px 30px !important;
+    width: min(1320px, calc(100vw - 54px)) !important;
+    height: min(860px, calc(100svh - 48px)) !important;
+    max-width: none !important;
+    overflow: hidden !important;
+    background: rgba(255, 255, 242, 0.88) !important;
+  }
+
+  .pixel-result .result-visual {
+    grid-column: 1 !important;
+    grid-row: 1 / span 12 !important;
+    align-self: stretch !important;
+    height: min(760px, calc(100svh - 96px)) !important;
+    min-height: 0 !important;
+  }
+
+  .pixel-result .result-panel > :not(.result-visual) {
+    grid-column: 2 !important;
+  }
+
+  .pixel-result .result-panel h1 {
+    margin: 8px 0 4px !important;
+    font-size: clamp(48px, 4.5vw, 82px) !important;
+    line-height: 1 !important;
+  }
+
+  .pixel-result .result-panel p {
+    margin: 0 !important;
+    line-height: 1.4 !important;
+  }
+
+  .pixel-result .missed-review,
+  .pixel-result .history-panel {
+    max-height: 245px !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+  }
+}
+
+/* Boss finale v3: full-screen theater, one background source only. */
+.play-shell .boss-finale-scene.vn-finale {
+  background:
+    radial-gradient(circle at 50% 45%, #173e43 0 18%, #071820 54%),
+    #071820 !important;
+}
+
+.play-shell .boss-finale-scene.vn-finale .vn-finale-stage {
+  width: 100vw !important;
+  height: 100vh !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background:
+    radial-gradient(circle at 46% 45%, rgba(255, 199, 94, 0.16), transparent 28%),
+    linear-gradient(120deg, #050d18, #082a30) !important;
+}
+
+.play-shell .boss-finale-scene.vn-finale .vn-boss-storyboard {
+  inset: 50% auto auto 50% !important;
+  width: min(92vw, 1180px) !important;
+  height: min(92vh, 760px) !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: transparent !important;
+  transform: translate(-50%, -50%) !important;
+  animation: finale-v3-frame-in 180ms ease-out both !important;
+}
+
+.play-shell .boss-finale-scene.vn-finale.finale-shock .vn-boss-storyboard {
+  animation: finale-v3-shock 260ms steps(2, end) 2 !important;
+}
+
+.play-shell .boss-finale-scene.vn-finale.finale-breakdown .vn-boss-storyboard {
+  animation: finale-v3-breakdown 430ms steps(2, end) infinite !important;
+}
+
+.play-shell .boss-finale-scene.vn-finale.finale-bonk .vn-boss-storyboard {
+  animation: finale-v3-bonk 560ms cubic-bezier(0.2, 1, 0.2, 1) both !important;
+}
+
+.play-shell .boss-finale-scene.vn-finale .vn-finale-callout {
+  top: 11% !important;
+  right: 8% !important;
+  z-index: 8 !important;
+}
+
+.play-shell .boss-finale-scene.vn-finale .vn-finale-result {
+  right: 50% !important;
+  bottom: 7% !important;
+  z-index: 8 !important;
+  width: min(560px, 84vw) !important;
+  transform: translateX(50%) !important;
+  text-align: center !important;
+  animation: finale-v3-result 400ms ease-out both !important;
+}
+
+@keyframes finale-v3-frame-in {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(1.03); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes finale-v3-shock {
+  0%,
+  100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(calc(-50% + 12px), -50%) scale(1.035); }
+}
+
+@keyframes finale-v3-breakdown {
+  0%,
+  100% { transform: translate(-50%, -50%) rotate(0deg); }
+  50% { transform: translate(calc(-50% + 8px), calc(-50% - 4px)) rotate(0.8deg); }
+}
+
+@keyframes finale-v3-bonk {
+  0% { transform: translate(-50%, calc(-50% - 10px)) rotate(0deg); }
+  45% { transform: translate(-50%, calc(-50% + 22px)) rotate(5deg); }
+  100% { transform: translate(-50%, calc(-50% + 8px)) rotate(2deg); }
+}
+
+@keyframes finale-v3-result {
+  from { opacity: 0; transform: translateX(50%) translateY(24px); }
+  to { opacity: 1; transform: translateX(50%) translateY(0); }
+}

@@ -2617,3 +2617,138 @@
     grid-template-columns: 1fr !important;
   }
 }
+
+/* Compact desktop top bar and expressive queue cards. */
+@media (min-width: 981px) {
+  .game-shell.play-shell {
+    grid-template-rows: 48px 22px 22px minmax(0, 1fr) !important;
+    gap: 5px !important;
+    padding-top: 7px !important;
+  }
+
+  .play-shell .game-header {
+    height: 48px !important;
+    min-height: 48px !important;
+    grid-template-columns: minmax(300px, 330px) minmax(0, 1fr) !important;
+  }
+
+  .play-shell .title-lockup,
+  .play-shell .stats,
+  .play-shell .stats > span,
+  .play-shell .stats > button {
+    height: 48px !important;
+    min-height: 48px !important;
+  }
+
+  .play-shell .title-lockup {
+    padding: 5px 12px !important;
+  }
+
+  .play-shell .title-lockup h1 {
+    width: 215px !important;
+    min-width: 215px !important;
+    max-width: 215px !important;
+    inline-size: 215px !important;
+    font-size: clamp(20px, 1.42vw, 24px) !important;
+  }
+
+  .play-shell .title-lockup::after {
+    right: 8px !important;
+    bottom: 4px !important;
+    font-size: 9px !important;
+  }
+
+  .play-shell .stats {
+    grid-template-columns: repeat(8, minmax(66px, 1fr)) !important;
+    gap: 5px !important;
+  }
+
+  .play-shell .stats > span,
+  .play-shell .stats > button {
+    padding: 3px 6px !important;
+    font-size: clamp(11px, 0.78vw, 13px) !important;
+  }
+
+  .play-shell .banner {
+    height: 22px !important;
+    min-height: 22px !important;
+    font-size: 12px !important;
+  }
+
+  .play-shell .rush-meter {
+    height: 22px !important;
+    min-height: 22px !important;
+    grid-template-rows: 12px 5px !important;
+    padding: 2px 10px !important;
+  }
+
+  .play-shell .rush-meter span,
+  .play-shell .rush-meter em,
+  .play-shell .rush-meter strong {
+    font-size: 11px !important;
+    line-height: 1 !important;
+  }
+
+  .play-shell .rush-track {
+    height: 5px !important;
+  }
+
+  .play-shell .vn-queue-card {
+    background:
+      linear-gradient(180deg, rgba(9, 28, 41, 0.22), rgba(9, 28, 41, 0.86)) !important;
+  }
+
+  .play-shell .vn-queue-card img {
+    opacity: 0.9 !important;
+  }
+
+  .play-shell .vn-queue-card.mood-worried,
+  .play-shell .vn-queue-card.mood-angry {
+    opacity: 0.96 !important;
+    animation: queue-expression-pop 900ms steps(2, end) infinite !important;
+  }
+
+  .play-shell .vn-queue-card.mood-worried {
+    border-color: #ffe66d !important;
+  }
+
+  .play-shell .vn-queue-card.mood-angry {
+    border-color: #ff6b5f !important;
+  }
+
+  .play-shell .vn-queue-card.mood-worried::before,
+  .play-shell .vn-queue-card.mood-angry::before {
+    position: absolute !important;
+    top: 6px !important;
+    left: 6px !important;
+    z-index: 3 !important;
+    padding: 3px 6px !important;
+    border: 2px solid #1b192a !important;
+    border-radius: 999px !important;
+    color: #1b192a !important;
+    font-size: 10px !important;
+    font-weight: 1000 !important;
+    line-height: 1 !important;
+  }
+
+  .play-shell .vn-queue-card.mood-worried::before {
+    content: '急了' !important;
+    background: #ffe66d !important;
+  }
+
+  .play-shell .vn-queue-card.mood-angry::before {
+    content: '红温' !important;
+    background: #ff6b5f !important;
+    color: #fffaf0 !important;
+  }
+
+  .play-shell .vn-queue-card.preview-card {
+    opacity: 0.48 !important;
+  }
+}
+
+@keyframes queue-expression-pop {
+  0%,
+  100% { transform: translateX(0) scale(0.92); }
+  50% { transform: translateX(-4px) scale(0.95); }
+}

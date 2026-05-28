@@ -116,6 +116,7 @@ function CustomerQueue({
         {waitingCustomers.map((customer, index) => {
           const waitingMood = getCustomerMood(customer)
           const waitingProfile = getCharacterProfile(customer.avatar, customer.isBoss)
+          const waitingFrame = getPortraitFrameKey(waitingMood)
 
           return (
             <button
@@ -131,7 +132,7 @@ function CustomerQueue({
                 src={getStagePortraitFrameSrc(
                   customer.avatar,
                   customer.isBoss,
-                  waitingProfile.queuePose,
+                  waitingFrame,
                 )}
                 alt=""
                 loading="eager"

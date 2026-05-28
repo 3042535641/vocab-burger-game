@@ -10,7 +10,6 @@ import {
 import BurgerStation from './components/BurgerStation'
 import BossFinale from './components/BossFinale'
 import CustomerQueue from './components/CustomerQueue'
-import LabDinerScene from './components/LabDinerScene'
 import OrderTicket from './components/OrderTicket'
 import QuizPanel from './components/QuizPanel'
 import WordManager from './components/WordManager'
@@ -55,10 +54,13 @@ import {
   saveRecords,
   saveSettings,
 } from './utils/storage'
-import { getPixelPortraitSrc } from './utils/portraits'
+import {
+  getBossFinaleFrameSrc,
+  getStagePortraitFrameSrc,
+} from './utils/portraits'
 import { getUniqueWordsByEnglish, normalizeEnglish } from './utils/wordHelpers'
 import './App.css'
-import './vn-game.css'
+import './pixel-vn.css'
 
 function App() {
   const [gameStatus, setGameStatus] = useState<GameStatus>('idle')
@@ -86,6 +88,7 @@ function App() {
   const { clearImpact, impact, impactText, triggerImpact } = useTimedImpact()
   const finaleTimerRef = useRef<number | undefined>(undefined)
   const handoffTimerRef = useRef<number | undefined>(undefined)
+  const customerClockRef = useRef(0)
   const answerHandlerRef = useRef<(answer: string) => void>(() => undefined)
   const musicEnabled = settings.musicEnabled
   const performanceMode = settings.performanceMode
@@ -213,39 +216,61 @@ function App() {
 
   useEffect(() => {
     if (gameStatus !== 'playing' || view !== 'game') {
+      customerClockRef.current = 0
       return
     }
 
-    const timer = window.setInterval(() => {
-      setCustomers((currentCustomers) => {
-        const result = tickCustomers(currentCustomers)
+    customerClockRef.current = window.performance.now()
 
-        if (result.escapedCount > 0) {
-          setLostCustomers((count) => count + result.escapedCount)
+    const timer = window.setInterval(() => {
+      const now = window.performance.now()
+      const elapsedSeconds = Math.floor((now - customerClockRef.current) / 1000)
+
+      if (elapsedSeconds < 1) {
+        return
+      }
+
+      customerClockRef.current += elapsedSeconds * 1000
+
+      setCustomers((currentCustomers) => {
+        let nextCustomers = currentCustomers
+        let escapedCount = 0
+        let bossEscaped = false
+
+        // Keep active play fair after a background pause and ignore duplicate callbacks.
+        for (let second = 0; second < Math.min(elapsedSeconds, 3); second += 1) {
+          const tick = tickCustomers(nextCustomers)
+          nextCustomers = tick.customers
+          escapedCount += tick.escapedCount
+          bossEscaped = bossEscaped || tick.bossEscaped
+        }
+
+        if (escapedCount > 0) {
+          setLostCustomers((count) => count + escapedCount)
           setCombo(0)
           setFeedback({
             kind: 'wrong',
-            message: result.bossEscaped
+            message: bossEscaped
               ? '医学英语教授等到爆炸离开了，课堂挑战失败。'
               : '有医学生等太久走了！',
           })
-          setBanner(result.bossEscaped ? '教授 Boss 战失败' : '医学生流失，节奏要稳住')
+          setBanner(bossEscaped ? '教授 Boss 战失败' : '医学生流失，节奏要稳住')
 
-          if (result.bossEscaped) {
+          if (bossEscaped) {
             setGameStatus('ended')
             gameAudio.stopMusic()
           }
         }
 
         setActiveCustomerId((currentActiveId) =>
-          result.customers.some((customer) => customer.id === currentActiveId)
+          nextCustomers.some((customer) => customer.id === currentActiveId)
             ? currentActiveId
-            : result.customers[0]?.id,
+            : nextCustomers[0]?.id,
         )
 
-        return result.customers
+        return nextCustomers
       })
-    }, 1000)
+    }, 250)
 
     return () => window.clearInterval(timer)
   }, [gameStatus, view])
@@ -262,7 +287,7 @@ function App() {
 
     const spawnTimer = window.setTimeout(() => {
       setCustomers((currentCustomers) => {
-        const targetQueueSize = getTargetQueueSize(servedCount)
+        const targetQueueSize = getTargetQueueSize()
 
         if (
           currentCustomers.length >= maxCustomers ||
@@ -441,11 +466,10 @@ function App() {
       kind: 'info',
       message: '教授订单术语更多，耐心更短，答错会被追问词根。',
     })
-    gameAudio.playBoss()
-
     if (musicEnabled) {
       gameAudio.startBossMusic()
     }
+    gameAudio.playBoss()
   }
 
   const finishBurger = (customer: Customer, nextCombo: number) => {
@@ -791,7 +815,7 @@ function App() {
               className="start-pixel-bust start-portrait-bust pixel-start-bust"
               style={
                 {
-                  '--start-portrait-src': `url("${getPixelPortraitSrc('star')}")`,
+                  '--start-portrait-src': `url("${getStagePortraitFrameSrc('star', false, 'normal')}")`,
                 } as CSSProperties
               }
               aria-hidden="true"
@@ -818,7 +842,7 @@ function App() {
 
           <section className="mobile-brief" aria-label="手机端玩法提示">
             <strong>手机端速通提示</strong>
-            <span>先看词表，再开局；底部答题区是主操作，双锅够忙但不会乱飞。</span>
+            <span>先看词表，再开局；底部答题区是主操作，单锅更适合稳定记词。</span>
           </section>
 
           {historyPanel}
@@ -887,9 +911,19 @@ function App() {
   if (gameStatus === 'ended') {
     return (
       <main
-        className={`game-shell start-screen ${bossDefeated ? 'victory-result' : ''}`}
+        className={`game-shell start-screen pixel-result ${bossDefeated ? 'victory-result' : ''}`}
       >
         <section className="panel intro-panel result-panel" aria-labelledby="result-title">
+          <div className={`result-visual ${bossDefeated ? 'boss-result-visual' : ''}`}>
+            <img
+              src={
+                bossDefeated
+                  ? getBossFinaleFrameSrc('defeated')
+                  : getStagePortraitFrameSrc('round', false, 'satisfied')
+              }
+              alt=""
+            />
+          </div>
           <p className="eyebrow">{bossDefeated ? '教授破防结算' : '营业结算'}</p>
           <h1 id="result-title">今日得分：{score}</h1>
           <p>
@@ -975,8 +1009,6 @@ function App() {
         </div>
       </header>
 
-      <LabDinerScene />
-
       <div className="banner">{banner}</div>
       <div
         className={`rush-meter ${bossSpawned && !bossDefeated ? 'boss-rush' : ''}`}
@@ -999,6 +1031,13 @@ function App() {
           customers={customers}
           activeCustomerId={activeCustomer?.id}
           handoffCustomer={handoffCustomer}
+          transitionState={
+            bossSpawned && !bossDefeated
+              ? 'bossArrival'
+              : gameStatus === 'customerHandoff'
+                ? 'handoff'
+                : 'active'
+          }
           onSelectCustomer={setActiveCustomerId}
         />
         <BurgerStation

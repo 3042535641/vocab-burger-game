@@ -163,13 +163,7 @@ export const getRandomDelay = (served: number, queueSize = 0) => {
   return baseDelay + Math.floor(Math.random() * randomWindow)
 }
 
-export const getTargetQueueSize = (served: number) => {
-  if (served >= 2) {
-    return 2
-  }
-
-  return 1
-}
+export const getTargetQueueSize = () => 2
 
 export const getPressureLabel = (
   served: number,
@@ -189,7 +183,7 @@ export const getPressureLabel = (
   }
 
   if (served >= 2) {
-    return '双锅手忙脚乱'
+    return '候场加压期'
   }
 
   return '热身背词期'

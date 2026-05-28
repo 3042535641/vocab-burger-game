@@ -46,8 +46,12 @@ function BurgerStation({
 
       <div className="grill-slots" aria-label="煎锅槽位">
         {grillSlotIndexes.map((slotIndex) => {
-          const slotCustomer = customers[slotIndex]
+          const slotCustomer = slotIndex === 0 ? customer : customers[slotIndex]
           const isActive = slotCustomer?.id === activeCustomerId
+          const isSelectable = Boolean(
+            slotCustomer &&
+              customers.some((queuedCustomer) => queuedCustomer.id === slotCustomer.id),
+          )
 
           if (!slotCustomer) {
             return (
@@ -64,7 +68,12 @@ function BurgerStation({
                 slotCustomer.burn >= 60 ? 'danger' : ''
               }`}
               key={slotCustomer.id}
-              onClick={() => onSelectCustomer(slotCustomer.id)}
+              onClick={() => {
+                if (isSelectable) {
+                  onSelectCustomer(slotCustomer.id)
+                }
+              }}
+              disabled={!isSelectable}
             >
               <strong>{slotCustomer.isBoss ? '教授' : `锅 ${slotIndex + 1}`}</strong>
               <span>{slotCustomer.recipe.name}</span>
@@ -91,30 +100,34 @@ function BurgerStation({
       </div>
 
       <div className="burger-stack">
-        {!customer && <span className="empty-plate">等待订单</span>}
-        {customer && completedStepIds?.includes('top') && (
-          <span className="burger-layer top-bun">护理面包盖</span>
-        )}
-        {customer && completedStepIds?.includes('sauce') && (
-          <span className="burger-layer sauce">治疗酱</span>
-        )}
-        {customer && completedStepIds?.includes('tomato') && (
-          <span className="burger-layer tomato">炎症番茄</span>
-        )}
-        {customer && completedStepIds?.includes('lettuce') && (
-          <span className="burger-layer lettuce">症状生菜</span>
-        )}
-        {customer && isPattyPlated && (
-          <span className={`burger-layer patty ${pattyClass}`}>
-            {burn >= 80 ? '烤焦组织肉饼' : '组织肉饼'}
-          </span>
-        )}
-        {customer && completedStepIds?.includes('bun') && (
-          <span className="burger-layer bottom-bun">细胞词根底</span>
-        )}
-        {customer && completedStepIds?.length === 0 && (
-          <span className="empty-plate">空盘子</span>
-        )}
+        <div className="assembly-counter" aria-hidden="true" />
+        <div className="assembly-platter" aria-hidden="true" />
+        <div className="burger-build">
+          {!customer && <span className="empty-plate">等待订单</span>}
+          {customer && completedStepIds?.includes('top') && (
+            <span className="burger-layer top-bun">护理面包盖</span>
+          )}
+          {customer && completedStepIds?.includes('sauce') && (
+            <span className="burger-layer sauce">治疗酱</span>
+          )}
+          {customer && completedStepIds?.includes('tomato') && (
+            <span className="burger-layer tomato">炎症番茄</span>
+          )}
+          {customer && completedStepIds?.includes('lettuce') && (
+            <span className="burger-layer lettuce">症状生菜</span>
+          )}
+          {customer && isPattyPlated && (
+            <span className={`burger-layer patty ${pattyClass}`}>
+              {burn >= 80 ? '烤焦组织肉饼' : '组织肉饼'}
+            </span>
+          )}
+          {customer && completedStepIds?.includes('bun') && (
+            <span className="burger-layer bottom-bun">细胞词根底</span>
+          )}
+          {customer && completedStepIds?.length === 0 && (
+            <span className="empty-plate">空盘子</span>
+          )}
+        </div>
       </div>
 
       {customer && (

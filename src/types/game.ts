@@ -15,20 +15,34 @@ export type PortraitFrameKey =
   | 'worried'
   | 'angry'
   | 'satisfied'
+  | 'reactionCloseup'
 
 export type BossFinaleFrameKey =
   | 'entrance'
-  | 'stern'
-  | 'shocked'
+  | 'impact'
   | 'breakdown'
-  | 'bonked'
+  | 'bonk'
   | 'defeated'
+
+export type StageFraming = 'half' | 'closeup'
+
+export type QueueTransitionState =
+  | 'active'
+  | 'handoff'
+  | 'incoming'
+  | 'bossArrival'
+
+export type AudioMode = 'off' | 'service' | 'boss' | 'finale'
 
 export type CharacterProfile = {
   avatar: string
   name: string
   title: string
   accentColor: string
+  assetVersion: string
+  stageFraming: StageFraming
+  closeupFrame: PortraitFrameKey
+  satisfiedAction: string
   queuePose: PortraitFrameKey
   portraitFrames: Record<PortraitFrameKey, string>
   linesByMood: Record<Mood, string>
@@ -40,6 +54,11 @@ export type BossFinaleBeat = {
   startMs: number
   endMs: number
   frame: BossFinaleFrameKey
+  spriteSheet: string
+  frameCount: number
+  frameDurationMs: number
+  loop?: boolean
+  soundCue?: 'strike' | 'alarm' | 'bonk' | 'stamp'
   impact: 'hold' | 'shock' | 'breakdown' | 'bonk' | 'finish'
   callout?: string
 }

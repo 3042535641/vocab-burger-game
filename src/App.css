@@ -13596,7 +13596,7 @@
   color: #241d2f;
   background:
     linear-gradient(180deg, rgba(255, 253, 246, 0.92), rgba(255, 248, 232, 0.8)),
-    url('/vocab-burger-game/art/vn-med-stage.svg') center top / cover fixed no-repeat;
+    url('/vocab-burger-game/art/pixel-vn-v3/scenes/shop-background.webp') center top / cover fixed no-repeat;
 }
 
 .play-shell::before {
@@ -13704,7 +13704,7 @@
   background:
     linear-gradient(180deg, rgba(255, 253, 246, 0.16), rgba(255, 253, 246, 0.02)),
     linear-gradient(90deg, rgba(20, 90, 82, 0.74), rgba(255, 226, 122, 0.28)),
-    url('/vocab-burger-game/art/vn-med-stage.svg') center 42% / cover no-repeat;
+    url('/vocab-burger-game/art/pixel-vn-v3/scenes/shop-background.webp') center 42% / cover no-repeat;
   box-shadow:
     0 8px 0 #2c2438,
     0 18px 28px rgba(44, 36, 56, 0.18);
@@ -13814,7 +13814,7 @@
   border-radius: 12px;
   background:
     linear-gradient(180deg, rgba(255, 253, 246, 0.78), rgba(255, 248, 232, 0.4)),
-    url('/vocab-burger-game/art/vn-med-stage.svg') 36% 40% / 215% auto no-repeat,
+    url('/vocab-burger-game/art/pixel-vn-v3/scenes/shop-background.webp') 36% 40% / 215% auto no-repeat,
     #f8fffb;
   box-shadow:
     inset 0 0 0 5px rgba(255, 253, 246, 0.62),
@@ -14203,7 +14203,7 @@
     padding: 10px 10px 0;
     background:
       linear-gradient(180deg, rgba(255, 253, 246, 0.76), rgba(255, 248, 232, 0.34)),
-      url('/vocab-burger-game/art/vn-med-stage.svg') 38% 42% / auto 460px no-repeat,
+      url('/vocab-burger-game/art/pixel-vn-v3/scenes/shop-background.webp') 38% 42% / auto 460px no-repeat,
       #f8fffb;
   }
 

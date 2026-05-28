@@ -1,5 +1,5 @@
 import { memo, type CSSProperties } from 'react'
-import type { Customer } from '../types/game'
+import type { Customer, QueueTransitionState } from '../types/game'
 import {
   getCustomerMood,
   getUrgencyLabel,
@@ -15,6 +15,7 @@ type CustomerQueueProps = {
   customers: Customer[]
   activeCustomerId?: number
   handoffCustomer?: Customer
+  transitionState?: QueueTransitionState
   onSelectCustomer: (id: number) => void
 }
 
@@ -22,6 +23,7 @@ function CustomerQueue({
   customers,
   activeCustomerId,
   handoffCustomer,
+  transitionState = 'active',
   onSelectCustomer,
 }: CustomerQueueProps) {
   const activeCustomer =
@@ -62,7 +64,7 @@ function CustomerQueue({
     <section
       className={`character-stage-panel vn-character-stage mood-${mood} ${
         displayCustomer.isBoss ? 'boss-stage' : ''
-      } ${isHandoff ? 'handoff-satisfied' : ''}`}
+      } ${isHandoff ? 'handoff-satisfied' : ''} transition-${transitionState}`}
       aria-label="当前医学生角色舞台"
       style={stageStyle}
     >
@@ -88,6 +90,7 @@ function CustomerQueue({
                   waitingProfile.queuePose,
                 )}
                 alt=""
+                loading="eager"
               />
               <span>{waitingProfile.title}</span>
               <small>{getWaitedSeconds(customer)}s</small>
@@ -101,10 +104,11 @@ function CustomerQueue({
         key={`${displayCustomer.id}-${frame}`}
         src={getStagePortraitFrameSrc(displayCustomer.avatar, displayCustomer.isBoss, frame)}
         alt=""
+        data-framing={profile.stageFraming}
       />
 
       <span className="vn-mood-tag">
-        {isHandoff ? '满足退场' : getUrgencyLabel(displayCustomer)}
+        {isHandoff ? profile.satisfiedAction : getUrgencyLabel(displayCustomer)}
       </span>
 
       <div className="vn-dialogue">

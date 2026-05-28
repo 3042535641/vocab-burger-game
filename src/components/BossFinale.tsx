@@ -23,7 +23,7 @@ function BossFinale() {
       <div className="vn-finale-flash" aria-hidden="true" />
       <div className="vn-finale-stage">
         <img
-          className="vn-boss-frame"
+          className={`vn-boss-storyboard vn-story-${beat.id}`}
           key={beat.frame}
           src={getBossFinaleFrameSrc(beat.frame)}
           alt=""
@@ -33,11 +33,10 @@ function BossFinale() {
             {beat.callout}
           </strong>
         )}
-        {beat.impact === 'bonk' && <span className="vn-bonk-mark">BONK!</span>}
         {beat.impact === 'finish' && (
           <div className="vn-finale-result">
-            <strong>教授彻底破防</strong>
-            <span>医学术语汉堡，判定通过！</span>
+            <strong>教授败北</strong>
+            <span>医学术语汉堡 · S 级出餐</span>
           </div>
         )}
       </div>

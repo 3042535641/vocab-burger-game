@@ -1,7 +1,7 @@
 import { bossFinaleFrames, characterProfiles } from '../data/characters'
 import type { BossFinaleFrameKey, CharacterProfile, Mood, PortraitFrameKey } from '../types/game'
 
-const artVersion = '20260527-vn-stage-2'
+const artVersion = '20260527-pixel-vn-v3'
 const assetUrl = (path: string) =>
   `${import.meta.env.BASE_URL}${path}?v=${artVersion}`
 
@@ -27,7 +27,3 @@ export const getStagePortraitFrameSrc = (
 
 export const getBossFinaleFrameSrc = (frame: BossFinaleFrameKey) =>
   assetUrl(bossFinaleFrames[frame])
-
-// Kept for the opening screen while it transitions to the new stage artwork.
-export const getPixelPortraitSrc = (avatar?: string, isBoss = false) =>
-  getStagePortraitFrameSrc(avatar, isBoss, 'normal')

@@ -1,7 +1,7 @@
 import type { AudioMode } from '../types/game'
 
 const baseUrl = import.meta.env.BASE_URL
-const audioVersion = '20260527-pixel-vn-v3-groove'
+const audioVersion = '20260528-impact-funk'
 const audioUrl = (fileName: string) =>
   `${baseUrl}audio/${fileName}?v=${audioVersion}`
 

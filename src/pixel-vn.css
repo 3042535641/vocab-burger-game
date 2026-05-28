@@ -1625,6 +1625,249 @@
   }
 }
 
+/* Stable impact pass: feedback is now overlay-only and never pushes layout. */
+.game-shell.play-shell.impact-correct,
+.game-shell.play-shell.impact-serve,
+.game-shell.play-shell.impact-wrong {
+  animation: none !important;
+  transform: none !important;
+}
+
+.game-shell.play-shell > .hit-text {
+  position: fixed !important;
+  z-index: 80 !important;
+  top: clamp(126px, 24vh, 220px) !important;
+  right: clamp(28px, 6vw, 96px) !important;
+  left: auto !important;
+  display: grid !important;
+  place-items: center !important;
+  min-width: 112px !important;
+  padding: 9px 16px !important;
+  border: 3px solid #1b192a !important;
+  border-radius: 999px !important;
+  color: #fffaf0 !important;
+  background: #d94f35 !important;
+  box-shadow:
+    0 5px 0 rgba(27, 25, 42, 0.72),
+    0 0 0 5px rgba(255, 211, 100, 0.28) !important;
+  font-size: clamp(20px, 2.5vw, 38px) !important;
+  font-weight: 1000 !important;
+  line-height: 1 !important;
+  text-shadow: 2px 2px 0 #1b192a !important;
+  transform: rotate(-7deg) scale(0.9) !important;
+  transform-origin: center !important;
+  pointer-events: none !important;
+  animation: quiz-stamp-pop 620ms cubic-bezier(0.18, 1.35, 0.2, 1) both !important;
+}
+
+.game-shell.play-shell > .hit-correct {
+  background: #2d9f71 !important;
+}
+
+.game-shell.play-shell > .hit-serve {
+  background: #2f7dd8 !important;
+}
+
+.play-shell .quiz-panel {
+  position: relative !important;
+}
+
+.play-shell .quiz-footer {
+  position: relative !important;
+  min-height: 42px !important;
+  grid-template-columns: 108px minmax(0, 1fr) !important;
+  overflow: visible !important;
+}
+
+.play-shell .feedback {
+  position: absolute !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 116px !important;
+  z-index: 3 !important;
+  min-height: 42px !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+  animation: feedback-toast-pop 760ms cubic-bezier(0.18, 1.2, 0.2, 1) both !important;
+}
+
+.play-shell .feedback.idle {
+  opacity: 0 !important;
+  transform: translateY(8px) scale(0.96) !important;
+  animation: none !important;
+}
+
+.play-shell .quiz-correct .question-card::after,
+.play-shell .quiz-wrong .question-card::after {
+  position: absolute !important;
+  top: 10px !important;
+  right: 12px !important;
+  z-index: 4 !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 5px 10px !important;
+  border: 2px solid #1b192a !important;
+  border-radius: 999px !important;
+  color: #fffaf0 !important;
+  font-size: 12px !important;
+  font-weight: 1000 !important;
+  line-height: 1 !important;
+  transform: rotate(-6deg) !important;
+  animation: quiz-stamp-pop 560ms cubic-bezier(0.18, 1.35, 0.2, 1) both !important;
+}
+
+.play-shell .quiz-correct .question-card::after {
+  content: 'MED HIT' !important;
+  background: #2d9f71 !important;
+}
+
+.play-shell .quiz-wrong .question-card::after {
+  content: 'RED ALERT' !important;
+  background: #d94f35 !important;
+}
+
+.play-shell .quiz-correct .answer-button {
+  animation: answer-bonk 280ms ease-out both !important;
+}
+
+.play-shell .quiz-wrong .answer-button {
+  animation: answer-warning-shake 320ms steps(2, end) both !important;
+}
+
+.play-shell .quiz-correct + .current-step,
+.play-shell .quiz-wrong + .current-step {
+  transform: none !important;
+}
+
+.play-shell .vn-queue-card.preview-card {
+  cursor: default !important;
+  border-style: dashed !important;
+  opacity: 0.5 !important;
+  filter: saturate(0.82) brightness(1.06) !important;
+  transform: translateX(16px) scale(0.82) !important;
+  animation: queue-preview-pulse 1.2s steps(2, end) infinite !important;
+}
+
+.play-shell .vn-queue-card.preview-card.queue-1 {
+  transform: translateX(8px) scale(0.88) !important;
+}
+
+.play-shell .vn-queue-card.preview-card img {
+  opacity: 0.52 !important;
+}
+
+.play-shell .vn-queue-card.preview-card::after {
+  content: '赶来中' !important;
+  position: absolute !important;
+  top: 6px !important;
+  left: 6px !important;
+  z-index: 2 !important;
+  padding: 3px 6px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 199, 94, 0.94) !important;
+  color: #1b192a !important;
+  font-size: 10px !important;
+  font-weight: 1000 !important;
+}
+
+.play-shell .assembly-counter {
+  display: none !important;
+}
+
+@media (min-width: 981px) {
+  .play-shell .burger-stack {
+    --platter-bottom: 34px !important;
+    background:
+      linear-gradient(180deg, rgba(255, 252, 238, 0.98) 0%, rgba(237, 251, 247, 0.98) 100%) !important;
+  }
+
+  .play-shell .assembly-platter {
+    bottom: var(--platter-bottom) !important;
+    box-shadow:
+      0 4px 0 rgba(20, 39, 44, 0.16),
+      0 16px 18px rgba(20, 39, 44, 0.14) !important;
+  }
+
+  .play-shell .burger-build {
+    bottom: calc(var(--platter-bottom) + 14px) !important;
+  }
+}
+
+@media (max-height: 760px) and (min-width: 981px) {
+  .play-shell .burger-stack {
+    --platter-bottom: 28px !important;
+  }
+
+  .game-shell.play-shell > .hit-text {
+    top: 116px !important;
+  }
+}
+
+@keyframes quiz-stamp-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) rotate(-12deg) scale(0.48);
+  }
+  48% {
+    opacity: 1;
+    transform: translateY(0) rotate(-5deg) scale(1.12);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-8px) rotate(-7deg) scale(1);
+  }
+}
+
+@keyframes feedback-toast-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  18%,
+  78% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
+
+@keyframes answer-bonk {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  42% {
+    transform: translateY(-4px) scale(1.025);
+  }
+}
+
+@keyframes answer-warning-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes queue-preview-pulse {
+  0%,
+  100% {
+    opacity: 0.46;
+  }
+  50% {
+    opacity: 0.62;
+  }
+}
+
 /* Desktop final pass: one clear HUD, no separate scene strip, centered station. */
 @media (min-width: 981px) {
   .game-shell.play-shell {
@@ -1836,7 +2079,7 @@
 
   .play-shell .burger-stack {
     --counter-height: 44px;
-    --platter-bottom: 58px;
+    --platter-bottom: 34px;
     position: relative !important;
     display: block !important;
     min-height: 180px !important;
@@ -1848,6 +2091,7 @@
   }
 
   .play-shell .assembly-counter {
+    display: none !important;
     position: absolute !important;
     right: 9% !important;
     bottom: 18px !important;
@@ -1957,7 +2201,7 @@
 
   .play-shell .burger-stack {
     --counter-height: 34px;
-    --platter-bottom: 46px;
+    --platter-bottom: 28px;
     min-height: 142px !important;
   }
 

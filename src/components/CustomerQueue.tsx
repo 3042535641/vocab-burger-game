@@ -1,5 +1,9 @@
 import { memo, type CSSProperties } from 'react'
-import type { Customer, QueueTransitionState } from '../types/game'
+import type {
+  Customer,
+  QueuePreviewCustomer,
+  QueueTransitionState,
+} from '../types/game'
 import {
   getCustomerMood,
   getUrgencyLabel,
@@ -13,6 +17,7 @@ import {
 
 type CustomerQueueProps = {
   customers: Customer[]
+  previewCustomers?: QueuePreviewCustomer[]
   activeCustomerId?: number
   handoffCustomer?: Customer
   transitionState?: QueueTransitionState
@@ -21,6 +26,7 @@ type CustomerQueueProps = {
 
 function CustomerQueue({
   customers,
+  previewCustomers = [],
   activeCustomerId,
   handoffCustomer,
   transitionState = 'active',
@@ -34,6 +40,40 @@ function CustomerQueue({
   if (!displayCustomer) {
     return (
       <section className="character-stage-panel vn-character-stage empty">
+        {previewCustomers.length > 0 && (
+          <div className="vn-queue-stack" aria-label="候场医学生">
+            {previewCustomers.slice(0, 2).map((customer, index) => {
+              const waitingProfile = getCharacterProfile(
+                customer.avatar,
+                customer.isBoss,
+              )
+
+              return (
+                <button
+                  type="button"
+                  className={`vn-queue-card queue-${index + 1} preview-card`}
+                  key={customer.id}
+                  style={
+                    { '--queue-accent': waitingProfile.accentColor } as CSSProperties
+                  }
+                  disabled
+                >
+                  <img
+                    src={getStagePortraitFrameSrc(
+                      customer.avatar,
+                      customer.isBoss,
+                      waitingProfile.queuePose,
+                    )}
+                    alt=""
+                    loading="eager"
+                  />
+                  <span>{waitingProfile.title}</span>
+                  <small>ETA {customer.etaSeconds}s</small>
+                </button>
+              )
+            })}
+          </div>
+        )}
         <div className="vn-dialogue empty-dialogue">
           <small>MEDICAL ENGLISH NIGHT SHIFT</small>
           <strong>下一位医学生正在赶来</strong>
@@ -53,6 +93,10 @@ function CustomerQueue({
   const waitingCustomers = customers
     .filter((customer) => customer.id !== displayCustomer.id)
     .slice(0, 2)
+  const visiblePreviewCustomers = previewCustomers.slice(
+    0,
+    Math.max(0, 2 - waitingCustomers.length),
+  )
   const stageStyle = { '--character-accent': profile.accentColor } as CSSProperties
   const dialogueLine = isHandoff
     ? profile.handoffLine
@@ -94,6 +138,34 @@ function CustomerQueue({
               />
               <span>{waitingProfile.title}</span>
               <small>{getWaitedSeconds(customer)}s</small>
+            </button>
+          )
+        })}
+        {visiblePreviewCustomers.map((customer, previewIndex) => {
+          const waitingProfile = getCharacterProfile(customer.avatar, customer.isBoss)
+          const queueIndex = waitingCustomers.length + previewIndex
+
+          return (
+            <button
+              type="button"
+              className={`vn-queue-card queue-${queueIndex + 1} preview-card`}
+              key={customer.id}
+              style={
+                { '--queue-accent': waitingProfile.accentColor } as CSSProperties
+              }
+              disabled
+            >
+              <img
+                src={getStagePortraitFrameSrc(
+                  customer.avatar,
+                  customer.isBoss,
+                  waitingProfile.queuePose,
+                )}
+                alt=""
+                loading="eager"
+              />
+              <span>{waitingProfile.title}</span>
+              <small>ETA {customer.etaSeconds}s</small>
             </button>
           )
         })}

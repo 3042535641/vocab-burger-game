@@ -58,11 +58,13 @@ function QuizPanel({
             <span style={{ width: `${Math.min(combo * 12.5, 100)}%` }} />
           </span>
         </span>
-        {feedback && (
-          <span className={`feedback ${feedback.kind}`} role="status">
-            {feedback.message}
-          </span>
-        )}
+        <span
+          className={`feedback ${feedback?.kind ?? 'idle'}`}
+          role="status"
+          aria-hidden={!feedback}
+        >
+          {feedback?.message ?? ' '}
+        </span>
       </div>
     </section>
   )

@@ -95,18 +95,18 @@ function writeWav(samples) {
 }
 
 function renderKitchenGroove() {
-  const bpm = 96
+  const bpm = 116
   const beats = 64
   const seconds = (60 / bpm) * beats
   const totalSamples = Math.floor(seconds * sampleRate)
   const samples = new Float32Array(totalSamples)
   const bass = [
-    'A1', 'E2', 'G2', 'A2', 'C2', 'E2', 'G2', 'E2',
-    'D2', 'A1', 'C2', 'D2', 'E2', 'G2', 'A2', 'E2',
+    'A1', 'A1', 'E2', 'G2', 'A2', 'E2', 'G2', 'E2',
+    'D2', 'D2', 'A1', 'C2', 'D2', 'E2', 'G2', 'E2',
   ]
   const bluesLead = [
-    'A4', 'C5', 'D5', 'D#5', 'E5', 'G5', 'E5', 'D5',
-    'C5', 'A4', 'G4', 'A4', 'C5', 'D5', 'C5', 'A4',
+    'A4', 'C5', 'D5', 'D#5', 'E5', 'G5', 'A5', 'G5',
+    'E5', 'D5', 'C5', 'A4', 'C5', 'D5', 'E5', 'C5',
   ]
   const chords = [
     ['A3', 'C4', 'E4'],
@@ -125,63 +125,64 @@ function renderKitchenGroove() {
     const eighth = Math.floor(beat * 2)
     const eighthPhase = (beat * 2) % 1
     const bar = Math.floor(beat / 4)
-    const verseLift = bar % 8 >= 4 ? 1.14 : 0.94
+    const verseLift = bar % 8 >= 4 ? 1.22 : 1
     let value = 0
 
     const bassFrequency = noteToFrequency(bass[eighth % bass.length])
     if (eighth % 4 !== 3 || bar % 4 === 3) {
-      value += triangle(time * bassFrequency) * envelope(eighthPhase, 0.012, 0.34) * 0.31
-      value += saw(time * bassFrequency * 0.5) * envelope(eighthPhase, 0.008, 0.38) * 0.13
-      value += pulse(time * bassFrequency * 2, 0.43) * envelope(eighthPhase, 0.012, 0.22) * 0.035
+      value += triangle(time * bassFrequency) * envelope(eighthPhase, 0.01, 0.38) * 0.42
+      value += saw(time * bassFrequency * 0.5) * envelope(eighthPhase, 0.008, 0.44) * 0.2
+      value += pulse(time * bassFrequency * 2, 0.43) * envelope(eighthPhase, 0.01, 0.26) * 0.055
     }
 
-    if (eighth % 4 === 1 || eighth % 8 === 6) {
+    if (eighth % 4 === 1 || eighth % 4 === 3) {
       const chord = chords[bar % chords.length]
       for (const [voice, note] of chord.entries()) {
         const frequency = noteToFrequency(note)
         const shimmer = 1 + Math.sin(time * tau * 4.8) * 0.004
-        value += triangle(time * frequency * shimmer) * envelope(eighthPhase, 0.02, 0.52) * (0.055 - voice * 0.007)
+        value += triangle(time * frequency * shimmer) * envelope(eighthPhase, 0.018, 0.46) * (0.07 - voice * 0.008)
       }
     }
 
     if (
-      (bar % 4 >= 2 && [1, 3, 6, 7, 10, 14].includes(sixteenth % 16)) ||
+      (bar % 4 >= 1 && [1, 3, 6, 7, 9, 10, 14].includes(sixteenth % 16)) ||
       (bar % 8 === 7 && sixteenth % 2 === 0)
     ) {
       const note = bluesLead[(sixteenth + bar * 3) % bluesLead.length]
       const leadFrequency = noteToFrequency(note)
-      value += pulse(time * leadFrequency, 0.48) * envelope(sixteenthPhase, 0.016, 0.34) * 0.105 * verseLift
-      value += triangle(time * leadFrequency * 0.5) * envelope(sixteenthPhase, 0.018, 0.42) * 0.075 * verseLift
+      value += pulse(time * leadFrequency, 0.48) * envelope(sixteenthPhase, 0.014, 0.36) * 0.14 * verseLift
+      value += triangle(time * leadFrequency * 0.5) * envelope(sixteenthPhase, 0.016, 0.42) * 0.09 * verseLift
     }
 
     if (beatIndex % 4 === 0 && beatPhase < 0.22) {
-      value += Math.sin(time * tau * (98 - beatPhase * 250)) * envelope(beatPhase / 0.22, 0.01, 0.48) * 0.47
-      value += triangle(time * 46) * envelope(beatPhase / 0.22, 0.01, 0.46) * 0.11
+      value += Math.sin(time * tau * (112 - beatPhase * 280)) * envelope(beatPhase / 0.22, 0.008, 0.5) * 0.64
+      value += triangle(time * 46) * envelope(beatPhase / 0.22, 0.008, 0.5) * 0.18
     }
 
     if ((beatIndex % 4 === 1 || beatIndex % 4 === 3) && beatPhase < 0.2) {
-      value += noise(index) * envelope(beatPhase / 0.2, 0.008, 0.4) * 0.2
-      value += Math.sin(time * tau * 188) * envelope(beatPhase / 0.2, 0.008, 0.46) * 0.11
+      value += noise(index) * envelope(beatPhase / 0.2, 0.006, 0.42) * 0.32
+      value += Math.sin(time * tau * 210) * envelope(beatPhase / 0.2, 0.006, 0.48) * 0.16
     }
 
     if (sixteenth % 2 === 1 && sixteenthPhase < 0.28) {
-      const swingAccent = sixteenth % 4 === 3 ? 1 : 0.55
-      value += noise(index) * envelope(sixteenthPhase / 0.28, 0.01, 0.4) * 0.072 * swingAccent
+      const swingAccent = sixteenth % 4 === 3 ? 1.12 : 0.72
+      value += noise(index) * envelope(sixteenthPhase / 0.28, 0.008, 0.42) * 0.11 * swingAccent
+      value += pulse(time * 1420, 0.18) * envelope(sixteenthPhase / 0.28, 0.008, 0.36) * 0.028 * swingAccent
     }
 
     if (bar % 4 === 3 && (sixteenth % 16 === 11 || sixteenth % 16 === 14)) {
       const vocalChop = 510 + sixteenthPhase * 510
-      value += pulse(time * vocalChop, 0.4) * envelope(sixteenthPhase, 0.018, 0.3) * 0.088
-      value += triangle(time * vocalChop * 1.5) * envelope(sixteenthPhase, 0.018, 0.3) * 0.046
+      value += pulse(time * vocalChop, 0.4) * envelope(sixteenthPhase, 0.016, 0.32) * 0.12
+      value += triangle(time * vocalChop * 1.5) * envelope(sixteenthPhase, 0.016, 0.32) * 0.062
     }
 
     if (sixteenth % 16 === 15 && sixteenthPhase < 0.55) {
-      value += pulse(time * 1700, 0.42) * envelope(sixteenthPhase / 0.55, 0.02, 0.38) * 0.075
-      value += noise(index) * envelope(sixteenthPhase / 0.55, 0.01, 0.4) * 0.052
+      value += pulse(time * 1780, 0.42) * envelope(sixteenthPhase / 0.55, 0.018, 0.4) * 0.105
+      value += noise(index) * envelope(sixteenthPhase / 0.55, 0.008, 0.42) * 0.07
     }
 
     const edgeFade = Math.min(1, index / 180, (totalSamples - index - 1) / 180)
-    samples[index] = clamp(Math.tanh(value * 1.2) * edgeFade * 0.88)
+    samples[index] = clamp(Math.tanh(value * 1.42) * edgeFade * 0.92)
   }
 
   return samples

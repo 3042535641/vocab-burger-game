@@ -98,6 +98,15 @@ export type Customer = {
   steps: BurgerStep[]
 }
 
+export type QueuePreviewCustomer = {
+  id: string
+  name: string
+  avatar: string
+  recipe: BurgerRecipe
+  etaSeconds: number
+  isBoss: boolean
+}
+
 export type Feedback = {
   kind: 'correct' | 'wrong' | 'info'
   message: string

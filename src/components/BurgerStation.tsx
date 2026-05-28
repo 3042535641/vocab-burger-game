@@ -100,7 +100,6 @@ function BurgerStation({
       </div>
 
       <div className="burger-stack">
-        <div className="assembly-counter" aria-hidden="true" />
         <div className="assembly-platter" aria-hidden="true" />
         <div className="burger-build">
           {!customer && <span className="empty-plate">等待订单</span>}

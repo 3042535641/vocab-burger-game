@@ -23,7 +23,12 @@ import {
 import { words } from './data/words'
 import type { WordEntry } from './data/words'
 import { useTimedImpact } from './hooks/useTimedImpact'
-import type { Customer, Feedback, GameStatus } from './types/game'
+import type {
+  Customer,
+  Feedback,
+  GameStatus,
+  QueuePreviewCustomer,
+} from './types/game'
 import type { GameRecords } from './types/records'
 import { gameAudio } from './utils/audio'
 import { categoryLabels, formatPlayedAt, getServiceRank } from './utils/display'
@@ -85,10 +90,12 @@ function App() {
   const [victoryLine, setVictoryLine] = useState('')
   const [missedWords, setMissedWords] = useState<WordEntry[]>([])
   const [handoffCustomer, setHandoffCustomer] = useState<Customer>()
+  const [arrivalEtaSeconds, setArrivalEtaSeconds] = useState(1)
   const { clearImpact, impact, impactText, triggerImpact } = useTimedImpact()
   const finaleTimerRef = useRef<number | undefined>(undefined)
   const handoffTimerRef = useRef<number | undefined>(undefined)
   const customerClockRef = useRef(0)
+  const nextArrivalAtRef = useRef<number | undefined>(undefined)
   const answerHandlerRef = useRef<(answer: string) => void>(() => undefined)
   const musicEnabled = settings.musicEnabled
   const performanceMode = settings.performanceMode
@@ -133,6 +140,47 @@ function App() {
     customers.length,
     bossSpawned && !bossDefeated,
   )
+  const queuePreviewCustomers = useMemo<QueuePreviewCustomer[]>(() => {
+    if (
+      view !== 'game' ||
+      (gameStatus !== 'playing' && gameStatus !== 'customerHandoff') ||
+      bossSpawned ||
+      servedCount >= targetRegularServed
+    ) {
+      return []
+    }
+
+    const targetQueueSize = getTargetQueueSize()
+    const availableSlots = Math.max(0, Math.min(maxCustomers, targetQueueSize) - customers.length)
+
+    if (availableSlots <= 0) {
+      return []
+    }
+
+    const etaSeconds = Math.max(1, arrivalEtaSeconds)
+
+    return Array.from({ length: Math.min(availableSlots, 2) }, (_, index) => {
+      const preview = createCustomer(nextCustomerId + index, false, wordPool)
+
+      return {
+        id: `preview-${preview.id}`,
+        name: preview.name,
+        avatar: preview.avatar,
+        recipe: preview.recipe,
+        etaSeconds: etaSeconds + index * 4,
+        isBoss: false,
+      }
+    })
+  }, [
+    bossSpawned,
+    customers.length,
+    gameStatus,
+    nextCustomerId,
+    arrivalEtaSeconds,
+    servedCount,
+    view,
+    wordPool,
+  ])
 
   useEffect(() => {
     return () => {
@@ -277,6 +325,24 @@ function App() {
 
   useEffect(() => {
     if (
+      view !== 'game' ||
+      (gameStatus !== 'playing' && gameStatus !== 'customerHandoff')
+    ) {
+      return
+    }
+
+    const timer = window.setInterval(() => {
+      const targetArrival = nextArrivalAtRef.current
+      setArrivalEtaSeconds(
+        targetArrival ? Math.max(1, Math.ceil((targetArrival - Date.now()) / 1000)) : 1,
+      )
+    }, 1000)
+
+    return () => window.clearInterval(timer)
+  }, [gameStatus, view])
+
+  useEffect(() => {
+    if (
       gameStatus !== 'playing' ||
       view !== 'game' ||
       bossSpawned ||
@@ -284,6 +350,24 @@ function App() {
     ) {
       return
     }
+
+    const targetQueueSize = getTargetQueueSize()
+
+    if (
+      customers.length >= maxCustomers ||
+      customers.length >= targetQueueSize
+    ) {
+      return
+    }
+
+    const delay = getRandomDelay(servedCount, customers.length)
+    const targetArrival = Date.now() + delay
+    nextArrivalAtRef.current = targetArrival
+    const etaTimer = window.setTimeout(() => {
+      setArrivalEtaSeconds(
+        Math.max(1, Math.ceil((targetArrival - Date.now()) / 1000)),
+      )
+    }, 0)
 
     const spawnTimer = window.setTimeout(() => {
       setCustomers((currentCustomers) => {
@@ -297,6 +381,8 @@ function App() {
         }
 
         const newCustomer = createCustomer(nextCustomerId, false, wordPool)
+        nextArrivalAtRef.current = undefined
+        setArrivalEtaSeconds(1)
         setNextCustomerId((id) => id + 1)
         setBanner(
           currentCustomers.length === 0
@@ -313,9 +399,12 @@ function App() {
 
         return [...currentCustomers, newCustomer]
       })
-    }, getRandomDelay(servedCount, customers.length))
+    }, delay)
 
-    return () => window.clearTimeout(spawnTimer)
+    return () => {
+      window.clearTimeout(spawnTimer)
+      window.clearTimeout(etaTimer)
+    }
   }, [
     activeCustomerId,
     bossSpawned,
@@ -434,6 +523,7 @@ function App() {
     setVictoryLine('')
     setMissedWords([])
     setHandoffCustomer(undefined)
+    nextArrivalAtRef.current = undefined
     setFeedback(null)
     setBanner('第一位医学生来了，完成 6 份普通订单后教授 Boss 登场')
   }
@@ -448,6 +538,7 @@ function App() {
     setCustomers([])
     setActiveCustomerId(undefined)
     setHandoffCustomer(undefined)
+    nextArrivalAtRef.current = undefined
     setBanner('今日营业结束')
   }
 
@@ -458,6 +549,7 @@ function App() {
     setGameStatus('playing')
     setBossSpawned(true)
     setHandoffCustomer(undefined)
+    nextArrivalAtRef.current = undefined
     setNextCustomerId(id + 1)
     setCustomers([boss])
     setActiveCustomerId(boss.id)
@@ -1029,6 +1121,7 @@ function App() {
       <div className="shop-layout">
         <CustomerQueue
           customers={customers}
+          previewCustomers={queuePreviewCustomers}
           activeCustomerId={activeCustomer?.id}
           handoffCustomer={handoffCustomer}
           transitionState={

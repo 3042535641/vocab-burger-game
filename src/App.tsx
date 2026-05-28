@@ -59,10 +59,7 @@ import {
   saveRecords,
   saveSettings,
 } from './utils/storage'
-import {
-  getBossFinaleFrameSrc,
-  getStagePortraitFrameSrc,
-} from './utils/portraits'
+import { getStagePortraitFrameSrc } from './utils/portraits'
 import { getUniqueWordsByEnglish, normalizeEnglish } from './utils/wordHelpers'
 import './App.css'
 import './pixel-vn.css'
@@ -1009,50 +1006,46 @@ function App() {
       <main
         className={`game-shell start-screen pixel-result ${bossDefeated ? 'victory-result' : ''}`}
       >
-        <section className="panel intro-panel result-panel" aria-labelledby="result-title">
-          <div className={`result-visual ${bossDefeated ? 'boss-result-visual' : ''}`}>
-            <img
-              src={
-                bossDefeated
-                  ? getBossFinaleFrameSrc('defeated')
-                  : getStagePortraitFrameSrc('round', false, 'satisfied')
-              }
-              alt=""
-            />
+        <section className="panel intro-panel result-panel result-layout-v4" aria-labelledby="result-title">
+          <div className="result-summary-card">
+            <p className="eyebrow">{bossDefeated ? '教授破防结算' : '营业结算'}</p>
+            <h1 id="result-title">今日得分：{score}</h1>
+            <p>
+              完成 {servedCount} 份普通医学汉堡，流失 {lostCustomers} 位医学生，最高连对{' '}
+              {bestCombo} 题。
+            </p>
+            <p>
+              {bossDefeated
+                ? victoryLine || '教授 Boss 已完成，适合医学英语课堂展示收尾。'
+                : '教授 Boss 未完成，可以再开一局。'}
+            </p>
+            <p className={`result-rank rank-${serviceRank.tier}`}>
+              本局评级：{serviceRank.label} · {serviceRank.comment}
+            </p>
+            <div className="record-strip" aria-label="历史记录">
+              <span>历史最高 {Math.max(records.highScore, score)}</span>
+              <span>历史 Combo {Math.max(records.bestCombo, bestCombo)}</span>
+              <span>
+                通关次数 {records.wins + (finalizedRound ? 0 : bossDefeated ? 1 : 0)}
+              </span>
+            </div>
+            <div className="result-actions">
+              <button type="button" className="primary-action" onClick={startGame}>
+                再开一局
+              </button>
+              <button
+                type="button"
+                className="small-action manager-shortcut"
+                onClick={openWordManager}
+              >
+                管理词库
+              </button>
+            </div>
           </div>
-          <p className="eyebrow">{bossDefeated ? '教授破防结算' : '营业结算'}</p>
-          <h1 id="result-title">今日得分：{score}</h1>
-          <p>
-            完成 {servedCount} 份普通医学汉堡，流失 {lostCustomers} 位医学生，最高连对{' '}
-            {bestCombo} 题。
-          </p>
-          <p>
-            {bossDefeated
-              ? victoryLine || '教授 Boss 已完成，适合医学英语课堂展示收尾。'
-              : '教授 Boss 未完成，可以再开一局。'}
-          </p>
-          <p className={`result-rank rank-${serviceRank.tier}`}>
-            本局评级：{serviceRank.label} · {serviceRank.comment}
-          </p>
-          <div className="record-strip" aria-label="历史记录">
-            <span>历史最高 {Math.max(records.highScore, score)}</span>
-            <span>历史 Combo {Math.max(records.bestCombo, bestCombo)}</span>
-            <span>
-              通关次数 {records.wins + (finalizedRound ? 0 : bossDefeated ? 1 : 0)}
-            </span>
+          <div className="result-review-card">
+            {missedReviewPanel}
+            {historyPanel}
           </div>
-          {missedReviewPanel}
-          {historyPanel}
-          <button type="button" className="primary-action" onClick={startGame}>
-            再开一局
-          </button>
-          <button
-            type="button"
-            className="small-action manager-shortcut"
-            onClick={openWordManager}
-          >
-            管理词库
-          </button>
         </section>
       </main>
     )

@@ -3295,3 +3295,2197 @@
   from { opacity: 0; transform: translateX(50%) translateY(24px); }
   to { opacity: 1; transform: translateX(50%) translateY(0); }
 }
+
+/* Desktop layout v4: stop the old layered UI from fighting the current VN/pixel art. */
+@media (min-width: 981px) {
+  .game-shell.play-shell {
+    --ink: #21182f;
+    --teal: #104f4b;
+    --cream: #fff8e6;
+    --panel: rgba(255, 255, 238, 0.9);
+    grid-template-rows: 48px 22px 14px minmax(0, 1fr) !important;
+    grid-template-areas:
+      'header'
+      'banner'
+      'meter'
+      'layout' !important;
+    gap: 5px !important;
+    padding: 7px 10px 10px !important;
+    min-height: 680px !important;
+    background:
+      linear-gradient(90deg, rgba(236, 255, 247, 0.68), rgba(255, 242, 216, 0.48)),
+      url('/vocab-burger-game/art/pixel-vn-v3/scenes/shop-background.webp') center 48% / cover fixed,
+      #e8f6ee !important;
+  }
+
+  .play-shell .game-header {
+    grid-area: header !important;
+    grid-template-columns: 300px minmax(0, 1fr) !important;
+    gap: 7px !important;
+    height: 48px !important;
+    min-height: 48px !important;
+  }
+
+  .play-shell .title-lockup {
+    height: 48px !important;
+    min-height: 48px !important;
+    padding: 5px 12px !important;
+    border: 3px solid rgba(87, 216, 196, 0.56) !important;
+    border-radius: 4px !important;
+    background:
+      linear-gradient(135deg, rgba(17, 71, 69, 0.98), rgba(34, 25, 48, 0.96)) !important;
+    box-shadow: 4px 4px 0 rgba(33, 24, 47, 0.86) !important;
+  }
+
+  .play-shell .title-lockup h1 {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    inline-size: auto !important;
+    font-size: clamp(22px, 2.1vw, 30px) !important;
+    line-height: 0.92 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .play-shell .title-lockup .eyebrow {
+    font-size: 10px !important;
+  }
+
+  .play-shell .title-lockup::after {
+    right: 9px !important;
+    bottom: 4px !important;
+    border-width: 2px !important;
+    font-size: 9px !important;
+    box-shadow: 2px 2px 0 var(--ink) !important;
+  }
+
+  .play-shell .stats {
+    height: 48px !important;
+    min-height: 48px !important;
+    grid-template-columns: repeat(8, minmax(74px, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  .play-shell .stats > span,
+  .play-shell .stats > button,
+  .primary-action,
+  .small-action,
+  .play-shell .answer-button,
+  .pixel-result button,
+  .start-screen button {
+    border: 3px solid var(--ink) !important;
+    border-radius: 4px !important;
+    background:
+      linear-gradient(180deg, rgba(255, 253, 229, 0.98), rgba(255, 231, 154, 0.96)) !important;
+    box-shadow: 4px 4px 0 rgba(33, 24, 47, 0.74) !important;
+    color: var(--ink) !important;
+    text-shadow: none !important;
+    transform: translateZ(0) !important;
+  }
+
+  .play-shell .stats > span,
+  .play-shell .stats > button {
+    height: 48px !important;
+    min-height: 48px !important;
+    padding: 3px 6px !important;
+    font-size: clamp(11px, 0.82vw, 14px) !important;
+    line-height: 1.05 !important;
+  }
+
+  .play-shell .stats > span {
+    background:
+      linear-gradient(180deg, rgba(7, 37, 48, 0.96), rgba(21, 78, 75, 0.96)) !important;
+    color: #fff9d8 !important;
+  }
+
+  .play-shell .stats .rank-badge {
+    color: #ff7668 !important;
+  }
+
+  .primary-action:hover,
+  .small-action:hover,
+  .play-shell .answer-button:hover,
+  .play-shell .stats > button:hover,
+  .pixel-result button:hover,
+  .start-screen button:hover {
+    box-shadow: 2px 2px 0 rgba(33, 24, 47, 0.86) !important;
+    transform: translate(2px, 2px) !important;
+  }
+
+  .play-shell .banner {
+    grid-area: banner !important;
+    z-index: 1 !important;
+    height: 22px !important;
+    max-height: 22px !important;
+    min-height: 22px !important;
+    align-self: start !important;
+    padding: 0 12px !important;
+    border: 2px solid rgba(255, 199, 94, 0.74) !important;
+    border-radius: 5px !important;
+    background: rgba(255, 249, 219, 0.92) !important;
+    color: #1a4649 !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    overflow: hidden !important;
+    box-shadow: 3px 3px 0 rgba(33, 24, 47, 0.28) !important;
+  }
+
+  .play-shell .rush-meter {
+    grid-area: meter !important;
+    z-index: 1 !important;
+    display: grid !important;
+    grid-template-columns: minmax(130px, max-content) minmax(0, 1fr) 40px !important;
+    grid-template-rows: 10px 4px !important;
+    height: 14px !important;
+    max-height: 14px !important;
+    min-height: 14px !important;
+    align-self: start !important;
+    padding: 0 6px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    pointer-events: none !important;
+  }
+
+  .play-shell .rush-meter span,
+  .play-shell .rush-meter strong {
+    color: #fff9d8 !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    text-shadow: 1px 1px 0 #1d1728 !important;
+  }
+
+  .play-shell .rush-meter em {
+    display: block !important;
+    color: #5cf2dd !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    text-shadow: 1px 1px 0 #1d1728 !important;
+  }
+
+  .play-shell .rush-track {
+    grid-column: 1 / -1 !important;
+    height: 4px !important;
+    border: 1px solid rgba(33, 24, 47, 0.84) !important;
+    background: rgba(255, 249, 219, 0.5) !important;
+  }
+
+  .play-shell .rush-track span {
+    height: 100% !important;
+    background: linear-gradient(90deg, #79f2c0, #ffd65b, #ff6a5f) !important;
+  }
+
+  .play-shell .shop-layout {
+    grid-area: layout !important;
+    grid-template-columns: minmax(390px, 37fr) minmax(308px, 29fr) minmax(390px, 34fr) !important;
+    grid-template-rows: minmax(0, 42fr) minmax(0, 58fr) !important;
+    grid-template-areas:
+      'character station ticket'
+      'character station quiz' !important;
+    gap: 9px !important;
+    min-height: 0 !important;
+  }
+
+  .play-shell .character-stage-panel.vn-character-stage {
+    overflow: hidden !important;
+    border: 0 !important;
+    border-radius: 6px !important;
+    background:
+      linear-gradient(90deg, rgba(244, 255, 246, 0.03), rgba(7, 23, 31, 0.14)),
+      url('/vocab-burger-game/art/pixel-vn-v3/scenes/shop-background.webp') center 52% / cover !important;
+    box-shadow:
+      inset 0 0 0 2px rgba(115, 236, 214, 0.32),
+      4px 4px 0 rgba(33, 24, 47, 0.45) !important;
+  }
+
+  .play-shell .vn-main-portrait {
+    object-fit: contain !important;
+    object-position: center bottom !important;
+    image-rendering: auto !important;
+    filter: saturate(1.03) contrast(0.96) brightness(1.05) !important;
+  }
+
+  .play-shell .vn-main-portrait[src*='/characters/bun/'],
+  .play-shell .vn-queue-card img[src*='/characters/bun/'],
+  .pixel-result img[src*='/characters/bun/'] {
+    image-rendering: auto !important;
+    filter: saturate(0.82) contrast(0.76) brightness(1.17) !important;
+  }
+
+  .play-shell .vn-dialogue {
+    right: 14px !important;
+    bottom: 14px !important;
+    left: 14px !important;
+    padding: 13px 15px !important;
+    border-left: 6px solid var(--character-accent, #5cf2dd) !important;
+    background:
+      linear-gradient(90deg, rgba(6, 20, 28, 0.94), rgba(8, 44, 46, 0.84)) !important;
+    box-shadow: 4px 4px 0 rgba(33, 24, 47, 0.62) !important;
+  }
+
+  .play-shell .vn-dialogue small {
+    color: #61f2dd !important;
+    font-size: 12px !important;
+  }
+
+  .play-shell .vn-dialogue strong {
+    font-size: clamp(24px, 2.2vw, 36px) !important;
+    line-height: 1.02 !important;
+  }
+
+  .play-shell .vn-dialogue p,
+  .play-shell .vn-dialogue em {
+    font-size: clamp(13px, 1.1vw, 16px) !important;
+  }
+
+  .play-shell .vn-queue-stack {
+    top: 50% !important;
+    right: 10px !important;
+    width: 118px !important;
+    gap: 7px !important;
+    transform: translateY(-50%) !important;
+  }
+
+  .play-shell .vn-queue-card {
+    width: 118px !important;
+    height: 132px !important;
+    overflow: hidden !important;
+    border: 3px solid var(--queue-accent, #7bf4df) !important;
+    border-radius: 6px !important;
+    background:
+      linear-gradient(180deg, rgba(10, 25, 34, 0.08), rgba(8, 24, 34, 0.72)) !important;
+    box-shadow: 4px 4px 0 rgba(33, 24, 47, 0.58) !important;
+    backdrop-filter: none !important;
+  }
+
+  .play-shell .vn-queue-card.queue-1 {
+    opacity: 0.92 !important;
+    transform: translateX(0) scale(0.93) !important;
+  }
+
+  .play-shell .vn-queue-card.queue-2 {
+    margin-top: -72px !important;
+    opacity: 0.55 !important;
+    transform: translateX(18px) scale(0.82) !important;
+  }
+
+  .play-shell .vn-queue-card img {
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center 18% !important;
+  }
+
+  .play-shell .vn-queue-card span {
+    right: 5px !important;
+    bottom: 24px !important;
+    left: 5px !important;
+    padding: 3px 5px !important;
+    border: 2px solid var(--ink) !important;
+    background: rgba(255, 248, 214, 0.92) !important;
+    color: var(--ink) !important;
+    font-size: 10px !important;
+  }
+
+  .play-shell .vn-queue-card small {
+    right: 5px !important;
+    bottom: 5px !important;
+    left: 5px !important;
+    color: #fff0a4 !important;
+    font-size: 12px !important;
+    text-shadow: 1px 1px 0 #1d1728 !important;
+  }
+
+  .play-shell .panel.burger-station,
+  .play-shell .panel.order-ticket,
+  .play-shell .panel.quiz-panel {
+    border: 3px solid rgba(33, 24, 47, 0.9) !important;
+    border-radius: 6px !important;
+    background:
+      linear-gradient(180deg, rgba(255, 253, 238, 0.93), rgba(228, 253, 245, 0.9)) !important;
+    box-shadow: 5px 5px 0 rgba(33, 24, 47, 0.34) !important;
+  }
+
+  .play-shell .panel.burger-station {
+    grid-template-rows: auto 55px 31px minmax(180px, 1fr) auto 34px !important;
+    gap: 7px !important;
+    padding: 10px !important;
+  }
+
+  .play-shell .burger-stack {
+    overflow: hidden !important;
+    background:
+      radial-gradient(ellipse at 50% 79%, rgba(26, 70, 73, 0.18), transparent 20%),
+      linear-gradient(180deg, rgba(255, 254, 241, 0.98), rgba(224, 250, 242, 0.96)) !important;
+  }
+
+  .play-shell .assembly-counter {
+    display: none !important;
+  }
+
+  .play-shell .assembly-platter {
+    right: 50% !important;
+    bottom: 30px !important;
+    left: auto !important;
+    width: min(78%, 315px) !important;
+    height: 18px !important;
+    transform: translateX(50%) !important;
+    border-radius: 999px !important;
+    box-shadow: 0 4px 0 rgba(33, 24, 47, 0.22) !important;
+  }
+
+  .play-shell .burger-build {
+    right: 0 !important;
+    bottom: 46px !important;
+    left: 0 !important;
+    align-items: center !important;
+    min-height: 120px !important;
+    transform: translateZ(0) !important;
+  }
+
+  .play-shell .quiz-panel {
+    display: grid !important;
+    grid-template-rows: auto minmax(145px, 1fr) 32px !important;
+    align-content: stretch !important;
+    gap: 8px !important;
+    padding: 10px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .question-card {
+    min-height: 108px !important;
+    padding: 9px 12px !important;
+    border-radius: 5px !important;
+  }
+
+  .play-shell .question-card h2 {
+    font-size: clamp(36px, 3.2vw, 56px) !important;
+    line-height: 0.96 !important;
+  }
+
+  .play-shell .question-hint {
+    font-size: clamp(12px, 1vw, 15px) !important;
+  }
+
+  .play-shell .answer-grid {
+    height: auto !important;
+    min-height: 0 !important;
+    padding-bottom: 0 !important;
+    grid-template-rows: repeat(2, minmax(58px, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .play-shell .answer-button {
+    min-height: 58px !important;
+    height: 100% !important;
+    background:
+      linear-gradient(180deg, rgba(255, 252, 235, 0.98), rgba(255, 246, 219, 0.98)) !important;
+    font-size: clamp(23px, 2vw, 33px) !important;
+  }
+
+  .play-shell .quiz-footer {
+    position: static !important;
+    display: grid !important;
+    grid-template-columns: 116px minmax(0, 1fr) !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    width: auto !important;
+    min-height: 0 !important;
+    pointer-events: none !important;
+  }
+
+  .play-shell .combo,
+  .play-shell .feedback {
+    min-height: 32px !important;
+    padding: 4px 8px !important;
+    border: 3px solid var(--ink) !important;
+    border-radius: 4px !important;
+    box-shadow: 3px 3px 0 rgba(33, 24, 47, 0.24) !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+  }
+
+  .play-shell .feedback {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .play-shell.boss-mode .shop-layout {
+    grid-template-columns: minmax(520px, 47fr) minmax(330px, 22fr) minmax(390px, 31fr) !important;
+    grid-template-rows: minmax(0, 60fr) minmax(0, 40fr) !important;
+    grid-template-areas:
+      'character character ticket'
+      'station station quiz' !important;
+  }
+
+  .play-shell.boss-mode .character-stage-panel.vn-character-stage.boss-stage {
+    background:
+      linear-gradient(90deg, rgba(7, 18, 28, 0.12), rgba(7, 18, 28, 0.34)),
+      url('/vocab-burger-game/art/pixel-vn-v3/scenes/shop-background.webp') center / cover !important;
+  }
+
+  .play-shell.boss-mode .boss-stage .vn-main-portrait {
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: center bottom !important;
+    background: transparent !important;
+    filter: saturate(1.03) contrast(0.97) brightness(1.08) !important;
+    transform: translateX(96px) scale(1.28) !important;
+    transform-origin: left bottom !important;
+  }
+
+  .play-shell.boss-mode .boss-stage .vn-dialogue {
+    right: 22px !important;
+    bottom: 18px !important;
+    left: 22px !important;
+    max-width: none !important;
+    background:
+      linear-gradient(90deg, rgba(8, 18, 30, 0.94), rgba(38, 16, 36, 0.84)) !important;
+  }
+
+  .play-shell.boss-mode .boss-stage .vn-queue-stack {
+    display: none !important;
+  }
+}
+
+/* Desktop start/result v4: one clear card, no portrait collisions. */
+@media (min-width: 981px) {
+  .start-screen {
+    min-height: 100svh !important;
+    padding: 22px !important;
+    background:
+      linear-gradient(90deg, rgba(236, 255, 247, 0.72), rgba(255, 244, 219, 0.58)),
+      url('/vocab-burger-game/art/pixel-vn-v3/scenes/shop-background.webp') center / cover fixed,
+      #e9f5ec !important;
+  }
+
+  .start-screen:not(.pixel-result) .start-dashboard {
+    display: grid !important;
+    grid-template-columns: minmax(360px, 0.86fr) minmax(520px, 1.14fr) !important;
+    grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+    gap: 15px 22px !important;
+    width: min(1280px, calc(100vw - 44px)) !important;
+    height: min(780px, calc(100svh - 44px)) !important;
+    max-width: none !important;
+    padding: 28px !important;
+    overflow: hidden !important;
+    border: 3px solid var(--ink, #21182f) !important;
+    border-radius: 6px !important;
+    background:
+      linear-gradient(90deg, rgba(255, 255, 238, 0.94), rgba(230, 255, 247, 0.9)) !important;
+    box-shadow: 7px 7px 0 rgba(33, 24, 47, 0.42) !important;
+  }
+
+  .start-screen:not(.pixel-result) .start-character-stage,
+  .start-screen:not(.pixel-result) .start-mascot,
+  .start-screen:not(.pixel-result) .mobile-brief {
+    display: none !important;
+  }
+
+  .start-screen:not(.pixel-result) .intro-hero {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    display: grid !important;
+    gap: 14px !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+
+  .start-screen:not(.pixel-result) .intro-hero h1 {
+    font-size: clamp(52px, 5vw, 84px) !important;
+    line-height: 0.95 !important;
+  }
+
+  .start-screen:not(.pixel-result) .intro-hero p:last-child {
+    max-width: 520px !important;
+    color: #5f473b !important;
+    font-size: clamp(16px, 1.25vw, 20px) !important;
+    font-weight: 700 !important;
+    line-height: 1.55 !important;
+  }
+
+  .start-screen:not(.pixel-result) .record-strip {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .start-screen:not(.pixel-result) .recipe-preview {
+    display: none !important;
+  }
+
+  .start-screen:not(.pixel-result) .word-preview {
+    grid-column: 2 !important;
+    grid-row: 1 / 4 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .start-screen:not(.pixel-result) .preview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    max-height: calc(100% - 54px) !important;
+    overflow-y: auto !important;
+    padding-right: 6px !important;
+  }
+
+  .start-screen:not(.pixel-result) .start-actions {
+    grid-column: 1 / -1 !important;
+    grid-row: 4 !important;
+    display: grid !important;
+    grid-template-columns: 1.2fr repeat(3, 0.8fr) !important;
+    gap: 12px !important;
+  }
+
+  .start-screen:not(.pixel-result) .history-panel {
+    display: none !important;
+  }
+
+  .pixel-result .result-panel.result-layout-v4 {
+    display: grid !important;
+    grid-template-columns: minmax(460px, 0.92fr) minmax(520px, 1.08fr) !important;
+    gap: 22px !important;
+    width: min(1260px, calc(100vw - 44px)) !important;
+    height: min(780px, calc(100svh - 44px)) !important;
+    max-width: none !important;
+    padding: 28px !important;
+    overflow: hidden !important;
+    border: 3px solid var(--ink, #21182f) !important;
+    border-radius: 6px !important;
+    background:
+      linear-gradient(90deg, rgba(255, 255, 238, 0.94), rgba(229, 255, 247, 0.9)) !important;
+    box-shadow: 7px 7px 0 rgba(33, 24, 47, 0.42) !important;
+  }
+
+  .pixel-result .result-summary-card,
+  .pixel-result .result-review-card {
+    min-height: 0 !important;
+    border: 3px solid var(--ink, #21182f) !important;
+    border-radius: 5px !important;
+    background: rgba(255, 250, 232, 0.86) !important;
+    box-shadow: 4px 4px 0 rgba(33, 24, 47, 0.28) !important;
+  }
+
+  .pixel-result .result-summary-card {
+    display: grid !important;
+    align-content: start !important;
+    gap: 16px !important;
+    padding: 26px !important;
+  }
+
+  .pixel-result .result-summary-card h1 {
+    margin: 0 !important;
+    font-size: clamp(58px, 5.2vw, 92px) !important;
+    line-height: 0.95 !important;
+  }
+
+  .pixel-result .result-summary-card p {
+    margin: 0 !important;
+    color: #5f473b !important;
+    font-size: clamp(17px, 1.35vw, 23px) !important;
+    font-weight: 750 !important;
+    line-height: 1.5 !important;
+  }
+
+  .pixel-result .result-rank {
+    padding: 14px 16px !important;
+    border: 3px solid var(--ink, #21182f) !important;
+    border-radius: 5px !important;
+    background: #ffeaa0 !important;
+    box-shadow: 4px 4px 0 rgba(33, 24, 47, 0.26) !important;
+  }
+
+  .pixel-result .result-summary-card .record-strip {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .pixel-result .result-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 0.78fr !important;
+    gap: 12px !important;
+    margin-top: 4px !important;
+  }
+
+  .pixel-result .result-review-card {
+    display: grid !important;
+    grid-template-rows: minmax(0, 1fr) minmax(150px, 0.7fr) !important;
+    gap: 14px !important;
+    padding: 18px !important;
+    overflow: hidden !important;
+  }
+
+  .pixel-result .missed-review,
+  .pixel-result .history-panel {
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+  }
+
+  .pixel-result .missed-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .pixel-result .result-visual {
+    display: none !important;
+  }
+}
+
+/* Desktop v4.1: keep Boss as a wide cutscene panel, preserve the burger station, and stabilize non-play screens. */
+@media (min-width: 981px) {
+  .game-shell {
+    --ink: #21182f;
+    --teal: #104f4b;
+    --cream: #fff8e6;
+  }
+
+  .play-shell .stats > span,
+  .play-shell .stats > button,
+  .primary-action,
+  .small-action,
+  .play-shell .answer-button,
+  .pixel-result button,
+  .start-screen button,
+  .play-shell .combo,
+  .play-shell .feedback,
+  .play-shell .vn-queue-card span {
+    border-color: var(--ink, #21182f) !important;
+    color: var(--ink, #21182f) !important;
+  }
+
+  .play-shell .stats > span {
+    color: #fff9d8 !important;
+  }
+
+  .play-shell .banner {
+    display: grid !important;
+    place-items: center !important;
+    height: 22px !important;
+    max-height: 22px !important;
+  }
+
+  .play-shell .rush-meter {
+    height: 14px !important;
+    max-height: 14px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell.boss-mode .shop-layout {
+    grid-template-columns: minmax(520px, 47fr) minmax(330px, 22fr) minmax(410px, 31fr) !important;
+    grid-template-rows: minmax(0, 42fr) minmax(0, 58fr) !important;
+    grid-template-areas:
+      'character character ticket'
+      'station station quiz' !important;
+  }
+
+  .play-shell.boss-mode .character-stage-panel.vn-character-stage.boss-stage {
+    background:
+      linear-gradient(90deg, rgba(3, 12, 20, 0.18), rgba(3, 12, 20, 0.4)),
+      #081a21 !important;
+  }
+
+  .play-shell.boss-mode .boss-stage .vn-main-portrait {
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    transform: none !important;
+    filter: saturate(1.05) contrast(0.98) brightness(1.08) !important;
+  }
+
+  .play-shell.boss-mode .boss-stage .vn-dialogue {
+    right: 18px !important;
+    bottom: 14px !important;
+    left: 18px !important;
+    max-width: none !important;
+  }
+
+  .play-shell.boss-mode .panel.burger-station {
+    display: grid !important;
+    grid-template-rows: auto 46px 28px minmax(104px, 1fr) auto 32px !important;
+    min-height: 0 !important;
+  }
+
+  .play-shell.boss-mode .order-ticket {
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell.boss-mode .quiz-panel {
+    grid-template-rows: auto minmax(148px, 1fr) 32px !important;
+    min-height: 0 !important;
+  }
+
+  .play-shell.boss-mode .question-card {
+    min-height: 96px !important;
+  }
+
+  .play-shell.boss-mode .answer-grid {
+    grid-template-rows: repeat(2, minmax(58px, 1fr)) !important;
+  }
+
+  .start-screen:not(.pixel-result) .start-dashboard {
+    grid-template-columns: minmax(330px, 0.72fr) minmax(540px, 1.28fr) !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+    align-content: stretch !important;
+  }
+
+  .start-screen:not(.pixel-result) .intro-hero {
+    grid-column: 1 / -1 !important;
+    grid-row: 1 !important;
+    grid-template-columns: minmax(360px, 0.9fr) minmax(420px, 1.1fr) !important;
+    align-items: end !important;
+  }
+
+  .start-screen:not(.pixel-result) .intro-hero > div:first-child {
+    max-width: 650px !important;
+  }
+
+  .start-screen:not(.pixel-result) .record-strip {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    align-self: start !important;
+  }
+
+  .start-screen:not(.pixel-result) .word-preview {
+    grid-column: 2 !important;
+    grid-row: 2 / 4 !important;
+  }
+
+  .start-screen:not(.pixel-result) .start-actions {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .start-screen:not(.pixel-result) .primary-action,
+  .start-screen:not(.pixel-result) .small-action,
+  .pixel-result .primary-action,
+  .pixel-result .small-action {
+    min-height: 50px !important;
+    font-size: clamp(17px, 1.2vw, 21px) !important;
+  }
+
+  .pixel-result .result-panel.result-layout-v4 {
+    grid-template-columns: minmax(430px, 0.9fr) minmax(540px, 1.1fr) !important;
+    align-items: stretch !important;
+  }
+
+  .pixel-result .result-review-card {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .pixel-result .missed-review,
+  .pixel-result .history-panel {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+  }
+}
+
+/* Desktop v4.2: more deliberate menu/result composition after layout audit. */
+@media (min-width: 981px) {
+  .start-screen:not(.pixel-result) .start-dashboard {
+    grid-template-columns: minmax(360px, 0.78fr) minmax(560px, 1.22fr) !important;
+    grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+    width: min(1240px, calc(100vw - 56px)) !important;
+    height: min(720px, calc(100svh - 44px)) !important;
+    padding: 24px 28px !important;
+    gap: 14px 22px !important;
+    background:
+      linear-gradient(90deg, rgba(255, 252, 232, 0.97) 0 40%, rgba(230, 255, 247, 0.93) 40%),
+      linear-gradient(135deg, rgba(105, 238, 216, 0.12), rgba(255, 206, 97, 0.12)) !important;
+  }
+
+  .start-screen:not(.pixel-result) .intro-hero {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    display: block !important;
+    padding: 0 !important;
+  }
+
+  .start-screen:not(.pixel-result) .intro-hero::after {
+    content: 'MED NIGHT SHIFT / BURGER TERMS';
+    display: inline-grid;
+    place-items: center;
+    margin-top: 10px;
+    padding: 8px 12px;
+    border: 3px solid var(--ink, #21182f);
+    background: #0e5550;
+    box-shadow: 4px 4px 0 rgba(33, 24, 47, 0.35);
+    color: #fff2a7;
+    font-size: 12px;
+    font-weight: 1000;
+    letter-spacing: 0;
+  }
+
+  .start-screen:not(.pixel-result) .intro-hero h1 {
+    max-width: 520px !important;
+    font-size: clamp(46px, 4.35vw, 62px) !important;
+    white-space: nowrap !important;
+  }
+
+  .start-screen:not(.pixel-result) .intro-hero p:last-child {
+    max-width: 450px !important;
+    font-size: 16px !important;
+    line-height: 1.42 !important;
+  }
+
+  .start-screen:not(.pixel-result) .record-strip {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .start-screen:not(.pixel-result) .record-strip span {
+    min-height: 46px !important;
+    padding: 8px 10px !important;
+    border: 3px solid var(--ink, #21182f) !important;
+    border-radius: 4px !important;
+    background: rgba(232, 255, 247, 0.86) !important;
+    box-shadow: 3px 3px 0 rgba(33, 24, 47, 0.25) !important;
+    font-size: 15px !important;
+  }
+
+  .start-screen:not(.pixel-result) .recipe-preview {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    border: 3px solid var(--ink, #21182f) !important;
+    border-radius: 4px !important;
+    background: rgba(255, 250, 229, 0.9) !important;
+    box-shadow: 4px 4px 0 rgba(33, 24, 47, 0.25) !important;
+  }
+
+  .start-screen:not(.pixel-result) .recipe-preview .section-heading {
+    padding: 9px 12px 7px !important;
+    border-bottom: 2px solid rgba(33, 24, 47, 0.3) !important;
+  }
+
+  .start-screen:not(.pixel-result) .recipe-preview-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    padding: 9px 10px !important;
+    overflow-y: auto !important;
+  }
+
+  .start-screen:not(.pixel-result) .recipe-preview-card {
+    min-height: 44px !important;
+    padding: 7px 10px !important;
+    border: 2px solid var(--ink, #21182f) !important;
+    border-radius: 3px !important;
+    background: #fff8e6 !important;
+    box-shadow: 3px 3px 0 rgba(33, 24, 47, 0.16) !important;
+  }
+
+  .start-screen:not(.pixel-result) .word-preview {
+    grid-column: 2 !important;
+    grid-row: 1 / 4 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    border: 3px solid var(--ink, #21182f) !important;
+    border-radius: 4px !important;
+    background: rgba(239, 255, 250, 0.92) !important;
+    box-shadow: 4px 4px 0 rgba(33, 24, 47, 0.24) !important;
+  }
+
+  .start-screen:not(.pixel-result) .word-preview .section-heading {
+    flex: 0 0 auto !important;
+    padding: 14px 16px 8px !important;
+    border-bottom: 2px solid rgba(33, 24, 47, 0.24) !important;
+  }
+
+  .start-screen:not(.pixel-result) .preview-grid {
+    flex: 1 1 auto !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    max-height: none !important;
+    padding: 12px 14px 16px !important;
+  }
+
+  .start-screen:not(.pixel-result) .preview-card {
+    min-height: 116px !important;
+    border: 2px solid var(--ink, #21182f) !important;
+    border-radius: 3px !important;
+    background: rgba(255, 255, 246, 0.96) !important;
+    box-shadow: 3px 3px 0 rgba(33, 24, 47, 0.17) !important;
+  }
+
+  .start-screen:not(.pixel-result) .start-actions {
+    grid-column: 1 / -1 !important;
+    grid-row: 4 !important;
+    grid-template-columns: 1.25fr repeat(3, 0.72fr) !important;
+    gap: 12px !important;
+  }
+
+  .play-shell.boss-mode .shop-layout {
+    grid-template-rows: minmax(0, 50fr) minmax(0, 50fr) !important;
+  }
+
+  .play-shell.boss-mode .boss-stage .vn-main-portrait {
+    object-position: left center !important;
+  }
+
+  .play-shell.boss-mode .panel.burger-station {
+    grid-template-rows: auto 48px 28px minmax(122px, 1fr) auto 32px !important;
+  }
+
+  .play-shell.boss-mode .quiz-panel {
+    grid-template-rows: auto minmax(178px, 1fr) 32px !important;
+  }
+
+  .pixel-result .result-panel.result-layout-v4 {
+    grid-template-columns: minmax(470px, 0.82fr) minmax(560px, 1.18fr) !important;
+    width: min(1240px, calc(100vw - 56px)) !important;
+    height: min(720px, calc(100svh - 44px)) !important;
+    padding: 24px 28px !important;
+    background:
+      linear-gradient(90deg, rgba(255, 252, 232, 0.96) 0 43%, rgba(230, 255, 247, 0.93) 43%) !important;
+  }
+
+  .pixel-result .result-summary-card {
+    gap: 14px !important;
+    background:
+      linear-gradient(180deg, rgba(255, 249, 220, 0.96), rgba(255, 239, 184, 0.82)) !important;
+  }
+
+  .pixel-result .result-summary-card h1 {
+    font-size: clamp(58px, 5vw, 84px) !important;
+  }
+
+  .pixel-result .result-summary-card .record-strip {
+    grid-template-columns: 1fr !important;
+  }
+
+  .pixel-result .result-review-card {
+    background: rgba(239, 255, 250, 0.92) !important;
+  }
+}
+
+/* Desktop v5: single clean composition after the layout audit.
+   This intentionally overrides earlier experimental passes instead of adding
+   more nested panels. Mobile rules below 980px keep their previous behavior. */
+@media (min-width: 981px) {
+  :root {
+    --ui-ink: #21182f;
+    --ui-teal: #0f5651;
+    --ui-mint: #dff9ee;
+    --ui-cream: #fff7df;
+    --ui-gold: #ffe37a;
+    --ui-coral: #ff6c58;
+    --stage-bg: url('/vocab-burger-game/art/pixel-vn-v3/scenes/shop-background.webp');
+  }
+
+  body {
+    background:
+      linear-gradient(90deg, rgba(239, 255, 248, 0.86), rgba(255, 242, 214, 0.78)),
+      var(--stage-bg) center / cover fixed,
+      #e9f4ec !important;
+  }
+
+  .game-shell::before,
+  .play-shell::before,
+  .play-shell::after,
+  .shop-layout::before,
+  .shop-layout::after,
+  .quiz-panel::after {
+    display: none !important;
+  }
+
+  .play-shell {
+    display: grid !important;
+    grid-template-areas:
+      'header'
+      'banner'
+      'meter'
+      'layout' !important;
+    grid-template-rows: 58px 24px 18px minmax(0, 1fr) !important;
+    gap: 8px !important;
+    width: min(1500px, calc(100vw - 20px)) !important;
+    height: 100svh !important;
+    min-height: 650px !important;
+    margin: 0 auto !important;
+    padding: 8px 10px 10px !important;
+    overflow: hidden !important;
+    color: var(--ui-ink) !important;
+    background:
+      linear-gradient(90deg, rgba(238, 255, 248, 0.2), rgba(255, 243, 219, 0.18)),
+      var(--stage-bg) center / cover fixed !important;
+  }
+
+  .play-shell .game-header {
+    grid-area: header !important;
+    display: grid !important;
+    grid-template-columns: 300px minmax(0, 1fr) !important;
+    gap: 10px !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .play-shell .title-lockup {
+    display: grid !important;
+    align-content: center !important;
+    min-width: 0 !important;
+    padding: 6px 14px !important;
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 4px !important;
+    background:
+      linear-gradient(90deg, #0b3844, #173052) !important;
+    box-shadow: 4px 4px 0 rgba(33, 24, 47, 0.46) !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .title-lockup .eyebrow {
+    margin: 0 !important;
+    color: var(--ui-gold) !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+  }
+
+  .play-shell .title-lockup h1 {
+    margin: 2px 0 0 !important;
+    color: #fff9e8 !important;
+    font-size: clamp(26px, 2.6vw, 38px) !important;
+    line-height: 0.95 !important;
+    white-space: nowrap !important;
+    text-shadow:
+      2px 0 #ef5fa0,
+      4px 3px 0 rgba(33, 24, 47, 0.9) !important;
+  }
+
+  .play-shell .stats {
+    display: grid !important;
+    grid-template-columns: repeat(8, minmax(80px, 1fr)) !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .play-shell .stats > span,
+  .play-shell .stats > button {
+    display: grid !important;
+    place-items: center !important;
+    height: 56px !important;
+    min-height: 0 !important;
+    padding: 4px 8px !important;
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 4px !important;
+    background:
+      linear-gradient(180deg, #fffdf1, #fff0bb) !important;
+    box-shadow: 3px 3px 0 rgba(33, 24, 47, 0.42) !important;
+    color: var(--ui-ink) !important;
+    font-size: clamp(11px, 0.85vw, 15px) !important;
+    font-weight: 1000 !important;
+    line-height: 1.05 !important;
+    text-align: center !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .play-shell .stats .rank-badge {
+    background:
+      linear-gradient(180deg, #ffd5cf, #ffc1b8) !important;
+    color: #e6453c !important;
+  }
+
+  .play-shell .banner {
+    grid-area: banner !important;
+    display: grid !important;
+    place-items: center !important;
+    height: 24px !important;
+    min-height: 0 !important;
+    max-height: 24px !important;
+    padding: 0 14px !important;
+    border: 2px solid rgba(255, 217, 113, 0.92) !important;
+    border-radius: 4px !important;
+    background:
+      linear-gradient(90deg, rgba(8, 54, 62, 0.9), rgba(10, 74, 72, 0.78)) !important;
+    box-shadow: 3px 3px 0 rgba(33, 24, 47, 0.3) !important;
+    color: #fff2aa !important;
+    font-size: 13px !important;
+    font-weight: 1000 !important;
+    line-height: 1 !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .rush-meter {
+    grid-area: meter !important;
+    display: grid !important;
+    grid-template-columns: minmax(150px, max-content) minmax(0, 1fr) 48px !important;
+    grid-template-rows: 14px 4px !important;
+    align-items: center !important;
+    height: 18px !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .play-shell .rush-meter span,
+  .play-shell .rush-meter em,
+  .play-shell .rush-meter strong {
+    margin: 0 !important;
+    color: #fff8d9 !important;
+    font-size: 11px !important;
+    font-weight: 1000 !important;
+    line-height: 1 !important;
+    text-shadow: 2px 2px 0 rgba(33, 24, 47, 0.86) !important;
+  }
+
+  .play-shell .rush-meter em {
+    color: #63f4de !important;
+    text-align: center !important;
+  }
+
+  .play-shell .rush-track {
+    grid-column: 1 / -1 !important;
+    height: 4px !important;
+    border: 1px solid rgba(33, 24, 47, 0.84) !important;
+    border-radius: 999px !important;
+    background: rgba(255, 247, 221, 0.76) !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .rush-track span {
+    display: block !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, #6ff0c2, #ffe36f, #ff6b5f) !important;
+  }
+
+  .play-shell .shop-layout {
+    grid-area: layout !important;
+    display: grid !important;
+    grid-template-columns: minmax(390px, 38fr) minmax(310px, 28fr) minmax(390px, 34fr) !important;
+    grid-template-rows: minmax(0, 36fr) minmax(0, 64fr) !important;
+    grid-template-areas:
+      'character station ticket'
+      'character station quiz' !important;
+    gap: 10px !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .character-stage-panel.vn-character-stage {
+    grid-area: character !important;
+    position: relative !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    background:
+      linear-gradient(180deg, rgba(255, 248, 218, 0.1), rgba(4, 23, 34, 0.2)),
+      var(--stage-bg) center / cover !important;
+    box-shadow:
+      inset 0 0 0 3px rgba(109, 240, 218, 0.38),
+      5px 5px 0 rgba(33, 24, 47, 0.46) !important;
+  }
+
+  .play-shell .character-stage-panel.vn-character-stage::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(90deg, rgba(5, 23, 32, 0.08), rgba(5, 23, 32, 0.22)),
+      linear-gradient(180deg, transparent 0 62%, rgba(4, 18, 27, 0.5) 100%);
+    pointer-events: none;
+  }
+
+  .play-shell .vn-main-portrait {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 2 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center bottom !important;
+    image-rendering: auto !important;
+    filter: saturate(1.04) contrast(0.98) brightness(1.07) !important;
+    transform: translateZ(0) scale(1.01) !important;
+    transform-origin: center bottom !important;
+  }
+
+  .play-shell .vn-main-portrait[src*='/characters/bun/'],
+  .play-shell .vn-queue-card img[src*='/characters/bun/'] {
+    filter: saturate(0.72) contrast(0.72) brightness(1.24) !important;
+  }
+
+  .play-shell .vn-mood-tag {
+    z-index: 5 !important;
+    top: 18px !important;
+    left: 18px !important;
+    right: auto !important;
+    padding: 9px 16px !important;
+    border: 3px solid var(--character-accent, #67efdc) !important;
+    border-radius: 999px !important;
+    background: rgba(5, 32, 42, 0.86) !important;
+    box-shadow: 3px 3px 0 rgba(33, 24, 47, 0.55) !important;
+    color: #fff9df !important;
+    font-size: 16px !important;
+    font-weight: 1000 !important;
+  }
+
+  .play-shell .vn-dialogue {
+    z-index: 5 !important;
+    right: 18px !important;
+    bottom: 18px !important;
+    left: 18px !important;
+    max-height: 34% !important;
+    padding: 16px 18px !important;
+    border: 3px solid rgba(255, 247, 213, 0.9) !important;
+    border-left: 8px solid var(--character-accent, #67efdc) !important;
+    border-radius: 5px !important;
+    background:
+      linear-gradient(90deg, rgba(5, 24, 34, 0.94), rgba(7, 55, 56, 0.86)) !important;
+    box-shadow: 5px 5px 0 rgba(33, 24, 47, 0.62) !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .vn-dialogue small {
+    color: #6ff0dc !important;
+    font-size: 12px !important;
+    font-weight: 1000 !important;
+  }
+
+  .play-shell .vn-dialogue strong {
+    margin-top: 2px !important;
+    color: #fff9e8 !important;
+    font-size: clamp(28px, 2.35vw, 40px) !important;
+    line-height: 1.03 !important;
+    text-shadow: 3px 3px 0 rgba(33, 24, 47, 0.82) !important;
+  }
+
+  .play-shell .vn-dialogue p,
+  .play-shell .vn-dialogue em {
+    color: #fff6d5 !important;
+    font-size: clamp(13px, 1.05vw, 16px) !important;
+    font-weight: 900 !important;
+    line-height: 1.35 !important;
+  }
+
+  .play-shell .vn-dialogue em {
+    display: block !important;
+    margin-top: 7px !important;
+    padding: 5px 7px !important;
+    border: 2px solid rgba(103, 239, 220, 0.72) !important;
+    background: rgba(219, 255, 246, 0.16) !important;
+    color: #bdfff3 !important;
+  }
+
+  .play-shell .vn-patience {
+    z-index: 6 !important;
+    right: 18px !important;
+    bottom: 8px !important;
+    left: 18px !important;
+    height: 6px !important;
+    border: 2px solid var(--ui-ink) !important;
+    border-radius: 999px !important;
+    background: rgba(255, 249, 224, 0.9) !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .vn-patience span {
+    display: block !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, #7af3bd, #ffe66b, #ff6b5b) !important;
+  }
+
+  .play-shell .vn-queue-stack {
+    z-index: 7 !important;
+    top: 50% !important;
+    right: 12px !important;
+    width: 112px !important;
+    transform: translateY(-50%) !important;
+    pointer-events: auto !important;
+  }
+
+  .play-shell .vn-queue-card {
+    width: 112px !important;
+    height: 126px !important;
+    border: 3px solid var(--queue-accent, #78eedb) !important;
+    border-radius: 6px !important;
+    background: rgba(7, 25, 34, 0.72) !important;
+    box-shadow: 4px 4px 0 rgba(33, 24, 47, 0.58) !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .vn-queue-card.queue-1 {
+    opacity: 0.96 !important;
+    transform: translateX(0) scale(0.94) !important;
+  }
+
+  .play-shell .vn-queue-card.queue-2 {
+    margin-top: -72px !important;
+    opacity: 0.62 !important;
+    transform: translateX(18px) scale(0.82) !important;
+  }
+
+  .play-shell .vn-queue-card img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center 22% !important;
+  }
+
+  .play-shell .vn-queue-card span,
+  .play-shell .vn-queue-card small {
+    position: absolute !important;
+    left: 6px !important;
+    right: 6px !important;
+    display: grid !important;
+    place-items: center !important;
+    min-height: 0 !important;
+    border: 2px solid var(--ui-ink) !important;
+    border-radius: 3px !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .vn-queue-card span {
+    bottom: 27px !important;
+    padding: 3px 4px !important;
+    background: rgba(255, 249, 220, 0.95) !important;
+    color: var(--ui-ink) !important;
+    font-size: 10px !important;
+    font-weight: 1000 !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .play-shell .vn-queue-card small {
+    bottom: 6px !important;
+    padding: 2px 4px !important;
+    background: rgba(5, 32, 42, 0.88) !important;
+    color: #fff2a0 !important;
+    font-size: 12px !important;
+    font-weight: 1000 !important;
+  }
+
+  .play-shell .panel.burger-station,
+  .play-shell .panel.order-ticket,
+  .play-shell .panel.quiz-panel {
+    min-height: 0 !important;
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 6px !important;
+    background:
+      linear-gradient(180deg, rgba(255, 253, 236, 0.96), rgba(230, 253, 246, 0.92)) !important;
+    box-shadow: 5px 5px 0 rgba(33, 24, 47, 0.3) !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .section-heading {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin: 0 !important;
+    padding-bottom: 7px !important;
+    border-bottom: 3px solid rgba(33, 24, 47, 0.24) !important;
+  }
+
+  .play-shell .section-heading h2 {
+    margin: 0 !important;
+    color: var(--ui-ink) !important;
+    font-size: clamp(26px, 2vw, 36px) !important;
+    line-height: 0.95 !important;
+    text-shadow: 3px 3px 0 #ffe26d !important;
+  }
+
+  .play-shell .section-heading span {
+    min-width: 0 !important;
+    padding: 6px 12px !important;
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 999px !important;
+    background: var(--ui-teal) !important;
+    color: #fff8da !important;
+    font-size: clamp(13px, 1vw, 17px) !important;
+    font-weight: 1000 !important;
+    white-space: nowrap !important;
+  }
+
+  .play-shell .panel.burger-station {
+    grid-area: station !important;
+    display: grid !important;
+    grid-template-rows: auto 54px 34px minmax(0, 1fr) auto 36px !important;
+    gap: 8px !important;
+    padding: 11px !important;
+  }
+
+  .play-shell .grill-slots {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    min-height: 0 !important;
+  }
+
+  .play-shell .grill-slot {
+    height: 54px !important;
+    min-height: 0 !important;
+    padding: 7px 10px !important;
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 5px !important;
+    background: linear-gradient(180deg, #fff8d9, #e5f8cc) !important;
+    box-shadow: 3px 3px 0 rgba(33, 24, 47, 0.22) !important;
+  }
+
+  .play-shell .grill-lights {
+    height: 34px !important;
+    min-height: 0 !important;
+    padding: 0 10px !important;
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 5px !important;
+    background:
+      repeating-linear-gradient(90deg, rgba(216, 242, 247, 0.94) 0 16px, rgba(199, 229, 235, 0.94) 16px 24px) !important;
+    box-shadow: 3px 3px 0 rgba(33, 24, 47, 0.18) !important;
+  }
+
+  .play-shell .burger-stack {
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 7px !important;
+    background:
+      radial-gradient(ellipse at 50% 76%, rgba(42, 71, 69, 0.16) 0 26%, transparent 27%),
+      linear-gradient(180deg, rgba(255, 253, 239, 0.98) 0 52%, rgba(224, 249, 244, 0.98) 52% 100%) !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .assembly-counter {
+    display: none !important;
+  }
+
+  .play-shell .assembly-platter {
+    left: 50% !important;
+    right: auto !important;
+    bottom: 32px !important;
+    width: min(82%, 330px) !important;
+    height: 18px !important;
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 999px !important;
+    background: #fff8ec !important;
+    box-shadow: 0 4px 0 rgba(33, 24, 47, 0.18) !important;
+    transform: translateX(-50%) !important;
+  }
+
+  .play-shell .burger-build {
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    min-height: 130px !important;
+    padding: 0 20px !important;
+  }
+
+  .play-shell .burger-build > .burger-layer,
+  .play-shell .burger-build > .empty-plate {
+    width: min(84%, 330px) !important;
+    max-width: 330px !important;
+    min-height: 24px !important;
+    margin: -2px auto 0 !important;
+    padding: 5px 12px !important;
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 999px !important;
+    box-shadow: 0 3px 0 rgba(33, 24, 47, 0.24) !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    writing-mode: horizontal-tb !important;
+  }
+
+  .play-shell .burger-build > .empty-plate {
+    min-height: 30px !important;
+    background: #fffdf4 !important;
+  }
+
+  .play-shell .burger-layer.bottom-bun,
+  .play-shell .burger-layer.top-bun {
+    width: min(90%, 350px) !important;
+    min-height: 32px !important;
+  }
+
+  .play-shell .cook-meters {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    color: var(--ui-ink) !important;
+  }
+
+  .play-shell .cook-meters > div {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    gap: 5px !important;
+    align-items: center !important;
+  }
+
+  .play-shell .cook-meters > div > span {
+    color: var(--ui-ink) !important;
+    font-size: 12px !important;
+    font-weight: 1000 !important;
+  }
+
+  .play-shell .meter {
+    height: 9px !important;
+    border: 2px solid var(--ui-ink) !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 246, 0.9) !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .flip-window,
+  .play-shell .current-step {
+    margin: 0 !important;
+    min-height: 0 !important;
+    padding: 7px 10px !important;
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 4px !important;
+    background: rgba(255, 248, 221, 0.94) !important;
+    color: var(--ui-ink) !important;
+    font-size: 12px !important;
+    font-weight: 1000 !important;
+    line-height: 1.15 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .play-shell .current-step {
+    background: var(--ui-teal) !important;
+    color: #fff8d9 !important;
+    text-align: center !important;
+  }
+
+  .play-shell .order-ticket {
+    grid-area: ticket !important;
+    display: grid !important;
+    grid-template-rows: auto auto minmax(0, 1fr) !important;
+    gap: 8px !important;
+    padding: 11px !important;
+  }
+
+  .play-shell .ticket-meta {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 8px !important;
+    padding: 8px !important;
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 4px !important;
+    background: rgba(255, 247, 221, 0.94) !important;
+  }
+
+  .play-shell .ticket-meta strong,
+  .play-shell .ticket-meta span {
+    overflow-wrap: anywhere !important;
+  }
+
+  .play-shell .recipe-list {
+    display: grid !important;
+    gap: 7px !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 2px 2px !important;
+    overflow-y: auto !important;
+  }
+
+  .play-shell .recipe-list li {
+    min-height: 38px !important;
+    padding: 6px 9px !important;
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 4px !important;
+    background: rgba(255, 249, 231, 0.92) !important;
+    box-shadow: 3px 3px 0 rgba(33, 24, 47, 0.16) !important;
+  }
+
+  .play-shell .recipe-list li.current {
+    background: #e3ffd0 !important;
+  }
+
+  .play-shell .recipe-list span,
+  .play-shell .recipe-list small {
+    color: var(--ui-ink) !important;
+    font-size: clamp(13px, 1vw, 16px) !important;
+    font-weight: 1000 !important;
+  }
+
+  .play-shell .quiz-panel {
+    grid-area: quiz !important;
+    position: relative !important;
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    gap: 10px !important;
+    padding: 11px !important;
+  }
+
+  .play-shell .question-card {
+    min-height: 132px !important;
+    padding: 12px 14px !important;
+    border: 3px solid rgba(96, 226, 205, 0.42) !important;
+    border-radius: 6px !important;
+    background:
+      linear-gradient(180deg, rgba(228, 255, 249, 0.98), rgba(239, 255, 249, 0.94)) !important;
+    box-shadow: 4px 4px 0 rgba(33, 24, 47, 0.18) !important;
+  }
+
+  .play-shell .question-label {
+    color: #b74355 !important;
+    font-size: clamp(13px, 1vw, 16px) !important;
+    font-weight: 1000 !important;
+    line-height: 1.2 !important;
+  }
+
+  .play-shell .question-card h2 {
+    margin: 6px 0 !important;
+    color: var(--ui-ink) !important;
+    font-size: clamp(48px, 4.5vw, 82px) !important;
+    line-height: 0.92 !important;
+    text-shadow:
+      4px 4px 0 #ffe578,
+      7px 7px 0 rgba(33, 24, 47, 0.16) !important;
+  }
+
+  .play-shell .question-hint {
+    color: #178077 !important;
+    font-size: clamp(13px, 1.05vw, 17px) !important;
+    font-weight: 1000 !important;
+    line-height: 1.25 !important;
+  }
+
+  .play-shell .answer-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, minmax(72px, 1fr)) !important;
+    gap: 10px !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 0 0 44px !important;
+  }
+
+  .play-shell .answer-button {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 72px !important;
+    padding: 10px 16px !important;
+    border: 4px solid var(--ui-ink) !important;
+    border-radius: 5px !important;
+    background:
+      linear-gradient(180deg, rgba(255, 253, 240, 0.98), rgba(255, 245, 216, 0.98)) !important;
+    box-shadow: 4px 4px 0 rgba(33, 24, 47, 0.42) !important;
+    color: var(--ui-ink) !important;
+    font-size: clamp(28px, 2.5vw, 44px) !important;
+    font-weight: 1000 !important;
+    line-height: 1.05 !important;
+    text-align: center !important;
+    overflow-wrap: anywhere !important;
+    transition:
+      transform 90ms ease,
+      box-shadow 90ms ease,
+      background 90ms ease !important;
+  }
+
+  .play-shell .answer-button:hover,
+  .play-shell .answer-button:focus-visible {
+    background:
+      linear-gradient(180deg, #fff4aa, #ffd762) !important;
+    box-shadow: 2px 2px 0 rgba(33, 24, 47, 0.56) !important;
+    transform: translate(2px, 2px) !important;
+  }
+
+  .play-shell .quiz-footer {
+    position: absolute !important;
+    right: 13px !important;
+    bottom: 12px !important;
+    left: 13px !important;
+    z-index: 6 !important;
+    display: grid !important;
+    grid-template-columns: 118px minmax(0, 1fr) !important;
+    gap: 8px !important;
+    min-height: 34px !important;
+    pointer-events: none !important;
+  }
+
+  .play-shell .combo,
+  .play-shell .feedback {
+    display: grid !important;
+    place-items: center !important;
+    min-height: 34px !important;
+    padding: 4px 8px !important;
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 4px !important;
+    box-shadow: 3px 3px 0 rgba(33, 24, 47, 0.26) !important;
+    font-size: 13px !important;
+    font-weight: 1000 !important;
+    line-height: 1.05 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .play-shell .combo {
+    background: #e1f3ff !important;
+  }
+
+  .play-shell .feedback {
+    background: #e2ffd0 !important;
+    color: #107264 !important;
+  }
+
+  .play-shell .combo-meter {
+    display: none !important;
+  }
+
+  .hit-text {
+    position: fixed !important;
+    z-index: 300 !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) rotate(-8deg) !important;
+    padding: 12px 22px !important;
+    border: 4px solid var(--ui-ink) !important;
+    border-radius: 6px !important;
+    background: #ffe36f !important;
+    box-shadow: 6px 6px 0 rgba(33, 24, 47, 0.54) !important;
+    color: var(--ui-ink) !important;
+    font-size: clamp(42px, 5vw, 86px) !important;
+    font-weight: 1000 !important;
+    pointer-events: none !important;
+    animation: hit-pop-fixed 520ms steps(5, end) both !important;
+  }
+
+  @keyframes hit-pop-fixed {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5) rotate(-12deg);
+    }
+    18% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.12) rotate(-7deg);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -58%) scale(1) rotate(-4deg);
+    }
+  }
+
+  .play-shell.boss-mode .shop-layout {
+    grid-template-columns: minmax(390px, 36fr) minmax(330px, 28fr) minmax(390px, 36fr) !important;
+    grid-template-rows: minmax(0, 56fr) minmax(0, 44fr) !important;
+    grid-template-areas:
+      'character character character'
+      'station ticket quiz' !important;
+  }
+
+  .play-shell.boss-mode .character-stage-panel.vn-character-stage.boss-stage {
+    border-radius: 7px !important;
+    background: #07151d !important;
+    box-shadow:
+      inset 0 0 0 3px rgba(255, 101, 78, 0.62),
+      5px 5px 0 rgba(33, 24, 47, 0.54) !important;
+  }
+
+  .play-shell.boss-mode .boss-stage::before {
+    background:
+      linear-gradient(90deg, rgba(5, 14, 24, 0.06), rgba(5, 14, 24, 0.38)),
+      linear-gradient(180deg, transparent 0 55%, rgba(5, 13, 23, 0.54) 100%) !important;
+  }
+
+  .play-shell.boss-mode .boss-stage .vn-main-portrait {
+    object-fit: cover !important;
+    object-position: center center !important;
+    filter: saturate(1.08) contrast(1) brightness(1.08) !important;
+    transform: translateZ(0) scale(1.04) !important;
+  }
+
+  .play-shell.boss-mode .boss-stage .vn-mood-tag {
+    border-color: #ff7667 !important;
+    background: rgba(54, 12, 20, 0.92) !important;
+    color: #fff5df !important;
+  }
+
+  .play-shell.boss-mode .boss-stage .vn-dialogue {
+    left: 22px !important;
+    right: 22px !important;
+    bottom: 18px !important;
+    max-width: min(920px, 72%) !important;
+    max-height: 40% !important;
+    border-left-color: #ff7667 !important;
+    background:
+      linear-gradient(90deg, rgba(4, 16, 27, 0.95), rgba(51, 18, 37, 0.82)) !important;
+  }
+
+  .play-shell.boss-mode .boss-stage .vn-queue-stack {
+    display: none !important;
+  }
+
+  .play-shell.boss-mode .panel.burger-station {
+    grid-template-rows: auto 46px 30px minmax(0, 1fr) auto 34px !important;
+  }
+
+  .play-shell.boss-mode .quiz-panel {
+    grid-template-rows: auto minmax(0, 1fr) !important;
+  }
+
+  .start-screen {
+    min-height: 100svh !important;
+    padding: 18px !important;
+    background:
+      linear-gradient(90deg, rgba(239, 255, 248, 0.74), rgba(255, 244, 220, 0.74)),
+      var(--stage-bg) center / cover fixed,
+      #e8f4ec !important;
+  }
+
+  .start-screen:not(.pixel-result) .start-dashboard {
+    display: grid !important;
+    grid-template-columns: minmax(360px, 0.92fr) minmax(560px, 1.08fr) !important;
+    grid-template-rows: auto auto minmax(0, 1fr) auto !important;
+    width: min(1220px, calc(100vw - 36px)) !important;
+    height: min(700px, calc(100svh - 36px)) !important;
+    gap: 14px 18px !important;
+    padding: 26px !important;
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 6px !important;
+    background:
+      linear-gradient(90deg, rgba(255, 253, 237, 0.96), rgba(232, 255, 248, 0.94)) !important;
+    box-shadow: 6px 6px 0 rgba(33, 24, 47, 0.38) !important;
+    overflow: hidden !important;
+  }
+
+  .start-screen:not(.pixel-result) .intro-hero {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    display: block !important;
+  }
+
+  .start-screen:not(.pixel-result) .intro-hero h1 {
+    max-width: none !important;
+    margin: 8px 0 !important;
+    font-size: clamp(44px, 4.2vw, 62px) !important;
+    white-space: nowrap !important;
+  }
+
+  .start-screen:not(.pixel-result) .intro-hero p:last-child {
+    max-width: 510px !important;
+    color: #5c433a !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    line-height: 1.45 !important;
+  }
+
+  .start-screen:not(.pixel-result) .intro-hero::after {
+    margin-top: 12px !important;
+    background: var(--ui-teal) !important;
+    color: #fff1a4 !important;
+  }
+
+  .start-screen:not(.pixel-result) .record-strip {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .start-screen:not(.pixel-result) .recipe-preview {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .start-screen:not(.pixel-result) .word-preview {
+    grid-column: 2 !important;
+    grid-row: 1 / 4 !important;
+    min-height: 0 !important;
+  }
+
+  .start-screen:not(.pixel-result) .recipe-preview,
+  .start-screen:not(.pixel-result) .word-preview {
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 5px !important;
+    background: rgba(248, 255, 246, 0.9) !important;
+    box-shadow: 4px 4px 0 rgba(33, 24, 47, 0.22) !important;
+  }
+
+  .start-screen:not(.pixel-result) .preview-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 9px !important;
+    padding: 12px !important;
+    overflow-y: auto !important;
+  }
+
+  .start-screen:not(.pixel-result) .preview-card,
+  .start-screen:not(.pixel-result) .recipe-preview-card {
+    border: 2px solid var(--ui-ink) !important;
+    border-radius: 4px !important;
+    background: #fff9e8 !important;
+    box-shadow: 3px 3px 0 rgba(33, 24, 47, 0.14) !important;
+  }
+
+  .start-screen:not(.pixel-result) .start-actions {
+    grid-column: 1 / -1 !important;
+    grid-row: 4 !important;
+    display: grid !important;
+    grid-template-columns: 1.18fr repeat(3, 0.72fr) !important;
+    gap: 10px !important;
+  }
+
+  .start-screen button,
+  .pixel-result button,
+  .play-shell .stats > button {
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 4px !important;
+    background:
+      linear-gradient(180deg, #fffdf1, #ffe78f) !important;
+    box-shadow: 3px 3px 0 rgba(33, 24, 47, 0.44) !important;
+    color: var(--ui-ink) !important;
+    font-weight: 1000 !important;
+  }
+
+  .pixel-result .result-panel.result-layout-v4 {
+    display: grid !important;
+    grid-template-columns: minmax(430px, 0.9fr) minmax(560px, 1.1fr) !important;
+    gap: 18px !important;
+    width: min(1220px, calc(100vw - 36px)) !important;
+    height: min(700px, calc(100svh - 36px)) !important;
+    padding: 26px !important;
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 6px !important;
+    background:
+      linear-gradient(90deg, rgba(255, 253, 237, 0.96), rgba(232, 255, 248, 0.94)) !important;
+    box-shadow: 6px 6px 0 rgba(33, 24, 47, 0.38) !important;
+    overflow: hidden !important;
+  }
+
+  .pixel-result .result-summary-card,
+  .pixel-result .result-review-card {
+    min-height: 0 !important;
+    border: 3px solid var(--ui-ink) !important;
+    border-radius: 5px !important;
+    background: rgba(255, 249, 229, 0.9) !important;
+    box-shadow: 4px 4px 0 rgba(33, 24, 47, 0.2) !important;
+    overflow: hidden !important;
+  }
+
+  .pixel-result .result-summary-card h1 {
+    margin: 0 !important;
+    font-size: clamp(48px, 4.4vw, 74px) !important;
+    line-height: 0.98 !important;
+  }
+
+  .pixel-result .result-summary-card p {
+    font-size: clamp(16px, 1.18vw, 20px) !important;
+    line-height: 1.45 !important;
+  }
+
+  .pixel-result .result-review-card {
+    display: grid !important;
+    grid-template-rows: minmax(0, 1fr) minmax(132px, 0.55fr) !important;
+    gap: 12px !important;
+    padding: 16px !important;
+  }
+}
+
+/* Desktop v5.1: keep 720p classroom screens from scrolling and clean the top bar. */
+@media (min-width: 981px) {
+  html,
+  body,
+  #root {
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell {
+    grid-template-rows: 54px 22px 7px minmax(0, 1fr) !important;
+    gap: 7px !important;
+    min-height: 0 !important;
+    max-height: 100svh !important;
+  }
+
+  .play-shell .game-header {
+    grid-template-columns: 278px minmax(0, 1fr) !important;
+  }
+
+  .play-shell .title-lockup {
+    padding: 5px 12px !important;
+  }
+
+  .play-shell .title-lockup .eyebrow {
+    font-size: 9px !important;
+  }
+
+  .play-shell .title-lockup h1 {
+    font-size: clamp(23px, 2.2vw, 32px) !important;
+    line-height: 0.94 !important;
+    text-shadow:
+      2px 0 #ef5fa0,
+      3px 2px 0 rgba(33, 24, 47, 0.9) !important;
+  }
+
+  .play-shell .stats {
+    gap: 7px !important;
+  }
+
+  .play-shell .stats > span,
+  .play-shell .stats > button {
+    height: 50px !important;
+    font-size: clamp(10px, 0.82vw, 14px) !important;
+  }
+
+  .play-shell .banner {
+    height: 22px !important;
+    max-height: 22px !important;
+    font-size: 12px !important;
+  }
+
+  .play-shell .rush-meter {
+    display: block !important;
+    height: 7px !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .play-shell .rush-meter > span,
+  .play-shell .rush-meter > em,
+  .play-shell .rush-meter > strong {
+    display: none !important;
+  }
+
+  .play-shell .rush-track {
+    height: 7px !important;
+    border-width: 2px !important;
+  }
+
+  .play-shell .shop-layout {
+    grid-template-columns: minmax(360px, 37fr) minmax(300px, 29fr) minmax(370px, 34fr) !important;
+    grid-template-rows: minmax(0, 35fr) minmax(0, 65fr) !important;
+    gap: 8px !important;
+  }
+
+  .play-shell .section-heading h2 {
+    font-size: clamp(23px, 1.85vw, 32px) !important;
+  }
+
+  .play-shell .section-heading span {
+    max-width: 180px !important;
+    padding: 5px 10px !important;
+    font-size: clamp(11px, 0.86vw, 14px) !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .play-shell .panel.burger-station {
+    grid-template-rows: auto 50px 30px minmax(0, 1fr) auto 32px !important;
+    gap: 7px !important;
+  }
+
+  .play-shell .burger-build {
+    min-height: 112px !important;
+  }
+
+  .play-shell .cook-meters {
+    gap: 5px !important;
+  }
+
+  .play-shell .flip-window,
+  .play-shell .current-step {
+    padding: 5px 9px !important;
+    font-size: 11px !important;
+  }
+
+  .play-shell .order-ticket {
+    gap: 7px !important;
+  }
+
+  .play-shell .recipe-list {
+    gap: 6px !important;
+  }
+
+  .play-shell .recipe-list li {
+    min-height: 34px !important;
+    padding: 5px 8px !important;
+  }
+
+  .play-shell .quiz-panel {
+    gap: 8px !important;
+  }
+
+  .play-shell .question-card {
+    min-height: 118px !important;
+  }
+
+  .play-shell .question-card h2 {
+    font-size: clamp(42px, 4vw, 70px) !important;
+  }
+
+  .play-shell .answer-grid {
+    grid-template-rows: repeat(2, minmax(62px, 1fr)) !important;
+    gap: 8px !important;
+    padding-bottom: 39px !important;
+  }
+
+  .play-shell .answer-button {
+    min-height: 62px !important;
+    font-size: clamp(24px, 2.2vw, 38px) !important;
+  }
+
+  .play-shell .quiz-footer {
+    bottom: 10px !important;
+    min-height: 30px !important;
+  }
+
+  .play-shell .combo,
+  .play-shell .feedback {
+    min-height: 30px !important;
+    font-size: 12px !important;
+  }
+
+  .play-shell .vn-dialogue {
+    max-height: 32% !important;
+    padding: 13px 15px !important;
+  }
+
+  .play-shell .vn-dialogue strong {
+    font-size: clamp(24px, 2.1vw, 34px) !important;
+  }
+
+  .play-shell .vn-dialogue p,
+  .play-shell .vn-dialogue em {
+    font-size: clamp(12px, 0.96vw, 15px) !important;
+  }
+
+  .play-shell.boss-mode .shop-layout {
+    grid-template-rows: minmax(0, 54fr) minmax(0, 46fr) !important;
+  }
+}
+
+/* Desktop v5.2: remove leftover sign stickers from older passes. */
+@media (min-width: 981px) {
+  .play-shell .title-lockup::before,
+  .play-shell .title-lockup::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .play-shell .title-lockup .eyebrow {
+    display: block !important;
+    position: static !important;
+  }
+}

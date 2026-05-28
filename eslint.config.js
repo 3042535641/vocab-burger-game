@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist', '.edge-cdp', '.edge-qa', 'qa-*.png']),
+  globalIgnores(['dist', '.edge-cdp', '.edge-qa', 'tmp', 'qa-*.png']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [

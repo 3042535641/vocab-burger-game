@@ -104,6 +104,45 @@ function CustomerQueue({
       ? displayCustomer.speech
       : profile.linesByMood[mood]
 
+  if (displayCustomer.isBoss) {
+    return (
+      <section
+        className={`character-stage-panel boss-arena-panel mood-${mood} ${
+          isHandoff ? 'handoff-satisfied' : ''
+        } transition-${transitionState}`}
+        aria-label="Boss 专属舞台"
+        style={stageStyle}
+      >
+        <img
+          className="boss-arena-backdrop"
+          key={`${displayCustomer.id}-${frame}`}
+          src={getStagePortraitFrameSrc(
+            displayCustomer.avatar,
+            displayCustomer.isBoss,
+            frame,
+          )}
+          alt=""
+        />
+        <div className="boss-arena-vignette" aria-hidden="true" />
+        <span className="vn-mood-tag boss-mood-tag">
+          {getUrgencyLabel(displayCustomer)}
+        </span>
+        <div className="vn-dialogue boss-arena-dialogue">
+          <small>PROFESSOR BOSS</small>
+          <strong>{displayCustomer.name}</strong>
+          <p>{dialogueLine}</p>
+          <em>
+            {getUrgencyLabel(displayCustomer)} · 等待 {getWaitedSeconds(displayCustomer)}s ·{' '}
+            {displayCustomer.recipe.name}
+          </em>
+        </div>
+        <div className="vn-patience boss-arena-patience" aria-label={`耐心 ${patienceRatio}%`}>
+          <span style={{ width: `${patienceRatio}%` }} />
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section
       className={`character-stage-panel vn-character-stage mood-${mood} ${

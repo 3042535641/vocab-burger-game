@@ -34,7 +34,8 @@ class GameAudio {
   private leanMode = false
   private intensity = 0
   private mode: AudioMode = 'off'
-  private track?: HTMLAudioElement
+  private activeTrack?: HTMLAudioElement
+  private trackCache = new Map<Exclude<AudioMode, 'off'>, HTMLAudioElement>()
   private context?: AudioContext
   private timers = new Set<number>()
   private pools = new Map<string, HTMLAudioElement[]>()
@@ -92,6 +93,22 @@ class GameAudio {
     pool.push(audio)
     this.pools.set(src, pool)
     return audio
+  }
+
+  private musicTrack(mode: Exclude<AudioMode, 'off'>) {
+    const cached = this.trackCache.get(mode)
+
+    if (cached) {
+      return cached
+    }
+
+    const track = new Audio(tracks[mode])
+    track.loop = mode !== 'finale'
+    track.preload = 'auto'
+    track.volume = this.trackVolume(mode)
+    this.trackCache.set(mode, track)
+    track.load()
+    return track
   }
 
   private oneShot(src: string, volume: number, playbackRate = 1, delay = 0) {
@@ -154,28 +171,54 @@ class GameAudio {
       return
     }
 
-    if (mode === this.mode && this.track && !this.track.paused) {
-      this.track.volume = this.trackVolume(mode)
+    if (mode === this.mode && this.activeTrack && !this.activeTrack.paused) {
+      this.activeTrack.volume = this.trackVolume(mode)
       return
     }
 
-    this.track?.pause()
-    if (this.track) {
-      this.track.currentTime = 0
-    }
+    const nextTrack =
+      mode === 'off' || !this.visible ? undefined : this.musicTrack(mode)
+
+    this.trackCache.forEach((track) => {
+      if (track !== nextTrack) {
+        track.pause()
+        track.currentTime = 0
+      }
+    })
     this.mode = mode
 
-    if (mode === 'off' || !this.visible) {
-      this.track = undefined
+    if (!nextTrack) {
+      this.activeTrack = undefined
       return
     }
 
-    const track = new Audio(tracks[mode])
-    track.loop = mode !== 'finale'
-    track.preload = 'auto'
+    const track = nextTrack
     track.volume = this.trackVolume(mode)
-    this.track = track
+    if (track !== this.activeTrack || mode === 'finale') {
+      track.currentTime = 0
+    }
+    this.activeTrack = track
     void track.play().catch(() => undefined)
+  }
+
+  preload() {
+    Object.keys(tracks).forEach((mode) => {
+      this.musicTrack(mode as Exclude<AudioMode, 'off'>)
+    })
+    Object.values(effects).forEach((src) => {
+      const audio = this.pooledAudio(src)
+      audio.load()
+    })
+  }
+
+  unlock() {
+    this.preload()
+    if (!this.context) {
+      this.context = new AudioContext()
+    }
+    if (this.context.state === 'suspended') {
+      void this.context.resume()
+    }
   }
 
   setEnabled(enabled: boolean) {
@@ -188,13 +231,16 @@ class GameAudio {
           audio.currentTime = 0
         }),
       )
+      return
     }
+
+    this.preload()
   }
 
   setPerformanceMode(enabled: boolean) {
     this.leanMode = enabled
-    if (this.track) {
-      this.track.volume = this.trackVolume(this.mode)
+    if (this.activeTrack) {
+      this.activeTrack.volume = this.trackVolume(this.mode)
     }
   }
 
@@ -202,19 +248,19 @@ class GameAudio {
     this.visible = visible
     if (!visible) {
       this.clearTimers()
-      this.track?.pause()
+      this.activeTrack?.pause()
       return
     }
 
-    if (this.enabled && this.mode !== 'off' && this.track) {
-      void this.track.play().catch(() => undefined)
+    if (this.enabled && this.mode !== 'off' && this.activeTrack) {
+      void this.activeTrack.play().catch(() => undefined)
     }
   }
 
   setIntensity(level: number) {
     this.intensity = Math.max(0, Math.min(1, level))
-    if (this.track && this.mode === 'service') {
-      this.track.volume = this.trackVolume(this.mode)
+    if (this.activeTrack && this.mode === 'service') {
+      this.activeTrack.volume = this.trackVolume(this.mode)
     }
   }
 
@@ -240,11 +286,11 @@ class GameAudio {
 
   stopMusic() {
     this.clearTimers()
-    this.track?.pause()
-    if (this.track) {
-      this.track.currentTime = 0
-    }
-    this.track = undefined
+    this.trackCache.forEach((track) => {
+      track.pause()
+      track.currentTime = 0
+    })
+    this.activeTrack = undefined
     this.mode = 'off'
     this.intensity = 0
   }

@@ -20,6 +20,7 @@ import {
   targetRegularServed,
   wrongPenalty,
 } from './constants/game'
+import { bossFinaleFrames, customerRoster } from './data/characters'
 import { words } from './data/words'
 import type { WordEntry } from './data/words'
 import { useTimedImpact } from './hooks/useTimedImpact'
@@ -27,6 +28,7 @@ import type {
   Customer,
   Feedback,
   GameStatus,
+  PortraitFrameKey,
   QueuePreviewCustomer,
 } from './types/game'
 import type { GameRecords } from './types/records'
@@ -59,10 +61,37 @@ import {
   saveRecords,
   saveSettings,
 } from './utils/storage'
-import { getStagePortraitFrameSrc } from './utils/portraits'
+import { getBossFinaleFrameSrc, getStagePortraitFrameSrc } from './utils/portraits'
 import { getUniqueWordsByEnglish, normalizeEnglish } from './utils/wordHelpers'
 import './App.css'
 import './pixel-vn.css'
+
+const portraitPreloadFrames: PortraitFrameKey[] = [
+  'normal',
+  'waiting',
+  'worried',
+  'angry',
+  'satisfied',
+  'reactionCloseup',
+]
+const preloadedImages = new Set<string>()
+
+const preloadImage = (src: string) => {
+  if (!src || preloadedImages.has(src)) {
+    return
+  }
+
+  preloadedImages.add(src)
+  const image = new Image()
+  image.decoding = 'async'
+  image.src = src
+}
+
+const preloadPortraitFrames = (avatar?: string, isBoss = false) => {
+  portraitPreloadFrames.forEach((frame) => {
+    preloadImage(getStagePortraitFrameSrc(avatar, isBoss, frame))
+  })
+}
 
 function App() {
   const [gameStatus, setGameStatus] = useState<GameStatus>('idle')
@@ -99,6 +128,16 @@ function App() {
   const wordPool = useMemo(() => [...words, ...customWords], [customWords])
   const previewWords = useMemo(() => getUniqueWordsByEnglish(wordPool), [wordPool])
   const previewRecipes = recipeCatalog
+
+  useEffect(() => {
+    gameAudio.preload()
+    customerRoster.forEach((customer) => preloadPortraitFrames(customer.avatar, false))
+    preloadPortraitFrames('boss', true)
+    const finaleFrameKeys = Object.keys(bossFinaleFrames) as Array<
+      keyof typeof bossFinaleFrames
+    >
+    finaleFrameKeys.forEach((frame) => preloadImage(getBossFinaleFrameSrc(frame)))
+  }, [])
 
   const activeCustomer =
     customers.find((customer) => customer.id === activeCustomerId) ??
@@ -147,16 +186,11 @@ function App() {
       return []
     }
 
-    const targetQueueSize = getTargetQueueSize()
-    const availableSlots = Math.max(0, Math.min(maxCustomers, targetQueueSize) - customers.length)
-
-    if (availableSlots <= 0) {
-      return []
-    }
+    const previewCount = Math.max(0, Math.min(2, maxCustomers - customers.length))
 
     const etaSeconds = Math.max(1, arrivalEtaSeconds)
 
-    return Array.from({ length: Math.min(availableSlots, 2) }, (_, index) => {
+    return Array.from({ length: previewCount }, (_, index) => {
       const preview = createCustomer(nextCustomerId + index, false, wordPool)
 
       return {
@@ -494,12 +528,19 @@ function App() {
 
   const startGame = () => {
     const firstCustomer = createCustomer(1, false, wordPool)
+    const firstPreviewCustomer = createCustomer(2, false, wordPool)
+    const secondPreviewCustomer = createCustomer(3, false, wordPool)
 
     window.clearTimeout(finaleTimerRef.current)
     window.clearTimeout(handoffTimerRef.current)
     window.scrollTo({ left: 0, top: 0, behavior: 'instant' })
     clearImpact()
     setView('game')
+    gameAudio.unlock()
+    preloadPortraitFrames(firstCustomer.avatar, false)
+    preloadPortraitFrames(firstPreviewCustomer.avatar, false)
+    preloadPortraitFrames(secondPreviewCustomer.avatar, false)
+    preloadPortraitFrames('boss', true)
 
     if (musicEnabled) {
       gameAudio.startMusic()

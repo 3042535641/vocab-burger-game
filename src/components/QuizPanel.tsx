@@ -42,7 +42,13 @@ function QuizPanel({
         {question.options.map((option) => (
           <button
             type="button"
-            className="answer-button"
+            className={`answer-button ${
+              option.length >= 13
+                ? 'long-answer'
+                : option.length >= 10
+                  ? 'medium-answer'
+                  : ''
+            }`}
             key={option}
             onClick={() => onAnswer(option)}
           >

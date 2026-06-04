@@ -436,10 +436,11 @@ export const createCustomer = (
   id: number,
   forceBoss = false,
   wordPool: WordEntry[] = words,
+  profileIndex = id - 1,
 ): Customer => {
   const isBoss = forceBoss
   const maxPatience = isBoss ? bossPatience : basePatience
-  const profile = customerProfiles[(id - 1) % customerProfiles.length]
+  const profile = customerProfiles[profileIndex % customerProfiles.length]
   const recipe = pickRecipe(id, isBoss)
 
   return {

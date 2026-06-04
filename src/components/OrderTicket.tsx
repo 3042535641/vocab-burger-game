@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useEffect, useRef } from 'react'
 import type { Customer } from '../types/game'
 
 type OrderTicketProps = {
@@ -14,6 +14,16 @@ function OrderTicket({
   targetServed,
   bossSpawned,
 }: OrderTicketProps) {
+  const currentStepRef = useRef<HTMLLIElement>(null)
+
+  useEffect(() => {
+    currentStepRef.current?.scrollIntoView({
+      block: 'nearest',
+      inline: 'nearest',
+      behavior: 'smooth',
+    })
+  }, [customer?.id, customer?.stepIndex])
+
   return (
     <section className="panel order-ticket" aria-label="医学汉堡订单小票">
       <div className="section-heading">
@@ -36,6 +46,7 @@ function OrderTicket({
           <ol className="recipe-list">
             {customer.steps.map((step, index) => (
               <li
+                ref={index === customer.stepIndex ? currentStepRef : undefined}
                 className={
                   index < customer.stepIndex
                     ? 'done'

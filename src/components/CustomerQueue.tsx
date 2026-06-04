@@ -10,6 +10,7 @@ import {
   getWaitedSeconds,
 } from '../utils/gameLogic'
 import {
+  getBossBattleFallbackFrameSrc,
   getCharacterProfile,
   getPortraitFrameKey,
   getStagePortraitFrameSrc,
@@ -122,6 +123,13 @@ function CustomerQueue({
             frame,
           )}
           alt=""
+          onError={(event) => {
+            const fallback = getBossBattleFallbackFrameSrc(frame)
+
+            if (!event.currentTarget.src.includes(fallback)) {
+              event.currentTarget.src = fallback
+            }
+          }}
         />
         <div className="boss-arena-vignette" aria-hidden="true" />
         <span className="vn-mood-tag boss-mood-tag">
@@ -216,6 +224,8 @@ function CustomerQueue({
         key={`${displayCustomer.id}-${frame}`}
         src={getStagePortraitFrameSrc(displayCustomer.avatar, displayCustomer.isBoss, frame)}
         alt=""
+        data-avatar={displayCustomer.avatar}
+        data-frame={frame}
         data-framing={profile.stageFraming}
       />
 

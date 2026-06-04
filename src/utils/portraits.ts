@@ -1,9 +1,18 @@
 import { bossFinaleFrames, characterProfiles } from '../data/characters'
 import type { BossFinaleFrameKey, CharacterProfile, Mood, PortraitFrameKey } from '../types/game'
 
-const artVersion = '20260528-pixel-vn-v3-boss-layout'
+const artVersion = '20260604-roster-bun-clean-v2'
 const assetUrl = (path: string) =>
   `${import.meta.env.BASE_URL}${path}?v=${artVersion}`
+
+const bossBattleFallbackFrames: Record<PortraitFrameKey, BossFinaleFrameKey> = {
+  normal: 'entrance',
+  waiting: 'entrance',
+  worried: 'impact',
+  angry: 'breakdown',
+  reactionCloseup: 'bonk',
+  satisfied: 'defeated',
+}
 
 export const getCharacterProfile = (
   avatar?: string,
@@ -27,3 +36,6 @@ export const getStagePortraitFrameSrc = (
 
 export const getBossFinaleFrameSrc = (frame: BossFinaleFrameKey) =>
   assetUrl(bossFinaleFrames[frame])
+
+export const getBossBattleFallbackFrameSrc = (frame: PortraitFrameKey) =>
+  getBossFinaleFrameSrc(bossBattleFallbackFrames[frame])

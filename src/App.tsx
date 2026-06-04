@@ -1,5 +1,4 @@
 import {
-  type CSSProperties,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -12,6 +11,9 @@ import BossFinale from './components/BossFinale'
 import CustomerQueue from './components/CustomerQueue'
 import OrderTicket from './components/OrderTicket'
 import QuizPanel from './components/QuizPanel'
+import ResultScreen from './components/ResultScreen'
+import StartScreen from './components/StartScreen'
+import TutorialModal from './components/TutorialModal'
 import WordManager from './components/WordManager'
 import {
   comboBonus,
@@ -33,7 +35,7 @@ import type {
 } from './types/game'
 import type { GameRecords } from './types/records'
 import { gameAudio } from './utils/audio'
-import { categoryLabels, formatPlayedAt, getServiceRank } from './utils/display'
+import { getServiceRank } from './utils/display'
 import {
   bossLines,
   bossVictoryLines,
@@ -63,7 +65,6 @@ import {
 } from './utils/storage'
 import { getBossFinaleFrameSrc, getStagePortraitFrameSrc } from './utils/portraits'
 import { getUniqueWordsByEnglish, normalizeEnglish } from './utils/wordHelpers'
-import './App.css'
 import './pixel-vn.css'
 
 const portraitPreloadFrames: PortraitFrameKey[] = [
@@ -98,6 +99,7 @@ function App() {
   const [customers, setCustomers] = useState<Customer[]>([])
   const [activeCustomerId, setActiveCustomerId] = useState<number>()
   const [nextCustomerId, setNextCustomerId] = useState(1)
+  const [nextRegularProfileIndex, setNextRegularProfileIndex] = useState(0)
   const [score, setScore] = useState(0)
   const [combo, setCombo] = useState(0)
   const [bestCombo, setBestCombo] = useState(0)
@@ -121,13 +123,52 @@ function App() {
   const finaleTimerRef = useRef<number | undefined>(undefined)
   const handoffTimerRef = useRef<number | undefined>(undefined)
   const customerClockRef = useRef(0)
+  const customersRef = useRef<Customer[]>([])
   const nextArrivalAtRef = useRef<number | undefined>(undefined)
+  const nextCustomerIdRef = useRef(1)
+  const regularProfileIndexRef = useRef(0)
   const answerHandlerRef = useRef<(answer: string) => void>(() => undefined)
   const musicEnabled = settings.musicEnabled
   const performanceMode = settings.performanceMode
   const wordPool = useMemo(() => [...words, ...customWords], [customWords])
   const previewWords = useMemo(() => getUniqueWordsByEnglish(wordPool), [wordPool])
   const previewRecipes = recipeCatalog
+
+  const setRegularProfileCursor = useCallback((index: number) => {
+    regularProfileIndexRef.current = index
+    setNextRegularProfileIndex(index)
+  }, [])
+
+  const setCustomerIdCursor = useCallback((id: number) => {
+    nextCustomerIdRef.current = id
+    setNextCustomerId(id)
+  }, [])
+
+  const reserveCustomerId = useCallback(() => {
+    const id = nextCustomerIdRef.current
+    setCustomerIdCursor(id + 1)
+    return id
+  }, [setCustomerIdCursor])
+
+  const resetRegularProfileRoster = useCallback(
+    (nextIndex: number) => {
+      setRegularProfileCursor(nextIndex)
+    },
+    [setRegularProfileCursor],
+  )
+
+  const reserveRegularProfileIndex = useCallback(() => {
+    const index = regularProfileIndexRef.current
+    setRegularProfileCursor(index + 1)
+    return index
+  }, [setRegularProfileCursor])
+
+  const getPreviewRegularProfileIndex = useCallback(
+    (previewOffset: number, startIndex: number) => {
+      return startIndex + previewOffset
+    },
+    [],
+  )
 
   useEffect(() => {
     gameAudio.preload()
@@ -138,6 +179,10 @@ function App() {
     >
     finaleFrameKeys.forEach((frame) => preloadImage(getBossFinaleFrameSrc(frame)))
   }, [])
+
+  useEffect(() => {
+    customersRef.current = customers
+  }, [customers])
 
   const activeCustomer =
     customers.find((customer) => customer.id === activeCustomerId) ??
@@ -191,7 +236,16 @@ function App() {
     const etaSeconds = Math.max(1, arrivalEtaSeconds)
 
     return Array.from({ length: previewCount }, (_, index) => {
-      const preview = createCustomer(nextCustomerId + index, false, wordPool)
+      const previewProfileIndex = getPreviewRegularProfileIndex(
+        index,
+        nextRegularProfileIndex,
+      )
+      const preview = createCustomer(
+        nextCustomerId + index,
+        false,
+        wordPool,
+        previewProfileIndex,
+      )
 
       return {
         id: `preview-${preview.id}`,
@@ -206,7 +260,9 @@ function App() {
     bossSpawned,
     customers.length,
     gameStatus,
+    getPreviewRegularProfileIndex,
     nextCustomerId,
+    nextRegularProfileIndex,
     arrivalEtaSeconds,
     servedCount,
     view,
@@ -401,31 +457,43 @@ function App() {
     }, 0)
 
     const spawnTimer = window.setTimeout(() => {
+      const currentCustomers = customersRef.current
+      const targetQueueSize = getTargetQueueSize()
+
+      if (
+        currentCustomers.length >= maxCustomers ||
+        currentCustomers.length >= targetQueueSize
+      ) {
+        return
+      }
+
+      const profileIndex = reserveRegularProfileIndex()
+      const customerId = reserveCustomerId()
+      const newCustomer = createCustomer(customerId, false, wordPool, profileIndex)
+
+      nextArrivalAtRef.current = undefined
+      setArrivalEtaSeconds(1)
+      setBanner(
+        currentCustomers.length === 0
+          ? '新医学生补位进店，别让锅空着！'
+          : servedCount >= 4
+            ? '下课高峰来了，新医学生加速进店！'
+            : '新医学生进店了',
+      )
+      gameAudio.playArrival()
+
+      if (!activeCustomerId || currentCustomers.length === 0) {
+        setActiveCustomerId(newCustomer.id)
+      }
+
       setCustomers((currentCustomers) => {
-        const targetQueueSize = getTargetQueueSize()
+        const latestTargetQueueSize = getTargetQueueSize()
 
         if (
           currentCustomers.length >= maxCustomers ||
-          currentCustomers.length >= targetQueueSize
+          currentCustomers.length >= latestTargetQueueSize
         ) {
           return currentCustomers
-        }
-
-        const newCustomer = createCustomer(nextCustomerId, false, wordPool)
-        nextArrivalAtRef.current = undefined
-        setArrivalEtaSeconds(1)
-        setNextCustomerId((id) => id + 1)
-        setBanner(
-          currentCustomers.length === 0
-            ? '新医学生补位进店，别让锅空着！'
-            : servedCount >= 4
-              ? '下课高峰来了，新医学生加速进店！'
-              : '新医学生进店了',
-        )
-        gameAudio.playArrival()
-
-        if (!activeCustomerId || currentCustomers.length === 0) {
-          setActiveCustomerId(newCustomer.id)
         }
 
         return [...currentCustomers, newCustomer]
@@ -440,7 +508,8 @@ function App() {
     activeCustomerId,
     bossSpawned,
     gameStatus,
-    nextCustomerId,
+    reserveRegularProfileIndex,
+    reserveCustomerId,
     servedCount,
     customers.length,
     wordPool,
@@ -527,9 +596,9 @@ function App() {
   }
 
   const startGame = () => {
-    const firstCustomer = createCustomer(1, false, wordPool)
-    const firstPreviewCustomer = createCustomer(2, false, wordPool)
-    const secondPreviewCustomer = createCustomer(3, false, wordPool)
+    const firstCustomer = createCustomer(1, false, wordPool, 0)
+    const firstPreviewCustomer = createCustomer(2, false, wordPool, 1)
+    const secondPreviewCustomer = createCustomer(3, false, wordPool, 2)
 
     window.clearTimeout(finaleTimerRef.current)
     window.clearTimeout(handoffTimerRef.current)
@@ -549,7 +618,8 @@ function App() {
     setGameStatus('playing')
     setCustomers([firstCustomer])
     setActiveCustomerId(firstCustomer.id)
-    setNextCustomerId(2)
+    setCustomerIdCursor(2)
+    resetRegularProfileRoster(1)
     setScore(0)
     setCombo(0)
     setBestCombo(0)
@@ -588,7 +658,7 @@ function App() {
     setBossSpawned(true)
     setHandoffCustomer(undefined)
     nextArrivalAtRef.current = undefined
-    setNextCustomerId(id + 1)
+    setCustomerIdCursor(Math.max(nextCustomerIdRef.current, id + 1))
     setCustomers([boss])
     setActiveCustomerId(boss.id)
     setBanner('医学英语教授 Boss 登场：完成这份终极订单就结算！')
@@ -663,15 +733,21 @@ function App() {
       setHandoffCustomer(undefined)
 
       if (nextServedCount >= targetRegularServed) {
-        spawnBoss(nextCustomerId)
+        spawnBoss(reserveCustomerId())
         return
       }
 
       if (remainingCustomers.length === 0) {
-        const fallbackCustomer = createCustomer(nextCustomerId, false, wordPool)
+        const profileIndex = reserveRegularProfileIndex()
+        const customerId = reserveCustomerId()
+        const fallbackCustomer = createCustomer(
+          customerId,
+          false,
+          wordPool,
+          profileIndex,
+        )
         setCustomers([fallbackCustomer])
         setActiveCustomerId(fallbackCustomer.id)
-        setNextCustomerId(nextCustomerId + 1)
         setBanner('下一位医学生翻卡进场，术语台继续营业。')
         gameAudio.playArrival()
       }
@@ -827,88 +903,7 @@ function App() {
     }
   }
 
-  const historyPanel = (
-    <section
-      className={`history-panel ${records.history.length === 0 ? 'empty-history' : ''}`}
-      aria-labelledby="history-title"
-    >
-      <div className="section-heading">
-        <h2 id="history-title">近期成绩</h2>
-        <span>{records.history.length > 0 ? `${records.history.length} 局` : '暂无记录'}</span>
-      </div>
-      {records.history.length > 0 ? (
-        <div className="history-list">
-          {records.history.map((round, index) => (
-            <article
-              className={`history-card ${round.bossDefeated ? 'win' : 'fail'}`}
-              key={`${round.playedAt}-${index}`}
-            >
-              <strong>{round.bossDefeated ? '通关' : '未通关'} · {round.score} 分</strong>
-              <span>
-                Combo {round.bestCombo} / 出餐 {round.servedCount}
-              </span>
-              <small>{formatPlayedAt(round.playedAt)}</small>
-            </article>
-          ))}
-        </div>
-      ) : (
-        <p>完成第一局后会记录最高分、通关次数和最近成绩，课堂汇报时可以直接展示进步轨迹。</p>
-      )}
-    </section>
-  )
-
-  const missedReviewPanel = missedWords.length > 0 && (
-    <section className="missed-review" aria-labelledby="missed-review-title">
-      <div className="section-heading">
-        <h2 id="missed-review-title">本局错题复盘</h2>
-        <span>{missedWords.length} 个术语</span>
-      </div>
-      <div className="missed-list">
-        {missedWords.map((word) => (
-          <article className="missed-card" key={word.id}>
-            <strong>{word.chinese}</strong>
-            <span>{word.english}</span>
-            {word.note && <small>{word.note}</small>}
-          </article>
-        ))}
-      </div>
-    </section>
-  )
-
-  const tutorial = (
-    <div
-      className="tutorial-backdrop"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="tutorial-title"
-    >
-      <section className="panel tutorial-panel">
-        <p className="eyebrow">医学英语规则速览</p>
-        <h2 id="tutorial-title">开店前先看三条</h2>
-        <div className="tutorial-steps">
-          <article>
-            <strong>1. 抢答术语</strong>
-            <span>看中文医学概念，选择正确英文术语。</span>
-          </article>
-          <article>
-            <strong>2. 制作汉堡</strong>
-            <span>答对推进动作；肉饼第一面 55%-85%、焦度低于 45 时翻面最香。</span>
-          </article>
-          <article>
-            <strong>3. 顾客红温</strong>
-            <span>医学生约 20 秒开始着急，完成 6 份后教授 Boss 登场。</span>
-          </article>
-        </div>
-        <button
-          type="button"
-          className="primary-action"
-          onClick={() => setShowTutorial(false)}
-        >
-          懂了，开煎
-        </button>
-      </section>
-    </div>
-  )
+  const tutorial = <TutorialModal onClose={() => setShowTutorial(false)} />
 
   if (view === 'words') {
     return (
@@ -925,170 +920,37 @@ function App() {
 
   if (gameStatus === 'idle') {
     return (
-      <main className="game-shell start-screen">
-        <section
-          className="panel intro-panel start-dashboard"
-          aria-labelledby="game-title"
-        >
-          <div className="intro-hero">
-            <div>
-              <p className="eyebrow">Medical Vocab Burger Shop</p>
-              <h1 id="game-title">医学英语汉堡店</h1>
-              <p>
-                医学生会随机排队点餐。先看本局医学英语术语，再看中文概念选英文，
-                答对才能完成汉堡动作；答错会扣分、掉耐心，还可能把组织肉饼煎焦。
-              </p>
-            </div>
-            <div className="start-mascot" aria-hidden="true">
-              <span>医学词</span>
-            </div>
-          </div>
-
-          <section className="start-character-stage" aria-label="开场角色预告">
-            <div
-              className="start-pixel-bust start-portrait-bust pixel-start-bust"
-              style={
-                {
-                  '--start-portrait-src': `url("${getStagePortraitFrameSrc('star', false, 'normal')}")`,
-                } as CSSProperties
-              }
-              aria-hidden="true"
-            >
-              <span className="start-pixel-sheet" />
-            </div>
-            <div className="start-dialogue">
-              <small>MEDICAL ENGLISH NIGHT SHIFT</small>
-              <strong>“中文概念给我，英文术语我来抢答。”</strong>
-              <p>
-                本局先预习术语，再进入像素汉堡急诊室。顾客会吐槽，教授会破防，
-                但医学英语词根不能糊。
-              </p>
-            </div>
-          </section>
-
-          <div className="record-strip" aria-label="历史记录">
-            <span>最高分 {records.highScore}</span>
-            <span>最佳 Combo {records.bestCombo}</span>
-            <span>
-              通关 {records.wins}/{records.rounds}
-            </span>
-          </div>
-
-          <section className="mobile-brief" aria-label="手机端玩法提示">
-            <strong>手机端速通提示</strong>
-            <span>先看词表，再开局；底部答题区是主操作，单锅更适合稳定记词。</span>
-          </section>
-
-          {historyPanel}
-
-          <section className="recipe-preview" aria-labelledby="recipe-preview-title">
-            <div className="section-heading">
-              <h2 id="recipe-preview-title">本局医学汉堡配方</h2>
-              <span>随机出单</span>
-            </div>
-            <div className="recipe-preview-grid">
-              {previewRecipes.map((recipe) => (
-                <article
-                  className={`recipe-preview-card recipe-${recipe.id}`}
-                  key={recipe.id}
-                >
-                  <strong>{recipe.name}</strong>
-                  <span>{recipe.tag}</span>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section className="word-preview" aria-labelledby="preview-title">
-            <div className="section-heading">
-              <h2 id="preview-title">本局医学术语预习</h2>
-              <span>{previewWords.length} 个词</span>
-            </div>
-            <div className="preview-grid">
-              {previewWords.map((word) => (
-                <article className="preview-card" key={word.id}>
-                  <strong>{word.chinese}</strong>
-                  <span>{word.english}</span>
-                  <small>
-                    {categoryLabels[word.category]} / 难度 {word.difficulty}
-                  </small>
-                  {word.note && <em>{word.note}</em>}
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <div className="start-actions">
-            <button type="button" className="primary-action" onClick={startGame}>
-              开始营业
-            </button>
-            <button
-              type="button"
-              className="small-action"
-              onClick={() => setShowTutorial(true)}
-            >
-              规则说明
-            </button>
-            <button type="button" className="small-action" onClick={openWordManager}>
-              管理词库
-            </button>
-            <button type="button" className="small-action" onClick={toggleMusic}>
-              {musicEnabled ? '音乐开' : '音乐关'}
-            </button>
-          </div>
-        </section>
-        {showTutorial && tutorial}
-      </main>
+      <StartScreen
+        records={records}
+        previewRecipes={previewRecipes}
+        previewWords={previewWords}
+        musicEnabled={musicEnabled}
+        showTutorial={showTutorial}
+        onStart={startGame}
+        onShowTutorial={() => setShowTutorial(true)}
+        onCloseTutorial={() => setShowTutorial(false)}
+        onOpenWordManager={openWordManager}
+        onToggleMusic={toggleMusic}
+      />
     )
   }
 
   if (gameStatus === 'ended') {
     return (
-      <main
-        className={`game-shell start-screen pixel-result ${bossDefeated ? 'victory-result' : ''}`}
-      >
-        <section className="panel intro-panel result-panel result-layout-v4" aria-labelledby="result-title">
-          <div className="result-summary-card">
-            <p className="eyebrow">{bossDefeated ? '教授破防结算' : '营业结算'}</p>
-            <h1 id="result-title">今日得分：{score}</h1>
-            <p>
-              完成 {servedCount} 份普通医学汉堡，流失 {lostCustomers} 位医学生，最高连对{' '}
-              {bestCombo} 题。
-            </p>
-            <p>
-              {bossDefeated
-                ? victoryLine || '教授 Boss 已完成，适合医学英语课堂展示收尾。'
-                : '教授 Boss 未完成，可以再开一局。'}
-            </p>
-            <p className={`result-rank rank-${serviceRank.tier}`}>
-              本局评级：{serviceRank.label} · {serviceRank.comment}
-            </p>
-            <div className="record-strip" aria-label="历史记录">
-              <span>历史最高 {Math.max(records.highScore, score)}</span>
-              <span>历史 Combo {Math.max(records.bestCombo, bestCombo)}</span>
-              <span>
-                通关次数 {records.wins + (finalizedRound ? 0 : bossDefeated ? 1 : 0)}
-              </span>
-            </div>
-            <div className="result-actions">
-              <button type="button" className="primary-action" onClick={startGame}>
-                再开一局
-              </button>
-              <button
-                type="button"
-                className="small-action manager-shortcut"
-                onClick={openWordManager}
-              >
-                管理词库
-              </button>
-            </div>
-          </div>
-          <div className="result-review-card">
-            {missedReviewPanel}
-            {historyPanel}
-          </div>
-        </section>
-      </main>
+      <ResultScreen
+        score={score}
+        servedCount={servedCount}
+        lostCustomers={lostCustomers}
+        bestCombo={bestCombo}
+        bossDefeated={bossDefeated}
+        finalizedRound={finalizedRound}
+        victoryLine={victoryLine}
+        records={records}
+        serviceRank={serviceRank}
+        missedWords={missedWords}
+        onStart={startGame}
+        onOpenWordManager={openWordManager}
+      />
     )
   }
 

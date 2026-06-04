@@ -6,16 +6,31 @@ import type {
   PortraitFrameKey,
 } from '../types/game'
 
-const assetVersion = 'pixel-vn-v3'
+const assetVersion = 'pixel-vn-v3-stage-clean-boss-portrait-ready'
 
-const makeFrames = (avatar: string): Record<PortraitFrameKey, string> => ({
-  normal: `art/pixel-vn-v3/characters/${avatar}/normal.webp`,
-  waiting: `art/pixel-vn-v3/characters/${avatar}/normal.webp`,
-  worried: `art/pixel-vn-v3/characters/${avatar}/angry.webp`,
-  angry: `art/pixel-vn-v3/characters/${avatar}/angry.webp`,
-  reactionCloseup: `art/pixel-vn-v3/characters/${avatar}/angry.webp`,
-  satisfied: `art/pixel-vn-v3/characters/${avatar}/satisfied.webp`,
-})
+const makeFrames = (avatar: string): Record<PortraitFrameKey, string> => {
+  if (avatar === 'bun') {
+    const cleanBunFrame = 'art/pixel-vn-v3/characters/bun/normal1.webp'
+
+    return {
+      normal: cleanBunFrame,
+      waiting: cleanBunFrame,
+      worried: cleanBunFrame,
+      angry: cleanBunFrame,
+      reactionCloseup: cleanBunFrame,
+      satisfied: cleanBunFrame,
+    }
+  }
+
+  return {
+    normal: `art/pixel-vn-v3/characters/${avatar}/normal.webp`,
+    waiting: `art/pixel-vn-v3/characters/${avatar}/normal.webp`,
+    worried: `art/pixel-vn-v3/characters/${avatar}/angry.webp`,
+    angry: `art/pixel-vn-v3/characters/${avatar}/angry.webp`,
+    reactionCloseup: `art/pixel-vn-v3/characters/${avatar}/angry.webp`,
+    satisfied: `art/pixel-vn-v3/characters/${avatar}/satisfied.webp`,
+  }
+}
 
 const lines = (
   happy: string,
@@ -36,12 +51,12 @@ export const characterProfiles: Record<string, CharacterProfile> = {
     satisfiedAction: '败北定格',
     queuePose: 'normal',
     portraitFrames: {
-      normal: 'art/pixel-vn-v3/boss/entrance.webp',
-      waiting: 'art/pixel-vn-v3/boss/entrance.webp',
-      worried: 'art/pixel-vn-v3/boss/impact.webp',
-      angry: 'art/pixel-vn-v3/boss/breakdown.webp',
-      reactionCloseup: 'art/pixel-vn-v3/boss/breakdown.webp',
-      satisfied: 'art/pixel-vn-v3/boss/defeated.webp',
+      normal: 'art/pixel-vn-v3/boss-portrait/normal.webp',
+      waiting: 'art/pixel-vn-v3/boss-portrait/waiting.webp',
+      worried: 'art/pixel-vn-v3/boss-portrait/worried.webp',
+      angry: 'art/pixel-vn-v3/boss-portrait/angry.webp',
+      reactionCloseup: 'art/pixel-vn-v3/boss-portrait/reactionCloseup.webp',
+      satisfied: 'art/pixel-vn-v3/boss-portrait/satisfied.webp',
     },
     linesByMood: lines('先让我抽查词根。', '教案敲桌中。', '眼镜开始脱离轨道！', '术语颜艺大崩坏！'),
     handoffLine: '我承认，这份医学英语汉堡合格。',

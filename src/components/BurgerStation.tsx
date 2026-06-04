@@ -34,6 +34,9 @@ function BurgerStation({
         ['lettuce', 'tomato', 'sauce', 'top'].includes(stepId),
       ),
     )
+  const hasTopBun = Boolean(
+    completedStepIds?.some((stepId) => stepId === 'top' || stepId === 'sauce'),
+  )
 
   return (
     <section className="panel burger-station" aria-label="医学英语汉堡制作台">
@@ -103,7 +106,7 @@ function BurgerStation({
         <div className="assembly-platter" aria-hidden="true" />
         <div className="burger-build">
           {!customer && <span className="empty-plate">等待订单</span>}
-          {customer && completedStepIds?.includes('top') && (
+          {customer && hasTopBun && (
             <span className="burger-layer top-bun">护理面包盖</span>
           )}
           {customer && completedStepIds?.includes('sauce') && (

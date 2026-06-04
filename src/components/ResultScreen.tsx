@@ -40,6 +40,19 @@ function ResultScreen({
   onOpenWordManager,
 }: ResultScreenProps) {
   const nextWins = records.wins + (finalizedRound ? 0 : bossDefeated ? 1 : 0)
+  const recapLines = [
+    bossDefeated
+      ? '教授已破防：眼镜飞了，词根跪了，汉堡被迫盖章通过。'
+      : servedCount >= 6
+        ? 'Boss 还在门口冷笑：普通单清完了，教授查房差临门一堡。'
+        : '本局像急诊夜班：汉堡在冒烟，词根在排队，医学生在撤退。',
+    missedWords.length === 0
+      ? '错题复盘：0 个术语，今晚大脑像刚消毒的手术台一样干净。'
+      : `错题复盘：${missedWords.length} 个术语正在右侧挂号，建议立刻安排词根会诊。`,
+    bestCombo >= 20
+      ? `连击报告：Combo ${bestCombo}，这不是答题，这是医学英语心电图起飞。`
+      : '角色轮换：六位医学生按顺序查房，没有再把影像男叫成小明。',
+  ]
 
   return (
     <main
@@ -80,13 +93,9 @@ function ResultScreen({
           </div>
           <div className="result-recap-card" aria-label="本局回顾">
             <strong>本局回顾</strong>
-            <span>
-              {bossDefeated
-                ? '教授 Boss 已破防，课堂汇报效果拉满。'
-                : 'Boss 还没打完，下一局可以继续冲。'}
-            </span>
-            <span>错题复盘：{missedWords.length} 个术语，右侧可滚动查看。</span>
-            <span>普通角色轮换：每局按 6 位医学生顺序出场。</span>
+            {recapLines.map((line) => (
+              <span key={line}>{line}</span>
+            ))}
           </div>
         </div>
         <div className="result-review-card">

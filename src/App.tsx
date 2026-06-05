@@ -100,6 +100,7 @@ function App() {
   const [activeCustomerId, setActiveCustomerId] = useState<number>()
   const [nextCustomerId, setNextCustomerId] = useState(1)
   const [nextRegularProfileIndex, setNextRegularProfileIndex] = useState(0)
+  const [wordRotationOffset, setWordRotationOffset] = useState(0)
   const [score, setScore] = useState(0)
   const [combo, setCombo] = useState(0)
   const [bestCombo, setBestCombo] = useState(0)
@@ -127,6 +128,7 @@ function App() {
   const nextArrivalAtRef = useRef<number | undefined>(undefined)
   const nextCustomerIdRef = useRef(1)
   const regularProfileIndexRef = useRef(0)
+  const wordRotationOffsetRef = useRef(0)
   const answerHandlerRef = useRef<(answer: string) => void>(() => undefined)
   const musicEnabled = settings.musicEnabled
   const performanceMode = settings.performanceMode
@@ -162,6 +164,21 @@ function App() {
     setRegularProfileCursor(index + 1)
     return index
   }, [setRegularProfileCursor])
+
+  const setWordRotationCursor = useCallback((offset: number) => {
+    wordRotationOffsetRef.current = offset
+    setWordRotationOffset(offset)
+  }, [])
+
+  const createRoundWordRotationOffset = useCallback(() => {
+    const uniqueWordCount = getUniqueWordsByEnglish(wordPool).length
+
+    if (uniqueWordCount <= 1) {
+      return 0
+    }
+
+    return Math.floor(Math.random() * uniqueWordCount)
+  }, [wordPool])
 
   const getPreviewRegularProfileIndex = useCallback(
     (previewOffset: number, startIndex: number) => {
@@ -245,6 +262,7 @@ function App() {
         false,
         wordPool,
         previewProfileIndex,
+        wordRotationOffset,
       )
 
       return {
@@ -263,6 +281,7 @@ function App() {
     getPreviewRegularProfileIndex,
     nextCustomerId,
     nextRegularProfileIndex,
+    wordRotationOffset,
     arrivalEtaSeconds,
     servedCount,
     view,
@@ -469,7 +488,13 @@ function App() {
 
       const profileIndex = reserveRegularProfileIndex()
       const customerId = reserveCustomerId()
-      const newCustomer = createCustomer(customerId, false, wordPool, profileIndex)
+      const newCustomer = createCustomer(
+        customerId,
+        false,
+        wordPool,
+        profileIndex,
+        wordRotationOffsetRef.current,
+      )
 
       nextArrivalAtRef.current = undefined
       setArrivalEtaSeconds(1)
@@ -596,14 +621,34 @@ function App() {
   }
 
   const startGame = () => {
-    const firstCustomer = createCustomer(1, false, wordPool, 0)
-    const firstPreviewCustomer = createCustomer(2, false, wordPool, 1)
-    const secondPreviewCustomer = createCustomer(3, false, wordPool, 2)
+    const roundWordRotationOffset = createRoundWordRotationOffset()
+    const firstCustomer = createCustomer(
+      1,
+      false,
+      wordPool,
+      0,
+      roundWordRotationOffset,
+    )
+    const firstPreviewCustomer = createCustomer(
+      2,
+      false,
+      wordPool,
+      1,
+      roundWordRotationOffset,
+    )
+    const secondPreviewCustomer = createCustomer(
+      3,
+      false,
+      wordPool,
+      2,
+      roundWordRotationOffset,
+    )
 
     window.clearTimeout(finaleTimerRef.current)
     window.clearTimeout(handoffTimerRef.current)
     window.scrollTo({ left: 0, top: 0, behavior: 'instant' })
     clearImpact()
+    setWordRotationCursor(roundWordRotationOffset)
     setView('game')
     gameAudio.unlock()
     preloadPortraitFrames(firstCustomer.avatar, false)
@@ -651,7 +696,13 @@ function App() {
   }
 
   const spawnBoss = (id: number) => {
-    const boss = createCustomer(id, true, wordPool)
+    const boss = createCustomer(
+      id,
+      true,
+      wordPool,
+      undefined,
+      wordRotationOffsetRef.current,
+    )
 
     gameAudio.stopNormalMusic()
     setGameStatus('playing')
@@ -745,6 +796,7 @@ function App() {
           false,
           wordPool,
           profileIndex,
+          wordRotationOffsetRef.current,
         )
         setCustomers([fallbackCustomer])
         setActiveCustomerId(fallbackCustomer.id)

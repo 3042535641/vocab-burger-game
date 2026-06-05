@@ -382,20 +382,34 @@ const recipeStepPlans = (recipe: BurgerRecipe, isBoss: boolean) => {
   return variants[recipe.id] ?? baseStepPlans(stepWordIds)
 }
 
+const getUniqueQuizWords = (wordPool: WordEntry[]) => {
+  const seenEnglish = new Set<string>()
+
+  return wordPool.filter((word) => {
+    const normalizedEnglish = word.english.trim().toLowerCase()
+
+    if (!normalizedEnglish || seenEnglish.has(normalizedEnglish)) {
+      return false
+    }
+
+    seenEnglish.add(normalizedEnglish)
+    return true
+  })
+}
+
+const wrapIndex = (index: number, length: number) =>
+  ((index % length) + length) % length
+
 const pickWordForStep = (
   plan: RecipeStepPlan,
   index: number,
-  isBoss: boolean,
   wordPool: WordEntry[],
+  wordRotationSeed: number,
 ) => {
-  const customWords = wordPool.filter((word) => word.id.startsWith('custom-'))
-  const shouldUseCustom =
-    customWords.length > 0 &&
-    !['bun', 'patty', 'flip'].includes(plan.layerId) &&
-    (index + (isBoss ? 1 : 0)) % 2 === 1
+  const quizWords = getUniqueQuizWords(wordPool)
 
-  if (shouldUseCustom) {
-    return customWords[index % customWords.length]
+  if (quizWords.length > 0) {
+    return quizWords[wrapIndex(wordRotationSeed + index, quizWords.length)]
   }
 
   return wordPool.find((entry) => entry.id === plan.wordId) ?? words[0]
@@ -405,11 +419,12 @@ export const buildSteps = (
   isBoss: boolean,
   wordPool: WordEntry[],
   recipe: BurgerRecipe,
+  wordRotationSeed = 0,
 ): BurgerStep[] => {
   const plans = recipeStepPlans(recipe, isBoss)
 
   return plans.map((plan, index) => {
-    const word = pickWordForStep(plan, index, isBoss, wordPool)
+    const word = pickWordForStep(plan, index, wordPool, wordRotationSeed)
     const stepText: Record<string, { label: string; ingredient: string }> = {
       bun: { label: '放细胞词根底', ingredient: '细胞词根底' },
       patty: { label: '组织肉饼下锅开煎', ingredient: '肉饼下锅' },
@@ -437,11 +452,15 @@ export const createCustomer = (
   forceBoss = false,
   wordPool: WordEntry[] = words,
   profileIndex = id - 1,
+  wordRotationOffset = 0,
 ): Customer => {
   const isBoss = forceBoss
   const maxPatience = isBoss ? bossPatience : basePatience
   const profile = customerProfiles[profileIndex % customerProfiles.length]
   const recipe = pickRecipe(id, isBoss)
+  const wordRotationSeed = isBoss
+    ? wordRotationOffset + targetRegularServed * stepWordIds.length
+    : wordRotationOffset + Math.max(0, profileIndex) * stepWordIds.length
 
   return {
     id,
@@ -459,7 +478,7 @@ export const createCustomer = (
     burn: 0,
     mistakes: 0,
     isBoss,
-    steps: buildSteps(isBoss, wordPool, recipe),
+    steps: buildSteps(isBoss, wordPool, recipe, wordRotationSeed),
   }
 }
 

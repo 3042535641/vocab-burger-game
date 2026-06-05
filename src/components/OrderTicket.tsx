@@ -14,14 +14,27 @@ function OrderTicket({
   targetServed,
   bossSpawned,
 }: OrderTicketProps) {
+  const recipeListRef = useRef<HTMLOListElement>(null)
   const currentStepRef = useRef<HTMLLIElement>(null)
 
   useEffect(() => {
-    currentStepRef.current?.scrollIntoView({
-      block: 'nearest',
-      inline: 'nearest',
-      behavior: 'smooth',
-    })
+    const list = recipeListRef.current
+    const currentStep = currentStepRef.current
+
+    if (!list || !currentStep) {
+      return
+    }
+
+    const listRect = list.getBoundingClientRect()
+    const stepRect = currentStep.getBoundingClientRect()
+    const topDelta = stepRect.top - listRect.top
+    const bottomDelta = stepRect.bottom - listRect.bottom
+
+    if (topDelta < 0) {
+      list.scrollBy({ top: topDelta - 8, behavior: 'smooth' })
+    } else if (bottomDelta > 0) {
+      list.scrollBy({ top: bottomDelta + 8, behavior: 'smooth' })
+    }
   }, [customer?.id, customer?.stepIndex])
 
   return (
@@ -43,7 +56,7 @@ function OrderTicket({
             <strong>{customer.recipe.name}</strong>
             <span>{customer.recipe.tag}</span>
           </div>
-          <ol className="recipe-list">
+          <ol className="recipe-list" ref={recipeListRef}>
             {customer.steps.map((step, index) => (
               <li
                 ref={index === customer.stepIndex ? currentStepRef : undefined}

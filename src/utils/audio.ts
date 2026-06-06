@@ -34,9 +34,12 @@ class GameAudio {
   private leanMode = false
   private intensity = 0
   private mode: AudioMode = 'off'
-  private activeTrack?: HTMLAudioElement
-  private trackCache = new Map<Exclude<AudioMode, 'off'>, HTMLAudioElement>()
   private context?: AudioContext
+  private musicGain?: GainNode
+  private musicSource?: AudioBufferSourceNode
+  private musicBuffers = new Map<Exclude<AudioMode, 'off'>, AudioBuffer>()
+  private musicBufferPromises = new Map<Exclude<AudioMode, 'off'>, Promise<AudioBuffer>>()
+  private musicRequestId = 0
   private timers = new Set<number>()
   private pools = new Map<string, HTMLAudioElement[]>()
 
@@ -95,22 +98,6 @@ class GameAudio {
     return audio
   }
 
-  private musicTrack(mode: Exclude<AudioMode, 'off'>) {
-    const cached = this.trackCache.get(mode)
-
-    if (cached) {
-      return cached
-    }
-
-    const track = new Audio(tracks[mode])
-    track.loop = mode !== 'finale'
-    track.preload = 'auto'
-    track.volume = this.trackVolume(mode)
-    this.trackCache.set(mode, track)
-    track.load()
-    return track
-  }
-
   private oneShot(src: string, volume: number, playbackRate = 1, delay = 0) {
     this.schedule(() => {
       const audio = this.pooledAudio(src)
@@ -165,45 +152,107 @@ class GameAudio {
     return (this.leanMode ? 0.27 : 0.42) + this.intensity * 0.08
   }
 
+  private stopMusicSource() {
+    this.musicRequestId += 1
+    if (this.musicSource) {
+      try {
+        this.musicSource.stop()
+      } catch {
+        // Source nodes are one-shot; ignore if the browser already stopped it.
+      }
+      this.musicSource.disconnect()
+      this.musicSource = undefined
+    }
+  }
+
+  private async loadMusicBuffer(mode: Exclude<AudioMode, 'off'>) {
+    const cached = this.musicBuffers.get(mode)
+
+    if (cached) {
+      return cached
+    }
+
+    const loading = this.musicBufferPromises.get(mode)
+
+    if (loading) {
+      return loading
+    }
+
+    const promise = fetch(tracks[mode])
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to load BGM: ${tracks[mode]}`)
+        }
+        return response.arrayBuffer()
+      })
+      .then((buffer) => this.contextForEffects().decodeAudioData(buffer.slice(0)))
+      .then((audioBuffer) => {
+        this.musicBuffers.set(mode, audioBuffer)
+        this.musicBufferPromises.delete(mode)
+        return audioBuffer
+      })
+      .catch((error) => {
+        this.musicBufferPromises.delete(mode)
+        throw error
+      })
+
+    this.musicBufferPromises.set(mode, promise)
+    return promise
+  }
+
+  private playMusicBuffer(mode: Exclude<AudioMode, 'off'>, buffer: AudioBuffer) {
+    if (!this.enabled || !this.visible || this.mode !== mode) {
+      return
+    }
+
+    const context = this.contextForEffects()
+    const source = context.createBufferSource()
+
+    if (!this.musicGain) {
+      this.musicGain = context.createGain()
+      this.musicGain.connect(context.destination)
+    }
+
+    source.buffer = buffer
+    source.loop = mode !== 'finale'
+    this.musicGain.gain.value = this.trackVolume(mode)
+    source.connect(this.musicGain)
+    this.musicSource = source
+    source.start()
+  }
+
   private switchTrack(mode: AudioMode) {
     if (!this.enabled) {
       this.mode = 'off'
+      this.stopMusicSource()
       return
     }
 
-    if (mode === this.mode && this.activeTrack && !this.activeTrack.paused) {
-      this.activeTrack.volume = this.trackVolume(mode)
+    if (mode === this.mode && this.musicSource && this.musicGain) {
+      this.musicGain.gain.value = this.trackVolume(mode)
       return
     }
 
-    const nextTrack =
-      mode === 'off' || !this.visible ? undefined : this.musicTrack(mode)
-
-    this.trackCache.forEach((track) => {
-      if (track !== nextTrack) {
-        track.pause()
-        track.currentTime = 0
-      }
-    })
+    this.stopMusicSource()
     this.mode = mode
 
-    if (!nextTrack) {
-      this.activeTrack = undefined
+    if (mode === 'off' || !this.visible) {
       return
     }
 
-    const track = nextTrack
-    track.volume = this.trackVolume(mode)
-    if (track !== this.activeTrack || mode === 'finale') {
-      track.currentTime = 0
-    }
-    this.activeTrack = track
-    void track.play().catch(() => undefined)
+    const requestId = this.musicRequestId
+    void this.loadMusicBuffer(mode)
+      .then((buffer) => {
+        if (requestId === this.musicRequestId) {
+          this.playMusicBuffer(mode, buffer)
+        }
+      })
+      .catch(() => undefined)
   }
 
   preload() {
     Object.keys(tracks).forEach((mode) => {
-      this.musicTrack(mode as Exclude<AudioMode, 'off'>)
+      void this.loadMusicBuffer(mode as Exclude<AudioMode, 'off'>)
     })
     Object.values(effects).forEach((src) => {
       const audio = this.pooledAudio(src)
@@ -239,8 +288,8 @@ class GameAudio {
 
   setPerformanceMode(enabled: boolean) {
     this.leanMode = enabled
-    if (this.activeTrack) {
-      this.activeTrack.volume = this.trackVolume(this.mode)
+    if (this.musicGain) {
+      this.musicGain.gain.value = this.trackVolume(this.mode)
     }
   }
 
@@ -248,19 +297,19 @@ class GameAudio {
     this.visible = visible
     if (!visible) {
       this.clearTimers()
-      this.activeTrack?.pause()
+      this.stopMusicSource()
       return
     }
 
-    if (this.enabled && this.mode !== 'off' && this.activeTrack) {
-      void this.activeTrack.play().catch(() => undefined)
+    if (this.enabled && this.mode !== 'off') {
+      this.switchTrack(this.mode)
     }
   }
 
   setIntensity(level: number) {
     this.intensity = Math.max(0, Math.min(1, level))
-    if (this.activeTrack && this.mode === 'service') {
-      this.activeTrack.volume = this.trackVolume(this.mode)
+    if (this.musicGain && this.mode === 'service') {
+      this.musicGain.gain.value = this.trackVolume(this.mode)
     }
   }
 
@@ -286,11 +335,7 @@ class GameAudio {
 
   stopMusic() {
     this.clearTimers()
-    this.trackCache.forEach((track) => {
-      track.pause()
-      track.currentTime = 0
-    })
-    this.activeTrack = undefined
+    this.stopMusicSource()
     this.mode = 'off'
     this.intensity = 0
   }

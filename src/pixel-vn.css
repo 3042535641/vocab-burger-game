@@ -2972,6 +2972,75 @@ img {
     padding: 4px 6px;
     font-size: clamp(18px, 5vw, 27px);
   }
+
+  .play-shell .burger-station {
+    grid-template-rows:
+      auto
+      minmax(46px, auto)
+      24px
+      minmax(210px, auto)
+      minmax(38px, auto)
+      minmax(34px, auto);
+    gap: 5px;
+    padding: 8px;
+  }
+
+  .play-shell .burger-station .section-heading {
+    min-height: 38px;
+  }
+
+  .play-shell .grill-slot {
+    min-height: 46px;
+  }
+
+  .play-shell .grill-lights {
+    min-height: 24px;
+  }
+
+  .play-shell .burger-stack {
+    min-height: 210px;
+    padding: 8px 10px 12px;
+    overflow: hidden;
+  }
+
+  .play-shell .assembly-platter {
+    bottom: 10px;
+    width: min(92%, 270px);
+    height: 38px;
+  }
+
+  .play-shell .burger-build {
+    min-height: 178px;
+    padding-bottom: 38px;
+  }
+
+  .play-shell .burger-layer,
+  .play-shell .empty-plate {
+    width: min(90%, 252px);
+    height: 28px;
+    margin-top: -5px;
+    font-size: 11px;
+  }
+
+  .play-shell .bottom-bun,
+  .play-shell .top-bun {
+    height: 31px;
+  }
+
+  .play-shell .sauce {
+    height: 19px;
+  }
+
+  .play-shell .cook-meters {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: 3px;
+  }
+
+  .play-shell .current-step {
+    min-height: 34px;
+    padding: 6px 8px;
+    font-size: 12px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

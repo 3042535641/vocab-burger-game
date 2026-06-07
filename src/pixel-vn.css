@@ -444,6 +444,7 @@ img {
 .game-header {
   display: grid;
   grid-template-columns: minmax(330px, 0.82fr) minmax(0, 3.18fr);
+  align-items: center;
   gap: 8px;
   min-height: 0;
   padding: 4px;
@@ -455,6 +456,7 @@ img {
 
 .title-lockup {
   display: grid;
+  align-self: center;
   min-width: 0;
   align-content: center;
   padding: 2px 10px;
@@ -464,19 +466,21 @@ img {
 }
 
 .title-lockup h1 {
-  overflow: hidden;
+  overflow: visible;
   color: #fffaf0;
-  font-size: clamp(16px, 1.02vw, 20px);
+  font-size: clamp(15px, 0.96vw, 19px);
   line-height: 1;
-  text-overflow: ellipsis;
+  text-overflow: clip;
   white-space: nowrap;
   text-shadow: 3px 3px 0 #ef6aa8;
 }
 
 .stats {
   display: grid;
+  align-self: center;
   grid-template-columns: repeat(4, minmax(72px, 1fr)) repeat(4, minmax(48px, 0.52fr));
   gap: 4px;
+  height: 32px;
   min-width: 0;
 }
 
@@ -484,7 +488,8 @@ img {
 .stats button {
   display: grid;
   min-width: 0;
-  min-height: 22px;
+  min-height: 0;
+  height: 32px;
   place-items: center;
   padding: 1px 5px;
   overflow: hidden;
@@ -492,7 +497,7 @@ img {
   border-radius: 7px;
   background: rgba(255, 248, 213, 0.95);
   box-shadow: 2px 2px 0 rgba(36, 27, 47, 0.22);
-  font-size: clamp(10px, 0.68vw, 13px);
+  font-size: clamp(9px, 0.62vw, 12px);
   font-weight: 1000;
   text-align: center;
   text-overflow: ellipsis;
@@ -753,13 +758,15 @@ img {
   display: grid;
   grid-template-columns: 1fr;
   align-items: start;
-  gap: 2px;
+  align-content: start;
+  gap: 4px;
+  min-height: 40px;
 }
 
 .burger-station .section-heading h2 {
   min-width: 0;
-  font-size: clamp(19px, 1.32vw, 26px);
-  line-height: 1;
+  font-size: clamp(18px, 1.22vw, 24px);
+  line-height: 1.04;
 }
 
 .burger-station .section-heading span {
@@ -2089,8 +2096,10 @@ img {
 
   .burger-station .section-heading {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: center;
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 2px;
+    min-height: 36px;
   }
 
   .burger-station .section-heading h2 {

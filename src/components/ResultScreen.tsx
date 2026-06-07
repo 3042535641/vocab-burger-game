@@ -51,7 +51,9 @@ function ResultScreen({
       : `错题复盘：${missedWords.length} 个术语正在右侧挂号，建议立刻安排词根会诊。`,
     bestCombo >= 20
       ? `连击报告：Combo ${bestCombo}，这不是答题，这是医学英语心电图起飞。`
-      : '角色轮换：六位医学生按顺序查房，没有再把影像男叫成小明。',
+      : bestCombo >= 8
+        ? `连击报告：Combo ${bestCombo}，词根已经开始自觉排队，教授的血压也跟着押韵。`
+        : '课堂播报：汉堡还热，词根还倔，下一局建议先给大脑来杯无菌奶茶。',
   ]
 
   return (

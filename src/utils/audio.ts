@@ -35,11 +35,7 @@ class GameAudio {
   private intensity = 0
   private mode: AudioMode = 'off'
   private context?: AudioContext
-  private musicGain?: GainNode
-  private musicSource?: AudioBufferSourceNode
-  private musicBuffers = new Map<Exclude<AudioMode, 'off'>, AudioBuffer>()
-  private musicBufferPromises = new Map<Exclude<AudioMode, 'off'>, Promise<AudioBuffer>>()
-  private musicRequestId = 0
+  private musicElements = new Map<Exclude<AudioMode, 'off'>, HTMLAudioElement>()
   private timers = new Set<number>()
   private pools = new Map<string, HTMLAudioElement[]>()
 
@@ -152,73 +148,28 @@ class GameAudio {
     return (this.leanMode ? 0.27 : 0.42) + this.intensity * 0.08
   }
 
-  private stopMusicSource() {
-    this.musicRequestId += 1
-    if (this.musicSource) {
-      try {
-        this.musicSource.stop()
-      } catch {
-        // Source nodes are one-shot; ignore if the browser already stopped it.
-      }
-      this.musicSource.disconnect()
-      this.musicSource = undefined
-    }
-  }
-
-  private async loadMusicBuffer(mode: Exclude<AudioMode, 'off'>) {
-    const cached = this.musicBuffers.get(mode)
+  private musicElement(mode: Exclude<AudioMode, 'off'>) {
+    const cached = this.musicElements.get(mode)
 
     if (cached) {
       return cached
     }
 
-    const loading = this.musicBufferPromises.get(mode)
-
-    if (loading) {
-      return loading
-    }
-
-    const promise = fetch(tracks[mode])
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Failed to load BGM: ${tracks[mode]}`)
-        }
-        return response.arrayBuffer()
-      })
-      .then((buffer) => this.contextForEffects().decodeAudioData(buffer.slice(0)))
-      .then((audioBuffer) => {
-        this.musicBuffers.set(mode, audioBuffer)
-        this.musicBufferPromises.delete(mode)
-        return audioBuffer
-      })
-      .catch((error) => {
-        this.musicBufferPromises.delete(mode)
-        throw error
-      })
-
-    this.musicBufferPromises.set(mode, promise)
-    return promise
+    const audio = new Audio(tracks[mode])
+    audio.loop = mode !== 'finale'
+    audio.preload = 'auto'
+    audio.volume = this.trackVolume(mode)
+    this.musicElements.set(mode, audio)
+    return audio
   }
 
-  private playMusicBuffer(mode: Exclude<AudioMode, 'off'>, buffer: AudioBuffer) {
-    if (!this.enabled || !this.visible || this.mode !== mode) {
-      return
-    }
-
-    const context = this.contextForEffects()
-    const source = context.createBufferSource()
-
-    if (!this.musicGain) {
-      this.musicGain = context.createGain()
-      this.musicGain.connect(context.destination)
-    }
-
-    source.buffer = buffer
-    source.loop = mode !== 'finale'
-    this.musicGain.gain.value = this.trackVolume(mode)
-    source.connect(this.musicGain)
-    this.musicSource = source
-    source.start()
+  private stopMusicSource(reset = false) {
+    this.musicElements.forEach((audio) => {
+      audio.pause()
+      if (reset) {
+        audio.currentTime = 0
+      }
+    })
   }
 
   private switchTrack(mode: AudioMode) {
@@ -228,8 +179,14 @@ class GameAudio {
       return
     }
 
-    if (mode === this.mode && this.musicSource && this.musicGain) {
-      this.musicGain.gain.value = this.trackVolume(mode)
+    if (mode === this.mode && mode !== 'off') {
+      const current = this.musicElement(mode)
+      current.volume = this.trackVolume(mode)
+
+      if (this.enabled && this.visible && current.paused) {
+        void current.play().catch(() => undefined)
+      }
+
       return
     }
 
@@ -240,19 +197,15 @@ class GameAudio {
       return
     }
 
-    const requestId = this.musicRequestId
-    void this.loadMusicBuffer(mode)
-      .then((buffer) => {
-        if (requestId === this.musicRequestId) {
-          this.playMusicBuffer(mode, buffer)
-        }
-      })
-      .catch(() => undefined)
+    const audio = this.musicElement(mode)
+    audio.currentTime = 0
+    audio.volume = this.trackVolume(mode)
+    void audio.play().catch(() => undefined)
   }
 
   preload() {
     Object.keys(tracks).forEach((mode) => {
-      void this.loadMusicBuffer(mode as Exclude<AudioMode, 'off'>)
+      this.musicElement(mode as Exclude<AudioMode, 'off'>).load()
     })
     Object.values(effects).forEach((src) => {
       const audio = this.pooledAudio(src)
@@ -288,8 +241,8 @@ class GameAudio {
 
   setPerformanceMode(enabled: boolean) {
     this.leanMode = enabled
-    if (this.musicGain) {
-      this.musicGain.gain.value = this.trackVolume(this.mode)
+    if (this.mode !== 'off') {
+      this.musicElement(this.mode).volume = this.trackVolume(this.mode)
     }
   }
 
@@ -308,8 +261,8 @@ class GameAudio {
 
   setIntensity(level: number) {
     this.intensity = Math.max(0, Math.min(1, level))
-    if (this.musicGain && this.mode === 'service') {
-      this.musicGain.gain.value = this.trackVolume(this.mode)
+    if (this.mode === 'service') {
+      this.musicElement(this.mode).volume = this.trackVolume(this.mode)
     }
   }
 
@@ -335,7 +288,7 @@ class GameAudio {
 
   stopMusic() {
     this.clearTimers()
-    this.stopMusicSource()
+    this.stopMusicSource(true)
     this.mode = 'off'
     this.intensity = 0
   }

@@ -1,7 +1,7 @@
 import type { AudioMode } from '../types/game'
 
 const baseUrl = import.meta.env.BASE_URL
-const audioVersion = '20260528-impact-funk'
+const audioVersion = '20260607-mobile-bgm-stable'
 const audioUrl = (fileName: string) =>
   `${baseUrl}audio/${fileName}?v=${audioVersion}`
 
@@ -38,6 +38,7 @@ class GameAudio {
   private musicElements = new Map<Exclude<AudioMode, 'off'>, HTMLAudioElement>()
   private timers = new Set<number>()
   private pools = new Map<string, HTMLAudioElement[]>()
+  private lastMusicError?: string
 
   private contextForEffects() {
     if (!this.context) {
@@ -89,6 +90,8 @@ class GameAudio {
 
     const audio = new Audio(src)
     audio.preload = 'auto'
+    audio.setAttribute('playsinline', 'true')
+    audio.setAttribute('webkit-playsinline', 'true')
     pool.push(audio)
     this.pools.set(src, pool)
     return audio
@@ -159,8 +162,20 @@ class GameAudio {
     audio.loop = mode !== 'finale'
     audio.preload = 'auto'
     audio.volume = this.trackVolume(mode)
+    audio.setAttribute('playsinline', 'true')
+    audio.setAttribute('webkit-playsinline', 'true')
     this.musicElements.set(mode, audio)
     return audio
+  }
+
+  private playMusicElement(audio: HTMLAudioElement, mode: Exclude<AudioMode, 'off'>) {
+    void audio.play().catch((error: unknown) => {
+      this.lastMusicError =
+        error instanceof Error ? error.message : 'Unknown browser audio rejection'
+      if (import.meta.env.DEV) {
+        console.warn(`[game-audio] ${mode} BGM play failed:`, this.lastMusicError)
+      }
+    })
   }
 
   private stopMusicSource(reset = false) {
@@ -184,7 +199,7 @@ class GameAudio {
       current.volume = this.trackVolume(mode)
 
       if (this.enabled && this.visible && current.paused) {
-        void current.play().catch(() => undefined)
+        this.playMusicElement(current, mode)
       }
 
       return
@@ -200,12 +215,15 @@ class GameAudio {
     const audio = this.musicElement(mode)
     audio.currentTime = 0
     audio.volume = this.trackVolume(mode)
-    void audio.play().catch(() => undefined)
+    this.playMusicElement(audio, mode)
   }
 
   preload() {
     Object.keys(tracks).forEach((mode) => {
-      this.musicElement(mode as Exclude<AudioMode, 'off'>).load()
+      const audio = this.musicElement(mode as Exclude<AudioMode, 'off'>)
+      if (audio.paused && audio.readyState === 0) {
+        audio.load()
+      }
     })
     Object.values(effects).forEach((src) => {
       const audio = this.pooledAudio(src)
@@ -214,7 +232,12 @@ class GameAudio {
   }
 
   unlock() {
-    this.preload()
+    Object.keys(tracks).forEach((mode) => {
+      this.musicElement(mode as Exclude<AudioMode, 'off'>)
+    })
+    Object.values(effects).forEach((src) => {
+      this.pooledAudio(src)
+    })
     if (!this.context) {
       this.context = new AudioContext()
     }
@@ -236,7 +259,9 @@ class GameAudio {
       return
     }
 
-    this.preload()
+    Object.keys(tracks).forEach((mode) => {
+      this.musicElement(mode as Exclude<AudioMode, 'off'>)
+    })
   }
 
   setPerformanceMode(enabled: boolean) {

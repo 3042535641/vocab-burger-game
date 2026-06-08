@@ -34,6 +34,9 @@ export const getStagePortraitFrameSrc = (
   frame: PortraitFrameKey = 'normal',
 ) => assetUrl(getCharacterProfile(avatar, isBoss).portraitFrames[frame])
 
+export const getRegularPortraitFallbackFrameSrc = (avatar?: string) =>
+  assetUrl(`art/pixel-vn-v3/characters/${avatar ?? 'round'}/normal.webp`)
+
 export const getBossFinaleFrameSrc = (frame: BossFinaleFrameKey) =>
   assetUrl(bossFinaleFrames[frame])
 

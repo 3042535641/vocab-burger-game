@@ -1,4 +1,4 @@
-import { memo, type CSSProperties } from 'react'
+import { memo, type CSSProperties, type SyntheticEvent } from 'react'
 import type {
   Customer,
   QueuePreviewCustomer,
@@ -13,6 +13,7 @@ import {
   getBossBattleFallbackFrameSrc,
   getCharacterProfile,
   getPortraitFrameKey,
+  getRegularPortraitFallbackFrameSrc,
   getStagePortraitFrameSrc,
 } from '../utils/portraits'
 
@@ -23,6 +24,21 @@ type CustomerQueueProps = {
   handoffCustomer?: Customer
   transitionState?: QueueTransitionState
   onSelectCustomer: (id: number) => void
+}
+
+const recoverPortraitImage = (
+  event: SyntheticEvent<HTMLImageElement>,
+  avatar: string | undefined,
+  isBoss: boolean | undefined,
+  frame: Parameters<typeof getStagePortraitFrameSrc>[2] = 'normal',
+) => {
+  const fallback = isBoss
+    ? getBossBattleFallbackFrameSrc(frame)
+    : getRegularPortraitFallbackFrameSrc(avatar)
+
+  if (!event.currentTarget.src.includes(fallback)) {
+    event.currentTarget.src = fallback
+  }
 }
 
 function CustomerQueue({
@@ -67,6 +83,14 @@ function CustomerQueue({
                     )}
                     alt=""
                     loading="eager"
+                    onError={(event) =>
+                      recoverPortraitImage(
+                        event,
+                        customer.avatar,
+                        customer.isBoss,
+                        waitingProfile.queuePose,
+                      )
+                    }
                   />
                   <span>{waitingProfile.title}</span>
                   <small>ETA {customer.etaSeconds}s</small>
@@ -183,6 +207,14 @@ function CustomerQueue({
                 )}
                 alt=""
                 loading="eager"
+                onError={(event) =>
+                  recoverPortraitImage(
+                    event,
+                    customer.avatar,
+                    customer.isBoss,
+                    waitingFrame,
+                  )
+                }
               />
               <span>{waitingProfile.title}</span>
               <small>{getWaitedSeconds(customer)}s</small>
@@ -211,6 +243,14 @@ function CustomerQueue({
                 )}
                 alt=""
                 loading="eager"
+                onError={(event) =>
+                  recoverPortraitImage(
+                    event,
+                    customer.avatar,
+                    customer.isBoss,
+                    waitingProfile.queuePose,
+                  )
+                }
               />
               <span>{waitingProfile.title}</span>
               <small>ETA {customer.etaSeconds}s</small>
@@ -227,6 +267,14 @@ function CustomerQueue({
         data-avatar={displayCustomer.avatar}
         data-frame={frame}
         data-framing={profile.stageFraming}
+        onError={(event) =>
+          recoverPortraitImage(
+            event,
+            displayCustomer.avatar,
+            displayCustomer.isBoss,
+            frame,
+          )
+        }
       />
 
       <span className="vn-mood-tag">
